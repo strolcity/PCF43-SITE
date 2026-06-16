@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évolution Électorale - PCF 43</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #0078d4;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f5f5f5;
+        }
+        .warning {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        .delta-row {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .delta-positive {
+            color: #2e7d32;
+        }
+        .delta-negative {
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <h1>📈 Évolution Électorale - PCF 43</h1>
+
+    <div class="container">
+        <h2>Sélection</h2>
+        <div>
+            <label>Commune :</label>
+            <select id="commune">
+                <option value="43137">Monistrol-sur-Loire</option>
+                <option value="43157">Le Puy-en-Velay</option>
+                <option value="43214">Saint-Pal-de-Mons</option>
+                <option value="43010">Aurec-sur-Loire</option>
+            </select>
+        </div>
+        <div>
+            <label>Bloc politique :</label>
+            <div>
+                <label><input type="radio" name="bloc" value="gauche" checked> Gauche (LFI, PS, EELV, PCF, UG, etc.)</label>
+                <label><input type="radio" name="bloc" value="droite"> Droite (LR, UDI, MoDem, etc.)</label>
+                <label><input type="radio" name="bloc" value="exd"> Extrême Droite (RN, Reconquête, etc.)</label>
+            </div>
+        </div>
+        <div>
+            <label>Scrutins à comparer :</label>
+            <div>
+                <label><input type="checkbox" name="scrutin" value="LEG_2024_T1" checked> Législatives 2024 - T1</label>
+                <label><input type="checkbox" name="scrutin" value="LEG_2024_T2"> Législatives 2024 - T2</label>
+                <label><input type="checkbox" name="scrutin" value="LEG_2022_T1" checked> Législatives 2022 - T1</label>
+                <label><input type="checkbox" name="scrutin" value="LEG_2022_T2"> Législatives 2022 - T2</label>
+                <label><input type="checkbox" name="scrutin" value="PRES_2022_T1"> Présidentielles 2022 - T1</label>
+                <label><input type="checkbox" name="scrutin" value="PRES_2022_T2"> Présidentielles 2022 - T2</label>
+            </div>
+        </div>
+        <button id="analyzeButton">Comparer</button>
+    </div>
+
+    <div class="container" id="resultsContainer" style="display: none;">
+        <h2>Évolution des résultats</h2>
+        <div class="warning">
+            <p>⚠️ LFI est classée "Extrême gauche" par le ministère depuis 2024.</p>
+        </div>
+        <div id="loading" class="loading">Chargement des données...</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Scrutin</th>
+                    <th>Voix</th>
+                    <th>Δ Voix</th>
+                    <th>% Exprimés</th>
+                    <th>Δ % Exprimés</th>
+                    <th>Abstention (%)</th>
+                    <th>Δ Abstention</th>
+                </tr>
+            </thead>
+            <tbody id="resultsTable"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Mapping des blocs et scrutins (à adapter selon tes fichiers)
+        const mapping = {
+            blocs: {
+                gauche: ["LUG", "LFI", "PS", "EELV", "PCF", "NUPES", "UG", "DVG"],
+                droite: ["LR", "UDI", "MoDem", "REN", "ENS", "DVD", "LC", "HOR"],
+                exd: ["RN", "REC", "LP"]
+            },
+            scrutins: {
+                LEG_2024_T1: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/LEG_2024_T1.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                },
+                LEG_2024_T2: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/LEG_2024_T2.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                },
+                LEG_2022_T1: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/LEG_2022_T1.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                },
+                LEG_2022_T2: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/LEG_2022_T2.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                },
+                PRES_2022_T1: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/PRES_2022_T1.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                },
+                PRES_2022_T2: {
+                    file: "https://ton-compte.github.io/pcf43-elections-data/PRES_2022_T2.csv",
+                    nuance_col: "Nuance candidat {i}",
+                    voix_col: "Voix {i}",
+                    pourcent_col: "% Voix/exprimés {i}",
+                    abstention_col: "% Abstentions",
+                    code_col: "Code commune"
+                }
+            }
+        };
+
+        // Données chargées
+        let electionData = {};
+
+        // Charger tous les CSV depuis GitHub
+        async function loadAllCSV() {
+            for (const [scrutin, config] of Object.entries(mapping.scrutins)) {
+                try {
+                    const response = await fetch(config.file);
+                    if (!response.ok) throw new Error(`Fichier ${scrutin} non trouvé`);
+                    const csvText = await response.text();
+                    Papa.parse(csvText, {
+                        header: true,
+                        skipEmptyLines: true,
+                        delimiter: ";", // Force le séparateur ;
+                        complete: function(results) {
+                            electionData[scrutin] = results.data;
+                            console.log(`CSV ${scrutin} chargé avec succès !`);
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Erreur de chargement du CSV ${scrutin} :`, error);
+                }
+            }
+        }
+
+        // Extraire les résultats pour une commune et un scrutin
+        function extractResults(scrutin, codeInsee, bloc) {
+            const config = mapping.scrutins[scrutin];
+            const data = electionData[scrutin] || [];
+            const communeData = data.filter(row => row[config.code_col] === codeInsee);
+            if (communeData.length === 0) return null;
+
+            const commune = communeData[0];
+            let totalVoix = 0;
+            let totalPourcent = 0;
+
+            // Parcourir tous les candidats (jusqu'à 20 pour couvrir tous les cas)
+            for (let i = 1; i <= 20; i++) {
+                const nuance = commune[config.nuance_col.replace('{i}', i)]?.trim();
+                const voix = parseInt(commune[config.voix_col.replace('{i}', i)]?.replace(/\s/g, "") || "0");
+                const pourcent = parseFloat(commune[config.pourcent_col.replace('{i}', i)]?.replace(',', '.') || "0");
+
+                if (nuance && mapping.blocs[bloc].includes(nuance)) {
+                    totalVoix += voix;
+                    totalPourcent += pourcent;
+                }
+            }
+
+            const abstention = parseFloat(commune[config.abstention_col]?.replace(',', '.') || "0");
+
+            return {
+                scrutin: scrutin,
+                voix: totalVoix,
+                pourcentage: totalPourcent,
+                abstention: abstention
+            };
+        }
+
+        // Calculer les deltas entre deux résultats
+        function calculateDelta(prev, curr) {
+            return {
+                voix: curr.voix - prev.voix,
+                pourcentage: curr.pourcentage - prev.pourcentage,
+                abstention: curr.abstention - prev.abstention
+            };
+        }
+
+        // Afficher les résultats avec deltas
+        function displayResults(results) {
+            const resultsTable = document.getElementById('resultsTable');
+            resultsTable.innerHTML = '';
+
+            if (results.length === 0) {
+                resultsTable.innerHTML = '<tr><td colspan="7">Aucune donnée trouvée.</td></tr>';
+                return;
+            }
+
+            // Trier les résultats par ordre chronologique
+            results.sort((a, b) => a.scrutin.localeCompare(b.scrutin));
+
+            // Afficher la première ligne (pas de delta)
+            const firstRow = document.createElement('tr');
+            firstRow.innerHTML = `
+                <td>${results[0].scrutin.replace('_', ' ').replace('T1', '1er tour').replace('T2', '2nd tour')}</td>
+                <td>${results[0].voix.toLocaleString()}</td>
+                <td>-</td>
+                <td>${results[0].pourcentage.toFixed(2)}%</td>
+                <td>-</td>
+                <td>${results[0].abstention.toFixed(2)}%</td>
+                <td>-</td>
+            `;
+            resultsTable.appendChild(firstRow);
+
+            // Afficher les lignes suivantes avec deltas
+            for (let i = 1; i < results.length; i++) {
+                const prev = results[i-1];
+                const curr = results[i];
+                const delta = calculateDelta(prev, curr);
+
+                // Ligne de données
+                const dataRow = document.createElement('tr');
+                dataRow.innerHTML = `
+                    <td>${curr.scrutin.replace('_', ' ').replace('T1', '1er tour').replace('T2', '2nd tour')}</td>
+                    <td>${curr.voix.toLocaleString()}</td>
+                    <td>-</td>
+                    <td>${curr.pourcentage.toFixed(2)}%</td>
+                    <td>-</td>
+                    <td>${curr.abstention.toFixed(2)}%</td>
+                    <td>-</td>
+                `;
+                resultsTable.appendChild(dataRow);
+
+                // Ligne de delta
+                const deltaRow = document.createElement('tr');
+                deltaRow.className = 'delta-row';
+                deltaRow.innerHTML = `
+                    <td>→ Delta</td>
+                    <td>-</td>
+                    <td class="${delta.voix >= 0 ? 'delta-positive' : 'delta-negative'}">
+                        ${delta.voix >= 0 ? '+' : ''}${delta.voix.toLocaleString()}
+                    </td>
+                    <td>-</td>
+                    <td class="${delta.pourcentage >= 0 ? 'delta-positive' : 'delta-negative'}">
+                        ${delta.pourcentage >= 0 ? '+' : ''}${delta.pourcentage.toFixed(2)}%
+                    </td>
+                    <td>-</td>
+                    <td class="${delta.abstention >= 0 ? 'delta-negative' : 'delta-positive'}">
+                        ${delta.abstention >= 0 ? '+' : ''}${delta.abstention.toFixed(2)}%
+                    </td>
+                `;
+                resultsTable.appendChild(deltaRow);
+            }
+        }
+
+        // Gestion du bouton
+        document.getElementById('analyzeButton').addEventListener('click', function() {
+            const communeSelect = document.getElementById('commune');
+            const codeInsee = communeSelect.options[communeSelect.selectedIndex].value;
+            const bloc = document.querySelector('input[name="bloc"]:checked').value;
+            const selectedScrutins = Array.from(document.querySelectorAll('input[name="scrutin"]:checked'))
+                                          .map(el => el.value);
+
+            document.getElementById('resultsContainer').style.display = 'block';
+
+            if (Object.keys(electionData).length === 0) {
+                alert("Les données ne sont pas encore chargées. Attendez quelques secondes.");
+                return;
+            }
+
+            if (selectedScrutins.length < 2) {
+                alert("Sélectionnez au moins 2 scrutins pour comparer.");
+                return;
+            }
+
+            const results = selectedScrutins.map(scrutin => extractResults(scrutin, codeInsee, bloc))
+                                          .filter(result => result !== null);
+
+            displayResults(results);
+        });
+
+        // Charger les CSV au démarrage
+        loadAllCSV();
+    </script>
+</body>
+</html>
