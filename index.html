@@ -22,11 +22,49 @@
             justify-content: center;
             align-items: center;
         }
+
+        .logos {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .logos a {
+            display: block;
+        }
+
+        .logos img {
+            height: 80px;
+            transition: all 0.3s ease;
+        }
+
+        .logos a:first-child img {
+            animation: bounce 2s infinite;
+        }
+        .logos a:first-child:hover img {
+            animation: none;
+            transform: scale(1.1);
+        }
+
+        .logos a:last-child img {
+            transition: transform 0.5s ease;
+        }
+        .logos a:last-child:hover img {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
         h1 {
             font-size: 3em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
             margin-bottom: 40px;
         }
+
         .btn-urne {
             display: inline-flex;
             flex-direction: column;
@@ -35,6 +73,7 @@
             color: white;
             gap: 12px;
         }
+
         .btn-urne img {
             width: 120px;
             height: 120px;
@@ -46,10 +85,12 @@
             transition: transform 0.6s ease, box-shadow 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
+
         .btn-urne:hover img {
             transform: rotate(360deg);
             box-shadow: 0 0 25px rgba(211,47,47,0.8);
         }
+
         .btn-urne span {
             font-size: 1.1em;
             background: #d32f2f;
@@ -60,12 +101,21 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.4);
             transition: background 0.3s;
         }
+
         .btn-urne:hover span {
             background: #b71c1c;
         }
     </style>
 </head>
 <body>
+    <div class="logos">
+        <a href="https://abonnement.humanite.fr/" target="_blank">
+            <img src="https://i.postimg.cc/KjnNN342/l-umanite.png" alt="L'Humanité">
+        </a>
+        <a href="https://www.pcf.fr/" target="_blank">
+            <img src="https://i.postimg.cc/7hgVVJbx/pcf.png" alt="PCF">
+        </a>
+    </div>
     <h1>Bienvenue sur le site du PCF 43</h1>
     <a href="analyse.html" class="btn-urne">
         <img src="https://i.postimg.cc/DZVM1DhN/urne.png" alt="Urne électorale">
