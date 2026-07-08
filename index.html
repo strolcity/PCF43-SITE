@@ -19,8 +19,10 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
         }
 
         .logos {
@@ -62,7 +64,7 @@
         h1 {
             font-size: 3em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 40px;
+            margin: 20px 0 40px;
         }
 
         .btn-urne {
@@ -72,6 +74,7 @@
             text-decoration: none;
             color: white;
             gap: 12px;
+            margin-bottom: 40px;
         }
 
         .btn-urne img {
@@ -105,6 +108,30 @@
         .btn-urne:hover span {
             background: #b71c1c;
         }
+
+        .logos-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: auto;
+        }
+
+        .logos-bottom a {
+            display: block;
+        }
+
+        .logos-bottom img {
+            height: 70px;
+            transition: all 0.3s ease;
+        }
+
+        .logos-bottom a:first-child:hover img {
+            transform: scale(1.1) rotate(-10deg);
+        }
+
+        .logos-bottom a:last-child:hover img {
+            transform: scale(1.1) rotate(10deg);
+        }
     </style>
 </head>
 <body>
@@ -121,5 +148,13 @@
         <img src="https://i.postimg.cc/DZVM1DhN/urne.png" alt="Urne électorale">
         <span>Analyse Électorale →</span>
     </a>
+    <div class="logos-bottom">
+        <a href="https://groupe-communiste.assemblee-nationale.fr/" target="_blank">
+            <img src="https://i.postimg.cc/QCpbbKVD/les-deputes.png" alt="Députés">
+        </a>
+        <a href="https://senateurscrce.fr/" target="_blank">
+            <img src="https://i.postimg.cc/1XpHHV4P/Senateur.png" alt="Sénateur">
+        </a>
+    </div>
 </body>
 </html>
