@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCF 43 - Analyse Électorale</title>
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Barre de navigation */
+        nav {
+            background: rgba(180,0,0,0.85);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(4px);
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.95em;
+            opacity: 0.85;
+        }
+        nav a:hover { opacity: 1; }
+        nav .title {
+            font-size: 1.2em;
+            font-weight: bold;
+            flex: 1;
+        }
+
+        /* Conteneur principal */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Panneau de filtres */
+        .filtres {
+            background: rgba(0,0,0,0.65);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .filtres h2 {
+            font-size: 1.1em;
+            margin-bottom: 16px;
+            color: #ffcccc;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .filtres-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .filtre-groupe h3 {
+            font-size: 0.85em;
+            color: #ffaaaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,100,100,0.4);
+            padding-bottom: 4px;
+        }
+        .filtre-groupe label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            padding: 4px 0;
+            transition: color 0.2s;
+        }
+        .filtre-groupe label:hover { color: #ffcccc; }
+        .filtre-groupe input[type=checkbox],
+        .filtre-groupe input[type=radio] {
+            accent-color: #d32f2f;
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Bouton appliquer */
+        .btn-appliquer {
+            margin-top: 16px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-appliquer:hover { background: #b71c1c; }
+
+        /* Zone graphiques */
+        .graphiques {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .carte-graphique {
+            background: rgba(0,0,0,0.65);
+            border-radius: 10px;
+            padding: 20px 24px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .carte-graphique h3 {
+            font-size: 1em;
+            color: #ffcccc;
+            margin-bottom: 16px;
+        }
+        .canvas-wrap {
+            position: relative;
+            height: 360px;
+        }
+
+        /* Message erreur / chargement */
+        #msg {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        /* Légende blocs couleurs */
+        .legende-blocs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .legende-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8em;
+        }
+        .legende-couleur {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <span class="title">PCF 43 — Analyse Électorale</span>
+    <a href="index.html">← Accueil</a>
+</nav>
+
+<div class="container">
+
+    <!-- FILTRES -->
+    <div class="filtres">
+        <h2>🗳 Choisissez votre analyse</h2>
+        <div class="filtres-grid">
+
+            <!-- Territoire -->
+            <div class="filtre-groupe">
+                <h3>Territoire</h3>
+                <label><input type="radio" name="territoire" value="FR" checked> France entière</label>
+                <label><input type="radio" name="territoire" value="43"> Haute-Loire (Dpt 43)</label>
+            </div>
+
+            <!-- Type de scrutin -->
+            <div class="filtre-groupe">
+                <h3>Type de scrutin</h3>
+                <label><input type="checkbox" class="cb-scrutin" value="PRES" checked> Présidentielle</label>
+                <label><input type="checkbox" class="cb-scrutin" value="LEG" checked> Législatives</label>
+            </div>
+
+            <!-- Tour -->
+            <div class="filtre-groupe">
+                <h3>Tour</h3>
+                <label><input type="checkbox" class="cb-tour" value="T1" checked> 1er tour</label>
+                <label><input type="checkbox" class="cb-tour" value="T2"> 2ème tour</label>
+            </div>
+
+            <!-- Affichage -->
+            <div class="filtre-groupe">
+                <h3>Afficher par</h3>
+                <label><input type="radio" name="affichage" value="Bloc" checked> Bloc électoral</label>
+                <label><input type="radio" name="affichage" value="Brique"> Parti (PCF, LFI, PS...)</label>
+            </div>
+
+            <!-- Blocs à afficher -->
+            <div class="filtre-groupe">
+                <h3>Blocs à afficher</h3>
+                <label><input type="checkbox" class="cb-bloc" value="Gauche révolutionnaire" checked> Gauche révolutionnaire</label>
+                <label><input type="checkbox" class="cb-bloc" value="Gauche Radical" checked> Gauche Radical</label>
+                <label><input type="checkbox" class="cb-bloc" value="Ecologiste" checked> Écologiste</label>
+                <label><input type="checkbox" class="cb-bloc" value="Gauche Modéré" checked> Gauche Modéré</label>
+                <label><input type="checkbox" class="cb-bloc" value="Centre"> Centre</label>
+                <label><input type="checkbox" class="cb-bloc" value="Droite"> Droite</label>
+                <label><input type="checkbox" class="cb-bloc" value="Extrême Droite"> Extrême Droite</label>
+            </div>
+
+        </div>
+        <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
+    </div>
+
+    <div id="msg">Chargement des données...</div>
+
+    <!-- GRAPHIQUES -->
+    <div class="graphiques" id="graphiques" style="display:none">
+
+        <div class="carte-graphique">
+            <h3 id="titre-evol">Évolution des voix ventillées par élection</h3>
+            <div class="canvas-wrap"><canvas id="chartEvol"></canvas></div>
+        </div>
+
+        <div class="carte-graphique">
+            <h3 id="titre-part">Part en % des exprimés — dernière élection sélectionnée</h3>
+            <div class="canvas-wrap"><canvas id="chartPart"></canvas></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// ── Couleurs des blocs et partis ────────────────────────────────────────────
+const COULEURS = {
+    "Gauche révolutionnaire": "#cc0000",
+    "Gauche Radical":         "#e03030",
+    "Ecologiste":             "#4caf50",
+    "Gauche Modéré":          "#e8a080",
+    "Centre":                 "#f0e020",
+    "Droite":                 "#2196f3",
+    "Extrême Droite":         "#1a237e",
+    "PCF":   "#cc0000",
+    "LFI":   "#e03030",
+    "PS":    "#e8a080",
+    "EELV":  "#4caf50",
+    "LO/NPA":"#990000",
+    "Centre":"#f0e020",
+    "Droite":"#2196f3",
+    "Extrême Droite":"#1a237e"
+};
+
+let DATA = [];
+let chartEvol = null;
+let chartPart  = null;
+
+// ── Chargement JSON ─────────────────────────────────────────────────────────
+fetch("data/ventillees.json")
+    .then(r => r.json())
+    .then(d => {
+        DATA = d;
+        document.getElementById("msg").style.display = "none";
+        document.getElementById("graphiques").style.display = "grid";
+        appliquer();
+    })
+    .catch(() => {
+        document.getElementById("msg").textContent =
+            "Erreur : impossible de charger ventillees.json";
+    });
+
+// ── Lecture des filtres ─────────────────────────────────────────────────────
+function getFiltres() {
+    return {
+        territoire: document.querySelector('input[name=territoire]:checked').value,
+        scrutins:   [...document.querySelectorAll('.cb-scrutin:checked')].map(e => e.value),
+        tours:      [...document.querySelectorAll('.cb-tour:checked')].map(e => e.value),
+        affichage:  document.querySelector('input[name=affichage]:checked').value,
+        blocs:      [...document.querySelectorAll('.cb-bloc:checked')].map(e => e.value)
+    };
+}
+
+// ── Filtrage + agrégation ───────────────────────────────────────────────────
+function filtrerDonnees(f) {
+    return DATA.filter(r => {
+        // Territoire
+        if (f.territoire === "FR") {
+            if (r.Zone !== "FR") return false;
+        } else {
+            // Haute-Loire : pour les LEG on additionne 4301+4302
+            // Pour les PRES on prend la zone "43"
+            if (r.TypesScrutin === "LEG") {
+                if (r.Zone !== "4301" && r.Zone !== "4302") return false;
+            } else {
+                if (r.Zone !== "43") return false;
+            }
+        }
+        if (!f.scrutins.includes(r.TypesScrutin)) return false;
+        if (!f.tours.includes(r.Tour)) return false;
+        // Filtre par bloc
+        const cle = f.affichage === "Bloc" ? r.Bloc : r.Brique;
+        if (!f.blocs.some(b => b === r.Bloc)) return false;
+        return true;
+    });
+}
+
+// ── Agrégation par (Année+Scrutin+Tour) et (Bloc ou Brique) ────────────────
+function agreger(rows, affichage) {
+    const map = {};
+    rows.forEach(r => {
+        const election = r.Année + " " + r.TypesScrutin + " " + r.Tour;
+        const cle      = affichage === "Bloc" ? r.Bloc : r.Brique;
+        const key      = election + "|||" + cle;
+        if (!map[key]) map[key] = { election, cle, voix: 0, exprimes: 0 };
+        map[key].voix    += r.VoixVentillees || 0;
+        map[key].exprimes = r.Exprimés || 0; // on prend la dernière valeur (identique par zone/tour)
+    });
+    return Object.values(map);
+}
+
+// ── Totaux exprimés par élection (pour calculer les %) ─────────────────────
+function totauxExprimes(rows) {
+    const map = {};
+    rows.forEach(r => {
+        const election = r.Année + " " + r.TypesScrutin + " " + r.Tour;
+        if (!map[election]) map[election] = new Set();
+        // On évite de doubler les exprimés si plusieurs blocs
+        const zoneKey = election + r.Zone;
+        if (!map[election][zoneKey]) {
+            map[election][zoneKey] = true;
+            map[election]._total = (map[election]._total || 0) + (r.Exprimés || 0);
+        }
+    });
+    const res = {};
+    Object.keys(map).forEach(k => { res[k] = map[k]._total || 1; });
+    return res;
+}
+
+// ── Dessin des graphiques ───────────────────────────────────────────────────
+function appliquer() {
+    const f    = getFiltres();
+    const rows = filtrerDonnees(f);
+
+    if (rows.length === 0) {
+        document.getElementById("msg").style.display = "block";
+        document.getElementById("msg").textContent = "Aucune donnée pour ces filtres.";
+        document.getElementById("graphiques").style.display = "none";
+        return;
+    }
+    document.getElementById("msg").style.display = "none";
+    document.getElementById("graphiques").style.display = "grid";
+
+    const agregat  = agreger(rows, f.affichage);
+    const elections = [...new Set(agregat.map(r => r.election))].sort();
+    const cles      = [...new Set(agregat.map(r => r.cle))];
+
+    // Graphique 1 : évolution (barres groupées)
+    const datasetsEvol = cles.map(cle => ({
+        label: cle,
+        data: elections.map(el => {
+            const found = agregat.find(r => r.election === el && r.cle === cle);
+            return found ? Math.round(found.voix) : 0;
+        }),
+        backgroundColor: COULEURS[cle] || "#888",
+        borderColor: "rgba(255,255,255,0.3)",
+        borderWidth: 1
+    }));
+
+    if (chartEvol) chartEvol.destroy();
+    chartEvol = new Chart(document.getElementById("chartEvol"), {
+        type: "bar",
+        data: { labels: elections, datasets: datasetsEvol },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: "white", font: { size: 11 } } },
+                tooltip: { callbacks: {
+                    label: ctx => ctx.dataset.label + " : " + ctx.parsed.y.toLocaleString("fr-FR") + " voix"
+                }}
+            },
+            scales: {
+                x: { stacked: false, ticks: { color: "white" }, grid: { color: "rgba(255,255,255,0.1)" } },
+                y: { ticks: { color: "white", callback: v => v.toLocaleString("fr-FR") },
+                     grid: { color: "rgba(255,255,255,0.1)" } }
+            }
+        }
+    });
+
+    // Graphique 2 : camembert dernière élection
+    const derniereEl = elections[elections.length - 1];
+    const datasPart  = agregat.filter(r => r.election === derniereEl);
+    const totalVoix  = datasPart.reduce((s, r) => s + r.voix, 0) || 1;
+
+    if (chartPart) chartPart.destroy();
+    chartPart = new Chart(document.getElementById("chartPart"), {
+        type: "doughnut",
+        data: {
+            labels: datasPart.map(r => r.cle),
+            datasets: [{
+                data: datasPart.map(r => +((r.voix / totalVoix) * 100).toFixed(1)),
+                backgroundColor: datasPart.map(r => COULEURS[r.cle] || "#888"),
+                borderColor: "rgba(255,255,255,0.2)",
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: {
+                legend: { position: "right", labels: { color: "white", font: { size: 11 } } },
+                tooltip: { callbacks: {
+                    label: ctx => ctx.label + " : " + ctx.parsed + "%"
+                }},
+                title: {
+                    display: true,
+                    text: "Répartition — " + derniereEl,
+                    color: "#ffcccc",
+                    font: { size: 13 }
+                }
+            }
+        }
+    });
+
+    document.getElementById("titre-evol").textContent =
+        "Évolution des voix ventillées — " +
+        (f.territoire === "FR" ? "France entière" : "Haute-Loire (43)");
+}
+</script>
+
+</body>
+</html>
