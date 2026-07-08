@@ -156,5 +156,58 @@
             <img src="https://i.postimg.cc/1XpHHV4P/Senateur.png" alt="Sénateur">
         </a>
     </div>
+    <!-- Pop-up Deezer (masquée par défaut) -->
+<div id="deezer-popup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 10px; max-width: 500px; width: 90%;">
+    <div style="text-align: right; margin-bottom: 10px;">
+        <button onclick="closeDeezerPopup()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">×</button>
+    </div>
+    <iframe
+        title="deezer-widget"
+        src="https://widget.deezer.com/widget/auto/playlist/11055450122"
+        width="100%"
+        height="300"
+        frameborder="0"
+        allowtransparency="true"
+        allow="encrypted-media; clipboard-write"
+        style="border-radius: 8px;">
+    </iframe>
+</div>
+
+<!-- Widget Deezer réduit en bas à droite -->
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+    <div
+        onclick="openDeezerPopup()"
+        style="cursor: pointer; width: 200px; height: 80px; background: rgba(0,0,0,0.7); border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s;"
+        onmouseover="this.style.transform='scale(1.05)'"
+        onmouseout="this.style.transform='scale(1)'">
+        <iframe
+            title="deezer-widget-mini"
+            src="https://widget.deezer.com/widget/auto/playlist/11055450122"
+            width="200"
+            height="80"
+            frameborder="0"
+            allowtransparency="true"
+            allow="encrypted-media; clipboard-write"
+            style="border-radius: 8px; background: transparent;">
+        </iframe>
+    </div>
+</div>
+
+<!-- Script pour gérer la pop-up -->
+<script>
+    function openDeezerPopup() {
+        document.getElementById('deezer-popup').style.display = 'block';
+    }
+    function closeDeezerPopup() {
+        document.getElementById('deezer-popup').style.display = 'none';
+    }
+    // Ferme la pop-up si on clique en dehors
+    window.onclick = function(event) {
+        const popup = document.getElementById('deezer-popup');
+        if (event.target === popup) {
+            popup.style.display = 'none';
+        }
+    }
+</script>
 </body>
 </html>
