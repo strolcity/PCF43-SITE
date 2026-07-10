@@ -15,9 +15,11 @@ print(f"✓ Data : {len(df_data)} lignes importées")
 # Import feuille Nuances
 df_map = pd.read_excel(XLSX, sheet_name="Nuances")
 
-# Garde uniquement les colonnes utiles (exclut la table de référence H/I)
-df_map = df_map[["Année", "Nuance", "Brique", "Nb Elu",
-                  "Poid Brique dans la Nuance", "Bloc electoral"]]
+# Affiche les colonnes pour vérifier
+print("Colonnes Nuances :", df_map.columns.tolist())
+
+# Garde uniquement les colonnes utiles
+df_map = df_map[["Année", "Nuance", "Brique", "Nb Elu", "Poids", "Bloc electoral"]]
 
 # Garde uniquement les lignes avec une nuance valide
 df_map = df_map[df_map["Nuance"].notna()]
