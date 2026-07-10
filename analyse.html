@@ -1,3 +1,5 @@
+
+Analyse · HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
         body {
             font-family: Arial, sans-serif;
             background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
@@ -18,7 +20,7 @@
             min-height: 100vh;
             color: white;
         }
-
+ 
         /* ── NAV ── */
         nav {
             background: rgba(160,0,0,0.88);
@@ -41,10 +43,10 @@
         }
         .nav-mi:hover { background: rgba(255,255,255,0.22); }
         .nav-mi img { height: 26px; border-radius: 3px; }
-
+ 
         /* ── CONTAINER ── */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 14px; }
-
+ 
         /* ── FILTRES ── */
         .filtres {
             background: rgba(0,0,0,0.68);
@@ -54,7 +56,7 @@
             border: 1px solid rgba(255,255,255,0.13);
         }
         .filtres h2 { font-size: 1em; color: #ffcccc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
-
+ 
         /* 3 colonnes blocs */
         .blocs-grid {
             display: grid;
@@ -84,7 +86,7 @@
         input[type=checkbox], input[type=radio] {
             accent-color: #d32f2f; width: 14px; height: 14px; flex-shrink: 0;
         }
-
+ 
         /* Extras (scrutin + tour) */
         .filtres-extras {
             display: flex; flex-wrap: wrap; gap: 16px;
@@ -97,14 +99,14 @@
             letter-spacing: 1px; color: #ffaaaa; margin-bottom: 4px;
         }
         .filtre-extra label { display: flex; align-items: center; gap: 7px; font-size: 0.9em; cursor: pointer; }
-
+ 
         .btn-appliquer {
             margin-top: 14px; background: #d32f2f; color: white;
             border: none; padding: 9px 26px; border-radius: 6px;
             font-size: 0.95em; cursor: pointer; transition: background 0.2s;
         }
         .btn-appliquer:hover { background: #b71c1c; }
-
+ 
         /* ── GRAPHIQUES côte à côte ── */
         .graphiques-grid {
             display: grid;
@@ -112,7 +114,7 @@
             gap: 18px;
         }
         @media (max-width: 768px) { .graphiques-grid { grid-template-columns: 1fr; } }
-
+ 
         .carte {
             background: rgba(0,0,0,0.68);
             border-radius: 10px; padding: 16px 18px;
@@ -125,7 +127,7 @@
             margin-bottom: 12px; padding-right: 28px;
         }
         .canvas-wrap { position: relative; height: 380px; }
-
+ 
         /* Bouton info */
         .btn-info {
             position: absolute; top: 14px; right: 14px;
@@ -136,7 +138,7 @@
             transition: background 0.2s; z-index: 10; flex-shrink: 0;
         }
         .btn-info:hover { background: rgba(255,255,255,0.4); }
-
+ 
         /* ── POPUP METHODOLOGIE ── */
         .overlay {
             display: none; position: fixed; inset: 0;
@@ -160,13 +162,13 @@
             font-size: 1.3em; cursor: pointer; opacity: 0.7;
         }
         .popup-close:hover { opacity: 1; }
-
+ 
         /* Message chargement */
         #msg { text-align: center; padding: 40px; font-size: 1.05em; opacity: 0.8; }
     </style>
 </head>
 <body>
-
+ 
 <!-- ── NAVIGATION ── -->
 <nav>
     <span class="nav-title">PCF 43 — Analyse Électorale</span>
@@ -176,7 +178,7 @@
     </a>
     <a href="index.html">← Accueil</a>
 </nav>
-
+ 
 <!-- ── POPUP MÉTHODOLOGIE ── -->
 <div class="overlay" id="overlay" onclick="fermerPopup(event)">
     <div class="popup">
@@ -195,22 +197,22 @@
         <p style="font-size:0.78em; opacity:0.6; margin-top:12px;">Sources : données du Ministère de l'Intérieur. Calculs PCF 43.</p>
     </div>
 </div>
-
+ 
 <div class="container">
     <div id="msg">⏳ Chargement des données...</div>
-
+ 
     <!-- ── FILTRES ── -->
     <div class="filtres" id="panneau-filtres" style="display:none">
         <h2>🗳 Choisissez votre analyse</h2>
-
+ 
         <!-- 3 colonnes blocs -->
         <div class="blocs-grid">
-
+ 
             <!-- GAUCHE -->
             <div class="bloc-col">
                 <h3>⬤ Gauche</h3>
-                <label><input type="checkbox" class="cb-bloc" value="Gauche révolutionnaire" checked>
-                    <span class="dot" style="background:#8B0000"></span>Gauche révolutionnaire</label>
+                <label><input type="checkbox" class="cb-bloc" value="Gauche Révolutionnaire" checked>
+                    <span class="dot" style="background:#8B0000"></span>Gauche Révolutionnaire</label>
                 <label><input type="checkbox" class="cb-bloc" value="Gauche Radical" checked>
                     <span class="dot" style="background:#CC0000"></span>Gauche Radical (PCF+LFI)</label>
                 <label><input type="checkbox" class="cb-bloc" value="Ecologiste" checked>
@@ -218,7 +220,7 @@
                 <label><input type="checkbox" class="cb-bloc" value="Gauche Modéré" checked>
                     <span class="dot" style="background:#E8A080"></span>Gauche Modéré (PS)</label>
             </div>
-
+ 
             <!-- CENTRE & DROITE -->
             <div class="bloc-col">
                 <h3>⬤ Centre & Droite</h3>
@@ -227,7 +229,7 @@
                 <label><input type="checkbox" class="cb-bloc" value="Droite">
                     <span class="dot" style="background:#42A5F5"></span>Droite (LR)</label>
             </div>
-
+ 
             <!-- EXTREME DROITE -->
             <div class="bloc-col">
                 <h3>⬤ Extrême Droite</h3>
@@ -235,7 +237,7 @@
                     <span class="dot" style="background:#1A237E"></span>Extrême Droite (RN/FN)</label>
             </div>
         </div>
-
+ 
         <!-- Scrutin + Tour -->
         <div class="filtres-extras">
             <div class="filtre-extra">
@@ -253,10 +255,10 @@
                 <label><input type="checkbox" id="cb-abstention" checked> Afficher la courbe</label>
             </div>
         </div>
-
+ 
         <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
     </div>
-
+ 
     <!-- ── GRAPHIQUES ── -->
     <div class="graphiques-grid" id="graphiques" style="display:none">
         <div class="carte">
@@ -270,8 +272,30 @@
             <div class="canvas-wrap"><canvas id="chart43"></canvas></div>
         </div>
     </div>
+ 
+    <!-- ── TABLEAU TOTAUX ── -->
+    <div id="section-totaux" style="display:none; margin-top:20px;">
+        <div class="carte">
+            <h3>📊 Totaux par groupe sélectionné — voix ventilées</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')" title="Méthodologie">ℹ</button>
+            <div style="overflow-x:auto; margin-top:10px;">
+                <table id="table-totaux" style="width:100%; border-collapse:collapse; font-size:0.85em;">
+                    <thead id="thead-totaux"></thead>
+                    <tbody id="tbody-totaux"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-
+ 
+<style>
+#table-totaux th { background:rgba(255,255,255,0.12); color:#ffcccc; padding:7px 10px; text-align:center; font-size:0.82em; border-bottom:1px solid rgba(255,255,255,0.2); white-space:nowrap; }
+#table-totaux td { padding:6px 10px; text-align:right; border-bottom:1px solid rgba(255,255,255,0.07); }
+#table-totaux td:first-child { text-align:left; font-weight:bold; color:#ffcccc; white-space:nowrap; }
+#table-totaux tr.total-row td { background:rgba(255,255,255,0.1); font-weight:bold; color:white; border-top:1px solid rgba(255,255,255,0.3); }
+#table-totaux tr:hover td { background:rgba(255,255,255,0.05); }
+</style>
+ 
 <script>
 // ── Couleurs par brique ──────────────────────────────────────────────────────
 const COULEURS = {
@@ -284,13 +308,13 @@ const COULEURS = {
     "Droite":         "#42A5F5",
     "Extrême Droite": "#1A237E"
 };
-
+ 
 // Ordre d'affichage des briques dans les barres (bas → haut)
 const ORDRE_BRIQUES = ["LO/NPA","PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"];
-
+ 
 let DATA = [];
 let chartFR = null, chart43 = null;
-
+ 
 // ── Chargement JSON ──────────────────────────────────────────────────────────
 fetch("data/ventillees.json")
     .then(r => { if (!r.ok) throw new Error("Fichier introuvable"); return r.json(); })
@@ -304,7 +328,7 @@ fetch("data/ventillees.json")
     .catch(e => {
         document.getElementById("msg").textContent = "⚠ " + e.message + " — vérifiez que data/ventillees.json existe.";
     });
-
+ 
 // ── Lecture filtres ──────────────────────────────────────────────────────────
 function getFiltres() {
     return {
@@ -314,7 +338,7 @@ function getFiltres() {
         abstention:  document.getElementById('cb-abstention').checked
     };
 }
-
+ 
 // ── Sort élections : Année ASC, PRES avant LEG, T1 avant T2 ─────────────────
 function sortElections(els) {
     const sco = { PRES: 1, LEG: 2 };
@@ -325,7 +349,7 @@ function sortElections(els) {
         return pa[2] < pb[2] ? -1 : 1;
     });
 }
-
+ 
 // ── Filtrage selon territoire ────────────────────────────────────────────────
 function filtrerZone(rows, territoire, scrutins, tours, blocs) {
     return rows.filter(r => {
@@ -338,7 +362,7 @@ function filtrerZone(rows, territoire, scrutins, tours, blocs) {
         return r.Zone === "43";
     });
 }
-
+ 
 // ── Agrégation voix par élection + brique ────────────────────────────────────
 function agregerVoix(rows) {
     const map = {};
@@ -350,7 +374,7 @@ function agregerVoix(rows) {
     });
     return Object.values(map);
 }
-
+ 
 // ── Calcul abstention (déduplication Inscrits/Votants par zone+élection) ─────
 function calcAbstention(rows, elections) {
     const seenZone = new Set();
@@ -371,13 +395,13 @@ function calcAbstention(rows, elections) {
         return t.ins > 0 ? +((t.ins - t.vot) / t.ins * 100).toFixed(1) : null;
     });
 }
-
+ 
 // ── Construction du chart mixte ───────────────────────────────────────────────
 function construireChart(canvasId, chartRef, rows, titre, showAbstention) {
     const agregat   = agregerVoix(rows);
     const elections = sortElections([...new Set(agregat.map(r => r.el))]);
     const briques   = ORDRE_BRIQUES.filter(b => agregat.some(r => r.brique === b));
-
+ 
     // Datasets barres (empilées, une par brique)
     const datasets = briques.map(brique => ({
         type: "bar",
@@ -391,7 +415,7 @@ function construireChart(canvasId, chartRef, rows, titre, showAbstention) {
         order: 2,
         yAxisID: "y"
     }));
-
+ 
     // Dataset ligne abstention
     if (showAbstention) {
         const abstData = calcAbstention(rows, elections);
@@ -411,9 +435,9 @@ function construireChart(canvasId, chartRef, rows, titre, showAbstention) {
             yAxisID: "y2"
         });
     }
-
+ 
     if (chartRef) chartRef.destroy();
-
+ 
     return new Chart(document.getElementById(canvasId), {
         data: { labels: elections, datasets },
         options: {
@@ -461,18 +485,76 @@ function construireChart(canvasId, chartRef, rows, titre, showAbstention) {
         }
     });
 }
-
+ 
+// ── Groupes pour le tableau des totaux ───────────────────────────────────────
+const GROUPES = {
+    "Total Gauche": ["Gauche Révolutionnaire","Gauche Radical","Ecologiste","Gauche Modéré"],
+    "Total Centre & Droite": ["Centre","Droite"],
+    "Total Extrême Droite": ["Extrême Droite"]
+};
+ 
+// ── Construction du tableau des totaux ───────────────────────────────────────
+function construireTotaux(rowsFR, rows43, elections, blocsActifs) {
+    document.getElementById("section-totaux").style.display = "block";
+ 
+    // Groupes actifs seulement
+    const groupesActifs = Object.entries(GROUPES).filter(([_, blocs]) =>
+        blocs.some(b => blocsActifs.some(ba => ba.normalize('NFC') === b.normalize('NFC')))
+    );
+    if (groupesActifs.length === 0) return;
+ 
+    // Calcul totaux par territoire+élection+groupe
+    function totalParGroupe(rows, el, blocsGroupe) {
+        return rows
+            .filter(r => {
+                const elR = r.Année + " " + r.TypesScrutin + " " + r.Tour;
+                return elR === el && blocsGroupe.some(b => b.normalize('NFC') === (r.Bloc||'').normalize('NFC'));
+            })
+            .reduce((s, r) => s + (r.VoixVentillees || 0), 0);
+    }
+ 
+    // En-tête
+    const thead = document.getElementById("thead-totaux");
+    const tbody = document.getElementById("tbody-totaux");
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+ 
+    const trH = document.createElement("tr");
+    trH.innerHTML = `<th>Groupe</th>` +
+        elections.map(el => `<th>${el}</th><th style="color:#aaa;font-size:0.78em">${el}<br>43</th>`).join("");
+    thead.appendChild(trH);
+ 
+    groupesActifs.forEach(([nom, blocsGroupe]) => {
+        const tr = document.createElement("tr");
+        tr.className = "total-row";
+        let html = `<td>${nom}</td>`;
+        elections.forEach(el => {
+            const vFR = Math.round(totalParGroupe(rowsFR, el, blocsGroupe));
+            const v43 = Math.round(totalParGroupe(rows43, el, blocsGroupe));
+            html += `<td>${vFR > 0 ? vFR.toLocaleString("fr-FR") : "—"}</td>`;
+            html += `<td style="color:#aaa">${v43 > 0 ? v43.toLocaleString("fr-FR") : "—"}</td>`;
+        });
+        tr.innerHTML = html;
+        tbody.appendChild(tr);
+    });
+}
+ 
 // ── Application des filtres ───────────────────────────────────────────────────
 function appliquer() {
     const f = getFiltres();
-
+ 
     const rowsFR = filtrerZone(DATA, "FR", f.scrutins, f.tours, f.blocs);
     const rows43 = filtrerZone(DATA, "43", f.scrutins, f.tours, f.blocs);
-
+ 
     chartFR = construireChart("chartFR", chartFR, rowsFR, "France entière", f.abstention);
     chart43 = construireChart("chart43", chart43, rows43, "Haute-Loire (43)", f.abstention);
+ 
+    // Tableau des totaux
+    const agregFR = agregerVoix(rowsFR);
+    const elections = sortElections([...new Set(agregFR.map(r => r.el))]);
+    construireTotaux(rowsFR, rows43, elections, f.blocs);
 }
-
+ 
 // ── Fermeture popup au clic extérieur ────────────────────────────────────────
 function fermerPopup(e) {
     if (e.target === document.getElementById("overlay"))
