@@ -331,7 +331,7 @@ function filtrerZone(rows, territoire, scrutins, tours, blocs) {
     return rows.filter(r => {
         if (!scrutins.includes(r.TypesScrutin)) return false;
         if (!tours.includes(r.Tour)) return false;
-        if (!blocs.includes(r.Bloc)) return false;
+        if (!blocs.some(b => b.normalize('NFC') === (r.Bloc || '').normalize('NFC'))) return false;
         if (territoire === "FR") return r.Zone === "FR";
         // Haute-Loire : PRES → zone 43 ; LEG → zones 4301 et 4302
         if (r.TypesScrutin === "LEG") return r.Zone === "4301" || r.Zone === "4302";
