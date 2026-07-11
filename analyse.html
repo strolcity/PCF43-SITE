@@ -1,5 +1,3 @@
-
-Analyse · HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,235 +8,172 @@ Analyse · HTML
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
- 
         body {
             font-family: Arial, sans-serif;
             background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: white;
+            background-size: cover; background-position: center; background-attachment: fixed;
+            min-height: 100vh; color: white;
         }
- 
-        /* ── NAV ── */
         nav {
-            background: rgba(160,0,0,0.88);
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
+            background: rgba(160,0,0,0.88); padding: 10px 20px;
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
             backdrop-filter: blur(4px);
-            flex-wrap: wrap;
         }
         nav .nav-title { font-size: 1.15em; font-weight: bold; flex: 1; min-width: 180px; }
         nav a { color: white; text-decoration: none; font-size: 0.88em; opacity: 0.85; }
         nav a:hover { opacity: 1; }
         .nav-mi {
             display: flex; align-items: center; gap: 7px;
-            background: rgba(255,255,255,0.12);
-            border-radius: 6px; padding: 5px 10px;
-            text-decoration: none; color: white; font-size: 0.82em;
-            transition: background 0.2s;
+            background: rgba(255,255,255,0.12); border-radius: 6px; padding: 5px 10px;
+            text-decoration: none; color: white; font-size: 0.82em; transition: background 0.2s;
         }
         .nav-mi:hover { background: rgba(255,255,255,0.22); }
         .nav-mi img { height: 26px; border-radius: 3px; }
- 
-        /* ── CONTAINER ── */
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 14px; }
- 
-        /* ── FILTRES ── */
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px 14px; }
+
+        /* FILTRES */
         .filtres {
-            background: rgba(0,0,0,0.68);
-            border-radius: 10px; padding: 18px 22px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.68); border-radius: 10px; padding: 18px 22px;
+            margin-bottom: 20px; backdrop-filter: blur(6px);
             border: 1px solid rgba(255,255,255,0.13);
         }
         .filtres h2 { font-size: 1em; color: #ffcccc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
- 
-        /* 3 colonnes blocs */
-        .blocs-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-        .bloc-col {
-            background: rgba(255,255,255,0.06);
-            border-radius: 8px; padding: 10px 14px;
-        }
-        .bloc-col h3 {
-            font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px;
-            color: #ffaaaa; border-bottom: 1px solid rgba(255,100,100,0.35);
-            padding-bottom: 5px; margin-bottom: 8px;
-        }
-        .bloc-col label {
-            display: flex; align-items: center; gap: 7px;
-            cursor: pointer; font-size: 0.9em; padding: 3px 0;
-            transition: color 0.2s;
-        }
+        .blocs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
+        .bloc-col { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 14px; }
+        .bloc-col h3 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #ffaaaa; border-bottom: 1px solid rgba(255,100,100,0.35); padding-bottom: 5px; margin-bottom: 8px; }
+        .bloc-col label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 0.9em; padding: 3px 0; transition: color 0.2s; }
         .bloc-col label:hover { color: #ffcccc; }
-        .dot {
-            width: 11px; height: 11px; border-radius: 50%;
-            display: inline-block; flex-shrink: 0;
-        }
-        input[type=checkbox], input[type=radio] {
-            accent-color: #d32f2f; width: 14px; height: 14px; flex-shrink: 0;
-        }
- 
-        /* Extras (scrutin + tour) */
-        .filtres-extras {
-            display: flex; flex-wrap: wrap; gap: 16px;
-            border-top: 1px solid rgba(255,255,255,0.12);
-            padding-top: 12px; margin-top: 4px;
-        }
+        .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+        input[type=checkbox], input[type=radio] { accent-color: #d32f2f; width: 14px; height: 14px; flex-shrink: 0; }
+        .filtres-extras { display: flex; flex-wrap: wrap; gap: 16px; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px; margin-top: 4px; }
         .filtre-extra { display: flex; flex-direction: column; gap: 4px; }
-        .filtre-extra h3 {
-            font-size: 0.78em; text-transform: uppercase;
-            letter-spacing: 1px; color: #ffaaaa; margin-bottom: 4px;
-        }
+        .filtre-extra h3 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #ffaaaa; margin-bottom: 4px; }
         .filtre-extra label { display: flex; align-items: center; gap: 7px; font-size: 0.9em; cursor: pointer; }
- 
-        .btn-appliquer {
-            margin-top: 14px; background: #d32f2f; color: white;
-            border: none; padding: 9px 26px; border-radius: 6px;
-            font-size: 0.95em; cursor: pointer; transition: background 0.2s;
-        }
+        .btn-appliquer { margin-top: 14px; background: #d32f2f; color: white; border: none; padding: 9px 26px; border-radius: 6px; font-size: 0.95em; cursor: pointer; transition: background 0.2s; }
         .btn-appliquer:hover { background: #b71c1c; }
- 
-        /* ── GRAPHIQUES côte à côte ── */
-        .graphiques-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-        @media (max-width: 768px) { .graphiques-grid { grid-template-columns: 1fr; } }
- 
+
+        /* GRAPHIQUES */
+        .graphiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        @media (max-width: 768px) { .graphiques-grid { grid-template-columns: 1fr; } .blocs-grid { grid-template-columns: 1fr; } }
+
         .carte {
-            background: rgba(0,0,0,0.68);
-            border-radius: 10px; padding: 16px 18px;
-            backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.13);
-            position: relative;
+            background: rgba(0,0,0,0.68); border-radius: 10px; padding: 16px 18px;
+            backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.13); position: relative;
         }
-        .carte h3 {
-            font-size: 0.97em; color: #ffcccc;
-            margin-bottom: 12px; padding-right: 28px;
-        }
-        .canvas-wrap { position: relative; height: 380px; }
- 
-        /* Bouton info */
+        .carte h3 { font-size: 0.97em; color: #ffcccc; margin-bottom: 12px; padding-right: 28px; }
+        .canvas-wrap { position: relative; height: 360px; }
         .btn-info {
-            position: absolute; top: 14px; right: 14px;
-            width: 22px; height: 22px; border-radius: 50%;
+            position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%;
             background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
-            color: white; font-size: 0.85em; font-weight: bold;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s; z-index: 10; flex-shrink: 0;
+            color: white; font-size: 0.85em; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10;
         }
         .btn-info:hover { background: rgba(255,255,255,0.4); }
- 
-        /* ── POPUP METHODOLOGIE ── */
-        .overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.75); z-index: 1000;
-            align-items: center; justify-content: center;
+
+        /* TABLEAU TOTAUX */
+        .totaux-wrap { margin-top: 14px; overflow-x: auto; }
+        .totaux-wrap h4 { font-size: 0.82em; color: #ffaaaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        table.tbl-totaux { width: 100%; border-collapse: collapse; font-size: 0.78em; min-width: 400px; }
+        table.tbl-totaux th {
+            background: rgba(255,255,255,0.1); color: #ffcccc; padding: 5px 8px;
+            text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2);
+            white-space: nowrap; font-size: 0.8em;
         }
+        table.tbl-totaux th:first-child { text-align: left; }
+        table.tbl-totaux td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: right; }
+        table.tbl-totaux td:first-child { text-align: left; font-weight: bold; color: #e0e0e0; white-space: nowrap; }
+        table.tbl-totaux tr.row-total td { background: rgba(255,255,255,0.08); font-weight: bold; border-top: 1px solid rgba(255,255,255,0.25); color: white; }
+        table.tbl-totaux tr.row-sep td { padding: 0; height: 6px; background: transparent; border: none; }
+        table.tbl-totaux .gain { color: #66ff88; }
+        table.tbl-totaux .perte { color: #ff6666; }
+        table.tbl-totaux .neutre { color: #aaa; }
+        table.tbl-totaux .voix { color: #e0e0e0; }
+
+        /* TABLEAU ÉLUS */
+        .section-elus { margin-top: 20px; }
+        table.tbl-elus { width: 100%; border-collapse: collapse; font-size: 0.82em; }
+        table.tbl-elus th { background: rgba(255,255,255,0.1); color: #ffcccc; padding: 6px 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        table.tbl-elus th:first-child, table.tbl-elus th:nth-child(2) { text-align: left; }
+        table.tbl-elus td { padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); text-align: center; color: #e0e0e0; }
+        table.tbl-elus td:first-child, table.tbl-elus td:nth-child(2) { text-align: left; }
+        table.tbl-elus tr:hover td { background: rgba(255,255,255,0.04); }
+        table.tbl-elus .pcf { color: #CC0000; font-weight: bold; }
+        table.tbl-elus .lfi { color: #FF8C55; font-weight: bold; }
+        table.tbl-elus .ps  { color: #E8A080; font-weight: bold; }
+        table.tbl-elus .eelv { color: #4CAF50; font-weight: bold; }
+
+        /* POPUP */
+        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; }
         .overlay.visible { display: flex; }
-        .popup {
-            background: #1a1a2e; border: 1px solid rgba(255,100,100,0.4);
-            border-radius: 12px; padding: 26px 28px;
-            max-width: 560px; width: 90%; max-height: 80vh;
-            overflow-y: auto; position: relative; color: white;
-        }
+        .popup { background: #1a1a2e; border: 1px solid rgba(255,100,100,0.4); border-radius: 12px; padding: 26px 28px; max-width: 560px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; color: white; }
         .popup h2 { color: #ffcccc; font-size: 1.05em; margin-bottom: 14px; }
         .popup p, .popup li { font-size: 0.88em; line-height: 1.6; margin-bottom: 8px; color: #e0e0e0; }
         .popup ul { padding-left: 18px; margin-bottom: 10px; }
         .popup strong { color: #ffaaaa; }
-        .popup-close {
-            position: absolute; top: 12px; right: 14px;
-            background: none; border: none; color: white;
-            font-size: 1.3em; cursor: pointer; opacity: 0.7;
-        }
+        .popup-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: white; font-size: 1.3em; cursor: pointer; opacity: 0.7; }
         .popup-close:hover { opacity: 1; }
- 
-        /* Message chargement */
         #msg { text-align: center; padding: 40px; font-size: 1.05em; opacity: 0.8; }
     </style>
 </head>
 <body>
- 
-<!-- ── NAVIGATION ── -->
+
 <nav>
     <span class="nav-title">PCF 43 — Analyse Électorale</span>
     <a href="https://www.archives-resultats-elections.interieur.gouv.fr/" target="_blank" class="nav-mi">
-        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="Ministère de l'Intérieur">
+        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="Ministère">
         Résultats officiels
     </a>
     <a href="index.html">← Accueil</a>
 </nav>
- 
-<!-- ── POPUP MÉTHODOLOGIE ── -->
+
+<!-- POPUP MÉTHODOLOGIE -->
 <div class="overlay" id="overlay" onclick="fermerPopup(event)">
     <div class="popup">
         <button class="popup-close" onclick="document.getElementById('overlay').classList.remove('visible')">✕</button>
         <h2>📊 Méthodologie des calculs</h2>
-        <p>Les voix affichées dans ces graphiques sont des <strong>voix ventilées</strong> : pour chaque nuance officielle, les voix sont redistribuées entre les partis (PCF, LFI, PS, EELV...) selon un poids calculé à partir du nombre d'élus à l'Assemblée Nationale.</p>
+        <p>Les voix affichées sont des <strong>voix ventilées</strong> : pour chaque nuance officielle, les voix sont redistribuées entre les partis (PCF, LFI, PS, EELV...) selon un poids calculé à partir du nombre d'élus à l'Assemblée Nationale.</p>
         <ul>
-            <li><strong>FG 2012</strong> → 46,7 % PCF + 53,3 % LFI, calculé sur la base des élus du groupe GDR en 2007 (15 PCF, 15 DVG filiation LFI).</li>
-            <li><strong>NUP 2022 et UG 2024</strong> → ventilation selon les élus de chaque composante à l'AN issus des législatives 2024 : LFI 37,3 %, PS 34,2 %, EELV 20,1 %, PCF 8,8 %.</li>
-            <li><strong>SOC, RDG, DVG</strong> → rattachés au PS à 100 % par convention (candidats de la gauche modérée sans étiquette nationale stricte).</li>
-            <li><strong>VEC, ECO</strong> → rattachés à EELV à 100 %.</li>
-            <li><strong>COM, FI</strong> → rattachés à PCF et LFI à 100 %.</li>
+            <li><strong>FG 2012</strong> → 46,7 % PCF + 53,3 % LFI — élus GDR 2007 (15 PCF, 15 DVG filiation LFI)</li>
+            <li><strong>FG 2017 PRES</strong> → 48,5 % PCF + 51,5 % LFI — élus GDR 2012 (16 PCF, 17 LFI)</li>
+            <li><strong>NG 2017 PRES</strong> → 90,3 % PS + 9,7 % EELV — élus groupe Nouvelle Gauche AN 2017</li>
+            <li><strong>NUP 2022 LEG</strong> → PCF 11,9 %, LFI 40,8 %, PS 34,8 %, EELV 12,5 % — élus AN 2024</li>
+            <li><strong>UG 2024 LEG</strong> → PCF 8,8 %, LFI 37,3 %, PS 34,2 %, EELV 19,7 % — élus AN 2024</li>
+            <li><strong>SOC, RDG, DVG</strong> → PS à 100 % par convention</li>
+            <li><strong>ECO, VEC</strong> → EELV à 100 %</li>
         </ul>
-        <p>Pour la <strong>Haute-Loire en législatives</strong>, les voix des circonscriptions 4301 et 4302 sont additionnées pour reconstituer le total départemental.</p>
-        <p>La <strong>courbe d'abstention</strong> est calculée comme : (Inscrits − Votants) / Inscrits × 100.</p>
-        <p style="font-size:0.78em; opacity:0.6; margin-top:12px;">Sources : données du Ministère de l'Intérieur. Calculs PCF 43.</p>
+        <p>Pour la <strong>Haute-Loire en législatives</strong>, les voix des circonscriptions 4301 et 4302 sont additionnées.</p>
+        <p>La <strong>courbe d'abstention</strong> = (Inscrits − Votants) / Inscrits × 100.</p>
+        <p>Les <strong>gains/pertes</strong> comparent chaque élection à la précédente dans l'ordre chronologique sélectionné.</p>
+        <p style="font-size:0.78em;opacity:0.6;margin-top:12px;">Sources : Ministère de l'Intérieur. Calculs PCF 43.</p>
     </div>
 </div>
- 
+
 <div class="container">
     <div id="msg">⏳ Chargement des données...</div>
- 
-    <!-- ── FILTRES ── -->
+
+    <!-- FILTRES -->
     <div class="filtres" id="panneau-filtres" style="display:none">
         <h2>🗳 Choisissez votre analyse</h2>
- 
-        <!-- 3 colonnes blocs -->
         <div class="blocs-grid">
- 
-            <!-- GAUCHE -->
             <div class="bloc-col">
                 <h3>⬤ Gauche</h3>
-                <label><input type="checkbox" class="cb-bloc" value="Gauche Révolutionnaire" checked>
-                    <span class="dot" style="background:#8B0000"></span>Gauche Révolutionnaire</label>
-                <label><input type="checkbox" class="cb-bloc" value="Gauche Radical" checked>
-                    <span class="dot" style="background:#CC0000"></span>Gauche Radical (PCF+LFI)</label>
-                <label><input type="checkbox" class="cb-bloc" value="Ecologiste" checked>
-                    <span class="dot" style="background:#4CAF50"></span>Écologiste</label>
-                <label><input type="checkbox" class="cb-bloc" value="Gauche Modéré" checked>
-                    <span class="dot" style="background:#E8A080"></span>Gauche Modéré (PS)</label>
+                <label><input type="checkbox" class="cb-brique" value="LO/NPA"><span class="dot" style="background:#8B0000"></span>LO/NPA (extrême gauche)</label>
+                <label><input type="checkbox" class="cb-brique" value="PCF" checked><span class="dot" style="background:#CC0000"></span>PCF</label>
+                <label><input type="checkbox" class="cb-brique" value="LFI" checked><span class="dot" style="background:#FF6B35"></span>LFI</label>
+                <label><input type="checkbox" class="cb-brique" value="EELV" checked><span class="dot" style="background:#4CAF50"></span>EELV</label>
+                <label><input type="checkbox" class="cb-brique" value="PS" checked><span class="dot" style="background:#E8A080"></span>PS</label>
             </div>
- 
-            <!-- CENTRE & DROITE -->
             <div class="bloc-col">
                 <h3>⬤ Centre & Droite</h3>
-                <label><input type="checkbox" class="cb-bloc" value="Centre">
-                    <span class="dot" style="background:#FDD835"></span>Centre (Macronistes)</label>
-                <label><input type="checkbox" class="cb-bloc" value="Droite">
-                    <span class="dot" style="background:#42A5F5"></span>Droite (LR)</label>
+                <label><input type="checkbox" class="cb-brique" value="Centre"><span class="dot" style="background:#FDD835"></span>Centre (Macronistes)</label>
+                <label><input type="checkbox" class="cb-brique" value="Droite"><span class="dot" style="background:#42A5F5"></span>Droite (LR)</label>
             </div>
- 
-            <!-- EXTREME DROITE -->
             <div class="bloc-col">
                 <h3>⬤ Extrême Droite</h3>
-                <label><input type="checkbox" class="cb-bloc" value="Extrême Droite">
-                    <span class="dot" style="background:#1A237E"></span>Extrême Droite (RN/FN)</label>
+                <label><input type="checkbox" class="cb-brique" value="Extrême Droite"><span class="dot" style="background:#1A237E"></span>RN / FN / EXD</label>
             </div>
         </div>
- 
-        <!-- Scrutin + Tour -->
         <div class="filtres-extras">
             <div class="filtre-extra">
                 <h3>Type de scrutin</h3>
@@ -255,311 +190,334 @@ Analyse · HTML
                 <label><input type="checkbox" id="cb-abstention" checked> Afficher la courbe</label>
             </div>
         </div>
- 
         <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
     </div>
- 
-    <!-- ── GRAPHIQUES ── -->
+
+    <!-- GRAPHIQUES + TABLEAUX -->
     <div class="graphiques-grid" id="graphiques" style="display:none">
+
         <div class="carte">
             <h3>🇫🇷 France entière</h3>
-            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')" title="Méthodologie">ℹ</button>
+            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
             <div class="canvas-wrap"><canvas id="chartFR"></canvas></div>
+            <div class="totaux-wrap" id="totaux-FR"></div>
         </div>
+
         <div class="carte">
             <h3>🏔 Haute-Loire (Dpt 43)</h3>
-            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')" title="Méthodologie">ℹ</button>
+            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
             <div class="canvas-wrap"><canvas id="chart43"></canvas></div>
+            <div class="totaux-wrap" id="totaux-43"></div>
         </div>
+
     </div>
- 
-    <!-- ── TABLEAU TOTAUX ── -->
-    <div id="section-totaux" style="display:none; margin-top:20px;">
-        <div class="carte">
-            <h3>📊 Totaux par groupe sélectionné — voix ventilées</h3>
-            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')" title="Méthodologie">ℹ</button>
-            <div style="overflow-x:auto; margin-top:10px;">
-                <table id="table-totaux" style="width:100%; border-collapse:collapse; font-size:0.85em;">
-                    <thead id="thead-totaux"></thead>
-                    <tbody id="tbody-totaux"></tbody>
-                </table>
-            </div>
+
+    <!-- TABLEAU ÉLUS -->
+    <div class="section-elus carte" id="section-elus" style="display:none; margin-top:20px;">
+        <h3>🏛 Composition des alliances — Référence élus Assemblée Nationale</h3>
+        <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
+        <div style="overflow-x:auto; margin-top:12px;">
+            <table class="tbl-elus">
+                <thead>
+                    <tr>
+                        <th>Alliance / Nuance</th>
+                        <th>Élection(s)</th>
+                        <th class="pcf">PCF</th>
+                        <th class="lfi">LFI</th>
+                        <th class="ps">PS</th>
+                        <th class="eelv">EELV</th>
+                        <th>Total</th>
+                        <th>Source des poids</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>FG</strong> — Front de Gauche</td>
+                        <td>PRES 2012 + LEG 2012</td>
+                        <td class="pcf">7 <small>(46,7%)</small></td>
+                        <td class="lfi">8 <small>(53,3%)</small></td>
+                        <td class="ps">—</td>
+                        <td class="eelv">—</td>
+                        <td>15</td>
+                        <td>Élus groupe GDR — AN 2007</td>
+                    </tr>
+                    <tr>
+                        <td><strong>FG</strong> — Mélenchon + accord PCF</td>
+                        <td>PRES 2017</td>
+                        <td class="pcf">16 <small>(48,5%)</small></td>
+                        <td class="lfi">17 <small>(51,5%)</small></td>
+                        <td class="ps">—</td>
+                        <td class="eelv">—</td>
+                        <td>33</td>
+                        <td>Élus groupe GDR — AN 2012</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NG</strong> — Nouvelle Gauche (Hamon)</td>
+                        <td>PRES 2017</td>
+                        <td class="pcf">—</td>
+                        <td class="lfi">—</td>
+                        <td class="ps">28 <small>(90,3%)</small></td>
+                        <td class="eelv">3 <small>(9,7%)</small></td>
+                        <td>31</td>
+                        <td>Élus groupe NG — AN 2017</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NUP</strong> — NUPES</td>
+                        <td>LEG 2022</td>
+                        <td class="pcf">22 <small>(11,9%)</small></td>
+                        <td class="lfi">75 <small>(40,8%)</small></td>
+                        <td class="ps">64 <small>(34,8%)</small></td>
+                        <td class="eelv">23 <small>(12,5%)</small></td>
+                        <td>184</td>
+                        <td>Élus composantes — AN 2024</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UG</strong> — NFP / Union de la Gauche</td>
+                        <td>LEG 2024</td>
+                        <td class="pcf">17 <small>(8,8%)</small></td>
+                        <td class="lfi">72 <small>(37,3%)</small></td>
+                        <td class="ps">66 <small>(34,2%)</small></td>
+                        <td class="eelv">38 <small>(19,7%)</small></td>
+                        <td>193</td>
+                        <td>Élus composantes — AN 2024</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
- 
-<style>
-#table-totaux th { background:rgba(255,255,255,0.12); color:#ffcccc; padding:7px 10px; text-align:center; font-size:0.82em; border-bottom:1px solid rgba(255,255,255,0.2); white-space:nowrap; }
-#table-totaux td { padding:6px 10px; text-align:right; border-bottom:1px solid rgba(255,255,255,0.07); }
-#table-totaux td:first-child { text-align:left; font-weight:bold; color:#ffcccc; white-space:nowrap; }
-#table-totaux tr.total-row td { background:rgba(255,255,255,0.1); font-weight:bold; color:white; border-top:1px solid rgba(255,255,255,0.3); }
-#table-totaux tr:hover td { background:rgba(255,255,255,0.05); }
-</style>
- 
+
 <script>
-// ── Couleurs par brique ──────────────────────────────────────────────────────
 const COULEURS = {
-    "LO/NPA":         "#8B0000",
-    "PCF":            "#CC0000",
-    "LFI":            "#FF6B35",
-    "EELV":           "#4CAF50",
-    "PS":             "#E8A080",
-    "Centre":         "#FDD835",
-    "Droite":         "#42A5F5",
-    "Extrême Droite": "#1A237E"
+    "LO/NPA": "#8B0000", "PCF": "#CC0000", "LFI": "#FF6B35",
+    "EELV": "#4CAF50", "PS": "#E8A080",
+    "Centre": "#FDD835", "Droite": "#42A5F5", "Extrême Droite": "#1A237E"
 };
- 
-// Ordre d'affichage des briques dans les barres (bas → haut)
 const ORDRE_BRIQUES = ["LO/NPA","PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"];
- 
+
 let DATA = [];
 let chartFR = null, chart43 = null;
- 
-// ── Chargement JSON ──────────────────────────────────────────────────────────
+
+function norm(s){ return (s||'').normalize('NFC'); }
+
 fetch("data/ventillees.json")
-    .then(r => { if (!r.ok) throw new Error("Fichier introuvable"); return r.json(); })
+    .then(r => { if(!r.ok) throw new Error("Fichier introuvable"); return r.json(); })
     .then(d => {
         DATA = d;
         document.getElementById("msg").style.display = "none";
         document.getElementById("panneau-filtres").style.display = "block";
         document.getElementById("graphiques").style.display = "grid";
+        document.getElementById("section-elus").style.display = "block";
         appliquer();
     })
-    .catch(e => {
-        document.getElementById("msg").textContent = "⚠ " + e.message + " — vérifiez que data/ventillees.json existe.";
-    });
- 
-// ── Lecture filtres ──────────────────────────────────────────────────────────
+    .catch(e => { document.getElementById("msg").textContent = "⚠ " + e.message; });
+
 function getFiltres() {
     return {
-        scrutins:    [...document.querySelectorAll('.cb-scrutin:checked')].map(e => e.value),
-        tours:       [...document.querySelectorAll('.cb-tour:checked')].map(e => e.value),
-        blocs:       [...document.querySelectorAll('.cb-bloc:checked')].map(e => e.value),
-        abstention:  document.getElementById('cb-abstention').checked
+        scrutins:   [...document.querySelectorAll('.cb-scrutin:checked')].map(e=>e.value),
+        tours:      [...document.querySelectorAll('.cb-tour:checked')].map(e=>e.value),
+        briques:    [...document.querySelectorAll('.cb-brique:checked')].map(e=>e.value),
+        abstention: document.getElementById('cb-abstention').checked
     };
 }
- 
-// ── Sort élections : Année ASC, PRES avant LEG, T1 avant T2 ─────────────────
+
 function sortElections(els) {
-    const sco = { PRES: 1, LEG: 2 };
-    return [...els].sort((a, b) => {
-        const pa = a.split(" "), pb = b.split(" ");
-        if (pa[0] !== pb[0]) return parseInt(pa[0]) - parseInt(pb[0]);
-        if (pa[1] !== pb[1]) return (sco[pa[1]] || 9) - (sco[pb[1]] || 9);
-        return pa[2] < pb[2] ? -1 : 1;
+    const sco = {PRES:1, LEG:2};
+    return [...els].sort((a,b) => {
+        const pa=a.split(" "), pb=b.split(" ");
+        if(pa[0]!==pb[0]) return parseInt(pa[0])-parseInt(pb[0]);
+        if(pa[1]!==pb[1]) return (sco[pa[1]]||9)-(sco[pb[1]]||9);
+        return pa[2]<pb[2]?-1:1;
     });
 }
- 
-// ── Filtrage selon territoire ────────────────────────────────────────────────
-function filtrerZone(rows, territoire, scrutins, tours, blocs) {
+
+function filtrerZone(rows, territoire, scrutins, tours, briques) {
     return rows.filter(r => {
-        if (!scrutins.includes(r.TypesScrutin)) return false;
-        if (!tours.includes(r.Tour)) return false;
-        if (!blocs.some(b => b.normalize('NFC') === (r.Bloc || '').normalize('NFC'))) return false;
-        if (territoire === "FR") return r.Zone === "FR";
-        // Haute-Loire : PRES → zone 43 ; LEG → zones 4301 et 4302
-        if (r.TypesScrutin === "LEG") return r.Zone === "4301" || r.Zone === "4302";
-        return r.Zone === "43";
+        if(!scrutins.includes(r.TypesScrutin)) return false;
+        if(!tours.includes(r.Tour)) return false;
+        if(!briques.some(b => norm(b)===norm(r.Brique))) return false;
+        if(territoire==="FR") return r.Zone==="FR";
+        if(r.TypesScrutin==="LEG") return r.Zone==="4301"||r.Zone==="4302";
+        return r.Zone==="43";
     });
 }
- 
-// ── Agrégation voix par élection + brique ────────────────────────────────────
+
 function agregerVoix(rows) {
     const map = {};
     rows.forEach(r => {
-        const el  = r.Année + " " + r.TypesScrutin + " " + r.Tour;
-        const key = el + "|||" + r.Brique;
-        if (!map[key]) map[key] = { el, brique: r.Brique, voix: 0 };
-        map[key].voix += r.VoixVentillees || 0;
+        const el  = r.Année+" "+r.TypesScrutin+" "+r.Tour;
+        const key = el+"|||"+r.Brique;
+        if(!map[key]) map[key]={el, brique:r.Brique, voix:0};
+        map[key].voix += r.VoixVentillees||0;
     });
     return Object.values(map);
 }
- 
-// ── Calcul abstention (déduplication Inscrits/Votants par zone+élection) ─────
+
 function calcAbstention(rows, elections) {
-    const seenZone = new Set();
-    const totaux   = {};
+    const seenZone=new Set(), totaux={};
     rows.forEach(r => {
-        const el      = r.Année + " " + r.TypesScrutin + " " + r.Tour;
-        const zoneKey = el + "|" + r.Zone;
-        if (!seenZone.has(zoneKey)) {
-            seenZone.add(zoneKey);
-            if (!totaux[el]) totaux[el] = { ins: 0, vot: 0 };
-            totaux[el].ins += r.Inscrits  || 0;
-            totaux[el].vot += r.Votants   || 0;
+        const el=r.Année+" "+r.TypesScrutin+" "+r.Tour;
+        const zk=el+"|"+r.Zone;
+        if(!seenZone.has(zk)){
+            seenZone.add(zk);
+            if(!totaux[el]) totaux[el]={ins:0,vot:0};
+            totaux[el].ins+=r.Inscrits||0;
+            totaux[el].vot+=r.Votants||0;
         }
     });
     return elections.map(el => {
-        if (!totaux[el]) return null;
-        const t = totaux[el];
-        return t.ins > 0 ? +((t.ins - t.vot) / t.ins * 100).toFixed(1) : null;
+        if(!totaux[el]) return null;
+        const t=totaux[el];
+        return t.ins>0?+((t.ins-t.vot)/t.ins*100).toFixed(1):null;
     });
 }
- 
-// ── Construction du chart mixte ───────────────────────────────────────────────
-function construireChart(canvasId, chartRef, rows, titre, showAbstention) {
-    const agregat   = agregerVoix(rows);
-    const elections = sortElections([...new Set(agregat.map(r => r.el))]);
-    const briques   = ORDRE_BRIQUES.filter(b => agregat.some(r => r.brique === b));
- 
-    // Datasets barres (empilées, une par brique)
-    const datasets = briques.map(brique => ({
-        type: "bar",
-        label: brique,
-        data: elections.map(el => {
-            const found = agregat.find(r => r.el === el && r.brique === brique);
-            return found ? Math.round(found.voix) : 0;
+
+function construireChart(canvasId, chartRef, rows, showAbstention) {
+    const agregat  = agregerVoix(rows);
+    const elections = sortElections([...new Set(agregat.map(r=>r.el))]);
+    const briques   = ORDRE_BRIQUES.filter(b=>agregat.some(r=>norm(r.brique)===norm(b)));
+
+    const datasets = briques.map(brique=>({
+        type:"bar", label:brique,
+        data: elections.map(el=>{
+            const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique));
+            return f?Math.round(f.voix):0;
         }),
-        backgroundColor: COULEURS[brique] || "#888",
-        stack: "blocs",
-        order: 2,
-        yAxisID: "y"
+        backgroundColor:COULEURS[brique]||"#888",
+        stack:"blocs", order:2, yAxisID:"y"
     }));
- 
-    // Dataset ligne abstention
-    if (showAbstention) {
-        const abstData = calcAbstention(rows, elections);
+
+    if(showAbstention){
         datasets.push({
-            type: "line",
-            label: "Abstention (%)",
-            data: abstData,
-            borderColor: "rgba(255,255,255,0.85)",
-            backgroundColor: "rgba(255,255,255,0.1)",
-            borderWidth: 2.5,
-            borderDash: [6, 3],
-            pointRadius: 5,
-            pointBackgroundColor: "white",
-            fill: false,
-            tension: 0.3,
-            order: 1,
-            yAxisID: "y2"
+            type:"line", label:"Abstention (%)",
+            data:calcAbstention(rows,elections),
+            borderColor:"rgba(255,255,255,0.85)",
+            backgroundColor:"rgba(255,255,255,0.1)",
+            borderWidth:2.5, borderDash:[6,3],
+            pointRadius:5, pointBackgroundColor:"white",
+            fill:false, tension:0.3, order:1, yAxisID:"y2"
         });
     }
- 
-    if (chartRef) chartRef.destroy();
- 
-    return new Chart(document.getElementById(canvasId), {
-        data: { labels: elections, datasets },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { mode: "index" },
-            plugins: {
-                legend: {
-                    labels: {
-                        color: "white",
-                        font: { size: 10 },
-                        boxWidth: 12
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => {
-                            if (ctx.dataset.yAxisID === "y2")
-                                return "Abstention : " + ctx.parsed.y + " %";
-                            return ctx.dataset.label + " : " + (ctx.parsed.y || 0).toLocaleString("fr-FR") + " voix";
-                        }
-                    }
-                }
+
+    if(chartRef) chartRef.destroy();
+    return new Chart(document.getElementById(canvasId),{
+        data:{labels:elections, datasets},
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            interaction:{mode:"index"},
+            plugins:{
+                legend:{labels:{color:"white",font:{size:10},boxWidth:12}},
+                tooltip:{callbacks:{label:ctx=>{
+                    if(ctx.dataset.yAxisID==="y2") return "Abstention : "+ctx.parsed.y+" %";
+                    return ctx.dataset.label+" : "+(ctx.parsed.y||0).toLocaleString("fr-FR")+" voix";
+                }}}
             },
-            scales: {
-                x: {
-                    ticks: { color: "white", font: { size: 9 }, maxRotation: 40 },
-                    grid:  { color: "rgba(255,255,255,0.07)" }
-                },
-                y: {
-                    stacked: true,
-                    ticks: { color: "white", callback: v => v.toLocaleString("fr-FR") },
-                    grid:  { color: "rgba(255,255,255,0.1)" },
-                    title: { display: true, text: "Voix ventilées", color: "#ffaaaa", font: { size: 10 } }
-                },
-                y2: {
-                    display: showAbstention,
-                    position: "right",
-                    min: 0, max: 100,
-                    ticks: { color: "rgba(255,255,255,0.7)", callback: v => v + " %" },
-                    grid: { drawOnChartArea: false },
-                    title: { display: true, text: "Abstention %", color: "rgba(255,255,255,0.7)", font: { size: 10 } }
-                }
+            scales:{
+                x:{stacked:false,ticks:{color:"white",font:{size:9},maxRotation:40},grid:{color:"rgba(255,255,255,0.07)"}},
+                y:{stacked:true,ticks:{color:"white",callback:v=>v.toLocaleString("fr-FR")},grid:{color:"rgba(255,255,255,0.1)"},title:{display:true,text:"Voix ventilées",color:"#ffaaaa",font:{size:10}}},
+                y2:{display:showAbstention,position:"right",min:0,max:100,ticks:{color:"rgba(255,255,255,0.7)",callback:v=>v+" %"},grid:{drawOnChartArea:false},title:{display:true,text:"Abstention %",color:"rgba(255,255,255,0.7)",font:{size:10}}}
             }
         }
     });
 }
- 
-// ── Groupes pour le tableau des totaux ───────────────────────────────────────
-const GROUPES = {
-    "Total Gauche": ["Gauche Révolutionnaire","Gauche Radical","Ecologiste","Gauche Modéré"],
-    "Total Centre & Droite": ["Centre","Droite"],
-    "Total Extrême Droite": ["Extrême Droite"]
-};
- 
-// ── Construction du tableau des totaux ───────────────────────────────────────
-function construireTotaux(rowsFR, rows43, elections, blocsActifs) {
-    document.getElementById("section-totaux").style.display = "block";
- 
-    // Groupes actifs seulement
-    const groupesActifs = Object.entries(GROUPES).filter(([_, blocs]) =>
-        blocs.some(b => blocsActifs.some(ba => ba.normalize('NFC') === b.normalize('NFC')))
-    );
-    if (groupesActifs.length === 0) return;
- 
-    // Calcul totaux par territoire+élection+groupe
-    function totalParGroupe(rows, el, blocsGroupe) {
-        return rows
-            .filter(r => {
-                const elR = r.Année + " " + r.TypesScrutin + " " + r.Tour;
-                return elR === el && blocsGroupe.some(b => b.normalize('NFC') === (r.Bloc||'').normalize('NFC'));
-            })
-            .reduce((s, r) => s + (r.VoixVentillees || 0), 0);
+
+// ── Tableau des totaux avec gains/pertes ─────────────────────────────────────
+function construireTotaux(rows, elections, briquesActives, containerId) {
+    const wrap = document.getElementById(containerId);
+    wrap.innerHTML = "";
+    if(elections.length < 2) return;
+
+    wrap.innerHTML = "<h4>📈 Totaux & évolution — voix ventilées</h4>";
+    const table = document.createElement("table");
+    table.className = "tbl-totaux";
+
+    // En-tête : une colonne par élection + delta
+    let thead = "<tr><th>Parti / Groupe</th>";
+    elections.forEach((el,i) => {
+        thead += `<th>${el}</th>`;
+        if(i>0) thead += `<th>Δ</th>`;
+    });
+    thead += "</tr>";
+    table.innerHTML = `<thead>${thead}</thead><tbody></tbody>`;
+    const tbody = table.querySelector("tbody");
+
+    // Agrégation
+    const agregat = agregerVoix(rows);
+    function voixPour(brique, el){ const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique)); return f?Math.round(f.voix):0; }
+    function voixGroupe(briques, el){ return briques.reduce((s,b)=>s+voixPour(b,el),0); }
+
+    function fmtVoix(v){ return v>0?v.toLocaleString("fr-FR"):"—"; }
+    function fmtDelta(v,prev){
+        if(prev===0||v===0) return '<span class="neutre">—</span>';
+        const d=v-prev;
+        const pct=((d/prev)*100).toFixed(1);
+        if(d>0) return `<span class="gain">+${d.toLocaleString("fr-FR")}<br><small>+${pct}%</small></span>`;
+        return `<span class="perte">${d.toLocaleString("fr-FR")}<br><small>${pct}%</small></span>`;
     }
- 
-    // En-tête
-    const thead = document.getElementById("thead-totaux");
-    const tbody = document.getElementById("tbody-totaux");
-    thead.innerHTML = "";
-    tbody.innerHTML = "";
- 
-    const trH = document.createElement("tr");
-    trH.innerHTML = `<th>Groupe</th>` +
-        elections.map(el => `<th>${el}</th><th style="color:#aaa;font-size:0.78em">${el}<br>43</th>`).join("");
-    thead.appendChild(trH);
- 
-    groupesActifs.forEach(([nom, blocsGroupe]) => {
+
+    // Lignes par brique individuelle
+    briquesActives.forEach(brique => {
         const tr = document.createElement("tr");
-        tr.className = "total-row";
-        let html = `<td>${nom}</td>`;
-        elections.forEach(el => {
-            const vFR = Math.round(totalParGroupe(rowsFR, el, blocsGroupe));
-            const v43 = Math.round(totalParGroupe(rows43, el, blocsGroupe));
-            html += `<td>${vFR > 0 ? vFR.toLocaleString("fr-FR") : "—"}</td>`;
-            html += `<td style="color:#aaa">${v43 > 0 ? v43.toLocaleString("fr-FR") : "—"}</td>`;
+        let html = `<td><span class="dot" style="background:${COULEURS[brique]||'#888'};display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px"></span>${brique}</td>`;
+        elections.forEach((el,i)=>{
+            const v=voixPour(brique,el);
+            html += `<td class="voix">${fmtVoix(v)}</td>`;
+            if(i>0){ const prev=voixPour(brique,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
         });
-        tr.innerHTML = html;
+        tr.innerHTML=html;
         tbody.appendChild(tr);
     });
+
+    // Séparateur
+    const sep=document.createElement("tr"); sep.className="row-sep";
+    sep.innerHTML=`<td colspan="${1+elections.length+(elections.length-1)}"></td>`;
+    tbody.appendChild(sep);
+
+    // Ligne total gauche (si au moins un parti gauche)
+    const briquesGauche=["LO/NPA","PCF","LFI","EELV","PS"].filter(b=>briquesActives.some(ba=>norm(ba)===norm(b)));
+    if(briquesGauche.length>1){
+        const tr=document.createElement("tr"); tr.className="row-total";
+        let html=`<td>TOTAL Gauche sélectionnée</td>`;
+        elections.forEach((el,i)=>{
+            const v=voixGroupe(briquesGauche,el);
+            html+=`<td>${fmtVoix(v)}</td>`;
+            if(i>0){ const prev=voixGroupe(briquesGauche,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
+        });
+        tr.innerHTML=html; tbody.appendChild(tr);
+    }
+
+    // Ligne total centre+droite
+    const briquesCentre=["Centre","Droite"].filter(b=>briquesActives.some(ba=>norm(ba)===norm(b)));
+    if(briquesCentre.length>1){
+        const tr=document.createElement("tr"); tr.className="row-total";
+        let html=`<td>TOTAL Centre & Droite</td>`;
+        elections.forEach((el,i)=>{
+            const v=voixGroupe(briquesCentre,el);
+            html+=`<td>${fmtVoix(v)}</td>`;
+            if(i>0){ const prev=voixGroupe(briquesCentre,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
+        });
+        tr.innerHTML=html; tbody.appendChild(tr);
+    }
+
+    wrap.appendChild(table);
 }
- 
-// ── Application des filtres ───────────────────────────────────────────────────
-function appliquer() {
-    const f = getFiltres();
- 
-    const rowsFR = filtrerZone(DATA, "FR", f.scrutins, f.tours, f.blocs);
-    const rows43 = filtrerZone(DATA, "43", f.scrutins, f.tours, f.blocs);
- 
-    chartFR = construireChart("chartFR", chartFR, rowsFR, "France entière", f.abstention);
-    chart43 = construireChart("chart43", chart43, rows43, "Haute-Loire (43)", f.abstention);
- 
-    // Tableau des totaux
-    const agregFR = agregerVoix(rowsFR);
-    const elections = sortElections([...new Set(agregFR.map(r => r.el))]);
-    construireTotaux(rowsFR, rows43, elections, f.blocs);
+
+// ── Application ───────────────────────────────────────────────────────────────
+function appliquer(){
+    const f=getFiltres();
+    const rowsFR=filtrerZone(DATA,"FR",f.scrutins,f.tours,f.briques);
+    const rows43=filtrerZone(DATA,"43",f.scrutins,f.tours,f.briques);
+
+    chartFR=construireChart("chartFR",chartFR,rowsFR,f.abstention);
+    chart43=construireChart("chart43",chart43,rows43,f.abstention);
+
+    const agregFR=agregerVoix(rowsFR);
+    const elections=sortElections([...new Set(agregFR.map(r=>r.el))]);
+    construireTotaux(rowsFR,elections,f.briques,"totaux-FR");
+    construireTotaux(rows43,elections,f.briques,"totaux-43");
 }
- 
-// ── Fermeture popup au clic extérieur ────────────────────────────────────────
-function fermerPopup(e) {
-    if (e.target === document.getElementById("overlay"))
-        document.getElementById("overlay").classList.remove("visible");
-}
+
+function fermerPopup(e){ if(e.target===document.getElementById("overlay")) document.getElementById("overlay").classList.remove("visible"); }
 </script>
 </body>
 </html>
