@@ -7,113 +7,88 @@
     <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
-            background-size: cover; background-position: center; background-attachment: fixed;
-            min-height: 100vh; color: white;
-        }
-        nav {
-            background: rgba(160,0,0,0.88); padding: 10px 20px;
-            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-            backdrop-filter: blur(4px);
-        }
-        nav .nav-title { font-size: 1.15em; font-weight: bold; flex: 1; min-width: 180px; }
-        nav a { color: white; text-decoration: none; font-size: 0.88em; opacity: 0.85; }
-        nav a:hover { opacity: 1; }
-        .nav-mi {
-            display: flex; align-items: center; gap: 7px;
-            background: rgba(255,255,255,0.12); border-radius: 6px; padding: 5px 10px;
-            text-decoration: none; color: white; font-size: 0.82em; transition: background 0.2s;
-        }
-        .nav-mi:hover { background: rgba(255,255,255,0.22); }
-        .nav-mi img { height: 26px; border-radius: 3px; }
-
-        .container { max-width: 1300px; margin: 0 auto; padding: 20px 14px; }
-
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:Arial,sans-serif;background-image:url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");background-size:cover;background-position:center;background-attachment:fixed;min-height:100vh;color:white;}
+        nav{background:rgba(160,0,0,0.88);padding:10px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;backdrop-filter:blur(4px);}
+        nav .nav-title{font-size:1.15em;font-weight:bold;flex:1;min-width:180px;}
+        nav a{color:white;text-decoration:none;font-size:.88em;opacity:.85;}
+        nav a:hover{opacity:1;}
+        .nav-mi{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border-radius:6px;padding:5px 10px;text-decoration:none;color:white;font-size:.82em;transition:background .2s;}
+        .nav-mi:hover{background:rgba(255,255,255,.22);}
+        .nav-mi img{height:26px;border-radius:3px;}
+        .container{max-width:1300px;margin:0 auto;padding:20px 14px;}
         /* FILTRES */
-        .filtres {
-            background: rgba(0,0,0,0.68); border-radius: 10px; padding: 18px 22px;
-            margin-bottom: 20px; backdrop-filter: blur(6px);
-            border: 1px solid rgba(255,255,255,0.13);
-        }
-        .filtres h2 { font-size: 1em; color: #ffcccc; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; }
-        .blocs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 14px; }
-        .bloc-col { background: rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 14px; }
-        .bloc-col h3 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #ffaaaa; border-bottom: 1px solid rgba(255,100,100,0.35); padding-bottom: 5px; margin-bottom: 8px; }
-        .bloc-col label { display: flex; align-items: center; gap: 7px; cursor: pointer; font-size: 0.9em; padding: 3px 0; transition: color 0.2s; }
-        .bloc-col label:hover { color: #ffcccc; }
-        .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-        input[type=checkbox], input[type=radio] { accent-color: #d32f2f; width: 14px; height: 14px; flex-shrink: 0; }
-        .filtres-extras { display: flex; flex-wrap: wrap; gap: 16px; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 12px; margin-top: 4px; }
-        .filtre-extra { display: flex; flex-direction: column; gap: 4px; }
-        .filtre-extra h3 { font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #ffaaaa; margin-bottom: 4px; }
-        .filtre-extra label { display: flex; align-items: center; gap: 7px; font-size: 0.9em; cursor: pointer; }
-        .btn-appliquer { margin-top: 14px; background: #d32f2f; color: white; border: none; padding: 9px 26px; border-radius: 6px; font-size: 0.95em; cursor: pointer; transition: background 0.2s; }
-        .btn-appliquer:hover { background: #b71c1c; }
-
+        .filtres{background:rgba(0,0,0,.68);border-radius:10px;padding:18px 22px;margin-bottom:20px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);}
+        .filtres h2{font-size:1em;color:#ffcccc;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+        .blocs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px;}
+        .bloc-col{background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;}
+        .bloc-col h3{font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;border-bottom:1px solid rgba(255,100,100,.35);padding-bottom:5px;margin-bottom:8px;}
+        .bloc-col label{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9em;padding:3px 0;transition:color .2s;}
+        .bloc-col label:hover{color:#ffcccc;}
+        .dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0;}
+        input[type=checkbox],input[type=radio]{accent-color:#d32f2f;width:14px;height:14px;flex-shrink:0;}
+        /* Boutons AN */
+        .an-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;background:rgba(255,255,255,.05);border-radius:8px;padding:10px 14px;}
+        .an-row span{font-size:.82em;color:#ffaaaa;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+        .btn-an{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:white;padding:5px 14px;border-radius:20px;font-size:.85em;cursor:pointer;transition:all .2s;}
+        .btn-an:hover{background:#d32f2f;border-color:#d32f2f;}
+        .btn-an.actif{background:#d32f2f;border-color:#d32f2f;font-weight:bold;}
+        .an-row .note{font-size:.75em;color:rgba(255,255,255,.5);font-style:italic;}
+        /* Extras */
+        .filtres-extras{display:flex;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,.12);padding-top:12px;}
+        .filtre-extra{display:flex;flex-direction:column;gap:4px;}
+        .filtre-extra h3{font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;margin-bottom:4px;}
+        .filtre-extra label{display:flex;align-items:center;gap:7px;font-size:.9em;cursor:pointer;}
+        .btn-appliquer{margin-top:14px;background:#d32f2f;color:white;border:none;padding:9px 26px;border-radius:6px;font-size:.95em;cursor:pointer;transition:background .2s;}
+        .btn-appliquer:hover{background:#b71c1c;}
         /* GRAPHIQUES */
-        .graphiques-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-        @media (max-width: 768px) { .graphiques-grid { grid-template-columns: 1fr; } .blocs-grid { grid-template-columns: 1fr; } }
-
-        .carte {
-            background: rgba(0,0,0,0.68); border-radius: 10px; padding: 16px 18px;
-            backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.13); position: relative;
-        }
-        .carte h3 { font-size: 0.97em; color: #ffcccc; margin-bottom: 12px; padding-right: 28px; }
-        .canvas-wrap { position: relative; height: 360px; }
-        .btn-info {
-            position: absolute; top: 14px; right: 14px; width: 22px; height: 22px; border-radius: 50%;
-            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4);
-            color: white; font-size: 0.85em; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 10;
-        }
-        .btn-info:hover { background: rgba(255,255,255,0.4); }
-
+        .graphiques-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+        @media(max-width:768px){.graphiques-grid{grid-template-columns:1fr;}.blocs-grid{grid-template-columns:1fr;}}
+        .carte{background:rgba(0,0,0,.68);border-radius:10px;padding:16px 18px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);position:relative;}
+        .carte h3{font-size:.97em;color:#ffcccc;margin-bottom:12px;padding-right:28px;}
+        .canvas-wrap{position:relative;height:360px;}
+        .btn-info{position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:white;font-size:.85em;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10;}
+        .btn-info:hover{background:rgba(255,255,255,.4);}
         /* TABLEAU TOTAUX */
-        .totaux-wrap { margin-top: 14px; overflow-x: auto; }
-        .totaux-wrap h4 { font-size: 0.82em; color: #ffaaaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-        table.tbl-totaux { width: 100%; border-collapse: collapse; font-size: 0.78em; min-width: 400px; }
-        table.tbl-totaux th {
-            background: rgba(255,255,255,0.1); color: #ffcccc; padding: 5px 8px;
-            text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2);
-            white-space: nowrap; font-size: 0.8em;
-        }
-        table.tbl-totaux th:first-child { text-align: left; }
-        table.tbl-totaux td { padding: 4px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: right; }
-        table.tbl-totaux td:first-child { text-align: left; font-weight: bold; color: #e0e0e0; white-space: nowrap; }
-        table.tbl-totaux tr.row-total td { background: rgba(255,255,255,0.08); font-weight: bold; border-top: 1px solid rgba(255,255,255,0.25); color: white; }
-        table.tbl-totaux tr.row-sep td { padding: 0; height: 6px; background: transparent; border: none; }
-        table.tbl-totaux .gain { color: #66ff88; }
-        table.tbl-totaux .perte { color: #ff6666; }
-        table.tbl-totaux .neutre { color: #aaa; }
-        table.tbl-totaux .voix { color: #e0e0e0; }
-
+        .totaux-wrap{margin-top:14px;overflow-x:auto;}
+        .totaux-wrap h4{font-size:.82em;color:#ffaaaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+        table.tbl-totaux{width:100%;border-collapse:collapse;font-size:.76em;min-width:300px;}
+        table.tbl-totaux th{background:rgba(255,255,255,.1);color:#ffcccc;padding:5px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.2);white-space:nowrap;font-size:.8em;}
+        table.tbl-totaux th:first-child{text-align:left;}
+        table.tbl-totaux td{padding:4px 8px;border-bottom:1px solid rgba(255,255,255,.06);text-align:right;}
+        table.tbl-totaux td:first-child{text-align:left;white-space:nowrap;}
+        table.tbl-totaux tr.row-total td{background:rgba(255,255,255,.08);font-weight:bold;border-top:1px solid rgba(255,255,255,.25);color:white;}
+        table.tbl-totaux tr.row-sep td{padding:0;height:5px;background:transparent;border:none;}
+        .gain{color:#66ff88;} .perte{color:#ff6666;} .neutre{color:#aaa;} .voix{color:#e0e0e0;}
         /* TABLEAU ÉLUS */
-        .section-elus { margin-top: 20px; }
-        table.tbl-elus { width: 100%; border-collapse: collapse; font-size: 0.82em; }
-        table.tbl-elus th { background: rgba(255,255,255,0.1); color: #ffcccc; padding: 6px 10px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.2); }
-        table.tbl-elus th:first-child, table.tbl-elus th:nth-child(2) { text-align: left; }
-        table.tbl-elus td { padding: 5px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); text-align: center; color: #e0e0e0; }
-        table.tbl-elus td:first-child, table.tbl-elus td:nth-child(2) { text-align: left; }
-        table.tbl-elus tr:hover td { background: rgba(255,255,255,0.04); }
-        table.tbl-elus .pcf { color: #CC0000; font-weight: bold; }
-        table.tbl-elus .lfi { color: #FF8C55; font-weight: bold; }
-        table.tbl-elus .ps  { color: #E8A080; font-weight: bold; }
-        table.tbl-elus .eelv { color: #4CAF50; font-weight: bold; }
-
-        /* POPUP */
-        .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; }
-        .overlay.visible { display: flex; }
-        .popup { background: #1a1a2e; border: 1px solid rgba(255,100,100,0.4); border-radius: 12px; padding: 26px 28px; max-width: 560px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; color: white; }
-        .popup h2 { color: #ffcccc; font-size: 1.05em; margin-bottom: 14px; }
-        .popup p, .popup li { font-size: 0.88em; line-height: 1.6; margin-bottom: 8px; color: #e0e0e0; }
-        .popup ul { padding-left: 18px; margin-bottom: 10px; }
-        .popup strong { color: #ffaaaa; }
-        .popup-close { position: absolute; top: 12px; right: 14px; background: none; border: none; color: white; font-size: 1.3em; cursor: pointer; opacity: 0.7; }
-        .popup-close:hover { opacity: 1; }
-        #msg { text-align: center; padding: 40px; font-size: 1.05em; opacity: 0.8; }
+        .section-elus{margin-top:20px;}
+        table.tbl-elus{width:100%;border-collapse:collapse;font-size:.82em;}
+        table.tbl-elus th{background:rgba(255,255,255,.1);color:#ffcccc;padding:6px 10px;text-align:center;border-bottom:1px solid rgba(255,255,255,.2);}
+        table.tbl-elus th:first-child,table.tbl-elus th:nth-child(2){text-align:left;}
+        table.tbl-elus td{padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:center;color:#e0e0e0;}
+        table.tbl-elus td:first-child,table.tbl-elus td:nth-child(2){text-align:left;}
+        table.tbl-elus tr:hover td{background:rgba(255,255,255,.04);}
+        .pcf{color:#CC0000;font-weight:bold;} .lfi{color:#FF8C55;font-weight:bold;}
+        .ps{color:#E8A080;font-weight:bold;} .eelv{color:#4CAF50;font-weight:bold;}
+        /* POPUPS */
+        .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;}
+        .overlay.visible{display:flex;}
+        .popup{background:#1a1a2e;border:1px solid rgba(255,100,100,.4);border-radius:12px;padding:24px 26px;max-width:580px;width:92%;max-height:85vh;overflow-y:auto;position:relative;color:white;}
+        .popup-hemi{max-width:680px;}
+        .popup h2{color:#ffcccc;font-size:1.05em;margin-bottom:14px;}
+        .popup p,.popup li{font-size:.88em;line-height:1.6;margin-bottom:8px;color:#e0e0e0;}
+        .popup ul{padding-left:18px;margin-bottom:10px;}
+        .popup strong{color:#ffaaaa;}
+        .popup-close{position:absolute;top:12px;right:14px;background:none;border:none;color:white;font-size:1.3em;cursor:pointer;opacity:.7;}
+        .popup-close:hover{opacity:1;}
+        /* HÉMICYCLE */
+        .hemi-nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+        .btn-hemi-an{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:white;padding:4px 12px;border-radius:15px;font-size:.82em;cursor:pointer;transition:all .2s;}
+        .btn-hemi-an.actif,.btn-hemi-an:hover{background:#d32f2f;border-color:#d32f2f;}
+        .hemi-legende{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+        .hemi-leg-item{display:flex;align-items:center;gap:4px;font-size:.75em;color:#e0e0e0;}
+        .hemi-leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+        #msg{text-align:center;padding:40px;font-size:1.05em;opacity:.8;}
     </style>
 </head>
 <body>
@@ -128,24 +103,40 @@
 </nav>
 
 <!-- POPUP MÉTHODOLOGIE -->
-<div class="overlay" id="overlay" onclick="fermerPopup(event)">
+<div class="overlay" id="overlay-methodo" onclick="fermerPopup('overlay-methodo',event)">
     <div class="popup">
-        <button class="popup-close" onclick="document.getElementById('overlay').classList.remove('visible')">✕</button>
-        <h2>📊 Méthodologie des calculs</h2>
-        <p>Les voix affichées sont des <strong>voix ventilées</strong> : pour chaque nuance officielle, les voix sont redistribuées entre les partis (PCF, LFI, PS, EELV...) selon un poids calculé à partir du nombre d'élus à l'Assemblée Nationale.</p>
+        <button class="popup-close" onclick="document.getElementById('overlay-methodo').classList.remove('visible')">✕</button>
+        <h2>📊 Méthodologie — Pourquoi les groupes parlementaires ?</h2>
+        <p>Nous utilisons la composition des <strong>groupes parlementaires</strong> à l'Assemblée Nationale plutôt que les nuances du Ministère de l'Intérieur. Voici pourquoi :</p>
         <ul>
-            <li><strong>FG 2012</strong> → 46,7 % PCF + 53,3 % LFI — élus GDR 2007 (15 PCF, 15 DVG filiation LFI)</li>
-            <li><strong>FG 2017 PRES</strong> → 48,5 % PCF + 51,5 % LFI — élus GDR 2012 (16 PCF, 17 LFI)</li>
-            <li><strong>NG 2017 PRES</strong> → 90,3 % PS + 9,7 % EELV — élus groupe Nouvelle Gauche AN 2017</li>
-            <li><strong>NUP 2022 LEG</strong> → PCF 11,9 %, LFI 40,8 %, PS 34,8 %, EELV 12,5 % — élus AN 2024</li>
-            <li><strong>UG 2024 LEG</strong> → PCF 8,8 %, LFI 37,3 %, PS 34,2 %, EELV 19,7 % — élus AN 2024</li>
-            <li><strong>SOC, RDG, DVG</strong> → PS à 100 % par convention</li>
-            <li><strong>ECO, VEC</strong> → EELV à 100 %</li>
+            <li>Les nuances ministérielles reflètent l'étiquette du candidat <em>au moment du dépôt de candidature</em>, avant tout accord post-électoral.</li>
+            <li>Les groupes parlementaires reflètent la réalité politique <em>après l'élection</em> : les alliances réelles, les choix des élus, les rapports de force au sein de chaque bloc.</li>
+            <li>Exemple : en 2007, 15 élus DVG ont rejoint le groupe GDR avec le PCF, montrant une filiation politique claire vers la gauche radicale.</li>
+        </ul>
+        <p><strong>Ventilation des alliances composites :</strong></p>
+        <ul>
+            <li><strong>FG 2012</strong> → 46,7% PCF + 53,3% LFI — groupe GDR 2007 (24 élus total)</li>
+            <li><strong>FG 2017 PRES</strong> → 48,5% PCF + 51,5% LFI — groupe GDR 2012</li>
+            <li><strong>NG 2017 PRES</strong> → 90,3% PS + 9,7% EELV — groupe Nouvelle Gauche AN 2017</li>
+            <li><strong>NUP 2022</strong> → PCF 11,9%, LFI 40,8%, PS 34,8%, EELV 12,5% — élus AN 2024</li>
+            <li><strong>UG 2024</strong> → PCF 8,8%, LFI 37,3%, PS 34,2%, EELV 19,7% — élus AN 2024</li>
         </ul>
         <p>Pour la <strong>Haute-Loire en législatives</strong>, les voix des circonscriptions 4301 et 4302 sont additionnées.</p>
-        <p>La <strong>courbe d'abstention</strong> = (Inscrits − Votants) / Inscrits × 100.</p>
         <p>Les <strong>gains/pertes</strong> comparent chaque élection à la précédente dans l'ordre chronologique sélectionné.</p>
-        <p style="font-size:0.78em;opacity:0.6;margin-top:12px;">Sources : Ministère de l'Intérieur. Calculs PCF 43.</p>
+        <p style="font-size:.78em;opacity:.6;margin-top:10px;">Sources : Ministère de l'Intérieur. Calculs PCF 43.</p>
+    </div>
+</div>
+
+<!-- POPUP HÉMICYCLE -->
+<div class="overlay" id="overlay-hemi" onclick="fermerPopup('overlay-hemi',event)">
+    <div class="popup popup-hemi">
+        <button class="popup-close" onclick="document.getElementById('overlay-hemi').classList.remove('visible')">✕</button>
+        <h2>🏛 Composition de l'Assemblée Nationale</h2>
+        <p style="font-size:.8em;color:#aaa;margin-bottom:10px;">Ces données servent à calculer le prorata de ventilation des alliances composites.</p>
+        <div class="hemi-nav" id="hemi-nav"></div>
+        <svg id="hemi-svg" viewBox="0 0 560 260" style="width:100%;"></svg>
+        <div class="hemi-legende" id="hemi-legende"></div>
+        <div id="hemi-totaux" style="margin-top:10px;font-size:.8em;color:#aaa;"></div>
     </div>
 </div>
 
@@ -155,6 +146,7 @@
     <!-- FILTRES -->
     <div class="filtres" id="panneau-filtres" style="display:none">
         <h2>🗳 Choisissez votre analyse</h2>
+
         <div class="blocs-grid">
             <div class="bloc-col">
                 <h3>⬤ Gauche</h3>
@@ -174,6 +166,19 @@
                 <label><input type="checkbox" class="cb-brique" value="Extrême Droite"><span class="dot" style="background:#1A237E"></span>RN / FN / EXD</label>
             </div>
         </div>
+
+        <!-- Boutons hémicycle AN -->
+        <div class="an-row">
+            <span>🏛 Composition AN :</span>
+            <button class="btn-an" onclick="ouvrirHemicycle(2007)">2007</button>
+            <button class="btn-an" onclick="ouvrirHemicycle(2012)">2012</button>
+            <button class="btn-an" onclick="ouvrirHemicycle(2017)">2017</button>
+            <button class="btn-an" onclick="ouvrirHemicycle(2022)">2022</button>
+            <button class="btn-an" onclick="ouvrirHemicycle(2024)">2024</button>
+            <span class="note">→ base du calcul des proratas</span>
+        </div>
+
+        <!-- Extras -->
         <div class="filtres-extras">
             <div class="filtre-extra">
                 <h3>Type de scrutin</h3>
@@ -189,98 +194,49 @@
                 <h3>Abstention</h3>
                 <label><input type="checkbox" id="cb-abstention" checked> Afficher la courbe</label>
             </div>
+            <div class="filtre-extra">
+                <h3>Mode graphique</h3>
+                <label><input type="radio" name="mode-graph" value="global" checked> Vue globale (1 barre)</label>
+                <label><input type="radio" name="mode-graph" value="blocs"> Vue par 3 blocs</label>
+            </div>
         </div>
         <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
     </div>
 
     <!-- GRAPHIQUES + TABLEAUX -->
     <div class="graphiques-grid" id="graphiques" style="display:none">
-
         <div class="carte">
             <h3>🇫🇷 France entière</h3>
-            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
+            <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
             <div class="canvas-wrap"><canvas id="chartFR"></canvas></div>
             <div class="totaux-wrap" id="totaux-FR"></div>
         </div>
-
         <div class="carte">
             <h3>🏔 Haute-Loire (Dpt 43)</h3>
-            <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
+            <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
             <div class="canvas-wrap"><canvas id="chart43"></canvas></div>
             <div class="totaux-wrap" id="totaux-43"></div>
         </div>
-
     </div>
 
     <!-- TABLEAU ÉLUS -->
-    <div class="section-elus carte" id="section-elus" style="display:none; margin-top:20px;">
-        <h3>🏛 Composition des alliances — Référence élus Assemblée Nationale</h3>
-        <button class="btn-info" onclick="document.getElementById('overlay').classList.add('visible')">ℹ</button>
-        <div style="overflow-x:auto; margin-top:12px;">
+    <div class="section-elus carte" id="section-elus" style="display:none;margin-top:20px;">
+        <h3>🏛 Composition des alliances — référence groupes parlementaires AN</h3>
+        <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
+        <div style="overflow-x:auto;margin-top:12px;">
             <table class="tbl-elus">
-                <thead>
-                    <tr>
-                        <th>Alliance / Nuance</th>
-                        <th>Élection(s)</th>
-                        <th class="pcf">PCF</th>
-                        <th class="lfi">LFI</th>
-                        <th class="ps">PS</th>
-                        <th class="eelv">EELV</th>
-                        <th>Total</th>
-                        <th>Source des poids</th>
-                    </tr>
-                </thead>
+                <thead><tr>
+                    <th>Alliance</th><th>Élection(s)</th>
+                    <th class="pcf">PCF</th><th class="lfi">LFI</th>
+                    <th class="ps">PS</th><th class="eelv">EELV</th>
+                    <th>Total</th><th>Source</th>
+                </tr></thead>
                 <tbody>
-                    <tr>
-                        <td><strong>FG</strong> — Front de Gauche</td>
-                        <td>PRES 2012 + LEG 2012</td>
-                        <td class="pcf">7 <small>(46,7%)</small></td>
-                        <td class="lfi">8 <small>(53,3%)</small></td>
-                        <td class="ps">—</td>
-                        <td class="eelv">—</td>
-                        <td>15</td>
-                        <td>Élus groupe GDR — AN 2007</td>
-                    </tr>
-                    <tr>
-                        <td><strong>FG</strong> — Mélenchon + accord PCF</td>
-                        <td>PRES 2017</td>
-                        <td class="pcf">16 <small>(48,5%)</small></td>
-                        <td class="lfi">17 <small>(51,5%)</small></td>
-                        <td class="ps">—</td>
-                        <td class="eelv">—</td>
-                        <td>33</td>
-                        <td>Élus groupe GDR — AN 2012</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NG</strong> — Nouvelle Gauche (Hamon)</td>
-                        <td>PRES 2017</td>
-                        <td class="pcf">—</td>
-                        <td class="lfi">—</td>
-                        <td class="ps">28 <small>(90,3%)</small></td>
-                        <td class="eelv">3 <small>(9,7%)</small></td>
-                        <td>31</td>
-                        <td>Élus groupe NG — AN 2017</td>
-                    </tr>
-                    <tr>
-                        <td><strong>NUP</strong> — NUPES</td>
-                        <td>LEG 2022</td>
-                        <td class="pcf">22 <small>(11,9%)</small></td>
-                        <td class="lfi">75 <small>(40,8%)</small></td>
-                        <td class="ps">64 <small>(34,8%)</small></td>
-                        <td class="eelv">23 <small>(12,5%)</small></td>
-                        <td>184</td>
-                        <td>Élus composantes — AN 2024</td>
-                    </tr>
-                    <tr>
-                        <td><strong>UG</strong> — NFP / Union de la Gauche</td>
-                        <td>LEG 2024</td>
-                        <td class="pcf">17 <small>(8,8%)</small></td>
-                        <td class="lfi">72 <small>(37,3%)</small></td>
-                        <td class="ps">66 <small>(34,2%)</small></td>
-                        <td class="eelv">38 <small>(19,7%)</small></td>
-                        <td>193</td>
-                        <td>Élus composantes — AN 2024</td>
-                    </tr>
+                    <tr><td><strong>FG</strong></td><td>PRES+LEG 2012</td><td class="pcf">7 (46,7%)</td><td class="lfi">8 (53,3%)</td><td class="ps">—</td><td class="eelv">—</td><td>15</td><td>Groupe GDR — AN 2007</td></tr>
+                    <tr><td><strong>FG</strong></td><td>PRES 2017</td><td class="pcf">16 (48,5%)</td><td class="lfi">17 (51,5%)</td><td class="ps">—</td><td class="eelv">—</td><td>33</td><td>Groupe GDR — AN 2012</td></tr>
+                    <tr><td><strong>NG</strong></td><td>PRES 2017</td><td class="pcf">—</td><td class="lfi">—</td><td class="ps">28 (90,3%)</td><td class="eelv">3 (9,7%)</td><td>31</td><td>Groupe NG — AN 2017</td></tr>
+                    <tr><td><strong>NUP</strong></td><td>LEG 2022</td><td class="pcf">22 (11,9%)</td><td class="lfi">75 (40,8%)</td><td class="ps">64 (34,8%)</td><td class="eelv">23 (12,5%)</td><td>184</td><td>Groupes NUPES — AN 2024</td></tr>
+                    <tr><td><strong>UG</strong></td><td>LEG 2024</td><td class="pcf">17 (8,8%)</td><td class="lfi">72 (37,3%)</td><td class="ps">66 (34,2%)</td><td class="eelv">38 (19,7%)</td><td>193</td><td>Groupes NFP — AN 2024</td></tr>
                 </tbody>
             </table>
         </div>
@@ -288,216 +244,242 @@
 </div>
 
 <script>
+// ── Couleurs ─────────────────────────────────────────────────────────────────
 const COULEURS = {
-    "LO/NPA": "#8B0000", "PCF": "#CC0000", "LFI": "#FF6B35",
-    "EELV": "#4CAF50", "PS": "#E8A080",
-    "Centre": "#FDD835", "Droite": "#42A5F5", "Extrême Droite": "#1A237E"
+    "LO/NPA":"#8B0000","PCF":"#CC0000","LFI":"#FF6B35",
+    "EELV":"#4CAF50","PS":"#E8A080",
+    "Centre":"#FDD835","Droite":"#42A5F5","Extrême Droite":"#1A237E"
 };
 const ORDRE_BRIQUES = ["LO/NPA","PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"];
+const BLOC_DE = {"LO/NPA":"Gauche","PCF":"Gauche","LFI":"Gauche","EELV":"Gauche","PS":"Gauche","Centre":"Centre+Droite","Droite":"Centre+Droite","Extrême Droite":"Extrême Droite"};
 
-let DATA = [];
-let chartFR = null, chart43 = null;
+// ── Données hémicycle ─────────────────────────────────────────────────────────
+const HEMICYCLE = {
+    2007:{titre:"AN 2007 — référence prorata FG 2012",total:577,groupes:[
+        {nom:"GDR (PCF+DVG gauche)",siege:24,couleur:"#CC0000"},
+        {nom:"Socialiste (SRC)",siege:185,couleur:"#E8A080"},
+        {nom:"Radical de Gauche",siege:24,couleur:"#E8B090"},
+        {nom:"Verts",siege:4,couleur:"#4CAF50"},
+        {nom:"Nouveau Centre",siege:22,couleur:"#FDD835"},
+        {nom:"MoDem/UDF",siege:3,couleur:"#FFEB60"},
+        {nom:"UMP",siege:313,couleur:"#42A5F5"},
+        {nom:"Non inscrits",siege:2,couleur:"#888"},
+    ]},
+    2012:{titre:"AN 2012 — référence prorata FG 2017",total:577,groupes:[
+        {nom:"GDR (PCF+FG)",siege:22,couleur:"#CC0000"},
+        {nom:"RRDP (Radical+DVG)",siege:12,couleur:"#E8B090"},
+        {nom:"Socialiste (SRC)",siege:295,couleur:"#E8A080"},
+        {nom:"Écologiste (EELV)",siege:18,couleur:"#4CAF50"},
+        {nom:"UDI",siege:30,couleur:"#FDD835"},
+        {nom:"UMP",siege:194,couleur:"#42A5F5"},
+        {nom:"DVD/Divers droite",siege:5,couleur:"#64B5F6"},
+        {nom:"FN",siege:2,couleur:"#1A237E"},
+    ]},
+    2017:{titre:"AN 2017 — référence prorata NUP 2022",total:577,groupes:[
+        {nom:"GDR (PCF)",siege:16,couleur:"#CC0000"},
+        {nom:"La France Insoumise",siege:17,couleur:"#FF6B35"},
+        {nom:"Nouvelle Gauche (PS+EELV)",siege:31,couleur:"#E8A080"},
+        {nom:"LREM",siege:314,couleur:"#FDD835"},
+        {nom:"MoDem",siege:47,couleur:"#FFEB60"},
+        {nom:"UDI-Agir",siege:29,couleur:"#FFE070"},
+        {nom:"LR",siege:100,couleur:"#42A5F5"},
+        {nom:"FN",siege:8,couleur:"#1A237E"},
+        {nom:"Non inscrits/divers",siege:15,couleur:"#888"},
+    ]},
+    2022:{titre:"AN 2022 — référence prorata UG 2024",total:577,groupes:[
+        {nom:"GDR — PCF+NUPES",siege:22,couleur:"#CC0000"},
+        {nom:"LFI-NUPES",siege:75,couleur:"#FF6B35"},
+        {nom:"Socialistes-NUPES (PS)",siege:31,couleur:"#E8A080"},
+        {nom:"Écologistes-NUPES (EELV)",siege:23,couleur:"#4CAF50"},
+        {nom:"Renaissance (LREM)",siege:172,couleur:"#FDD835"},
+        {nom:"Horizons",siege:30,couleur:"#FFEB60"},
+        {nom:"MoDem",siege:48,couleur:"#FFE070"},
+        {nom:"LIOT/Divers centre",siege:21,couleur:"#BBBB44"},
+        {nom:"LR",siege:62,couleur:"#42A5F5"},
+        {nom:"RN",siege:89,couleur:"#1A237E"},
+        {nom:"Extrême droite divers",siege:4,couleur:"#283593"},
+    ]},
+    2024:{titre:"AN 2024 — composition actuelle",total:577,groupes:[
+        {nom:"GDR (PCF)",siege:22,couleur:"#CC0000"},
+        {nom:"La France Insoumise",siege:71,couleur:"#FF6B35"},
+        {nom:"Socialistes+Place Publique",siege:64,couleur:"#E8A080"},
+        {nom:"Écologistes",siege:23,couleur:"#4CAF50"},
+        {nom:"Renaissance (Ensemble)",siege:99,couleur:"#FDD835"},
+        {nom:"Horizons+Indépendants",siege:36,couleur:"#FFEB60"},
+        {nom:"MoDem",siege:33,couleur:"#FFE070"},
+        {nom:"Droite Républicaine (LR)",siege:16,couleur:"#42A5F5"},
+        {nom:"DVD+Indépendants droite",siege:50,couleur:"#64B5F6"},
+        {nom:"LIOT/Divers",siege:22,couleur:"#AAAAAA"},
+        {nom:"RN",siege:124,couleur:"#1A237E"},
+        {nom:"Reconquête+Ciotti",siege:17,couleur:"#283593"},
+    ]},
+};
 
-function norm(s){ return (s||'').normalize('NFC'); }
+let DATA=[], chartFR=null, chart43=null;
+function norm(s){return(s||'').normalize('NFC');}
 
+// ── Chargement ────────────────────────────────────────────────────────────────
 fetch("data/ventillees.json")
-    .then(r => { if(!r.ok) throw new Error("Fichier introuvable"); return r.json(); })
-    .then(d => {
-        DATA = d;
-        document.getElementById("msg").style.display = "none";
-        document.getElementById("panneau-filtres").style.display = "block";
-        document.getElementById("graphiques").style.display = "grid";
-        document.getElementById("section-elus").style.display = "block";
+    .then(r=>{if(!r.ok)throw new Error("ventillees.json introuvable");return r.json();})
+    .then(d=>{
+        DATA=d;
+        document.getElementById("msg").style.display="none";
+        document.getElementById("panneau-filtres").style.display="block";
+        document.getElementById("graphiques").style.display="grid";
+        document.getElementById("section-elus").style.display="block";
         appliquer();
     })
-    .catch(e => { document.getElementById("msg").textContent = "⚠ " + e.message; });
+    .catch(e=>{document.getElementById("msg").textContent="⚠ "+e.message;});
 
-function getFiltres() {
+// ── Filtres ───────────────────────────────────────────────────────────────────
+function getFiltres(){
     return {
-        scrutins:   [...document.querySelectorAll('.cb-scrutin:checked')].map(e=>e.value),
-        tours:      [...document.querySelectorAll('.cb-tour:checked')].map(e=>e.value),
-        briques:    [...document.querySelectorAll('.cb-brique:checked')].map(e=>e.value),
-        abstention: document.getElementById('cb-abstention').checked
+        scrutins:[...document.querySelectorAll('.cb-scrutin:checked')].map(e=>e.value),
+        tours:[...document.querySelectorAll('.cb-tour:checked')].map(e=>e.value),
+        briques:[...document.querySelectorAll('.cb-brique:checked')].map(e=>e.value),
+        abstention:document.getElementById('cb-abstention').checked,
+        mode:document.querySelector('input[name=mode-graph]:checked').value
     };
 }
 
-function sortElections(els) {
-    const sco = {PRES:1, LEG:2};
-    return [...els].sort((a,b) => {
-        const pa=a.split(" "), pb=b.split(" ");
-        if(pa[0]!==pb[0]) return parseInt(pa[0])-parseInt(pb[0]);
-        if(pa[1]!==pb[1]) return (sco[pa[1]]||9)-(sco[pb[1]]||9);
+function sortElections(els){
+    const sco={PRES:1,LEG:2};
+    return[...els].sort((a,b)=>{
+        const pa=a.split(" "),pb=b.split(" ");
+        if(pa[0]!==pb[0])return parseInt(pa[0])-parseInt(pb[0]);
+        if(pa[1]!==pb[1])return(sco[pa[1]]||9)-(sco[pb[1]]||9);
         return pa[2]<pb[2]?-1:1;
     });
 }
 
-function filtrerZone(rows, territoire, scrutins, tours, briques) {
-    return rows.filter(r => {
-        if(!scrutins.includes(r.TypesScrutin)) return false;
-        if(!tours.includes(r.Tour)) return false;
-        if(!briques.some(b => norm(b)===norm(r.Brique))) return false;
-        if(territoire==="FR") return r.Zone==="FR";
-        if(r.TypesScrutin==="LEG") return r.Zone==="4301"||r.Zone==="4302";
+function filtrerZone(rows,territoire,scrutins,tours,briques){
+    return rows.filter(r=>{
+        if(!scrutins.includes(r.TypesScrutin))return false;
+        if(!tours.includes(r.Tour))return false;
+        if(!briques.some(b=>norm(b)===norm(r.Brique)))return false;
+        if(territoire==="FR")return r.Zone==="FR";
+        if(r.TypesScrutin==="LEG")return r.Zone==="4301"||r.Zone==="4302";
         return r.Zone==="43";
     });
 }
 
-function agregerVoix(rows) {
-    const map = {};
-    rows.forEach(r => {
-        const el  = r.Année+" "+r.TypesScrutin+" "+r.Tour;
-        const key = el+"|||"+r.Brique;
-        if(!map[key]) map[key]={el, brique:r.Brique, voix:0};
-        map[key].voix += r.VoixVentillees||0;
+function agregerVoix(rows){
+    const map={};
+    rows.forEach(r=>{
+        const el=r.Année+" "+r.TypesScrutin+" "+r.Tour;
+        const key=el+"|||"+norm(r.Brique);
+        if(!map[key])map[key]={el,brique:r.Brique,voix:0};
+        map[key].voix+=r.VoixVentillees||0;
     });
     return Object.values(map);
 }
 
-function calcAbstention(rows, elections) {
-    const seenZone=new Set(), totaux={};
-    rows.forEach(r => {
+function calcAbstention(rows,elections){
+    const seen=new Set(),tot={};
+    rows.forEach(r=>{
         const el=r.Année+" "+r.TypesScrutin+" "+r.Tour;
         const zk=el+"|"+r.Zone;
-        if(!seenZone.has(zk)){
-            seenZone.add(zk);
-            if(!totaux[el]) totaux[el]={ins:0,vot:0};
-            totaux[el].ins+=r.Inscrits||0;
-            totaux[el].vot+=r.Votants||0;
-        }
+        if(!seen.has(zk)){seen.add(zk);if(!tot[el])tot[el]={ins:0,vot:0};tot[el].ins+=r.Inscrits||0;tot[el].vot+=r.Votants||0;}
     });
-    return elections.map(el => {
-        if(!totaux[el]) return null;
-        const t=totaux[el];
-        return t.ins>0?+((t.ins-t.vot)/t.ins*100).toFixed(1):null;
-    });
+    return elections.map(el=>{if(!tot[el])return null;const t=tot[el];return t.ins>0?+((t.ins-t.vot)/t.ins*100).toFixed(1):null;});
 }
 
-function construireChart(canvasId, chartRef, rows, showAbstention) {
-    const agregat  = agregerVoix(rows);
-    const elections = sortElections([...new Set(agregat.map(r=>r.el))]);
-    const briques   = ORDRE_BRIQUES.filter(b=>agregat.some(r=>norm(r.brique)===norm(b)));
+// ── Construction chart ────────────────────────────────────────────────────────
+function construireChart(canvasId,chartRef,rows,showAbstention,modeBlocs){
+    const agregat=agregerVoix(rows);
+    const elections=sortElections([...new Set(agregat.map(r=>r.el))]);
+    const briques=ORDRE_BRIQUES.filter(b=>agregat.some(r=>norm(r.brique)===norm(b)));
 
-    const datasets = briques.map(brique=>({
+    const datasets=briques.map(brique=>({
         type:"bar", label:brique,
-        data: elections.map(el=>{
-            const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique));
-            return f?Math.round(f.voix):0;
-        }),
+        data:elections.map(el=>{const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique));return f?Math.round(f.voix):0;}),
         backgroundColor:COULEURS[brique]||"#888",
-        stack:"blocs", order:2, yAxisID:"y"
+        stack:modeBlocs?(BLOC_DE[brique]||"Autres"):"tous",
+        order:2, yAxisID:"y"
     }));
 
     if(showAbstention){
         datasets.push({
             type:"line", label:"Abstention (%)",
             data:calcAbstention(rows,elections),
-            borderColor:"rgba(255,255,255,0.85)",
-            backgroundColor:"rgba(255,255,255,0.1)",
-            borderWidth:2.5, borderDash:[6,3],
-            pointRadius:5, pointBackgroundColor:"white",
+            borderColor:"rgba(255,255,255,.85)", backgroundColor:"rgba(255,255,255,.1)",
+            borderWidth:2.5, borderDash:[6,3], pointRadius:5, pointBackgroundColor:"white",
             fill:false, tension:0.3, order:1, yAxisID:"y2"
         });
     }
 
-    if(chartRef) chartRef.destroy();
+    if(chartRef)chartRef.destroy();
     return new Chart(document.getElementById(canvasId),{
-        data:{labels:elections, datasets},
+        data:{labels:elections,datasets},
         options:{
             responsive:true, maintainAspectRatio:false,
             interaction:{mode:"index"},
             plugins:{
                 legend:{labels:{color:"white",font:{size:10},boxWidth:12}},
                 tooltip:{callbacks:{label:ctx=>{
-                    if(ctx.dataset.yAxisID==="y2") return "Abstention : "+ctx.parsed.y+" %";
+                    if(ctx.dataset.yAxisID==="y2")return "Abstention : "+ctx.parsed.y+" %";
                     return ctx.dataset.label+" : "+(ctx.parsed.y||0).toLocaleString("fr-FR")+" voix";
                 }}}
             },
             scales:{
-                x:{stacked:false,ticks:{color:"white",font:{size:9},maxRotation:40},grid:{color:"rgba(255,255,255,0.07)"}},
-                y:{stacked:true,ticks:{color:"white",callback:v=>v.toLocaleString("fr-FR")},grid:{color:"rgba(255,255,255,0.1)"},title:{display:true,text:"Voix ventilées",color:"#ffaaaa",font:{size:10}}},
-                y2:{display:showAbstention,position:"right",min:0,max:100,ticks:{color:"rgba(255,255,255,0.7)",callback:v=>v+" %"},grid:{drawOnChartArea:false},title:{display:true,text:"Abstention %",color:"rgba(255,255,255,0.7)",font:{size:10}}}
+                x:{ticks:{color:"white",font:{size:9},maxRotation:40},grid:{color:"rgba(255,255,255,.07)"}},
+                y:{stacked:true,ticks:{color:"white",callback:v=>v.toLocaleString("fr-FR")},grid:{color:"rgba(255,255,255,.1)"},title:{display:true,text:"Voix ventilées",color:"#ffaaaa",font:{size:10}}},
+                y2:{display:showAbstention,position:"right",min:0,max:100,ticks:{color:"rgba(255,255,255,.7)",callback:v=>v+" %"},grid:{drawOnChartArea:false},title:{display:true,text:"Abstention %",color:"rgba(255,255,255,.7)",font:{size:10}}}
             }
         }
     });
 }
 
-// ── Tableau des totaux avec gains/pertes ─────────────────────────────────────
-function construireTotaux(rows, elections, briquesActives, containerId) {
-    const wrap = document.getElementById(containerId);
-    wrap.innerHTML = "";
-    if(elections.length < 2) return;
+// ── Tableau totaux ────────────────────────────────────────────────────────────
+function construireTotaux(rows,elections,briquesActives,containerId){
+    const wrap=document.getElementById(containerId);
+    wrap.innerHTML="";
+    if(elections.length<1)return;
+    wrap.innerHTML="<h4>📈 Totaux & évolution</h4>";
+    const table=document.createElement("table");
+    table.className="tbl-totaux";
 
-    wrap.innerHTML = "<h4>📈 Totaux & évolution — voix ventilées</h4>";
-    const table = document.createElement("table");
-    table.className = "tbl-totaux";
+    let thead="<tr><th>Parti</th>";
+    elections.forEach((el,i)=>{thead+=`<th>${el}</th>`;if(i>0)thead+="<th>Δ</th>";});
+    thead+="</tr>";
+    table.innerHTML=`<thead>${thead}</thead><tbody></tbody>`;
+    const tbody=table.querySelector("tbody");
 
-    // En-tête : une colonne par élection + delta
-    let thead = "<tr><th>Parti / Groupe</th>";
-    elections.forEach((el,i) => {
-        thead += `<th>${el}</th>`;
-        if(i>0) thead += `<th>Δ</th>`;
-    });
-    thead += "</tr>";
-    table.innerHTML = `<thead>${thead}</thead><tbody></tbody>`;
-    const tbody = table.querySelector("tbody");
+    const agregat=agregerVoix(rows);
+    const voixPour=(brique,el)=>{const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique));return f?Math.round(f.voix):0;};
+    const voixGroupe=(briques,el)=>briques.reduce((s,b)=>s+voixPour(b,el),0);
 
-    // Agrégation
-    const agregat = agregerVoix(rows);
-    function voixPour(brique, el){ const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique)); return f?Math.round(f.voix):0; }
-    function voixGroupe(briques, el){ return briques.reduce((s,b)=>s+voixPour(b,el),0); }
+    const fmtV=v=>v>0?v.toLocaleString("fr-FR"):"—";
+    const fmtD=(v,prev)=>{
+        if(prev===0||v===0)return'<span class="neutre">—</span>';
+        const d=v-prev,pct=((d/prev)*100).toFixed(1);
+        const cls=d>0?"gain":"perte",signe=d>0?"+":"";
+        return`<span class="${cls}">${signe}${d.toLocaleString("fr-FR")}<br><small>${signe}${pct}%</small></span>`;
+    };
 
-    function fmtVoix(v){ return v>0?v.toLocaleString("fr-FR"):"—"; }
-    function fmtDelta(v,prev){
-        if(prev===0||v===0) return '<span class="neutre">—</span>';
-        const d=v-prev;
-        const pct=((d/prev)*100).toFixed(1);
-        if(d>0) return `<span class="gain">+${d.toLocaleString("fr-FR")}<br><small>+${pct}%</small></span>`;
-        return `<span class="perte">${d.toLocaleString("fr-FR")}<br><small>${pct}%</small></span>`;
-    }
-
-    // Lignes par brique individuelle
-    briquesActives.forEach(brique => {
-        const tr = document.createElement("tr");
-        let html = `<td><span class="dot" style="background:${COULEURS[brique]||'#888'};display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px"></span>${brique}</td>`;
-        elections.forEach((el,i)=>{
-            const v=voixPour(brique,el);
-            html += `<td class="voix">${fmtVoix(v)}</td>`;
-            if(i>0){ const prev=voixPour(brique,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
-        });
-        tr.innerHTML=html;
-        tbody.appendChild(tr);
+    briquesActives.forEach(brique=>{
+        const tr=document.createElement("tr");
+        let html=`<td><span class="dot" style="background:${COULEURS[brique]||'#888'};display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px"></span>${brique}</td>`;
+        elections.forEach((el,i)=>{const v=voixPour(brique,el);html+=`<td class="voix">${fmtV(v)}</td>`;if(i>0){const prev=voixPour(brique,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}});
+        tr.innerHTML=html;tbody.appendChild(tr);
     });
 
-    // Séparateur
-    const sep=document.createElement("tr"); sep.className="row-sep";
-    sep.innerHTML=`<td colspan="${1+elections.length+(elections.length-1)}"></td>`;
-    tbody.appendChild(sep);
-
-    // Ligne total gauche (si au moins un parti gauche)
-    const briquesGauche=["LO/NPA","PCF","LFI","EELV","PS"].filter(b=>briquesActives.some(ba=>norm(ba)===norm(b)));
-    if(briquesGauche.length>1){
-        const tr=document.createElement("tr"); tr.className="row-total";
-        let html=`<td>TOTAL Gauche sélectionnée</td>`;
-        elections.forEach((el,i)=>{
-            const v=voixGroupe(briquesGauche,el);
-            html+=`<td>${fmtVoix(v)}</td>`;
-            if(i>0){ const prev=voixGroupe(briquesGauche,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
-        });
-        tr.innerHTML=html; tbody.appendChild(tr);
-    }
-
-    // Ligne total centre+droite
-    const briquesCentre=["Centre","Droite"].filter(b=>briquesActives.some(ba=>norm(ba)===norm(b)));
-    if(briquesCentre.length>1){
-        const tr=document.createElement("tr"); tr.className="row-total";
-        let html=`<td>TOTAL Centre & Droite</td>`;
-        elections.forEach((el,i)=>{
-            const v=voixGroupe(briquesCentre,el);
-            html+=`<td>${fmtVoix(v)}</td>`;
-            if(i>0){ const prev=voixGroupe(briquesCentre,elections[i-1]); html+=`<td>${fmtDelta(v,prev)}</td>`; }
-        });
-        tr.innerHTML=html; tbody.appendChild(tr);
-    }
+    // Totaux par grand bloc
+    const groupesTotal=[
+        {nom:"TOTAL Gauche",briques:["LO/NPA","PCF","LFI","EELV","PS"]},
+        {nom:"TOTAL Centre+Droite",briques:["Centre","Droite"]},
+        {nom:"TOTAL Extrême Droite",briques:["Extrême Droite"]},
+    ];
+    let sepAdded=false;
+    groupesTotal.forEach(g=>{
+        const actifs=g.briques.filter(b=>briquesActives.some(ba=>norm(ba)===norm(b)));
+        if(actifs.length<2)return;
+        if(!sepAdded){const sep=document.createElement("tr");sep.className="row-sep";sep.innerHTML=`<td colspan="99"></td>`;tbody.appendChild(sep);sepAdded=true;}
+        const tr=document.createElement("tr");tr.className="row-total";
+        let html=`<td>${g.nom}</td>`;
+        elections.forEach((el,i)=>{const v=voixGroupe(actifs,el);html+=`<td>${fmtV(v)}</td>`;if(i>0){const prev=voixGroupe(actifs,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}});
+        tr.innerHTML=html;tbody.appendChild(tr);
+    });
 
     wrap.appendChild(table);
 }
@@ -507,9 +489,10 @@ function appliquer(){
     const f=getFiltres();
     const rowsFR=filtrerZone(DATA,"FR",f.scrutins,f.tours,f.briques);
     const rows43=filtrerZone(DATA,"43",f.scrutins,f.tours,f.briques);
+    const modeBlocs=f.mode==="blocs";
 
-    chartFR=construireChart("chartFR",chartFR,rowsFR,f.abstention);
-    chart43=construireChart("chart43",chart43,rows43,f.abstention);
+    chartFR=construireChart("chartFR",chartFR,rowsFR,f.abstention,modeBlocs);
+    chart43=construireChart("chart43",chart43,rows43,f.abstention,modeBlocs);
 
     const agregFR=agregerVoix(rowsFR);
     const elections=sortElections([...new Set(agregFR.map(r=>r.el))]);
@@ -517,7 +500,78 @@ function appliquer(){
     construireTotaux(rows43,elections,f.briques,"totaux-43");
 }
 
-function fermerPopup(e){ if(e.target===document.getElementById("overlay")) document.getElementById("overlay").classList.remove("visible"); }
+// ── Hémicycle ─────────────────────────────────────────────────────────────────
+let anneeHemiActuelle=2024;
+
+function ouvrirHemicycle(annee){
+    anneeHemiActuelle=annee;
+    document.getElementById('overlay-hemi').classList.add('visible');
+    // Boutons de navigation
+    const nav=document.getElementById('hemi-nav');
+    nav.innerHTML=Object.keys(HEMICYCLE).map(a=>
+        `<button class="btn-hemi-an${parseInt(a)===annee?' actif':''}" onclick="dessinerHemicycle(${a})">${a}</button>`
+    ).join('');
+    dessinerHemicycle(annee);
+}
+
+function dessinerHemicycle(annee){
+    anneeHemiActuelle=annee;
+    // Mettre à jour boutons nav
+    document.querySelectorAll('.btn-hemi-an').forEach(b=>{
+        b.classList.toggle('actif',b.textContent==annee);
+    });
+
+    const data=HEMICYCLE[annee];
+    const cx=280,cy=235,R=195,r=100;
+    let currentAngle=Math.PI;
+    let pathsSVG="",legendHTML="";
+    let totParBloc={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
+
+    data.groupes.forEach(g=>{
+        const sweep=(g.siege/577)*Math.PI;
+        const endAngle=currentAngle-sweep;
+
+        const x1o=(cx+R*Math.cos(currentAngle)).toFixed(1);
+        const y1o=(cy-R*Math.sin(currentAngle)).toFixed(1);
+        const x2o=(cx+R*Math.cos(endAngle)).toFixed(1);
+        const y2o=(cy-R*Math.sin(endAngle)).toFixed(1);
+        const x1i=(cx+r*Math.cos(endAngle)).toFixed(1);
+        const y1i=(cy-r*Math.sin(endAngle)).toFixed(1);
+        const x2i=(cx+r*Math.cos(currentAngle)).toFixed(1);
+        const y2i=(cy-r*Math.sin(currentAngle)).toFixed(1);
+        const large=sweep>Math.PI?1:0;
+
+        pathsSVG+=`<path d="M${x1o} ${y1o} A${R} ${R} 0 ${large} 0 ${x2o} ${y2o} L${x1i} ${y1i} A${r} ${r} 0 ${large} 1 ${x2i} ${y2i}Z" fill="${g.couleur}" stroke="#111" stroke-width="0.8" opacity="0.92"><title>${g.nom} : ${g.siege} sièges</title></path>`;
+
+        legendHTML+=`<div class="hemi-leg-item"><div class="hemi-leg-dot" style="background:${g.couleur}"></div>${g.nom} <strong>(${g.siege})</strong></div>`;
+        currentAngle=endAngle;
+    });
+
+    // Ligne horizontale bas + texte centre
+    pathsSVG+=`<line x1="${cx-R}" y1="${cy}" x2="${cx+R}" y2="${cy}" stroke="rgba(255,255,255,.3)" stroke-width="1"/>`;
+    pathsSVG+=`<text x="${cx}" y="${cy+18}" text-anchor="middle" fill="white" font-size="11" font-weight="bold" font-family="Arial">${data.titre}</text>`;
+    pathsSVG+=`<text x="${cx}" y="${cy+32}" text-anchor="middle" fill="#aaa" font-size="9" font-family="Arial">577 sièges — cliquez sur un segment pour le détail</text>`;
+
+    document.getElementById('hemi-svg').innerHTML=pathsSVG;
+    document.getElementById('hemi-legende').innerHTML=legendHTML;
+
+    // Totaux par grand bloc
+    const blocsCount={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
+    data.groupes.forEach(g=>{
+        const n=norm(g.nom).toLowerCase();
+        if(n.includes("pcf")||n.includes("gdr")||n.includes("fi")||n.includes("insoumis")||n.includes("socialiste")||n.includes("nouvelle gauche")||n.includes("écolog")||n.includes("verts")||n.includes("radical"))
+            blocsCount["Gauche"]+=g.siege;
+        else if(n.includes("rn")||n.includes("fn")||n.includes("reconquête")||n.includes("ciotti")||n.includes("extrême"))
+            blocsCount["Extrême Droite"]+=g.siege;
+        else if(!n.includes("inscrits")&&!n.includes("divers"))
+            blocsCount["Centre+Droite"]+=g.siege;
+    });
+    document.getElementById('hemi-totaux').innerHTML=
+        Object.entries(blocsCount).map(([k,v])=>`<span style="margin-right:14px"><strong>${k}</strong> : ${v} sièges (${((v/577)*100).toFixed(1)}%)</span>`).join('');
+}
+
+// ── Fermeture popups ──────────────────────────────────────────────────────────
+function fermerPopup(id,e){if(e.target===document.getElementById(id))document.getElementById(id).classList.remove('visible');}
 </script>
 </body>
 </html>
