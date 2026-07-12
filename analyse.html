@@ -442,8 +442,8 @@ function construireTotaux(rows,elections,briquesActives,containerId){
     // En-tête : voix + delta après chaque colonne sauf la première
     let thead="<tr><th>Parti</th>";
     elections.forEach((el,i)=>{
-        thead+=`<th>${el}</th>`;
         if(i>0) thead+=`<th>Δ</th>`;
+        thead+=`<th>${el}</th>`;
     });
     thead+="</tr>";
     table.innerHTML=`<thead>${thead}</thead><tbody></tbody>`;
@@ -465,8 +465,8 @@ function construireTotaux(rows,elections,briquesActives,containerId){
         let html=`<td><span style="background:${COULEURS[brique]||'#888'};display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px"></span>${brique}</td>`;
         elections.forEach((el,i)=>{
             const v=voixPour(brique,el);
-            html+=`<td class="voix">${fmtV(v)}</td>`;
             if(i>0){const prev=voixPour(brique,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}
+            html+=`<td class="voix">${fmtV(v)}</td>`;
         });
         tr.innerHTML=html;tbody.appendChild(tr);
     });
@@ -486,8 +486,8 @@ function construireTotaux(rows,elections,briquesActives,containerId){
         let html=`<td>${g.nom}</td>`;
         elections.forEach((el,i)=>{
             const v=voixGroupe(actifs,el);
-            html+=`<td>${fmtV(v)}</td>`;
             if(i>0){const prev=voixGroupe(actifs,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}
+            html+=`<td>${fmtV(v)}</td>`;
         });
         tr.innerHTML=html;tbody.appendChild(tr);
     });
@@ -578,21 +578,6 @@ function dessinerHemicycle(annee){
 
     document.getElementById('hemi-svg').outerHTML=`<div id="hemi-svg">${html}</div>`;
     document.getElementById('hemi-legende').innerHTML="";
-}
-
-    // Totaux par grand bloc
-    const blocsCount={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
-    data.groupes.forEach(g=>{
-        const n=norm(g.nom).toLowerCase();
-        if(n.includes("pcf")||n.includes("gdr")||n.includes("fi")||n.includes("insoumis")||n.includes("socialiste")||n.includes("nouvelle gauche")||n.includes("écolog")||n.includes("verts")||n.includes("radical"))
-            blocsCount["Gauche"]+=g.siege;
-        else if(n.includes("rn")||n.includes("fn")||n.includes("reconquête")||n.includes("ciotti")||n.includes("extrême"))
-            blocsCount["Extrême Droite"]+=g.siege;
-        else if(!n.includes("inscrits")&&!n.includes("divers"))
-            blocsCount["Centre+Droite"]+=g.siege;
-    });
-    document.getElementById('hemi-totaux').innerHTML=
-        Object.entries(blocsCount).map(([k,v])=>`<span style="margin-right:14px"><strong>${k}</strong> : ${v} sièges (${((v/577)*100).toFixed(1)}%)</span>`).join('');
 }
 
 // ── Fermeture popups ──────────────────────────────────────────────────────────
