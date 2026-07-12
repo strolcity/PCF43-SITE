@@ -379,6 +379,65 @@
             border: none;
         }
     </style>
+    <script>
+// Récupère le DID de l'utilisateur (ex: humanite.fr)
+async function getUserDID(handle) {
+    const response = await fetch(`https://bsky.app/xrpc/com.atproto.identity.resolveHandle?handle=${handle}`);
+    const data = await response.json();
+    return data.did;
+}
+
+// Récupère les posts de l'utilisateur
+async function getUserPosts(did, limit = 10) {
+    const response = await fetch(`https://bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${did}&limit=${limit}`);
+    const data = await response.json();
+    return data.feed;
+}
+
+// Affiche les posts dans le diaporama
+async function displayBlueskyPosts() {
+    const handle = "humanite.fr"; // Compte à surveiller
+    const did = await getUserDID(handle);
+    const posts = await getUserPosts(did, 10);
+
+    const blueskyPostsContainer = document.getElementById('blueskyPosts');
+    blueskyPostsContainer.innerHTML = ""; // Vide le conteneur
+
+    // Pour chaque post, crée une miniature
+    posts.forEach((post, index) => {
+        const postElement = document.createElement('div');
+        postElement.className = 'bluesky-post';
+
+        // Si le post a une image, utilise-la comme fond
+        if (post.post.embed?.images?.[0]?.images?.[0]?.url) {
+            const imageUrl = post.post.embed.images[0].images[0].url;
+            postElement.style.backgroundImage = `url('${imageUrl}')`;
+        } else {
+            // Sinon, utilise un fond par défaut
+            postElement.style.backgroundColor = "#333";
+            postElement.style.display = "flex";
+            postElement.style.alignItems = "center";
+            postElement.style.justifyContent = "center";
+            postElement.textContent = "Post sans image";
+        }
+
+        if (index === 0) postElement.classList.add('active');
+        blueskyPostsContainer.appendChild(postElement);
+    });
+
+    // Lance le défilement automatique
+    let currentPostIndex = 0;
+    setInterval(() => {
+        const posts = document.querySelectorAll('.bluesky-post');
+        posts[currentPostIndex].classList.remove('active');
+        currentPostIndex = (currentPostIndex + 1) % posts.length;
+        posts[currentPostIndex].classList.add('active');
+    }, 3000);
+}
+
+// Appel au chargement de la page
+window.addEventListener('load', displayBlueskyPosts);
+</script>
 </head>
 <body>
     <!-- Diaporama des posts Bluesky (réduit) -->
