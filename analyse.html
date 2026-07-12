@@ -134,7 +134,7 @@
         <h2>🏛 Composition de l'Assemblée Nationale</h2>
         <p style="font-size:.8em;color:#aaa;margin-bottom:10px;">Ces données servent à calculer le prorata de ventilation des alliances composites.</p>
         <div class="hemi-nav" id="hemi-nav"></div>
-        <svg id="hemi-svg" viewBox="0 0 560 260" style="width:100%;"></svg>
+        <div id="hemi-svg" style="margin:4px 0 8px 0;"></div>
         <div class="hemi-legende" id="hemi-legende"></div>
         <div id="hemi-totaux" style="margin-top:10px;font-size:.8em;color:#aaa;"></div>
     </div>
@@ -435,12 +435,16 @@ function construireTotaux(rows,elections,briquesActives,containerId){
     const wrap=document.getElementById(containerId);
     wrap.innerHTML="";
     if(elections.length<1)return;
-    wrap.innerHTML="<h4>📈 Totaux & évolution</h4>";
+    wrap.innerHTML="<h4>📈 Totaux & évolution <small style='color:#aaa;font-size:.78em'>(Δ entre chaque scrutin consécutif)</small></h4>";
     const table=document.createElement("table");
     table.className="tbl-totaux";
 
+    // En-tête : voix + delta après chaque colonne sauf la première
     let thead="<tr><th>Parti</th>";
-    elections.forEach((el,i)=>{thead+=`<th>${el}</th>`;if(i>0)thead+="<th>Δ</th>";});
+    elections.forEach((el,i)=>{
+        thead+=`<th>${el}</th>`;
+        if(i>0) thead+=`<th>Δ</th>`;
+    });
     thead+="</tr>";
     table.innerHTML=`<thead>${thead}</thead><tbody></tbody>`;
     const tbody=table.querySelector("tbody");
@@ -448,7 +452,6 @@ function construireTotaux(rows,elections,briquesActives,containerId){
     const agregat=agregerVoix(rows);
     const voixPour=(brique,el)=>{const f=agregat.find(r=>r.el===el&&norm(r.brique)===norm(brique));return f?Math.round(f.voix):0;};
     const voixGroupe=(briques,el)=>briques.reduce((s,b)=>s+voixPour(b,el),0);
-
     const fmtV=v=>v>0?v.toLocaleString("fr-FR"):"—";
     const fmtD=(v,prev)=>{
         if(prev===0||v===0)return'<span class="neutre">—</span>';
@@ -459,8 +462,12 @@ function construireTotaux(rows,elections,briquesActives,containerId){
 
     briquesActives.forEach(brique=>{
         const tr=document.createElement("tr");
-        let html=`<td><span class="dot" style="background:${COULEURS[brique]||'#888'};display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px"></span>${brique}</td>`;
-        elections.forEach((el,i)=>{const v=voixPour(brique,el);html+=`<td class="voix">${fmtV(v)}</td>`;if(i>0){const prev=voixPour(brique,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}});
+        let html=`<td><span style="background:${COULEURS[brique]||'#888'};display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px"></span>${brique}</td>`;
+        elections.forEach((el,i)=>{
+            const v=voixPour(brique,el);
+            html+=`<td class="voix">${fmtV(v)}</td>`;
+            if(i>0){const prev=voixPour(brique,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}
+        });
         tr.innerHTML=html;tbody.appendChild(tr);
     });
 
@@ -477,7 +484,11 @@ function construireTotaux(rows,elections,briquesActives,containerId){
         if(!sepAdded){const sep=document.createElement("tr");sep.className="row-sep";sep.innerHTML=`<td colspan="99"></td>`;tbody.appendChild(sep);sepAdded=true;}
         const tr=document.createElement("tr");tr.className="row-total";
         let html=`<td>${g.nom}</td>`;
-        elections.forEach((el,i)=>{const v=voixGroupe(actifs,el);html+=`<td>${fmtV(v)}</td>`;if(i>0){const prev=voixGroupe(actifs,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}});
+        elections.forEach((el,i)=>{
+            const v=voixGroupe(actifs,el);
+            html+=`<td>${fmtV(v)}</td>`;
+            if(i>0){const prev=voixGroupe(actifs,elections[i-1]);html+=`<td>${fmtD(v,prev)}</td>`;}
+        });
         tr.innerHTML=html;tbody.appendChild(tr);
     });
 
@@ -516,44 +527,58 @@ function ouvrirHemicycle(annee){
 
 function dessinerHemicycle(annee){
     anneeHemiActuelle=annee;
-    // Mettre à jour boutons nav
     document.querySelectorAll('.btn-hemi-an').forEach(b=>{
         b.classList.toggle('actif',b.textContent==annee);
     });
 
     const data=HEMICYCLE[annee];
-    const cx=280,cy=235,R=195,r=100;
-    let currentAngle=Math.PI;
-    let pathsSVG="",legendHTML="";
-    let totParBloc={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
+    const maxSiege=Math.max(...data.groupes.map(g=>g.siege));
+    let html="";
 
+    // Titre
+    html+=`<div style="font-size:.9em;color:#ffcccc;font-weight:bold;margin-bottom:12px">${data.titre}</div>`;
+
+    // Barres horizontales
+    html+=`<div style="display:flex;flex-direction:column;gap:5px;">`;
     data.groupes.forEach(g=>{
-        const sweep=(g.siege/577)*Math.PI;
-        const endAngle=currentAngle-sweep;
+        const pct=((g.siege/577)*100).toFixed(1);
+        const barW=((g.siege/maxSiege)*100).toFixed(1);
+        html+=`
+        <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:170px;font-size:.78em;color:#e0e0e0;text-align:right;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${g.nom}">${g.nom}</div>
+            <div style="flex:1;background:rgba(255,255,255,.07);border-radius:3px;height:20px;position:relative;">
+                <div style="width:${barW}%;background:${g.couleur};height:100%;border-radius:3px;opacity:.9;transition:width .4s"></div>
+                <span style="position:absolute;left:6px;top:50%;transform:translateY(-50%);font-size:.78em;color:white;font-weight:bold;pointer-events:none">${g.siege} <span style="opacity:.7;font-weight:normal">(${pct}%)</span></span>
+            </div>
+        </div>`;
+    });
+    html+=`</div>`;
 
-        const x1o=(cx+R*Math.cos(currentAngle)).toFixed(1);
-        const y1o=(cy-R*Math.sin(currentAngle)).toFixed(1);
-        const x2o=(cx+R*Math.cos(endAngle)).toFixed(1);
-        const y2o=(cy-R*Math.sin(endAngle)).toFixed(1);
-        const x1i=(cx+r*Math.cos(endAngle)).toFixed(1);
-        const y1i=(cy-r*Math.sin(endAngle)).toFixed(1);
-        const x2i=(cx+r*Math.cos(currentAngle)).toFixed(1);
-        const y2i=(cy-r*Math.sin(currentAngle)).toFixed(1);
-        const large=sweep>Math.PI?1:0;
-
-        pathsSVG+=`<path d="M${x1o} ${y1o} A${R} ${R} 0 ${large} 0 ${x2o} ${y2o} L${x1i} ${y1i} A${r} ${r} 0 ${large} 1 ${x2i} ${y2i}Z" fill="${g.couleur}" stroke="#111" stroke-width="0.8" opacity="0.92"><title>${g.nom} : ${g.siege} sièges</title></path>`;
-
-        legendHTML+=`<div class="hemi-leg-item"><div class="hemi-leg-dot" style="background:${g.couleur}"></div>${g.nom} <strong>(${g.siege})</strong></div>`;
-        currentAngle=endAngle;
+    // Totaux par grand bloc
+    const blocsCount={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
+    data.groupes.forEach(g=>{
+        const n=norm(g.nom).toLowerCase();
+        if(n.includes("pcf")||n.includes("gdr")||n.includes("fi")||n.includes("insoumis")||
+           n.includes("socialiste")||n.includes("nouvelle gauche")||n.includes("écolog")||
+           n.includes("verts")||n.includes("radical"))
+            blocsCount["Gauche"]+=g.siege;
+        else if(n.includes("rn")||n.includes("fn")||n.includes("reconquête")||
+                n.includes("ciotti")||n.includes("extrême"))
+            blocsCount["Extrême Droite"]+=g.siege;
+        else if(!n.includes("non inscrits"))
+            blocsCount["Centre+Droite"]+=g.siege;
     });
 
-    // Ligne horizontale bas + texte centre
-    pathsSVG+=`<line x1="${cx-R}" y1="${cy}" x2="${cx+R}" y2="${cy}" stroke="rgba(255,255,255,.3)" stroke-width="1"/>`;
-    pathsSVG+=`<text x="${cx}" y="${cy+18}" text-anchor="middle" fill="white" font-size="11" font-weight="bold" font-family="Arial">${data.titre}</text>`;
-    pathsSVG+=`<text x="${cx}" y="${cy+32}" text-anchor="middle" fill="#aaa" font-size="9" font-family="Arial">577 sièges — cliquez sur un segment pour le détail</text>`;
+    html+=`<div style="margin-top:14px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-wrap:wrap;gap:14px;">`;
+    const coulBloc={"Gauche":"#ff8888","Centre+Droite":"#ffee88","Extrême Droite":"#8888ff"};
+    Object.entries(blocsCount).forEach(([k,v])=>{
+        html+=`<span style="color:${coulBloc[k]};font-size:.85em"><strong>${k}</strong> : ${v} sièges (${((v/577)*100).toFixed(1)}%)</span>`;
+    });
+    html+=`</div>`;
 
-    document.getElementById('hemi-svg').innerHTML=pathsSVG;
-    document.getElementById('hemi-legende').innerHTML=legendHTML;
+    document.getElementById('hemi-svg').outerHTML=`<div id="hemi-svg">${html}</div>`;
+    document.getElementById('hemi-legende').innerHTML="";
+}
 
     // Totaux par grand bloc
     const blocsCount={Gauche:0,"Centre+Droite":0,"Extrême Droite":0};
