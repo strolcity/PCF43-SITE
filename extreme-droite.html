@@ -3,68 +3,465 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCF 43 - Extrême-droite</title>
+    <title>PCF 43 - Les dangers de l'extrême droite</title>
     <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
     <style>
+        /* Reset et base */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
             background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: white;
-            text-align: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: #ff5555;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
         h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-size: 2.5em;
+            text-align: center;
             margin-bottom: 20px;
+            animation: glow 2s infinite alternate;
         }
-        .logo {
+
+        @keyframes glow {
+            from { text-shadow: 1px 1px 3px rgba(255, 85, 85, 0.5); }
+            to { text-shadow: 1px 1px 10px rgba(255, 85, 85, 1); }
+        }
+
+        /* Animation machine à écrire */
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #ff5555;
+            white-space: nowrap;
+            margin: 10px auto;
+            animation: typing 3s steps(50, end), blink-caret 0.75s step-end infinite;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            color: #ffaa00;
+            width: fit-content;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff5555; }
+        }
+
+        /* Défilement des slogans */
+        .scrolling-text {
+            overflow: hidden;
+            white-space: nowrap;
+            background: linear-gradient(90deg, #ff5555, #ffaa00, #ff5555);
+            padding: 10px 0;
+            margin: 20px auto;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .scrolling-text span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 10s linear infinite;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-100%); }
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-left: 4px solid #ff5555;
+            background-color: rgba(20, 20, 20, 0.5);
+            border-radius: 5px;
+        }
+
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Images et GIFs */
+        .image-container {
+            text-align: center;
+            margin: 20px auto;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Images carrées pour Trump et Bolsonaro */
+        .square-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        /* Images pour les méthodes (balance, TV) */
+        .method-img {
             width: 150px;
             height: 150px;
-            border-radius: 50%;
-            border: 4px solid #d32f2f;
-            background: rgba(0,0,0,0.45);
+            object-fit: contain;
+        }
+
+        /* Cartes pour les exemples */
+        .examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .example-card {
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid #ff5555;
+            border-radius: 8px;
+            padding: 15px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 85, 85, 0.7);
+        }
+
+        .example-card h3 {
+            color: #ffaa00;
+            margin-top: 0;
+        }
+
+        .example-card p {
+            margin-bottom: 10px;
+        }
+
+        .example-card a {
+            color: #ff5555;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .example-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Slogans */
+        .slogan {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #ffaa00;
+            text-align: center;
+            margin: 20px 0;
             padding: 10px;
-            margin-bottom: 20px;
+            background-color: rgba(255, 170, 0, 0.1);
+            border-radius: 5px;
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
         }
-        .construction {
-            font-size: 1.5em;
-            background: rgba(0,0,0,0.7);
+
+        /* Section avec image à droite et texte à gauche */
+        .split-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .split-section .text-box {
+            flex: 1;
+            background-color: rgba(30, 30, 30, 0.7);
+            border: 1px solid #ff5555;
+            border-radius: 8px;
             padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
         }
-        a {
-            color: #ffeb3b;
-            text-decoration: none;
-            margin-top: 20px;
+
+        .split-section .image-box {
+            flex: 0 0 200px;
         }
-        a:hover {
+
+        .split-section img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Pop-up Caliméro */
+        .calimero-popup {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+            border: 3px solid #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
+        }
+
+        .calimero-popup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Style pour le mot "Caliméros" */
+        .calimero-trigger {
+            position: relative;
+            display: inline-block;
+            color: #ffaa00;
+            font-weight: bold;
+            cursor: pointer;
             text-decoration: underline;
+            text-decoration-color: #ffaa00;
+        }
+
+        .calimero-trigger:hover .calimero-popup {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+        }
+
+        footer a {
+            color: #ff5555;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .examples {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .example-card {
+                width: 100%;
+            }
+
+            .split-section {
+                flex-direction: column;
+            }
+
+            .split-section .image-box {
+                flex: none;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .calimero-popup {
+                width: 250px;
+                height: 250px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>
 <body>
-    <img src="https://i.postimg.cc/6qd4xJ6k/maxresdefault.jpg" alt="Extrême-droite" class="logo">
-    <h1>Extrême-droite</h1>
-    <div class="construction">
-        Page en construction
+    <div class="container">
+        <!-- Introduction -->
+        <h1>🔴 L’extrême droite, un risque systémique</h1>
+
+        <div class="typewriter">"Les partis d’extrême droite ne sont pas des partis comme les autres."</div>
+
+        <p>Une fois au pouvoir, ils ont du mal à le lâcher.</p>
+
+        <div class="examples">
+            <div class="example-card">
+                <img src="https://i.postimg.cc/WbGz4QFS/Trump-capitol.jpg" alt="Donald Trump au Capitole" class="square-img">
+                <h3>Donald Trump (USA, 2021)</h3>
+                <p>Refus de sa défaite, assaut du Capitole.</p>
+                <a href="https://www.mediapart.fr/journal/dossier/international/attaque-contre-le-capitole-retour-sur-un-coup-d-etat-avorte" target="_blank">→ Dossier Mediapart</a>
+            </div>
+            <div class="example-card">
+                <img src="https://i.postimg.cc/jdH2jGwX/bolsorano-brazavil.jpg" alt="Jair Bolsonaro" class="square-img">
+                <h3>Jair Bolsonaro (Brésil, 2023)</h3>
+                <p>Tentative de coup d’État après sa défaite.</p>
+                <a href="https://www.rtbf.be/article/bresil-l-ancien-president-jair-bolsonaro-est-reconnu-coupable-d-un-coup-d-etat-11599845" target="_blank">→ Article RTBF</a>
+            </div>
+        </div>
+
+        <p>Pourtant ces "chefs d’État" ont été élus démocratiquement. Et en France, qui appellerait ses électeurs à manifester devant le Palais Bourbon pour imposer ses réformes ?</p>
+        <p>L’Histoire montre que l’extrême droite ne respecte les règles démocratiques que quand ça l’arrange.</p>
+
+        <div class="scrolling-text">
+            <span>"Pas en France... ah bon ?" &nbsp;&nbsp;&nbsp; "Pas en France... ah bon ?" &nbsp;&nbsp;&nbsp; "Pas en France... ah bon ?"</span>
+        </div>
+
+        <!-- Méthode 1 : Attaquer la justice -->
+        <div class="section">
+            <h2><img src="https://i.postimg.cc/zGQ2F32x/balance.gif" alt="Balance" class="method-img"> 1ère Méthode : Attaquer la justice</h2>
+
+            <h3>🔹 Marine Le Pen :</h3>
+            <p><strong>Condamnation pour emplois fictifs (2021) :</strong></p>
+            <p><a href="https://www.rtbf.be/article/affaire-des-assistants-parlementaires-du-rn-retour-sur-dix-ans-d-une-procedure-qui-pourrait-arreter-marine-le-pen-aux-portes-du-pouvoir-11525787" target="_blank">→ Article RTBF : toute l'histoire</a></p>
+            <p><strong>Réaction :</strong> Accuse la justice et c'est CNews qui en parle le mieux.</p>
+            <p><a href="https://www.cnews.fr/france/2025-03-31/en-direct-proces-du-rn-est-en-train-de-voler-aux-francais-leur-capacite-de" target="_blank">→ CNews : Procès du RN</a></p>
+            <p><a href="https://rassemblementnational.fr/petition/defendez-la-democratie-soutenez-marine" target="_blank">→ Pétition "Sauvons la démocratie, soutenons Marine"</a></p>
+
+            <h3>🔹 Éric Zemmour (Reconquête!) : le champion des condamnations</h3>
+            <p><strong>Condamnations pour provocation à la haine raciale :</strong></p>
+            <p>2018 : Condamné pour apologie du régime de Vichy → <a href="https://www.humanite.fr/politique/eric-zemmour/petain-sauveur-des-juifs-francais-eric-zemmour-de-nouveau-condamne-en-appel" target="_blank">L'Humanité</a></p>
+            <p>2021 : Condamné pour incitation à la haine envers les musulmans → <a href="https://www.humanite.fr/politique/eric-zemmour/racisme-eric-zemmour-condamne-pour-la-deuxieme-fois-en-deux-semaines" target="_blank">L'Humanité</a></p>
+            <p><strong>Réaction :</strong> c'est encore CNews qui en parle le mieux → <a href="https://www.cnews.fr/france/2026-06-23/deterioration-de-la-justice-immigration-negative-opposition-bruno-retailleau-ce" target="_blank">CNews</a></p>
+
+            <h3>🔹 Laurent Wauquiez (LR) : l’extrême droite "respectable" ?</h3>
+            <p><strong>Notre animal et "l'état de droit" :</strong> <a href="https://www.cnews.fr/france/2024-01-25/censure-de-la-loi-immigration-laurent-wauquiez-denonce-un-coup-detat-de-droit" target="_blank">→ CNews</a></p>
+            <p><strong>On verra ses réactions une fois toutes ses gamelles jugées définitivement :</strong> <a href="https://poligraph.fr/politiques/laurent-wauquiez?tab=affaires" target="_blank">→ Poligraph</a></p>
+
+            <div class="slogan">
+                "Chez l’extrême droite, la justice est toujours ‘politisée’… sauf quand elle les condamne."
+            </div>
+        </div>
+
+        <!-- Méthode 2 : Attaquer les médias -->
+        <div class="section">
+            <h2><img src="https://i.postimg.cc/0NQMPy9H/tv.gif" alt="TV" class="method-img"> 2ème Méthode : Attaquer les médias publics pour contrôler l’information</h2>
+
+            <h3>L’extrême droite contre les médias : la guerre de l’information</h3>
+            <p><strong>🔹 La commission d’enquête sur l’audiovisuel public (2024) :</strong></p>
+            <p>Objet : Enquête parlementaire (UDR) sur "l’impartialité" de France Télévisions, Radio France, et Arte.</p>
+            <p>But réel : Affaiblir les médias publics pour favoriser les chaînes privées (CNews, Valeurs actuelles).</p>
+            <p>Conclusion : Accusations de "partialité de gauche" sans preuves tangibles.</p>
+            <p><a href="https://www.assemblee-nationale.fr/dyn/17/organes/autres-commissions/commissions-enquete/ce-audiovisuel-public" target="_blank">→ Rapport officiel de l'Assemblée nationale</a></p>
+            <p><a href="https://static.francetelevisions.fr/inline-images/20260513%20R%C3%A9ponse%20FTV%20Rapport%20CE%20v2.pdf" target="_blank">→ Réponse de France Télévisions</a></p>
+
+            <h3>🔹 Déclarations de Laurent Wauquiez contre les médias :</h3>
+            <p><a href="https://www.lejdd.fr/politique/laurent-wauquiez-au-jdd-faire-sauter-les-verrous-de-limpuissance-142198" target="_blank">→ Le JDD : "Faire sauter les verrous de l’impuissance"</a></p>
+
+            <h3>🔹 Éric Zemmour et la désinformation :</h3>
+            <p><a href="https://www.ouest-france.fr/politique/eric-zemmour/presidentielle-2022-eric-zemmour-veut-privatiser-france-inter-et-france-televisions-18eafbd8-5d7d-11ec-b4ec-97a0d7a10b5e" target="_blank">→ Ouest France : Vive Bolloré TV</a></p>
+
+            <h3>🔹 Marine Le Pen :</h3>
+            <p><a href="https://www.challenges.fr/politique/exclusion-par-marine-le-pen-de-journalistes-le-controle-des-medias-par-les-politiques-est-dans-l-air-du-temps_809419" target="_blank">→ Challenges : "C’est moi qui choisis"</a></p>
+
+            <div class="slogan">
+                "L’extrême droite et les médias : quand on ne peut pas gagner le débat, on tue le messager."
+            </div>
+        </div>
+
+        <!-- Méthode 3 : Changer la Constitution -->
+        <div class="section">
+            <h2><img src="https://i.postimg.cc/0NQMPy9H/tv.gif" alt="TV" class="method-img"> 3ème Méthode : Changer la Constitution : un jeu dangereux</h2>
+
+            <h3>🔹 Proposition de loi RN (2024) :</h3>
+            <p>Objectif : Supprimer le droit du sol pour la nationalité française.</p>
+            <p>Conséquence : Créer une société à deux vitesses, avec des enfants nés en France mais apatrides.</p>
+            <p><strong>Quid il restera que le droit du sang alors ?</strong>… l’hémicycle à l’extrême droite risque d’être restreint rapidement.</p>
+            <p><a href="https://www.assemblee-nationale.fr/dyn/16/textes/l16b2120_proposition-loi" target="_blank">→ Assemblée nationale – Proposition de loi n°2120</a></p>
+
+            <div class="slogan">
+                "La Constitution, c’est comme un contrat de mariage : quand on veut la changer, c’est souvent pour tromper l’autre."
+            </div>
+        </div>
+
+        <!-- Section historique : Vichy -->
+        <div class="section">
+            <h2>Vous avez déjà entendu : "on n'a jamais essayé"... et bien si !</h2>
+
+            <h3>Le régime de Vichy (1940-1944)</h3>
+            <p>L’extrême droite française a déjà gouverné. Résultat : collaboration, répression, et crimes contre l’humanité.</p>
+
+            <h4>📌 Preuves officielles :</h4>
+            <p>🔹 <strong>Dissolution du PCF</strong> (JO 27/09/1939) → <a href="https://www.legifrance.gouv.fr/download/securePrint?token=r0UiaovEVbC!CoKDqDSf" target="_blank">Légifrance</a></p>
+            <p>🔹 <strong>Statut des Juifs</strong> (3 octobre 1940) → <a href="https://www.legifrance.gouv.fr/download/securePrint?token=Ota7dSV8bk$hz8Oiximy" target="_blank">Légifrance</a></p>
+
+            <p>On ne va pas faire les
+                <span class="calimero-trigger">
+                    Caliméros
+                    <div class="calimero-popup">
+                        <img src="https://i.postimg.cc/05L89C9C/injuste-calimero-775595350.gif" alt="Caliméro">
+                    </div>
+                </span>, mais quand on entend les réflexions de certains comme quoi les communistes étaient les premiers collaborateurs, cela nous fait doucement rire :</p>
+            <p><strong>A l'époque, ils étaient vraiment cons ces cocos de collaborer avec ceux qui les ont mis dans la clandestinité.</strong></p>
+
+            <div class="split-section">
+                <div class="text-box">
+                    <p>Et puis sans blagues, en France nous avons eu à la tête du pays 2 grands Bolcheviks le couteau entre les dents :</p>
+                    <p>🔹 <strong>Le premier</strong> qui a fait une loi pour faire lire à l'école la lettre de Guy Moquet à nos enfants → <a href="https://parolesdhommesetdefemmes.fr/lettre-de-guy-moquet" target="_blank">Lettre de Guy Moquet</a></p>
+                    <p>🔹 <strong>Le deuxième</strong> qui envoie au Panthéon Missak, Mélinée et le groupe Manouchian (et pourtant 2 refus de nationalisation française) → <a href="https://www.defense.gouv.fr/actualites/missak-manouchian-au-pantheon-hommage-national-francais-preference" target="_blank">Ministère des Armées</a></p>
+                    <p><strong>L'anti-communiste persiste, mais bon eux vont se recueillir à l'île d'Yeu...</strong></p>
+                </div>
+                <div class="image-box">
+                    <img src="https://i.postimg.cc/Hsp7DYn4/bolchevik.webp" alt="Bolchevik">
+                </div>
+            </div>
+
+            <div class="slogan">
+                "L’extrême droite, c’est comme un virus : ça commence par un petit rhume, et ça finit en pandémie."
+            </div>
+        </div>
     </div>
-    <a href="index.html">← Retour à l'accueil</a>
+
+    <footer>
+        <p>PCF 43 - <a href="index.html">Retour à l'accueil</a></p>
+    </footer>
 </body>
 </html>
