@@ -88,6 +88,22 @@
         .hemi-legende{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
         .hemi-leg-item{display:flex;align-items:center;gap:4px;font-size:.75em;color:#e0e0e0;}
         .hemi-leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+        /* TABLEAU ANALYSES */
+        .section-analyses { margin-top: 20px; }
+        .analyses-note { font-size:.82em; color:#aaa; margin-bottom:14px; font-style:italic; }
+        .analyses-groupe { margin-bottom:22px; }
+        .analyses-groupe-titre { font-size:.78em; text-transform:uppercase; letter-spacing:1px; color:#ffaaaa; margin-bottom:8px; padding-bottom:5px; border-bottom:1px solid rgba(255,100,100,.3); }
+        table.tbl-analyses { width:100%; border-collapse:collapse; font-size:.82em; }
+        table.tbl-analyses th { background:rgba(255,255,255,.08); color:#ffcccc; padding:8px 10px; text-align:left; border-bottom:1px solid rgba(255,255,255,.15); white-space:nowrap; }
+        table.tbl-analyses td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top; line-height:1.5; }
+        table.tbl-analyses td:first-child { color:#fff; font-weight:bold; width:28%; }
+        table.tbl-analyses td:nth-child(2) { color:#aad4ff; font-size:.8em; width:32%; }
+        table.tbl-analyses td:nth-child(3) { color:#d4ffaa; font-size:.8em; width:34%; font-style:italic; }
+        table.tbl-analyses td:last-child { width:6%; text-align:center; }
+        table.tbl-analyses tr:hover td { background:rgba(255,255,255,.04); }
+        .btn-apply-analyse { background:#d32f2f; color:white; border:none; padding:5px 10px; border-radius:5px; font-size:.76em; cursor:pointer; transition:background .2s; white-space:nowrap; }
+        .btn-apply-analyse:hover { background:#b71c1c; }
+        .analyse-tag { display:inline-block; background:rgba(255,255,255,.1); border-radius:3px; padding:1px 5px; font-size:.72em; margin-bottom:2px; }
         #msg{text-align:center;padding:40px;font-size:1.05em;opacity:.8;}
     </style>
 </head>
@@ -241,6 +257,14 @@
             </table>
         </div>
     </div>
+
+    <!-- NOTRE ANALYSE -->
+    <div class="section-analyses carte" id="section-analyses" style="display:none;margin-top:20px;">
+        <h3>🔍 Notre Analyse — Pistes d'interprétation</h3>
+        <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
+        <p class="analyses-note">Cliquez sur "▶ Voir" pour configurer automatiquement les filtres et observer les données par vous-même. Les conclusions proposées sont des interprétations à confronter aux données.</p>
+        <div id="analyses-container"></div>
+    </div>
 </div>
 
 <script>
@@ -327,6 +351,8 @@ fetch("data/ventillees.json")
         document.getElementById("panneau-filtres").style.display="block";
         document.getElementById("graphiques").style.display="grid";
         document.getElementById("section-elus").style.display="block";
+        document.getElementById("section-analyses").style.display="block";
+        renderAnalyses();
         appliquer();
     })
     .catch(e=>{document.getElementById("msg").textContent="⚠ "+e.message;});
@@ -578,6 +604,191 @@ function dessinerHemicycle(annee){
 
     document.getElementById('hemi-svg').outerHTML=`<div id="hemi-svg">${html}</div>`;
     document.getElementById('hemi-legende').innerHTML="";
+}
+
+// ── Données d'analyses ────────────────────────────────────────────────────────
+const GROUPES_ANALYSES = [
+    {
+        groupe: "A — Mobilisation : qui s'abstient selon quel scrutin ?",
+        items: [
+            {
+                observation: "L'extrême-droite se mobilise-t-elle mieux pour les présidentielles que la gauche ?",
+                filtrer: "Cochez Gauche (PCF+LFI+EELV+PS) + Extrême Droite — PRES+LEG — T1 — Vue par 3 blocs. Comparez la hauteur relative des barres EXD vs Gauche entre PRES et LEG.",
+                tags: ["PCF","LFI","EELV","PS","Extrême Droite"],
+                config: { briques:["PCF","LFI","EELV","PS","Extrême Droite"], scrutins:["PRES","LEG"], tours:["T1"], mode:"blocs" },
+                suggestion: "Si la barre EXD chute proportionnellement moins que la barre Gauche entre PRES et LEG, les électeurs RN/FN se mobilisent davantage pour les présidentielles. Cela confirmerait que l'électorat RN est un électorat de rejet du système (vote 'coup de poing') plus que de conviction militante."
+            },
+            {
+                observation: "Quel bloc résiste le mieux à l'abstention aux législatives ?",
+                filtrer: "Cochez tous les partis — PRES+LEG — T1 — Vue par 3 blocs. Observez quelle couleur disparaît le plus entre PRES et LEG. La courbe d'abstention confirme la tendance globale.",
+                tags: ["Tous","PRES+LEG","T1"],
+                config: { briques:["LO/NPA","PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"], scrutins:["PRES","LEG"], tours:["T1"], mode:"blocs" },
+                suggestion: "La Gauche radicale (LFI/PCF) tend à mieux résister aux législatives qu'aux présidentielles en termes relatifs — l'électorat militant vote même sans 'star' nationale. L'extrême-droite montre l'inverse : forte aux PRES, structurellement plus faible aux LEG."
+            },
+            {
+                observation: "Score réel : qui a vraiment une base populaire ? (% inscrits vs % exprimés)",
+                filtrer: "Cochez tous les partis — PRES — T1 — Vue globale. Observez la courbe d'abstention (axe droit) et rappelez-vous que 30% des exprimés avec 65% de participation = seulement 19% des inscrits.",
+                tags: ["Tous","PRES","T1"],
+                config: { briques:["PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"], scrutins:["PRES"], tours:["T1"], mode:"blocs" },
+                suggestion: "Aucun bloc ne représente une majorité des inscrits. Le vainqueur de la présidentielle obtient généralement ~20-25% des inscrits. Cela interroge la légitimité réelle de tout mandat présidentiel face à une abstention structurellement croissante."
+            }
+        ]
+    },
+    {
+        groupe: "B — Effets politiques lisibles dans les chiffres",
+        items: [
+            {
+                observation: "Vote utile 2022 : Mélenchon a-t-il 'aspiré' les voix PS et EELV ?",
+                filtrer: "Cochez LFI + PS + EELV — PRES+LEG — T1 — Vue globale. Observez le delta PRES 2022 → LEG 2022 : LFI perd les 2/3 de ses voix, pendant que PS remonte.",
+                tags: ["LFI","PS","EELV","PRES+LEG","T1"],
+                config: { briques:["LFI","PS","EELV"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "LFI passe d'environ 7,7M (PRES 2022) à 2,4M (LEG 2022). Ces ~5M de voix 'disparaissent' ou migrent vers PS/abstention. Cela confirme un vote utile massif pour Mélenchon au 1er tour de la présidentielle par peur de Le Pen, voix qui sont retournées à leur 'camp naturel' aux législatives."
+            },
+            {
+                observation: "L'effet Macron 2017 : PS et LR saignés au même moment",
+                filtrer: "Cochez PS + Droite + Centre — PRES+LEG — T1 — Vue globale. Comparez 2012 vs 2017 : PS et LR chutent simultanément tandis que le Centre explose.",
+                tags: ["PS","Droite","Centre","PRES+LEG","T1"],
+                config: { briques:["PS","Droite","Centre"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "En 2017, le Centre (Macron) capte environ la moitié du report PS et la moitié du report LR. Ce phénomène inédit de dépassement gauche-droite explique l'effondrement simultané des deux partis historiques de gouvernement. Macron a 'mangé' les deux côtés."
+            },
+            {
+                observation: "L'unité de la gauche paie-t-elle électoralement ?",
+                filtrer: "Cochez PCF+LFI+PS+EELV — LEG uniquement — T1 — Vue globale. Comparez le total des 4 partis en 2017 (divisés) vs 2022 (NUPES) vs 2024 (NFP).",
+                tags: ["PCF","LFI","PS","EELV","LEG","T1"],
+                config: { briques:["PCF","LFI","PS","EELV"], scrutins:["LEG"], tours:["T1"], mode:"global" },
+                suggestion: "La gauche unie en NUPES (2022) dépasse largement la gauche divisée de 2017 en nombre de voix total. Le NFP 2024 maintient globalement ce niveau. Cela suggère que l'unité électorale est mathématiquement bénéfique, même si la répartition interne des sièges crée des tensions."
+            },
+            {
+                observation: "NFP 2024 vs NUPES 2022 : progression ou recul après la dissolution ?",
+                filtrer: "Cochez PCF+LFI+PS+EELV — LEG uniquement — T1 — Vue globale. Comparez les colonnes 2022 et 2024.",
+                tags: ["PCF","LFI","PS","EELV","LEG 2022 vs 2024"],
+                config: { briques:["PCF","LFI","PS","EELV"], scrutins:["LEG"], tours:["T1"], mode:"global" },
+                suggestion: "Le NFP 2024 montre une légère progression globale par rapport à NUPES 2022 malgré la surprise de la dissolution. Mais la recomposition interne est profonde : LFI recule, PS progresse fortement, PCF maintient. Le rapport de forces au sein de la gauche a changé."
+            }
+        ]
+    },
+    {
+        groupe: "C — Tendances longues (2012→2024)",
+        items: [
+            {
+                observation: "L'effondrement du PS : de premier parti à partenaire minoritaire",
+                filtrer: "Cochez PS uniquement — PRES+LEG — T1 — Vue globale. Tracez la chute de 2012 à 2022.",
+                tags: ["PS","PRES+LEG","T1"],
+                config: { briques:["PS"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "Le PS perd environ 80% de ses voix présidentielles entre 2012 (Hollande : ~10M) et 2022 (Hidalgo : ~600k). Ce n'est pas une crise conjoncturelle mais une transformation structurelle : l'électorat de centre-gauche a migré vers Macron, laissant un PS réduit à son noyau militant."
+            },
+            {
+                observation: "La montée du RN : à quel rythme et depuis quand ça s'accélère ?",
+                filtrer: "Cochez Extrême Droite uniquement — PRES+LEG — T1 — Vue globale. Observez la courbe de progression.",
+                tags: ["Extrême Droite","PRES+LEG","T1"],
+                config: { briques:["Extrême Droite"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "L'extrême-droite triple approximativement ses scores entre 2012 et 2024. La progression est continue mais s'accélère nettement après 2017, portée par la 'dédiabolisation' et la crise de confiance envers les partis de gouvernement. La résistance aux LEG révèle une implantation locale croissante."
+            },
+            {
+                observation: "PCF : déclin lent mais résistance relative vs PS effondré",
+                filtrer: "Cochez PCF + PS — PRES+LEG — T1 — Vue globale. Comparez les trajectoires des deux partis.",
+                tags: ["PCF","PS","PRES+LEG","T1"],
+                config: { briques:["PCF","PS"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "Le PCF recule moins vite que le PS sur la période. L'ancrage territorial du PCF (mairies, syndicats, tissu associatif) lui offre une base plus stable. De plus, les alliances NUPES/NFP ont permis au PCF de maintenir ses élus locaux malgré un affaiblissement national."
+            },
+            {
+                observation: "EELV : vote de circonstance ou ancrage durable ?",
+                filtrer: "Cochez EELV uniquement — PRES+LEG — T1 — Vue globale. Observez la volatilité entre scrutins.",
+                tags: ["EELV","PRES+LEG","T1"],
+                config: { briques:["EELV"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "EELV montre une forte volatilité entre présidentielles (où un candidat vert peut faire 12-13%) et législatives (rarement > 5%). Contrairement au PCF qui a un électorat d'adhésion, l'électorat EELV semble voter pour des candidats plus que pour un parti. Le vote vert est sensible à la personnalité du candidat."
+            },
+            {
+                observation: "Centre + Droite : Macron a-t-il plus mangé LR que PS ?",
+                filtrer: "Cochez Centre + Droite — PRES+LEG — T1 — Vue globale. Comparez les barres Droite vs Centre entre 2012 et 2017.",
+                tags: ["Centre","Droite","PRES+LEG","T1"],
+                config: { briques:["Centre","Droite"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "La chute de LR (Droite) entre 2012 et 2022 est impressionnante mais moins spectaculaire que celle du PS. Macron semble avoir aspiré proportionnellement plus d'électeurs de centre-gauche que de droite classique, même si les deux ont été touchés. LR conserve un noyau dur de droite 'idéologique'."
+            }
+        ]
+    },
+    {
+        groupe: "D — Haute-Loire (43) : spécificités territoriales",
+        items: [
+            {
+                observation: "La Haute-Loire vote-t-elle plus à droite que la France ?",
+                filtrer: "Cochez tous les partis — PRES — T1 — Vue par 3 blocs. Comparez visuellement les deux graphiques FR (gauche) et 43 (droite).",
+                tags: ["Tous","PRES","T1","FR vs 43"],
+                config: { briques:["PCF","LFI","EELV","PS","Centre","Droite","Extrême Droite"], scrutins:["PRES"], tours:["T1"], mode:"blocs" },
+                suggestion: "Observer si la barre Gauche est proportionnellement plus petite en 43 qu'en France, et si la barre Droite+Centre est plus grande. La Haute-Loire est un département rural avec une tradition catholique conservatrice qui peut expliquer un vote structurellement plus à droite que la moyenne nationale."
+            },
+            {
+                observation: "Le PCF en 43 : plus fort ou plus faible qu'en France ?",
+                filtrer: "Cochez PCF uniquement — LEG — T1 — Vue globale. Comparez la hauteur relative des colonnes FR vs 43.",
+                tags: ["PCF","LEG","T1","FR vs 43"],
+                config: { briques:["PCF"], scrutins:["LEG"], tours:["T1"], mode:"global" },
+                suggestion: "Certaines zones rurales ont historiquement une tradition communiste forte (bassin minier, agriculture syndicalisée). Observer si la Haute-Loire présente un vote PCF proportionnellement différent de la moyenne nationale permet de tester cette hypothèse."
+            },
+            {
+                observation: "L'extrême-droite en 43 : plus forte qu'en France ?",
+                filtrer: "Cochez Extrême Droite uniquement — PRES+LEG — T1 — Vue globale. Comparez FR vs 43.",
+                tags: ["Extrême Droite","PRES+LEG","T1","FR vs 43"],
+                config: { briques:["Extrême Droite"], scrutins:["PRES","LEG"], tours:["T1"], mode:"global" },
+                suggestion: "Dans de nombreux départements ruraux périphériques, le RN surperforme par rapport à la moyenne nationale. Observer l'évolution 2012-2024 en 43 vs France permet de voir si la Haute-Loire suit la tendance nationale ou si elle est en avance sur la dérive droitière."
+            }
+        ]
+    }
+];
+
+// ── Rendu des analyses ────────────────────────────────────────────────────────
+function renderAnalyses(){
+    const container=document.getElementById('analyses-container');
+    if(!container)return;
+    let html="";
+    GROUPES_ANALYSES.forEach(g=>{
+        html+=`<div class="analyses-groupe">
+        <div class="analyses-groupe-titre">${g.groupe}</div>
+        <table class="tbl-analyses">
+        <thead><tr>
+            <th>💡 Observation</th>
+            <th>🔧 Comment filtrer pour le vérifier</th>
+            <th>📝 Notre suggestion d'interprétation</th>
+            <th></th>
+        </tr></thead><tbody>`;
+        g.items.forEach((item,i)=>{
+            const tagsHtml=item.tags.map(t=>`<span class="analyse-tag">${t}</span>`).join(' ');
+            html+=`<tr>
+                <td>${item.observation}<br><div style="margin-top:4px">${tagsHtml}</div></td>
+                <td>${item.filtrer}</td>
+                <td>${item.suggestion}</td>
+                <td><button class="btn-apply-analyse" onclick="appliquerAnalyse(${i}_${GROUPES_ANALYSES.indexOf(g)})">▶ Voir</button></td>
+            </tr>`;
+        });
+        html+=`</tbody></table></div>`;
+    });
+    container.innerHTML=html;
+    // Fix onclick references
+    container.querySelectorAll('.btn-apply-analyse').forEach((btn,idx)=>{
+        let counter=0;
+        for(let g of GROUPES_ANALYSES){
+            for(let item of g.items){
+                if(counter===idx){ btn.onclick=()=>appliquerAnalyse(item.config); break; }
+                counter++;
+            }
+        }
+    });
+}
+
+function appliquerAnalyse(config){
+    document.querySelectorAll('.cb-brique').forEach(cb=>{
+        cb.checked=config.briques.some(b=>norm(b)===norm(cb.value));
+    });
+    document.querySelectorAll('.cb-scrutin').forEach(cb=>{
+        cb.checked=config.scrutins.includes(cb.value);
+    });
+    document.querySelectorAll('.cb-tour').forEach(cb=>{
+        cb.checked=config.tours.includes(cb.value);
+    });
+    document.querySelectorAll('input[name=mode-graph]').forEach(r=>{
+        r.checked=r.value===config.mode;
+    });
+    appliquer();
+    document.getElementById('graphiques').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 // ── Fermeture popups ──────────────────────────────────────────────────────────
