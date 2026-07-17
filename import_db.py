@@ -24,6 +24,9 @@ df_map = df_map[["Année", "Nuance", "Brique", "Nb Elu", "Poids", "Bloc electora
 # Garde uniquement les lignes avec une nuance valide
 df_map = df_map[df_map["Nuance"].notna()]
 
+# CORRECTION : forcer Année en entier (évite 2014.0 ≠ 2014)
+df_map["Année"] = df_map["Année"].fillna(0).astype(int)
+
 df_map.to_sql("Nuances", conn, if_exists="replace", index=False)
 print(f"✓ Nuances : {len(df_map)} lignes importées")
 
