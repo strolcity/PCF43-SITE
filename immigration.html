@@ -3,68 +3,704 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCF 43 - Immigration</title>
+    <title>PCF 43 - Immigration : les chiffres contre les préjugés</title>
     <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            line-height: 1.6;
             background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: white;
-            text-align: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: #ff5555;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
         h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            font-size: 2.5em;
+            text-align: center;
             margin-bottom: 20px;
+            animation: glow 2s infinite alternate;
         }
-        .logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid #d32f2f;
-            background: rgba(0,0,0,0.45);
+
+        @keyframes glow {
+            from { text-shadow: 1px 1px 3px rgba(255, 85, 85, 0.5); }
+            to { text-shadow: 1px 1px 10px rgba(255, 85, 85, 1); }
+        }
+
+        h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid #ff5555;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        /* Encadrés textuels */
+        .text-box {
+            background-color: rgba(255, 170, 0, 0.1);
+            border-left: 4px solid #ffaa00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-style: italic;
+        }
+
+        .text-box p {
+            margin: 10px 0;
+        }
+
+        /* Graphiques */
+        .chart-container {
+            position: relative;
+            height: 450px;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
             padding: 10px;
-            margin-bottom: 20px;
+        }
+
+        .chart-container-small {
+            height: 350px;
+        }
+
+        /* Camembert */
+        .pie-chart-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .pie-chart-box {
+            width: 400px;
+            height: 400px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        /* Tableaux */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: rgba(255, 85, 85, 0.3);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover {
+            background-color: rgba(255, 170, 0, 0.1);
+        }
+
+        /* Slogans */
+        .slogan {
+            font-size: 1.3em;
+            font-style: italic;
+            color: #ffaa00;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: rgba(255, 170, 0, 0.1);
+            border-radius: 5px;
             animation: pulse 2s infinite;
         }
+
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
         }
-        .construction {
-            font-size: 1.5em;
-            background: rgba(0,0,0,0.7);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
+
+        /* Liens */
         a {
-            color: #ffeb3b;
+            color: #ff5555;
             text-decoration: none;
-            margin-top: 20px;
         }
+
         a:hover {
             text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chart-container, .pie-chart-box {
+                height: 300px;
+                width: 100%;
+            }
+            table {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
 <body>
-    <img src="https://i.postimg.cc/4dCSpMGb/karl-marx.png" alt="Immigration" class="logo">
-    <h1>Immigration</h1>
-    <div class="construction">
-        Page en construction
+    <div class="container">
+        <h1>📊 Immigration : les chiffres contre les préjugés</h1>
+
+        <!-- Encadré d'introduction -->
+        <div class="text-box">
+            <p><strong>L’immigration est un sujet complexe, mais l’extrême droite en fait une arme politique. Leur méthode ?</strong></p>
+            <p>
+                Simplifier à l’extrême (ex: "Tous les problèmes viennent des migrants").
+                <br>
+                Dramatiser (ex: "La France va disparaître").
+                <br>
+                Diviser (ex: "Eux contre nous").
+            </p>
+            <p><strong>Le problème ?</strong> Aucun de leurs arguments ne résiste à l’analyse des faits. Et quand ils auront 'résolu' le problème des musulmans ou des Maghrébins, ils passeront aux juifs, aux bouddhistes… ou à ceux qui portent la moustache. <strong>L’Histoire se répète.</strong></p>
+        </div>
+
+        <!-- Clarification des termes -->
+        <div class="text-box">
+            <p><strong>L’extrême droite mélange (mais ils le savent très bien) alors clarifions les mots :</strong></p>
+            <p>
+                <strong>Immigré</strong> = personne née à l’étranger. (mais il y a aussi des Français nés à l'étranger)
+                <br>
+                <strong>Étranger</strong> = personne qui n’a pas la nationalité française (et elle peut être née en France ou ailleurs).
+                <br>
+                <strong>Origine</strong> (dans le discours raciste car ils en sont tous) = mot vague utilisé comme raccourci pour faire croire que “d’où tu viens” expliquerait “ce que tu vaux” ou “ce que tu ferais”.
+            </p>
+        </div>
+
+        <!-- Graphique 1: Évolution de la population (volumes + %) -->
+        <h2>📈 Évolution de la population en France (1921-2025)</h2>
+<p><strong>Source :</strong> <a href="https://www.insee.fr/fr/statistiques/3633212" target="_blank">INSEE - Population étrangère en France</a></p>
+
+<div class="chart-container">
+    <canvas id="populationChart"></canvas>
+</div>
+
+<div class="text-box">
+    <p><strong>Analyse :</strong></p>
+    <p>
+        - <strong>Étrangers (courbe rouge)</strong> : Volume stable entre 1,5M et 6,3M.
+        <br>
+        - <strong>Français par acquisition (courbe orange)</strong> : Hausse progressive (de 254K en 1921 à 3,3M en 2025).
+        <br>
+        - <strong>Français de naissance (courbe verte)</strong> : Majoritaires (de 37M en 1921 à 59,6M en 2025).
+        <br>
+        - <strong>Volume total</strong> : La population française a <strong>augmenté</strong> (de 40M en 1921 à 68,8M en 2025).
+    </p>
+</div>
+
+        <!-- Camembert : Origines des immigrés -->
+        <h2>🌍 Origines des immigrés en France (2019)</h2>
+        <p><strong>Source :</strong> INSEE - Enquête Revenus fiscaux et sociaux 2019.</p>
+
+        <div class="pie-chart-container">
+            <div class="pie-chart-box">
+                <canvas id="originesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="text-box">
+            <p><strong>Analyse :</strong></p>
+            <p>
+                - <strong>Afrique</strong> : 40% des immigrés (majorité Maghreb et Afrique subsaharienne).
+                <br>
+                - <strong>Europe</strong> : 35% (dont une partie de l’UE).
+                <br>
+                - <strong>Asie</strong> : 15% (Chine, Turquie, etc.).
+                <br>
+                - <strong>Amérique/Océanie</strong> : 10%.
+            </p>
+        </div>
+
+        <!-- Section 2: Niveau de vie et décomposition des revenus -->
+        <h2>💰 Niveau de vie : Décomposition des revenus (2019)</h2>
+        <p><strong>Source :</strong> <a href="https://www.insee.fr/fr/statistiques/7941379?sommaire=7941491#graphique-figure3" target="_blank">INSEE - Revenus et prestations sociales</a></p>
+        <p><strong>Note :</strong> Le niveau de vie = Revenus d'activité + Allocations chômage + Pensions/retraites + Revenus patrimoine + Prestations sociales <strong>– Impôts directs</strong>.</p>
+
+        <div class="chart-container">
+            <canvas id="revenusChart"></canvas>
+        </div>
+
+        <div class="text-box">
+            <p><strong>Analyse :</strong></p>
+            <p>
+                - Les <strong>immigrés</strong> ont un niveau de vie moyen de <strong>20 520€/an</strong>, composé à :
+                <br>
+                &nbsp;&nbsp;&nbsp;→ <strong>73%</strong> de revenus d’activité (15 080€).
+                <br>
+                &nbsp;&nbsp;&nbsp;→ <strong>19%</strong> de prestations sociales (2 380€ + 3 920€ de retraites).
+                <br>
+                &nbsp;&nbsp;&nbsp;→ <strong>7%</strong> de revenus du patrimoine (1 380€).
+                <br>
+                &nbsp;&nbsp;&nbsp;→ <strong>-15%</strong> d’impôts directs (-3 140€).
+                <br><br>
+                - Les <strong>non-immigrés</strong> ont un niveau de vie plus élevé (<strong>26 590€/an</strong>) car :
+                <br>
+                &nbsp;&nbsp;&nbsp;→ Plus de <strong>revenus du patrimoine</strong> (2 540€ vs 1 380€).
+                <br>
+                &nbsp;&nbsp;&nbsp;→ Plus de <strong>retraites</strong> (6 920€ vs 3 920€).
+                <br>
+                &nbsp;&nbsp;&nbsp;→ Moins d’<strong>impôts directs</strong> (-4 870€ vs -3 140€) car leurs revenus sont plus élevés.
+            </p>
+        </div>
+
+        <!-- Graphique 3: Écarts de niveau de vie -->
+        <h2>⚖️ Écarts de niveau de vie : France vs Immigrés (2019)</h2>
+        <p><strong>Source :</strong> INSEE - Enquête Revenus fiscaux et sociaux 2019.</p>
+
+        <div class="chart-container">
+            <canvas id="ecartsChart"></canvas>
+        </div>
+
+        <div class="text-box">
+            <p><strong>Explications :</strong></p>
+            <p>
+                Ce graphique montre <strong>l’écart de niveau de vie entre les immigrés et les non-immigrés</strong>, avant et après les transferts sociaux (allocations, retraites, etc.).
+                <br><br>
+                - <strong>Avant transferts</strong> (barres rouges) :
+                Les immigrés ont un niveau de vie <strong>inférieur de 29,6%</strong> en moyenne.
+                <br>
+                - <strong>Après transferts</strong> (barres vertes) :
+                Les prestations sociales <strong>réduisent l’écart à 22,8%</strong>.
+                <br><br>
+                <strong>Exemple concret :</strong>
+                Une <strong>famille monoparentale immigrée</strong> a un niveau de vie <strong>-36,3% inférieur</strong> avant transferts, et <strong>-21,8% après</strong>.
+                <br><br>
+                <strong>Pourquoi ces écarts ?</strong>
+                <br>
+                → <strong>Discrimination à l’embauche</strong> : Les immigrés ont du mal à accéder aux emplois qualifiés.
+                <br>
+                → <strong>Travail précaire</strong> : 40% des immigrés travaillent dans des secteurs peu rémunérés (BTP, nettoyage).
+                <br>
+                → <strong>Familles nombreuses</strong> : Les ménages immigrés ont plus d’enfants → coûts supplémentaires (logement, éducation).
+            </p>
+        </div>
+
+        <!-- La manipulation -->
+        <div class="text-box">
+            <p><strong>🎭 La Manipulation :</strong></p>
+            <p>
+                Quand quelqu’un parle d’<strong>‘origine’</strong> pour tout expliquer, il mélange des choses différentes (lieu de naissance, nationalité, culture, langue) et transforme des individus en étiquette.
+                <br>
+                <strong>En clair : ce n’est pas un raisonnement, c’est une ficelle.</strong>
+            </p>
+        </div>
+
+        <!-- Exemple Wauquiez -->
+        <div class="text-box">
+            <p><strong>Prenons l'exemple de notre animal (la bête du Gévaudan, faites attention vous allez vous faire croquer) :</strong></p>
+            <p>
+                <strong>Discours octobre 2017 sur droitesociale.fr :</strong>
+                <a href="https://www.droitesociale.fr/Laurent-Wauquiez-ds16" target="_blank">Lien vers le discours</a>
+                <br>
+                Laurent Wauquiez dit que la France ne doit pas changer de "<strong>nature</strong>", qu'il faut défendre nos "<strong>racines chrétiennes</strong>", que l'on supprime des droits sociaux aux familles pour les ouvrir aux étrangers, "<strong>qui ne cotisent pas en plus</strong>" (alors que les immigrés cotisent !), avec les Italiens, Espagnols "<strong>cela c'est bien passé mais plus maintenant</strong>", tout cela sur fond de terrorisme islamique bien sûr.
+                <br>
+                <strong>(C'est sans lui rappeler que 28 nationalités différentes, et de plusieurs confessions ont été touchées par l'attentat de Nice).</strong>
+                <br>
+                <strong>Quelle honte</strong> quelques mois après cet acte de l’instrumentaliser, aucun respect pour les victimes.
+            </p>
+            <p>
+                <strong>Discours septembre 2025 à l'assemblée générale :</strong>
+                <a href="https://www.deputesdroiterepublicaine.fr/actualite/articles/5916-discours-de-laurent-wauquiez-lors-du-debat-suite-a-la-declaration-de-politique-generale-du-premier-ministre-art-49-al-1er-de-la-constitution" target="_blank">Lien vers le discours</a>
+                <br>
+                Laurent Wauquiez lie aussi "<strong>insécurité</strong>" et "<strong>immigration</strong>", et en plus ils "<strong>faudent</strong>" et que ce sont des "<strong>assistés</strong>".
+                <br>
+                Et encore une fois fait croire qu'ils ne font pas parti de la "<strong>France qui travaille</strong>".
+            </p>
+            <p>
+                <strong>Alors mettons les choses au clair, ce monsieur est clairement raciste</strong> et nous rappelons à tous ces gens là, que nous sommes une <strong>république laïque</strong>, et que ce n'est pas une opinion mais un <strong>délit</strong>.
+            </p>
+        </div>
+
+        <!-- Conclusion -->
+        <h2>🎯 Conclusion : L’immigration, un bouc émissaire facile</h2>
+        <div class="text-box">
+            <p>
+                <strong>1. Les immigrés ne "coûtent pas cher"</strong> :
+                Ils <strong>paient des impôts</strong> (15 080€/an en moyenne) et <strong>reçoivent moins de prestations</strong> que les non-immigrés.
+                <br><br>
+                <strong>2. Leur niveau de vie est inférieur</strong> :
+                Pas à cause de la "fainéantise", mais à cause des <strong>discriminations</strong> et des <strong>emplois précaires</strong>.
+                <br><br>
+                <strong>3. Les transferts sociaux réduisent les inégalités</strong> :
+                Sans eux, l’écart serait encore plus grand.
+                <br><br>
+                <strong>4. L’extrême droite ment</strong> :
+                Leur discours repose sur <strong>la peur</strong> et <strong>l’ignorance des chiffres</strong>.
+            </p>
+        </div>
+
+        <div class="slogan">
+            "L’extrême droite et l’immigration : quand on n’a pas de solution, on invente un problème."
+        </div>
+        <div class="slogan">
+            "Aujourd’hui les musulmans, demain les juifs, après-demain… toi ?"
+        </div>
     </div>
-    <a href="index.html">← Retour à l'accueil</a>
+
+    <footer>
+        <p>PCF 43 - <a href="index.html">Retour à l'accueil</a></p>
+    </footer>
+
+    <!-- Scripts pour les graphiques -->
+    <script>
+    // Graphique 1: Évolution de la population (volumes uniquement)
+    const populationCtx = document.getElementById('populationChart').getContext('2d');
+    const populationChart = new Chart(populationCtx, {
+        type: 'line',
+        data: {
+            labels: ['1921', '1926', '1931', '1936', '1946', '1954', '1962', '1968', '1975', '1982', '1990', '1999', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024 (p)', '2025 (p)'],
+            datasets: [
+                {
+                    label: 'Étrangers (milliers)',
+                    data: [1532, 2409, 2715, 2198, 1744, 1765, 2151, 2621, 3442, 3714, 3645, 3322, 3648, 3682, 3715, 3771, 3818, 3889, 3981, 4084, 4289, 4428, 4542, 4704, 4850, 5000, 5149, 5236, 5331, 5635, 6046, 6297],
+                    borderColor: '#ff5555',
+                    backgroundColor: 'transparent',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Français par acquisition (milliers)',
+                    data: [254, 361, 517, 517, 853, 1068, 1267, 1320, 1392, 1422, 1792, 2376, 2669, 2709, 2754, 2791, 2822, 2842, 2867, 2893, 2928, 2952, 2983, 3008, 3026, 3047, 3057, 3076, 3106, 3152, 3214, 3336],
+                    borderColor: '#ffaa00',
+                    backgroundColor: 'transparent',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Français de naissance (milliers)',
+                    data: [37011, 38153, 38468, 38468, 37251, 39948, 43042, 45713, 47765, 49160, 52641, 54446, 56869, 57210, 57493, 57743, 57973, 58203, 58394, 58588, 58914, 59043, 59078, 59116, 59211, 59236, 59378, 59618, 59623, 59385, 59618],
+                    borderColor: '#55ff55',
+                    backgroundColor: 'transparent',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Évolution des volumes (milliers) des étrangers, Français par acquisition et Français de naissance (1921-2025)',
+                    color: '#ff5555'
+                },
+                legend: {
+                    labels: {
+                        color: '#e0e0e0'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            label += ': ' + context.parsed.y + ' milliers';
+                            return label;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Volume (milliers)',
+                        color: '#e0e0e0'
+                    },
+                    ticks: {
+                        color: '#e0e0e0',
+                        callback: function(value) {
+                            return value + 'K';
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#e0e0e0',
+                        maxRotation: 45,
+                        minRotation: 45
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                }
+            }
+        }
+    });
+
+        // Camembert : Origines des immigrés
+        const originesCtx = document.getElementById('originesChart').getContext('2d');
+        const originesChart = new Chart(originesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Afrique', 'Europe', 'Asie', 'Amérique/Océanie'],
+                datasets: [{
+                    data: [40, 35, 15, 10],
+                    backgroundColor: [
+                        'rgba(255, 85, 85, 0.7)',
+                        'rgba(85, 255, 85, 0.7)',
+                        'rgba(255, 255, 85, 0.7)',
+                        'rgba(85, 85, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        '#ff5555',
+                        '#55ff55',
+                        '#ffff55',
+                        '#5555ff'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Répartition des immigrés par origine (2019)',
+                        color: '#ff5555'
+                    },
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                return label + ': ' + value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Graphique 2: Décomposition des revenus (niveau de vie)
+        const revenusCtx = document.getElementById('revenusChart').getContext('2d');
+        const revenusChart = new Chart(revenusCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Immigrés', 'Descendants d\'immigrés', 'Ni immigrés ni descendants'],
+                datasets: [
+                    {
+                        label: 'Revenus d\'activité',
+                        data: [15080, 18300, 20110],
+                        backgroundColor: 'rgba(255, 85, 85, 0.7)',
+                        borderColor: '#ff5555',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Allocations chômage',
+                        data: [900, 930, 690],
+                        backgroundColor: 'rgba(255, 170, 0, 0.7)',
+                        borderColor: '#ffaa00',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Pensions/retraites',
+                        data: [3920, 3820, 6920],
+                        backgroundColor: 'rgba(85, 255, 85, 0.7)',
+                        borderColor: '#55ff55',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Revenus patrimoine',
+                        data: [1380, 1650, 2540],
+                        backgroundColor: 'rgba(255, 255, 85, 0.7)',
+                        borderColor: '#ffff55',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Prestations sociales',
+                        data: [2380, 2300, 1200],
+                        backgroundColor: 'rgba(85, 85, 255, 0.7)',
+                        borderColor: '#5555ff',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Impôts directs (négatif)',
+                        data: [-3140, -3840, -4870],
+                        backgroundColor: 'rgba(255, 85, 255, 0.7)',
+                        borderColor: '#ff55ff',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Décomposition des revenus (2019) - Niveau de vie = Somme de tous les revenus - Impôts',
+                        color: '#ff5555'
+                    },
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label.includes('(négatif)')) {
+                                    label = label.replace('(négatif)', '');
+                                    return label + ': -' + Math.abs(context.parsed.y) + ' €';
+                                }
+                                return label + ': ' + context.parsed.y + ' €';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: '#e0e0e0',
+                            callback: function(value) {
+                                return value + ' €';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        stacked: true
+                    },
+                    x: {
+                        stacked: true,
+                        ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Graphique 3: Écarts de niveau de vie
+        const ecartsCtx = document.getElementById('ecartsChart').getContext('2d');
+        const ecartsChart = new Chart(ecartsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Personne seule', 'Famille monoparentale', 'Couple sans enfant', 'Couple 1-2 enfants', 'Couple 3+ enfants', 'Ménage complexe', 'Ensemble'],
+                datasets: [
+                    {
+                        label: 'Écart avant transferts (%)',
+                        data: [-15.4, -36.3, -23.5, -25.6, -50.2, -23.6, -29.6],
+                        backgroundColor: 'rgba(255, 85, 85, 0.7)',
+                        borderColor: '#ff5555',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Écart après transferts (%)',
+                        data: [-11.2, -21.8, -19.5, -20.3, -37.0, -18.4, -22.8],
+                        backgroundColor: 'rgba(85, 255, 85, 0.7)',
+                        borderColor: '#55ff55',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Écarts de niveau de vie entre immigrés et non-immigrés (2019)',
+                        color: '#ff5555'
+                    },
+                    legend: {
+                        labels: {
+                            color: '#e0e0e0'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y + '%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: '#e0e0e0',
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#e0e0e0',
+                            maxRotation: 45,
+                            minRotation: 45
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
