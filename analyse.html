@@ -303,7 +303,7 @@ const HEMICYCLE={
 let DATA=[],chartFR=null,chart43=null;
 function norm(s){return(s||'').normalize('NFC');}
 
-fetch("data/ventillees.json")
+fetch("data/elections/ventillees.json")
     .then(r=>{if(!r.ok)throw new Error("ventillees.json introuvable");return r.json();})
     .then(d=>{
         DATA=d;
