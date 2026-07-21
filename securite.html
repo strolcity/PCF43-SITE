@@ -3,68 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCF 43 - Sécurité</title>
+    <title>PCF 43 — Analyse Sécurité</title>
     <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{
+            font-family:Arial,sans-serif;
+            background-image:url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
+            background-size:cover;
+            background-position:center;
+            background-attachment:fixed;
+            min-height:100vh;
+            color:white;
         }
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 20px;
+        nav{
+            background:rgba(160,0,0,0.88);
+            padding:10px 20px;
+            display:flex;
+            align-items:center;
+            gap:16px;
+            flex-wrap:wrap;
+            backdrop-filter:blur(4px);
         }
-        .logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid #d32f2f;
-            background: rgba(0,0,0,0.45);
-            padding: 10px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+        nav .nav-title{
+            font-size:1.15em;
+            font-weight:bold;
+            flex:1;
+            min-width:180px;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        nav a{
+            color:white;
+            text-decoration:none;
+            font-size:.88em;
+            opacity:.85;
         }
-        .construction {
-            font-size: 1.5em;
-            background: rgba(0,0,0,0.7);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+        nav a:hover{
+            opacity:1;
         }
-        a {
-            color: #ffeb3b;
-            text-decoration: none;
-            margin-top: 20px;
+        .container{
+            max-width:1300px;
+            margin:0 auto;
+            padding:20px 14px;
         }
-        a:hover {
-            text-decoration: underline;
+        .filtres{
+            background:rgba(0,0,0,.68);
+            border-radius:10px;
+            padding:18px 22px;
+            margin-bottom:20px;
+            backdrop-filter:blur(6px);
+            border:1px solid rgba(255,255,255,.13);
+        }
+        .filtres h2{
+            font-size:1em;
+            color:#ffcccc;
+            letter-spacing:1px;
+            text-transform:uppercase;
+            margin-bottom:14px;
+        }
+        .blocs-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:12px;
+            margin-bottom:12px;
+        }
+        .bloc-col{
+            background:rgba(255,255,255,.06);
+            border-radius:8px;
+            padding:10px 14px;
+        }
+        .bloc-col h3{
+            font-size:.78em;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            color:#ffaaaa;
+            border-bottom:1px solid rgba(255,100,100,.35);
+            padding-bottom:5px;
+            margin-bottom:8px;
+        }
+        .bloc-col label{
+            display:flex;
+            align-items:center;
+            gap:7px;
+            cursor:pointer;
+            font-size:.9em;
+            padding:3px 0;
+            transition:color .2s;
+        }
+        .bloc-col label:hover{
+            color:#ffcccc;
+        }
+        .dot{
+            width:11px;
+            height:11px;
+            border-radius:50%;
+            display:inline-block;
+            flex-shrink:0;
+        }
+        input[type=checkbox], input[type=radio]{
+            accent-color:#d32f2f;
+            width:14px;
+            height:14px;
+            flex-shrink:0;
+        }
+        .an-row{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            margin-bottom:12px;
+            flex-wrap:wrap;
+            background:rgba(255,255,255,.05);
+            border-radius:8px;
+            padding:10px 14px;
+        }
+        .an-row span{
+            font-size:.82em;
+            color:#ffaaaa;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            white-space:nowrap;
+        }
+        .btn-an{
+            background:rgba(255,255,255,.12);
+            border:1px solid rgba(255,255,255,.3);
+            color:white;
+            padding:5px 14px;
+            border-radius:20px;
+            font-size:.85em;
+            cursor:pointer;
+            transition:all .2s;
+        }
+        .btn-an:hover{
+            background:#d32f2f;
+            border-color:#d32f2f;
+        }
+        .btn-an.actif{
+            background:#d32f2f;
+            border-color:#d32f2f;
+            font-weight:bold;
+        }
+        .filtres-extras{
+            display:flex;
+            flex-wrap:wrap;
+            gap:16px;
+            border-top:1px solid rgba(255,255,255,.12);
+            padding-top:12px;
+        }
+        .filtre-extra{
+            display:flex;
+            flex-direction:column;
+            gap:4px;
+        }
+        .filtre-extra h3{
+            font-size:.78em;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            color:#ffaaaa;
+            margin-bottom:4px;
+        }
+        .filtre-extra label{
+            display:flex;
+            align-items:center;
+            gap:7px;
+            font-size:.9em;
+            cursor:pointer;
+        }
+        .btn-appliquer{
+            margin-top:14px;
+            background:#d32f2f;
+            color:white;
+            border:none;
+            padding:9px 26px;
+            border-radius:6px;
+            font-size:.95em;
+            cursor:pointer;
+            transition:background .2s;
+        }
+        .btn-appliquer:hover{
+            background:#b71c1c;
+        }
+        .graphiques-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:18px;
+        }
+        @media(max-width:768px){
+            .graphiques-grid{grid-template-columns:1fr;}
+            .blocs-grid{grid-template-columns:1fr;}
+        }
+        .carte{
+            background:rgba(0,0,0,.68);
+            border-radius:10px;
+            padding:16px 18px;
+            backdrop-filter:blur(6px);
+            border:1px solid rgba(255,255,255,.13);
+            position:relative;
+        }
+        .carte h3{
+            font-size:.97em;
+            color:#ffcccc;
+            margin-bottom:12px;
+            padding-right:28px;
+        }
+        .canvas-wrap{
+            position:relative;
+            height:360px;
+        }
+        .btn-info{
+            position:absolute;
+            top:14px;
+            right:14px;
+            width:22px;
+            height:22px;
+            border-radius:50%;
+            background:rgba(255,255,255,.2);
+            border:1px solid rgba(255,255,255,.4);
+            color:white;
+            font-size:.85em;
+            font-weight:bold;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition:background .2s;
+            z-index:10;
+        }
+        .btn-info:hover{
+            background:rgba(255,255,255,.4);
+        }
+        .totaux-wrap{
+            margin-top:14px;
+            overflow-x:auto;
+        }
+        .totaux-wrap h4{
+            font-size:.82em;
+            color:#ffaaaa;
+            text-transform:uppercase;
+            letter-spacing:1px;
+            margin-bottom:8px;
+        }
+        table.tbl-totaux{
+            width:100%;
+            border-collapse:collapse;
+            font-size:.76em;
+            min-width:300px;
+        }
+        table.tbl-totaux th{
+            background:rgba(255,255,255,.1);
+            color:#ffcccc;
+            padding:5px 8px;
+            text-align:center;
+            border-bottom:1px solid rgba(255,255,255,.2);
+            white-space:nowrap;
+            font-size:.8em;
+        }
+        table.tbl-totaux th:first-child{
+            text-align:left;
+        }
+        table.tbl-totaux td{
+            padding:4px 8px;
+            border-bottom:1px solid rgba(255,255,255,.06);
+            text-align:right;
+        }
+        table.tbl-totaux td:first-child{
+            text-align:left;
+            white-space:nowrap;
+        }
+        table.tbl-totaux tr.row-total td{
+            background:rgba(255,255,255,.08);
+            font-weight:bold;
+            border-top:1px solid rgba(255,255,255,.25);
+            color:white;
+        }
+        table.tbl-totaux tr.row-sep td{
+            padding:0;
+            height:5px;
+            background:transparent;
+            border:none;
+        }
+        .overlay{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.8);
+            z-index:1000;
+            align-items:center;
+            justify-content:center;
+        }
+        .overlay.visible{
+            display:flex;
+        }
+        .popup{
+            background:#1a1a2e;
+            border:1px solid rgba(255,100,100,.4);
+            border-radius:12px;
+            padding:24px 26px;
+            max-width:580px;
+            width:92%;
+            max-height:85vh;
+            overflow-y:auto;
+            position:relative;
+            color:white;
+        }
+        .popup h2{
+            color:#ffcccc;
+            font-size:1.05em;
+            margin-bottom:14px;
+        }
+        .popup p, .popup li{
+            font-size:.88em;
+            line-height:1.6;
+            margin-bottom:8px;
+            color:#e0e0e0;
+        }
+        .popup ul{
+            padding-left:18px;
+            margin-bottom:10px;
+        }
+        .popup strong{
+            color:#ffaaaa;
+        }
+        .popup-close{
+            position:absolute;
+            top:12px;
+            right:14px;
+            background:none;
+            border:none;
+            color:white;
+            font-size:1.3em;
+            cursor:pointer;
+            opacity:.7;
+        }
+        .popup-close:hover{
+            opacity:1;
         }
     </style>
 </head>
+
 <body>
-    <img src="https://i.postimg.cc/43qQRQ9C/ministere-interieur.png" alt="Sécurité" class="logo">
-    <h1>Sécurité</h1>
-    <div class="construction">
-        Page en construction
+
+<nav>
+    <span class="nav-title">PCF 43 — Analyse Sécurité</span>
+    <a href="https://www.ssmsi.gouv.fr/" target="_blank" class="nav-mi">
+        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="SSMSI"> Résultats officiels
+    </a>
+    <a href="index.html">← Accueil</a>
+</nav>
+
+<div class="container">
+    <div id="msg">⏳ Chargement des données...</div>
+
+    <div class="filtres" id="panneau-filtres" style="display:none;">
+        <h2>🔍 Choisissez votre analyse</h2>
+        <div class="blocs-grid">
+            <div class="bloc-col">
+                <h3>⬤ Délinquance</h3>
+                <label><input type="checkbox" class="cb-indicateur" value="Homicides" checked><span class="dot" style="background:#CC0000"></span>Homicides</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Tentatives d'homicide" checked><span class="dot" style="background:#FF6B35"></span>Tentatives d'homicide</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Violences physiques intrafamiliales" checked><span class="dot" style="background:#E8A080"></span>Violences intrafamiliales</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Violences physiques hors cadre familial" checked><span class="dot" style="background:#4CAF50"></span>Violences hors cadre familial</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Violences sexuelles" checked><span class="dot" style="background:#FF8C55"></span>Violences sexuelles</label>
+            </div>
+            <div class="bloc-col">
+                <h3>⬤ Vols & Cambriolages</h3>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols avec armes" checked><span class="dot" style="background:#42A5F5"></span>Vols avec armes</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols violents sans arme" checked><span class="dot" style="background:#FDD835"></span>Vols violents sans arme</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols sans violence contre des personnes" checked><span class="dot" style="background:#9C27B0"></span>Vols sans violence</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Cambriolages de logement" checked><span class="dot" style="background:#8BC34A"></span>Cambriolages</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols de véhicule" checked><span class="dot" style="background:#FF5722"></span>Vols de véhicules</label>
+            </div>
+            <div class="bloc-col">
+                <h3>⬤ Autres infractions</h3>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols dans les véhicules" checked><span class="dot" style="background:#607D8B"></span>Vols dans véhicules</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Vols d'accessoires sur véhicules" checked><span class="dot" style="background:#795548"></span>Vols d'accessoires</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Destructions et dégradations volontaires" checked><span class="dot" style="background:#E91E63"></span>Dégâts volontaires</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Usage de stupéfiants" checked><span class="dot" style="background:#9E9E9E"></span>Usage de stupéfiants</label>
+                <label><input type="checkbox" class="cb-indicateur" value="Trafic de stupéfiants" checked><span class="dot" style="background:#666666"></span>Trafic de stupéfiants</label>
+            </div>
+        </div>
+
+        <div class="filtres-extras">
+            <div class="filtre-extra">
+                <h3>Département</h3>
+                <label><input type="checkbox" class="cb-dep" value="FR" checked> France (total)</label>
+                <label><input type="checkbox" class="cb-dep" value="43" checked> 43 - Haute-Loire</label>
+                <label><input type="checkbox" class="cb-dep" value="13"> 13 - Bouches-du-Rhône</label>
+                <label><input type="checkbox" class="cb-dep" value="69"> 69 - Rhône</label>
+            </div>
+            <div class="filtre-extra">
+                <h3>Type d'affichage</h3>
+                <label><input type="radio" name="type-affichage" value="volume" checked> Volume (nombre de faits)</label>
+                <label><input type="radio" name="type-affichage" value="taux"> Taux pour 100 000 hab.</label>
+            </div>
+        </div>
+        <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
     </div>
-    <a href="index.html">← Retour à l'accueil</a>
+
+    <div class="graphiques-grid" id="graphiques" style="display:none;">
+        <div class="carte">
+            <h3>🇫🇷 France & Départements</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
+            <div class="canvas-wrap"><canvas id="chartSecurite"></canvas></div>
+            <div class="totaux-wrap" id="totaux-Securite"></div>
+        </div>
+    </div>
+
+    <!-- Pop-up pour la méthodologie -->
+    <div class="overlay" id="overlay-methodo" onclick="fermerPopup('overlay-methodo',event)">
+        <div class="popup">
+            <button class="popup-close" onclick="document.getElementById('overlay-methodo').classList.remove('visible')">✕</button>
+            <h2>📊 Méthodologie — Analyse Sécurité</h2>
+            <p>Les données proviennent du <strong>Service Statistique Ministériel de la Sécurité Intérieure (SSMSI)</strong>.</p>
+            <p>Les indicateurs sont classés par catégorie pour faciliter l'analyse :</p>
+            <ul>
+                <li><strong>Délinquance</strong> : Homicides, violences (intrafamiliales ou non), etc.</li>
+                <li><strong>Vols & Cambriolages</strong> : Vols avec/sans violence, cambriolages, etc.</li>
+                <li><strong>Autres infractions</strong> : Destructions, stupéfiants, etc.</li>
+            </ul>
+            <p>Les données sont affichées en <strong>volume</strong> (nombre de faits) ou en <strong>taux pour 100 000 habitants</strong> (basé sur la population INSEE).</p>
+            <p>Source : <a href="https://www.ssmsi.gouv.fr/" target="_blank" style="color:#ffaaaa;">SSMSI</a>.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Données globales
+let allData = [];
+let chart;
+
+// Charger le fichier XLSX via PapaParse
+Papa.parse('data/securite/delinquance.xlsx', {
+    header: true,
+    download: true,
+    complete: function(results) {
+        allData = results.data;
+        document.getElementById('msg').style.display = 'none';
+        document.getElementById('panneau-filtres').style.display = 'block';
+    },
+    error: function(error) {
+        document.getElementById('msg').innerHTML = '❌ Erreur de chargement des données. Vérifiez le chemin du fichier.';
+        console.error(error);
+    }
+});
+
+// Fermer les pop-ups
+function fermerPopup(overlayId, event) {
+    if (event.target.id === overlayId) {
+        document.getElementById(overlayId).classList.remove('visible');
+    }
+}
+
+// Appliquer les filtres
+function appliquer() {
+    const selectedDeps = Array.from(document.querySelectorAll('.cb-dep:checked')).map(cb => cb.value);
+    const selectedInds = Array.from(document.querySelectorAll('.cb-indicateur:checked')).map(cb => cb.value);
+    const typeAffichage = document.querySelector('input[name="type-affichage"]:checked').value;
+
+    if (selectedDeps.length === 0 || selectedInds.length === 0) {
+        alert("Veuillez sélectionner au moins un département et un indicateur.");
+        return;
+    }
+
+    // Filtrer les données
+    const filteredData = allData.filter(row =>
+        selectedDeps.includes(row.Code_dep) &&
+        selectedInds.includes(row.indicateur)
+    );
+
+    // Extraire les années uniques
+    const years = [...new Set(filteredData.map(row => row.annee))].sort();
+
+    // Préparer les datasets pour Chart.js
+    const datasets = [];
+    const colors = ['#CC0000', '#FF6B35', '#E8A080', '#4CAF50', '#FF8C55', '#42A5F5', '#FDD835', '#9C27B0', '#8BC34A', '#FF5722', '#607D8B', '#795548', '#E91E63', '#9E9E9E', '#666666'];
+
+    selectedInds.forEach((ind, i) => {
+        selectedDeps.forEach((dep, j) => {
+            const depData = filteredData.filter(row => row.Code_dep === dep && row.indicateur === ind);
+            const data = years.map(year => {
+                const row = depData.find(r => r.annee === year);
+                if (!row) return null;
+                return typeAffichage === 'volume' ?
+                    parseInt(row.nombre) :
+                    (parseInt(row.nombre) / parseInt(row.insee_pop)) * 100000;
+            });
+
+            datasets.push({
+                label: `${ind} (${dep === 'FR' ? 'France' : dep})`,
+                data: data,
+                borderColor: colors[i % colors.length],
+                backgroundColor: 'transparent',
+                tension: 0.4
+            });
+        });
+    });
+
+    // Afficher le graphique
+    document.getElementById('graphiques').style.display = 'grid';
+    document.getElementById('totaux-Securite').innerHTML = '';
+
+    // Créer ou mettre à jour le graphique
+    const ctx = document.getElementById('chartSecurite').getContext('2d');
+    if (chart) {
+        chart.destroy();
+    }
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: false
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e0e0e0',
+                        font: {
+                            size: 10
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: typeAffichage === 'volume' ? 'Nombre de faits' : 'Taux pour 100 000 habitants',
+                        color: '#ffaaaa'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Année',
+                        color: '#ffaaaa'
+                    },
+                    ticks: {
+                        color: '#e0e0e0'
+                    },
+                    grid: {
+                        color: 'rgba(255,255,255,0.1)'
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
 </body>
 </html>
