@@ -1,10 +1,8 @@
 import sqlite3
 import json
-import os
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB   = os.path.join(BASE, "data", "elections", "elections.db")
-OUT  = os.path.join(BASE, "data", "elections", "ventillees.json")
+DB  = r"C:\Users\PC\Documents\GitHub\SITE_PCF_43\data\elections\elections.db"
+OUT = r"C:\Users\PC\Documents\GitHub\SITE_PCF_43\data\elections\ventillees.json"
 
 conn = sqlite3.connect(DB)
 conn.row_factory = sqlite3.Row

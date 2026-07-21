@@ -327,7 +327,7 @@ function getFiltres(){
 }
 
 function sortElections(els){
-    const sco={PRES:1,LEG:2};
+    const sco={PRES:1,EURO:2, LEG:3};
     return[...els].sort((a,b)=>{
         const pa=a.split(" "),pb=b.split(" ");
         if(pa[0]!==pb[0])return parseInt(pa[0])-parseInt(pb[0]);
