@@ -233,41 +233,45 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
         }
+/* Pop-up Caliméro */
+.calimero-popup {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 1000;
+    overflow: hidden;
+    border: 3px solid #ffaa00;
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
+    top: 100%; /* Ajout : positionne le pop-up sous le mot */
+    left: 50%; /* Ajout : centre horizontalement */
+    transform: translateX(-50%); /* Ajout : recentre parfaitement */
+    margin-top: 10px; /* Ajout : espace entre le mot et le pop-up */
+}
 
-        /* Pop-up Caliméro */
-        .calimero-popup {
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: none;
-            z-index: 1000;
-            overflow: hidden;
-            border: 3px solid #ffaa00;
-            box-shadow: 0 0 20px rgba(255, 170, 0, 0.7);
-        }
+.calimero-popup img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-        .calimero-popup img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+/* Style pour le mot "Caliméros" */
+.calimero-trigger {
+    position: relative; /* Important : permet à .calimero-popup de se positionner par rapport à ce parent */
+    display: inline-block;
+    color: #ffaa00;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-color: #ffaa00;
+}
 
-        /* Style pour le mot "Caliméros" */
-        .calimero-trigger {
-            position: relative;
-            display: inline-block;
-            color: #ffaa00;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: underline;
-            text-decoration-color: #ffaa00;
-        }
-
-        .calimero-trigger:hover .calimero-popup {
-            display: block;
-        }
+.calimero-trigger:hover .calimero-popup {
+    display: block;
+}
+     
 
         /* Footer */
         footer {
@@ -409,7 +413,7 @@
 
         <!-- Méthode 3 : Changer la Constitution -->
         <div class="section">
-            <h2><img src="https://i.postimg.cc/0NQMPy9H/tv.gif" alt="TV" class="method-img"> 3ème Méthode : Changer la Constitution : un jeu dangereux</h2>
+            <h2><img src="https://i.postimg.cc/wTPs5bsb/liberte-egalite-fraternite.gif" alt="TV" class="method-img"> 3ème Méthode : Changer la Constitution : un jeu dangereux</h2>
 
             <h3>🔹 Proposition de loi RN (2024) :</h3>
             <p>Objectif : Supprimer le droit du sol pour la nationalité française.</p>
@@ -433,14 +437,14 @@
             <p>🔹 <strong>Dissolution du PCF</strong> (JO 27/09/1939) → <a href="https://docspace-858pth.onlyoffice.com/s/n8RdVpmVfFZwzms" target="_blank">Accédez au pdf de Légifrance</a></p>
             <p>🔹 <strong>Statut des Juifs</strong> (3 octobre 1940) → <a href="https://docspace-858pth.onlyoffice.com/s/wQYzK_SnqknTtRM" target="_blank">Accédez au pdf de Légifrance</a></p>
 
-            <p>On ne va pas faire les
+            On ne va pas faire les
                 <span class="calimero-trigger">
                     Caliméros
                     <div class="calimero-popup">
                         <img src="https://i.postimg.cc/05L89C9C/injuste-calimero-775595350.gif" alt="Caliméro">
                     </div>
                 </span>, mais quand on entend les réflexions de certains comme quoi les communistes étaient les premiers collaborateurs, cela nous fait doucement rire :</p>
-            <p><strong>A l'époque, ils étaient vraiment cons ces cocos de collaborer avec ceux qui les ont mis dans la clandestinité.</strong></p>
+            <strong>A l'époque, ils étaient vraiment cons ces cocos de collaborer avec ceux qui les ont mis dans la clandestinité.</strong></p>
 
             <div class="split-section">
                 <div class="text-box">
