@@ -19,33 +19,17 @@
         }
         nav{
             background:rgba(160,0,0,0.88);
-            padding:10px 20px;
+            padding:5px 20px;
             display:flex;
             align-items:center;
-            gap:16px;
+            gap:10px;
             flex-wrap:wrap;
             backdrop-filter:blur(4px);
         }
-        nav .nav-title{
-            font-size:1.15em;
-            font-weight:bold;
-            flex:1;
-            min-width:180px;
-        }
-        nav a{
-            color:white;
-            text-decoration:none;
-            font-size:.88em;
-            opacity:.85;
-        }
-        nav a:hover{
-            opacity:1;
-        }
-        .container{
-            max-width:1300px;
-            margin:0 auto;
-            padding:20px 14px;
-        }
+        nav .nav-title{font-size:.95em;font-weight:bold;flex:1;min-width:180px;}
+        nav a{color:white;text-decoration:none;font-size:.8em;opacity:.85;}
+        nav a:hover{opacity:1;}
+        .container{max-width:1300px;margin:0 auto;padding:20px 14px;}
         .filtres{
             background:rgba(0,0,0,.68);
             border-radius:10px;
@@ -55,203 +39,76 @@
             border:1px solid rgba(255,255,255,.13);
         }
         .filtres h2{
-            font-size:1em;
-            color:#ffcccc;
-            letter-spacing:1px;
-            text-transform:uppercase;
-            margin-bottom:14px;
+            font-size:1em;color:#ffcccc;letter-spacing:1px;
+            text-transform:uppercase;margin-bottom:14px;
         }
-        .blocs-grid{
-            display:grid;
-            grid-template-columns:repeat(3,1fr);
-            gap:12px;
-            margin-bottom:12px;
-        }
-        .bloc-col{
-            background:rgba(255,255,255,.06);
-            border-radius:8px;
-            padding:10px 14px;
-        }
+        .filtres-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start;}
+        .bloc-col{background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;flex:1;min-width:230px;}
         .bloc-col h3{
-            font-size:.78em;
-            text-transform:uppercase;
-            letter-spacing:1px;
-            color:#ffaaaa;
-            border-bottom:1px solid rgba(255,100,100,.35);
-            padding-bottom:5px;
-            margin-bottom:8px;
+            font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;
+            border-bottom:1px solid rgba(255,100,100,.35);padding-bottom:5px;margin-bottom:8px;
         }
         .bloc-col label{
-            display:flex;
-            align-items:center;
-            gap:7px;
-            cursor:pointer;
-            font-size:.9em;
-            padding:3px 0;
-            transition:color .2s;
+            display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9em;
+            padding:3px 0;transition:color .2s;
         }
-        .bloc-col label:hover{
-            color:#ffcccc;
-        }
-        .dot{
-            width:11px;
-            height:11px;
-            border-radius:50%;
-            display:inline-block;
-            flex-shrink:0;
-        }
-        input[type=checkbox], input[type=radio]{
-            accent-color:#d32f2f;
-            width:14px;
-            height:14px;
-            flex-shrink:0;
-        }
+        .bloc-col label:hover{color:#ffcccc;}
+        .dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0;}
+        input[type=checkbox], input[type=radio]{accent-color:#d32f2f;width:14px;height:14px;flex-shrink:0;}
         select, button {
-            padding: 8px;
-            margin-right: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            padding:8px;margin-right:10px;border-radius:5px;border:1px solid #ccc;
+            background:rgba(255,255,255,0.1);color:white;
         }
-        select option {
-            color: black;
+        select option{color:black;}
+        .categorie-bloc{margin-bottom:14px;}
+        .categorie-bloc:last-child{margin-bottom:0;}
+        .detail-toggle{font-size:.8em !important;opacity:.85;padding-left:4px;}
+        .sous-liste{list-style:none;padding-left:22px;margin:4px 0 8px;}
+        .sous-liste li{
+            display:flex;align-items:center;gap:6px;font-size:.78em;color:#ddd;
+            padding:2px 0;
         }
-        .an-row{
-            display:flex;
-            align-items:center;
-            gap:10px;
-            margin-bottom:12px;
-            flex-wrap:wrap;
-            background:rgba(255,255,255,.05);
-            border-radius:8px;
-            padding:10px 14px;
-        }
-        .an-row span{
-            font-size:.82em;
-            color:#ffaaaa;
-            text-transform:uppercase;
-            letter-spacing:1px;
-            white-space:nowrap;
-        }
-        .btn-appliquer{
-            margin-top:14px;
-            background:#d32f2f;
-            color:white;
-            border:none;
-            padding:9px 26px;
-            border-radius:6px;
-            font-size:.95em;
-            cursor:pointer;
-            transition:background .2s;
-        }
-        .btn-appliquer:hover{
-            background:#b71c1c;
-        }
-        .graphiques-grid{
-            display:grid;
-            grid-template-columns:1fr;
-            gap:18px;
-        }
+        .graphiques-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
         .carte{
-            background:rgba(0,0,0,.68);
-            border-radius:10px;
-            padding:16px 18px;
-            backdrop-filter:blur(6px);
-            border:1px solid rgba(255,255,255,.13);
-            position:relative;
+            background:rgba(0,0,0,.68);border-radius:10px;padding:16px 18px;
+            backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);position:relative;
         }
-        .carte h3{
-            font-size:.97em;
-            color:#ffcccc;
-            margin-bottom:12px;
-            padding-right:28px;
-        }
-        .canvas-wrap{
-            position:relative;
-            height:450px;
-        }
+        .carte h3{font-size:.97em;color:#ffcccc;margin-bottom:12px;padding-right:28px;}
+        .canvas-wrap{position:relative;height:420px;}
         .btn-info{
-            position:absolute;
-            top:14px;
-            right:14px;
-            width:22px;
-            height:22px;
-            border-radius:50%;
-            background:rgba(255,255,255,.2);
-            border:1px solid rgba(255,255,255,.4);
-            color:white;
-            font-size:.85em;
-            font-weight:bold;
-            cursor:pointer;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            transition:background .2s;
-            z-index:10;
+            position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;
+            background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:white;
+            font-size:.85em;font-weight:bold;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;transition:background .2s;z-index:10;
         }
-        .btn-info:hover{
-            background:rgba(255,255,255,.4);
-        }
+        .btn-info:hover{background:rgba(255,255,255,.4);}
         .overlay{
-            display:none;
-            position:fixed;
-            inset:0;
-            background:rgba(0,0,0,.8);
-            z-index:1000;
-            align-items:center;
-            justify-content:center;
+            display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;
+            align-items:center;justify-content:center;
         }
-        .overlay.visible{
-            display:flex;
-        }
+        .overlay.visible{display:flex;}
         .popup{
-            background:#1a1a2e;
-            border:1px solid rgba(255,100,100,.4);
-            border-radius:12px;
-            padding:24px 26px;
-            max-width:580px;
-            width:92%;
-            max-height:85vh;
-            overflow-y:auto;
-            position:relative;
-            color:white;
+            background:#1a1a2e;border:1px solid rgba(255,100,100,.4);border-radius:12px;
+            padding:24px 26px;max-width:580px;width:92%;max-height:85vh;overflow-y:auto;
+            position:relative;color:white;
         }
-        .popup h2{
-            color:#ffcccc;
-            font-size:1.05em;
-            margin-bottom:14px;
-        }
-        .popup p, .popup li{
-            font-size:.88em;
-            line-height:1.6;
-            margin-bottom:8px;
-            color:#e0e0e0;
-        }
-        .popup ul{
-            padding-left:18px;
-            margin-bottom:10px;
-        }
-        .popup strong{
-            color:#ffaaaa;
-        }
+        .popup h2{color:#ffcccc;font-size:1.05em;margin-bottom:14px;}
+        .popup p, .popup li{font-size:.88em;line-height:1.6;margin-bottom:8px;color:#e0e0e0;}
+        .popup ul{padding-left:18px;margin-bottom:10px;}
+        .popup strong{color:#ffaaaa;}
         .popup-close{
-            position:absolute;
-            top:12px;
-            right:14px;
-            background:none;
-            border:none;
-            color:white;
-            font-size:1.3em;
-            cursor:pointer;
-            opacity:.7;
+            position:absolute;top:12px;right:14px;background:none;border:none;color:white;
+            font-size:1.3em;cursor:pointer;opacity:.7;
         }
-        .popup-close:hover{
-            opacity:1;
+        .popup-close:hover{opacity:1;}
+        .analyse{
+            background:rgba(0,0,0,.68);border-radius:10px;padding:18px 22px;margin-top:18px;
+            backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);
         }
-        @media(max-width:768px){
+        .analyse h3{font-size:1em;color:#ffcccc;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+        .analyse p{font-size:.92em;line-height:1.7;color:#e8e8e8;margin-bottom:10px;}
+        @media(max-width:900px){
             .graphiques-grid{grid-template-columns:1fr;}
-            .blocs-grid{grid-template-columns:1fr;}
         }
     </style>
 </head>
@@ -261,7 +118,7 @@
 <nav>
     <span class="nav-title">PCF 43 — Analyse Sécurité</span>
     <a href="https://explore.data.gouv.fr/fr/datasets/621df2954fa5a3b5a023e23c/#/resources/75753852-aca0-4c53-bfd4-a29513358d2f" target="_blank" class="nav-mi">
-        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="SSMSI"> Résultats officiels
+        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="SSMSI" style="height:14px;vertical-align:middle;"> Résultats officiels
     </a>
     <a href="index.html">← Accueil</a>
 </nav>
@@ -271,319 +128,352 @@
 
     <div class="filtres" id="panneau-filtres" style="display:none;">
         <h2>🔍 Choisissez votre analyse</h2>
-        <div class="blocs-grid">
+        <div class="filtres-row">
             <div class="bloc-col">
-                <h3>⬤ Violences</h3>
-                <label><input type="checkbox" class="cb-indicateur" value="Homicides" checked><span class="dot" style="background:#CC0000"></span>Homicides</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Tentatives d'homicide" checked><span class="dot" style="background:#FF6B35"></span>Tentatives d'homicide</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Violences physiques intrafamiliales" checked><span class="dot" style="background:#E8A080"></span>Violences intrafamiliales</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Violences physiques hors cadre familial" checked><span class="dot" style="background:#4CAF50"></span>Violences hors cadre familial</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Violences sexuelles" checked><span class="dot" style="background:#FF8C55"></span>Violences sexuelles</label>
+                <h3>Catégories (graphique France)</h3>
+                <div id="categories-container"></div>
             </div>
             <div class="bloc-col">
-                <h3>⬤ Vols et Cambriolages</h3>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols avec armes" checked><span class="dot" style="background:#42A5F5"></span>Vols avec armes</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols violents sans arme" checked><span class="dot" style="background:#FDD835"></span>Vols violents sans arme</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols sans violence contre des personnes" checked><span class="dot" style="background:#9C27B0"></span>Vols sans violence</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Cambriolages de logement" checked><span class="dot" style="background:#8BC34A"></span>Cambriolages</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols de véhicule" checked><span class="dot" style="background:#FF5722"></span>Vols de véhicules</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols dans les véhicules" checked><span class="dot" style="background:#607D8B"></span>Vols dans véhicules</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Vols d'accessoires sur véhicules" checked><span class="dot" style="background:#795548"></span>Vols d'accessoires</label>
-            </div>
-            <div class="bloc-col">
-                <h3>⬤ Autres infractions</h3>
-                <label><input type="checkbox" class="cb-indicateur" value="Usage de stupéfiants" checked><span class="dot" style="background:#9E9E9E"></span>Usage de stupéfiants</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Trafic de stupéfiants" checked><span class="dot" style="background:#666666"></span>Trafic de stupéfiants</label>
-                <label><input type="checkbox" class="cb-indicateur" value="Destructions et dégradations volontaires" checked><span class="dot" style="background:#E91E63"></span>Dégâts volontaires</label>
-            </div>
-        </div>
-
-        <div class="filtres-extras">
-            <div class="filtre-extra">
-                <h3>Département</h3>
-                <div id="deps-coches">
-                    <label><input type="checkbox" class="cb-dep" value="FR" checked> France (total)</label>
-                    <label><input type="checkbox" class="cb-dep" value="43" checked> 43 - Haute-Loire</label>
-                </div>
+                <h3>Départements (graphique de droite)</h3>
+                <div id="deps-coches"></div>
                 <div style="margin-top: 8px;">
-                    <select id="select-dep" style="width: 220px; background: rgba(255,255,255,0.1); border: 1px solid #ccc;">
+                    <select id="select-dep" style="width: 220px;">
                         <option value="">+ Ajouter un département</option>
                     </select>
-                    <button onclick="addDepartment()" style="margin-left: 8px; background: #d32f2f; border: none; padding: 5px 10px; border-radius: 4px; color: white; cursor: pointer;">Ajouter</button>
+                    <button onclick="addDepartment()" style="margin-left: 8px; background:#d32f2f; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer;">Ajouter</button>
                 </div>
             </div>
-            <div class="filtre-extra">
+            <div class="bloc-col">
                 <h3>Affichage</h3>
-                <label><input type="checkbox" id="cb-volume" checked> Volume (nombre de faits)</label>
-                <label><input type="checkbox" id="cb-taux" checked> Taux pour 100 000 hab.</label>
+                <label><input type="checkbox" id="cb-volume" checked> Volume (barres empilées)</label>
+                <label><input type="checkbox" id="cb-taux" checked> Taux pour 100 000 hab. (courbes)</label>
             </div>
         </div>
-        <button class="btn-appliquer" onclick="appliquer()">▶ Appliquer</button>
     </div>
 
     <div class="graphiques-grid" id="graphiques" style="display:none;">
         <div class="carte">
-            <h3>📊 Évolution de la délinquance</h3>
+            <h3>🇫🇷 France entière — par catégorie</h3>
             <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
-            <div class="canvas-wrap"><canvas id="chartSecurite"></canvas></div>
+            <div class="canvas-wrap"><canvas id="chartFrance"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3>📍 Départements sélectionnés — total délinquance</h3>
+            <div class="canvas-wrap"><canvas id="chartDepartements"></canvas></div>
         </div>
     </div>
 
-    <!-- Pop-up pour la méthodologie -->
+    <div class="analyse" id="analyse" style="display:none;">
+        <h3>🧭 Notre analyse</h3>
+        <p>
+            [Texte à personnaliser : ajoutez ici votre lecture des chiffres — tendances marquantes,
+            comparaison Haute-Loire / France, points de vigilance, contexte politique local...]
+        </p>
+    </div>
+
     <div class="overlay" id="overlay-methodo" onclick="fermerPopup('overlay-methodo',event)">
         <div class="popup">
             <button class="popup-close" onclick="document.getElementById('overlay-methodo').classList.remove('visible')">✕</button>
             <h2>📊 Méthodologie — Analyse Sécurité</h2>
             <p>Les données proviennent du <strong>Service Statistique Ministériel de la Sécurité Intérieure (SSMSI)</strong>.</p>
             <p><a href="https://explore.data.gouv.fr/fr/datasets/621df2954fa5a3b5a023e23c/#/resources/75753852-aca0-4c53-bfd4-a29513358d2f" target="_blank" style="color:#ffaaaa;">Source officielle</a></p>
-            <p>Les indicateurs sont classés par catégorie pour faciliter l'analyse.</p>
+            <p>Les 18 indicateurs bruts sont regroupés en 3 catégories : Violences, Vols et cambriolages, Autres infractions.
+               Cochez "Détailler dans le graphique" sur une catégorie pour voir sa composition exacte (par exemple,
+               distinguer les escroqueries en ligne du trafic de stupéfiants dans "Autres infractions").
+               Les amendes forfaitaires liées aux stupéfiants (AFD / hors AFD) sont exclues du total pour éviter un double comptage avec l'indicateur "Usage de stupéfiants".</p>
         </div>
     </div>
 </div>
 
 <script>
-// Données globales
-let allData = [];
-let chart;
+let allDataCat = [];
+let allDataBrut = [];
+let refIndicateurs = [];
+let indicateursParCategorie = {};
+let chartFrance, chartDepartements;
 
-// Liste complète des 101 departements (96 metropole + 5 DROM), codes tels
-// qu'exportes par export_json.py (2 caracteres, "2A"/"2B" pour la Corse)
 const NOMS_DEPARTEMENTS = {
-    "01": "Ain", "02": "Aisne", "03": "Allier", "04": "Alpes-de-Haute-Provence",
-    "05": "Hautes-Alpes", "06": "Alpes-Maritimes", "07": "Ardèche", "08": "Ardennes",
-    "09": "Ariège", "10": "Aube", "11": "Aude", "12": "Aveyron",
-    "13": "Bouches-du-Rhône", "14": "Calvados", "15": "Cantal", "16": "Charente",
-    "17": "Charente-Maritime", "18": "Cher", "19": "Corrèze",
-    "2A": "Corse-du-Sud", "2B": "Haute-Corse",
-    "21": "Côte-d'Or", "22": "Côtes-d'Armor", "23": "Creuse", "24": "Dordogne",
-    "25": "Doubs", "26": "Drôme", "27": "Eure", "28": "Eure-et-Loir",
-    "29": "Finistère", "30": "Gard", "31": "Haute-Garonne", "32": "Gers",
-    "33": "Gironde", "34": "Hérault", "35": "Ille-et-Vilaine", "36": "Indre",
-    "37": "Indre-et-Loire", "38": "Isère", "39": "Jura", "40": "Landes",
-    "41": "Loir-et-Cher", "42": "Loire", "43": "Haute-Loire", "44": "Loire-Atlantique",
-    "45": "Loiret", "46": "Lot", "47": "Lot-et-Garonne", "48": "Lozère",
-    "49": "Maine-et-Loire", "50": "Manche", "51": "Marne", "52": "Haute-Marne",
-    "53": "Mayenne", "54": "Meurthe-et-Moselle", "55": "Meuse", "56": "Morbihan",
-    "57": "Moselle", "58": "Nièvre", "59": "Nord", "60": "Oise", "61": "Orne",
-    "62": "Pas-de-Calais", "63": "Puy-de-Dôme", "64": "Pyrénées-Atlantiques",
-    "65": "Hautes-Pyrénées", "66": "Pyrénées-Orientales", "67": "Bas-Rhin",
-    "68": "Haut-Rhin", "69": "Rhône", "70": "Haute-Saône", "71": "Saône-et-Loire",
-    "72": "Sarthe", "73": "Savoie", "74": "Haute-Savoie", "75": "Paris",
-    "76": "Seine-Maritime", "77": "Seine-et-Marne", "78": "Yvelines",
-    "79": "Deux-Sèvres", "80": "Somme", "81": "Tarn", "82": "Tarn-et-Garonne",
-    "83": "Var", "84": "Vaucluse", "85": "Vendée", "86": "Vienne",
-    "87": "Haute-Vienne", "88": "Vosges", "89": "Yonne", "90": "Territoire de Belfort",
-    "91": "Essonne", "92": "Hauts-de-Seine", "93": "Seine-Saint-Denis",
-    "94": "Val-de-Marne", "95": "Val-d'Oise",
-    "971": "Guadeloupe", "972": "Martinique", "973": "Guyane",
-    "974": "La Réunion", "976": "Mayotte",
-    "FR": "France (total)"
+    "01":"Ain","02":"Aisne","03":"Allier","04":"Alpes-de-Haute-Provence","05":"Hautes-Alpes",
+    "06":"Alpes-Maritimes","07":"Ardèche","08":"Ardennes","09":"Ariège","10":"Aube","11":"Aude",
+    "12":"Aveyron","13":"Bouches-du-Rhône","14":"Calvados","15":"Cantal","16":"Charente",
+    "17":"Charente-Maritime","18":"Cher","19":"Corrèze","2A":"Corse-du-Sud","2B":"Haute-Corse",
+    "21":"Côte-d'Or","22":"Côtes-d'Armor","23":"Creuse","24":"Dordogne","25":"Doubs","26":"Drôme",
+    "27":"Eure","28":"Eure-et-Loir","29":"Finistère","30":"Gard","31":"Haute-Garonne","32":"Gers",
+    "33":"Gironde","34":"Hérault","35":"Ille-et-Vilaine","36":"Indre","37":"Indre-et-Loire",
+    "38":"Isère","39":"Jura","40":"Landes","41":"Loir-et-Cher","42":"Loire","43":"Haute-Loire",
+    "44":"Loire-Atlantique","45":"Loiret","46":"Lot","47":"Lot-et-Garonne","48":"Lozère",
+    "49":"Maine-et-Loire","50":"Manche","51":"Marne","52":"Haute-Marne","53":"Mayenne",
+    "54":"Meurthe-et-Moselle","55":"Meuse","56":"Morbihan","57":"Moselle","58":"Nièvre","59":"Nord",
+    "60":"Oise","61":"Orne","62":"Pas-de-Calais","63":"Puy-de-Dôme","64":"Pyrénées-Atlantiques",
+    "65":"Hautes-Pyrénées","66":"Pyrénées-Orientales","67":"Bas-Rhin","68":"Haut-Rhin","69":"Rhône",
+    "70":"Haute-Saône","71":"Saône-et-Loire","72":"Sarthe","73":"Savoie","74":"Haute-Savoie",
+    "75":"Paris","76":"Seine-Maritime","77":"Seine-et-Marne","78":"Yvelines","79":"Deux-Sèvres",
+    "80":"Somme","81":"Tarn","82":"Tarn-et-Garonne","83":"Var","84":"Vaucluse","85":"Vendée",
+    "86":"Vienne","87":"Haute-Vienne","88":"Vosges","89":"Yonne","90":"Territoire de Belfort",
+    "91":"Essonne","92":"Hauts-de-Seine","93":"Seine-Saint-Denis","94":"Val-de-Marne",
+    "95":"Val-d'Oise","971":"Guadeloupe","972":"Martinique","973":"Guyane","974":"La Réunion",
+    "976":"Mayotte"
 };
 
-// Remplit le menu deroulant avec tous les departements, tries par code,
-// une fois que la page est chargee
+const COULEURS_CATEGORIE = { "Violences":"#e53935", "Vols":"#1e88e5", "Autres":"#ffb300" };
+// Nuances de chaque couleur de categorie, une par indicateur (dans l'ordre alphabetique du JSON)
+const NUANCES_CATEGORIE = {
+    "Violences": ["#b71c1c","#d32f2f","#e53935","#ef5350","#e57373"],
+    "Vols": ["#0d47a1","#1565c0","#1e88e5","#42a5f5","#64b5f6","#90caf9","#bbdefb"],
+    "Autres": ["#e65100","#f57c00","#fb8c00","#ffb300"]
+};
+const PALETTE_DEPARTEMENTS = ["#43a047","#8e24aa","#00acc1","#fb8c00","#3949ab","#c0ca33","#6d4c41","#5c6bc0","#d81b60","#00897b"];
+let couleursDepartements = { "43": PALETTE_DEPARTEMENTS[0] };
+
+function prochaineCouleurDep() {
+    const utilisees = Object.values(couleursDepartements);
+    return PALETTE_DEPARTEMENTS.find(c => !utilisees.includes(c)) || "#999999";
+}
+
+function rafraichirCasesDep() {
+    const container = document.getElementById('deps-coches');
+    container.innerHTML = '';
+    Object.keys(couleursDepartements).forEach(code => {
+        const label = document.createElement('label');
+        label.innerHTML = `<input type="checkbox" class="cb-dep" value="${code}" checked><span class="dot" style="background:${couleursDepartements[code]}"></span>${code} - ${NOMS_DEPARTEMENTS[code] || code}`;
+        container.appendChild(label);
+        label.querySelector('input').addEventListener('change', appliquer);
+    });
+}
+
 function remplirMenuDepartements() {
     const select = document.getElementById('select-dep');
-    const codes = Object.keys(NOMS_DEPARTEMENTS)
-        .filter(c => c !== "FR")
-        .sort();
-    codes.forEach(code => {
+    Object.keys(NOMS_DEPARTEMENTS).sort().forEach(code => {
         const option = document.createElement('option');
         option.value = code;
         option.textContent = `${code} - ${NOMS_DEPARTEMENTS[code]}`;
         select.appendChild(option);
     });
 }
+
+function addDepartment() {
+    const select = document.getElementById('select-dep');
+    const code = select.value;
+    if (!code || couleursDepartements[code]) { select.value = ''; return; }
+    couleursDepartements[code] = prochaineCouleurDep();
+    rafraichirCasesDep();
+    select.value = '';
+    appliquer();
+}
+
+// Construit les blocs de filtres par categorie, avec la liste depliee des indicateurs
+function construireFiltresCategories() {
+    const container = document.getElementById('categories-container');
+    ["Violences", "Vols", "Autres"].forEach(cat => {
+        const bloc = document.createElement('div');
+        bloc.className = 'categorie-bloc';
+
+        const headerLabel = document.createElement('label');
+        headerLabel.innerHTML = `<input type="checkbox" class="cb-categorie" value="${cat}" checked><span class="dot" style="background:${COULEURS_CATEGORIE[cat]}"></span><strong>${cat}</strong>`;
+        bloc.appendChild(headerLabel);
+
+        const detailLabel = document.createElement('label');
+        detailLabel.className = 'detail-toggle';
+        detailLabel.innerHTML = `<input type="checkbox" class="cb-detail" data-cat="${cat}"> Détailler dans le graphique`;
+        bloc.appendChild(detailLabel);
+
+        const liste = document.createElement('ul');
+        liste.className = 'sous-liste';
+        (indicateursParCategorie[cat] || []).forEach((ind, i) => {
+            const li = document.createElement('li');
+            const nuance = NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length];
+            li.innerHTML = `<span class="dot" style="background:${nuance}"></span>${ind}`;
+            liste.appendChild(li);
+        });
+        bloc.appendChild(liste);
+
+        container.appendChild(bloc);
+
+        headerLabel.querySelector('input').addEventListener('change', appliquer);
+        detailLabel.querySelector('input').addEventListener('change', appliquer);
+    });
+}
+
+rafraichirCasesDep();
 remplirMenuDepartements();
 
-// Charger le fichier JSON
-fetch('data/securite/delinquance.json')
-    .then(response => response.json())
-    .then(data => {
-        allData = data;
-        document.getElementById('msg').style.display = 'none';
-        document.getElementById('panneau-filtres').style.display = 'block';
-    })
-    .catch(error => {
-        document.getElementById('msg').innerHTML = '❌ Erreur de chargement des données. Vérifiez le chemin du fichier JSON.';
-        console.error(error);
+Promise.all([
+    fetch('data/securite/delinquance_categories.json').then(r => r.json()),
+    fetch('data/securite/delinquance.json').then(r => r.json()),
+    fetch('data/securite/indicateurs_ref.json').then(r => r.json())
+]).then(([categories, brut, ref]) => {
+    allDataCat = categories;
+    allDataBrut = brut;
+    refIndicateurs = ref;
+    ref.forEach(r => {
+        if (!indicateursParCategorie[r.categorie]) indicateursParCategorie[r.categorie] = [];
+        indicateursParCategorie[r.categorie].push(r.indicateur);
     });
+    construireFiltresCategories();
+    document.getElementById('msg').style.display = 'none';
+    document.getElementById('panneau-filtres').style.display = 'block';
+    document.getElementById('cb-volume').addEventListener('change', appliquer);
+    document.getElementById('cb-taux').addEventListener('change', appliquer);
+    appliquer();
+}).catch(err => {
+    document.getElementById('msg').innerHTML = '❌ Erreur de chargement des données.';
+    console.error(err);
+});
 
-// Fermer les pop-ups
 function fermerPopup(overlayId, event) {
     if (event.target.id === overlayId) {
         document.getElementById(overlayId).classList.remove('visible');
     }
 }
 
-// Ajouter un département depuis le menu déroulant
-function addDepartment() {
-    const select = document.getElementById('select-dep');
-    const depValue = select.value;
-    if (!depValue) return;
-
-    const existingCheckbox = document.querySelector(`.cb-dep[value="${depValue}"]`);
-    if (!existingCheckbox) {
-        const container = document.getElementById('deps-coches');
-        const label = document.createElement('label');
-        label.innerHTML = `<input type="checkbox" class="cb-dep" value="${depValue}" checked><span class="dot" style="background:#42A5F5"></span>${getDepartmentName(depValue)}`;
-        container.appendChild(label);
-    } else {
-        existingCheckbox.checked = true;
-    }
-    select.value = ''; // Réinitialiser le menu déroulant
-}
-
-// Nom des départements (liste complète)
-function getDepartmentName(code) {
-    return NOMS_DEPARTEMENTS[code] || code;
-}
-
-// Appliquer les filtres
 function appliquer() {
+    const selectedCats = Array.from(document.querySelectorAll('.cb-categorie:checked')).map(cb => cb.value);
     const selectedDeps = Array.from(document.querySelectorAll('.cb-dep:checked')).map(cb => cb.value);
-    const selectedInds = Array.from(document.querySelectorAll('.cb-indicateur:checked')).map(cb => cb.value);
+    const detailCats = Array.from(document.querySelectorAll('.cb-detail:checked')).map(cb => cb.dataset.cat);
     const showVolume = document.getElementById('cb-volume').checked;
     const showTaux = document.getElementById('cb-taux').checked;
 
-    if (selectedDeps.length === 0 || selectedInds.length === 0) {
-        alert("Veuillez sélectionner au moins un département et un indicateur.");
-        return;
-    }
+    if (selectedCats.length === 0) return;
 
-    // Filtrer les données
-    const filteredData = allData.filter(row =>
-        selectedDeps.includes(row.Code_departement) &&
-        selectedInds.includes(row.indicateur)
-    );
+    const years = [...new Set(allDataCat.map(r => r.annee))].sort();
 
-    // Extraire les années uniques
-    const years = [...new Set(filteredData.map(row => row.annee))].sort();
+    // --- Graphique France ---
+    const dataFrance = allDataCat.filter(r => r.Code_departement === 'FR');
+    const datasetsFrance = [];
 
-    // Préparer les datasets pour Chart.js
-    const datasets = [];
-    const colors = ['#CC0000', '#FF6B35', '#E8A080', '#4CAF50', '#FF8C55', '#42A5F5', '#FDD835', '#9C27B0', '#8BC34A', '#FF5722', '#607D8B', '#795548', '#E91E63', '#9E9E9E', '#666666'];
-
-    // Si on affiche le volume
     if (showVolume) {
-        selectedInds.forEach((ind, i) => {
-            selectedDeps.forEach((dep, j) => {
-                const depData = filteredData.filter(row => row.Code_departement === dep && row.indicateur === ind);
-                const data = years.map(year => {
-                    const row = depData.find(r => r.annee === year);
-                    return row ? parseInt(row.nombre) : null;
+        selectedCats.forEach(cat => {
+            if (detailCats.includes(cat)) {
+                (indicateursParCategorie[cat] || []).forEach((ind, i) => {
+                    const serie = allDataBrut.filter(r => r.Code_departement === 'FR' && r.indicateur === ind);
+                    datasetsFrance.push({
+                        type: 'bar',
+                        label: ind,
+                        stack: 'volume',
+                        backgroundColor: NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length],
+                        data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
+                        yAxisID: 'y'
+                    });
                 });
-                datasets.push({
-                    label: `${ind} (${getDepartmentName(dep)}) - Volume`,
-                    data: data,
-                    borderColor: colors[i % colors.length],
-                    backgroundColor: 'transparent',
-                    tension: 0.4,
+            } else {
+                const serie = dataFrance.filter(r => r.categorie === cat);
+                datasetsFrance.push({
+                    type: 'bar',
+                    label: cat,
+                    stack: 'volume',
+                    backgroundColor: COULEURS_CATEGORIE[cat],
+                    data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
                     yAxisID: 'y'
                 });
-            });
+            }
         });
     }
-
-    // Si on affiche le taux
     if (showTaux) {
-        selectedInds.forEach((ind, i) => {
-            selectedDeps.forEach((dep, j) => {
-                const depData = filteredData.filter(row => row.Code_departement === dep && row.indicateur === ind);
-                const data = years.map(year => {
-                    const row = depData.find(r => r.annee === year);
-                    return row ? (parseInt(row.nombre) / parseInt(row.insee_pop)) * 100000 : null;
-                });
-                datasets.push({
-                    label: `${ind} (${getDepartmentName(dep)}) - Taux`,
-                    data: data,
-                    borderColor: colors[i % colors.length],
-                    backgroundColor: 'transparent',
-                    tension: 0.4,
-                    yAxisID: 'y1'
-                });
+        selectedCats.forEach(cat => {
+            const serie = dataFrance.filter(r => r.categorie === cat);
+            datasetsFrance.push({
+                type: 'line',
+                label: cat + ' (taux)',
+                borderColor: COULEURS_CATEGORIE[cat],
+                backgroundColor: 'transparent',
+                tension: 0.35,
+                yAxisID: 'y1',
+                data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
             });
         });
     }
 
-    // Afficher le graphique
-    document.getElementById('graphiques').style.display = 'grid';
-
-    // Créer ou mettre à jour le graphique
-    const ctx = document.getElementById('chartSecurite').getContext('2d');
-    if (chart) {
-        chart.destroy();
+    // --- Graphique Departements : meme logique que France, mais une fois par departement ---
+    const datasetsDep = [];
+    if (showVolume) {
+        selectedDeps.forEach(dep => {
+            selectedCats.forEach(cat => {
+                if (detailCats.includes(cat)) {
+                    (indicateursParCategorie[cat] || []).forEach((ind, i) => {
+                        const serie = allDataBrut.filter(r => r.Code_departement === dep && r.indicateur === ind);
+                        datasetsDep.push({
+                            type: 'bar',
+                            label: `${ind} (${dep})`,
+                            stack: dep,
+                            backgroundColor: NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length],
+                            data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
+                            yAxisID: 'y'
+                        });
+                    });
+                } else {
+                    const serie = allDataCat.filter(r => r.Code_departement === dep && r.categorie === cat);
+                    datasetsDep.push({
+                        type: 'bar',
+                        label: `${cat} (${dep})`,
+                        stack: dep,
+                        backgroundColor: COULEURS_CATEGORIE[cat],
+                        data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
+                        yAxisID: 'y'
+                    });
+                }
+            });
+        });
     }
-    chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: years,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: false
-                },
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#e0e0e0',
-                        font: {
-                            size: 10
-                        }
-                    }
-                }
+    if (showTaux) {
+        selectedDeps.forEach(dep => {
+            const serie = allDataCat.filter(r => r.Code_departement === dep && selectedCats.includes(r.categorie));
+            const data = years.map(y => {
+                const lignes = serie.filter(r => r.annee === y);
+                if (!lignes.length) return null;
+                const nombre = lignes.reduce((s, r) => s + r.nombre, 0);
+                const pop = lignes[0].insee_pop;
+                return (nombre / pop) * 100000;
+            });
+            datasetsDep.push({
+                type: 'line',
+                label: `${dep} (taux)`,
+                borderColor: couleursDepartements[dep],
+                backgroundColor: 'transparent',
+                tension: 0.35,
+                yAxisID: 'y1',
+                data: data
+            });
+        });
+    }
+
+    document.getElementById('graphiques').style.display = 'grid';
+    document.getElementById('analyse').style.display = 'block';
+
+    const optionsCommunes = (titreY1) => ({
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: {
+                stacked: true,
+                title: { display: true, text: 'Nombre de faits', color: '#ffaaaa' },
+                ticks: { color: '#e0e0e0' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
             },
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    title: {
-                        display: true,
-                        text: 'Nombre de faits',
-                        color: '#ffaaaa'
-                    },
-                    ticks: {
-                        color: '#e0e0e0'
-                    },
-                    grid: {
-                        color: 'rgba(255,255,255,0.1)'
-                    }
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'Taux pour 100 000 habitants',
-                        color: '#ffaaaa'
-                    },
-                    ticks: {
-                        color: '#e0e0e0'
-                    },
-                    grid: {
-                        drawOnChartArea: false
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Année',
-                        color: '#ffaaaa'
-                    },
-                    ticks: {
-                        color: '#e0e0e0'
-                    },
-                    grid: {
-                        color: 'rgba(255,255,255,0.1)'
-                    }
-                }
+            y1: {
+                position: 'right',
+                title: { display: true, text: titreY1, color: '#ffaaaa' },
+                ticks: { color: '#e0e0e0' },
+                grid: { drawOnChartArea: false }
+            },
+            x: {
+                title: { display: true, text: 'Année', color: '#ffaaaa' },
+                ticks: { color: '#e0e0e0' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
             }
         }
+    });
+
+    if (chartFrance) chartFrance.destroy();
+    chartFrance = new Chart(document.getElementById('chartFrance').getContext('2d'), {
+        data: { labels: years, datasets: datasetsFrance },
+        options: optionsCommunes('Taux pour 100 000 hab.')
+    });
+
+    if (chartDepartements) chartDepartements.destroy();
+    chartDepartements = new Chart(document.getElementById('chartDepartements').getContext('2d'), {
+        data: { labels: years, datasets: datasetsDep },
+        options: optionsCommunes('Taux pour 100 000 hab.')
     });
 }
 </script>

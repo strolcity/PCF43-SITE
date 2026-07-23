@@ -110,3 +110,19 @@ with open(FICHIER_JSON_CATEGORIE, "w", encoding="utf-8") as f:
     json.dump(lignes_categorie, f, ensure_ascii=False)
 
 print(f"{len(lignes_categorie)} lignes ecrites dans {FICHIER_JSON_CATEGORIE}")
+
+# --- 4. La liste des indicateurs avec leur categorie (pour le detail deplie du site) ---
+conn = sqlite3.connect(FICHIER_BASE)
+conn.row_factory = sqlite3.Row
+ref = []
+for row in conn.execute(
+    "SELECT indicateur, categorie FROM indicateurs_ref WHERE compte_dans_total = 'Oui' ORDER BY categorie, indicateur"
+):
+    ref.append({"indicateur": row["indicateur"], "categorie": row["categorie"]})
+conn.close()
+
+FICHIER_JSON_REF = "../data/securite/indicateurs_ref.json"
+with open(FICHIER_JSON_REF, "w", encoding="utf-8") as f:
+    json.dump(ref, f, ensure_ascii=False)
+
+print(f"{len(ref)} indicateurs ecrits dans {FICHIER_JSON_REF}")
