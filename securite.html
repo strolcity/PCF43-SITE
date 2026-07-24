@@ -42,8 +42,10 @@
             font-size:1em;color:#ffcccc;letter-spacing:1px;
             text-transform:uppercase;margin-bottom:14px;
         }
-        .filtres-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-start;}
+        .filtres-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;}
+        .filtres-col-droite{display:flex;flex-direction:column;gap:14px;flex:1;min-width:230px;}
         .bloc-col{background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;flex:1;min-width:230px;}
+        .filtres-col-droite .bloc-col{min-width:0;}
         .bloc-col h3{
             font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;
             border-bottom:1px solid rgba(255,100,100,.35);padding-bottom:5px;margin-bottom:8px;
@@ -68,7 +70,7 @@
             display:flex;align-items:center;gap:6px;font-size:.78em;color:#ddd;
             padding:2px 0;
         }
-        .graphiques-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+        .graphiques-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
         .carte{
             background:rgba(0,0,0,.68);border-radius:10px;padding:16px 18px;
             backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);position:relative;
@@ -107,6 +109,11 @@
         }
         .analyse h3{font-size:1em;color:#ffcccc;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
         .analyse p{font-size:.92em;line-height:1.7;color:#e8e8e8;margin-bottom:10px;}
+        .canvas-wrap-mini{position:relative;height:130px;margin:8px 0;}
+        .table-ressenti{width:100%;font-size:.76em;border-collapse:collapse;margin-top:6px;}
+        .table-ressenti th, .table-ressenti td{padding:3px 4px;text-align:right;border-bottom:1px solid rgba(255,255,255,.08);}
+        .table-ressenti th:first-child, .table-ressenti td:first-child{text-align:left;}
+        .table-ressenti th{color:#ffaaaa;font-weight:normal;}
         @media(max-width:900px){
             .graphiques-grid{grid-template-columns:1fr;}
         }
@@ -129,24 +136,34 @@
     <div class="filtres" id="panneau-filtres" style="display:none;">
         <h2>🔍 Choisissez votre analyse</h2>
         <div class="filtres-row">
-            <div class="bloc-col">
-                <h3>Catégories (graphique France)</h3>
-                <div id="categories-container"></div>
-            </div>
-            <div class="bloc-col">
-                <h3>Départements (graphique de droite)</h3>
-                <div id="deps-coches"></div>
-                <div style="margin-top: 8px;">
-                    <select id="select-dep" style="width: 220px;">
-                        <option value="">+ Ajouter un département</option>
-                    </select>
-                    <button onclick="addDepartment()" style="margin-left: 8px; background:#d32f2f; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer;">Ajouter</button>
+            <div class="filtres-col-droite">
+                <div class="bloc-col">
+                    <h3>Départements (graphique de droite)</h3>
+                    <div id="deps-coches"></div>
+                    <div style="margin-top: 8px;">
+                        <select id="select-dep" style="width: 220px;">
+                            <option value="">+ Ajouter un département</option>
+                        </select>
+                        <button onclick="addDepartment()" style="margin-left: 8px; background:#d32f2f; border:none; padding:5px 10px; border-radius:4px; color:white; cursor:pointer;">Ajouter</button>
+                    </div>
+                </div>
+                <div class="bloc-col">
+                    <h3>Affichage</h3>
+                    <label><input type="checkbox" id="cb-volume" checked> Volume (barres empilées)</label>
+                    <label><input type="checkbox" id="cb-taux" checked> Taux pour 100 000 hab. (courbes)</label>
+                </div>
+                <div class="bloc-col" id="carte-ressenti" style="display:none;">
+                    <h3>🧭 Ressenti vs réalité</h3>
+                    <div class="canvas-wrap-mini"><canvas id="chartRessenti"></canvas></div>
+                    <table class="table-ressenti" id="table-ressenti">
+                        <thead><tr><th>Année</th><th>Préoccupation</th><th>Taux réel /100k</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
             <div class="bloc-col">
-                <h3>Affichage</h3>
-                <label><input type="checkbox" id="cb-volume" checked> Volume (barres empilées)</label>
-                <label><input type="checkbox" id="cb-taux" checked> Taux pour 100 000 hab. (courbes)</label>
+                <h3>Catégories (graphique France)</h3>
+                <div id="categories-container"></div>
             </div>
         </div>
     </div>
@@ -181,6 +198,9 @@
                Cochez "Détailler dans le graphique" sur une catégorie pour voir sa composition exacte (par exemple,
                distinguer les escroqueries en ligne du trafic de stupéfiants dans "Autres infractions").
                Les amendes forfaitaires liées aux stupéfiants (AFD / hors AFD) sont exclues du total pour éviter un double comptage avec l'indicateur "Usage de stupéfiants".</p>
+            <p>Le bloc "Ressenti vs réalité" compare le taux réel de délinquance en France (SSMSI) avec la part de Français
+               citant la délinquance comme le problème le plus préoccupant de la société (enquête Cadre de Vie et Sécurité,
+               SSMSI/INSEE). 2020 est absent car l'enquête n'a pas eu lieu cette année-là.</p>
         </div>
     </div>
 </div>
@@ -190,7 +210,9 @@ let allDataCat = [];
 let allDataBrut = [];
 let refIndicateurs = [];
 let indicateursParCategorie = {};
-let chartFrance, chartDepartements;
+let dataRessenti = [];
+let dataRessentiTerrorisme = [];
+let chartFrance, chartDepartements, chartRessenti;
 
 const NOMS_DEPARTEMENTS = {
     "01":"Ain","02":"Aisne","03":"Allier","04":"Alpes-de-Haute-Provence","05":"Hautes-Alpes",
@@ -216,7 +238,6 @@ const NOMS_DEPARTEMENTS = {
 };
 
 const COULEURS_CATEGORIE = { "Violences":"#e53935", "Vols":"#1e88e5", "Autres":"#ffb300" };
-// Nuances de chaque couleur de categorie, une par indicateur (dans l'ordre alphabetique du JSON)
 const NUANCES_CATEGORIE = {
     "Violences": ["#b71c1c","#d32f2f","#e53935","#ef5350","#e57373"],
     "Vols": ["#0d47a1","#1565c0","#1e88e5","#42a5f5","#64b5f6","#90caf9","#bbdefb"],
@@ -261,7 +282,6 @@ function addDepartment() {
     appliquer();
 }
 
-// Construit les blocs de filtres par categorie, avec la liste depliee des indicateurs
 function construireFiltresCategories() {
     const container = document.getElementById('categories-container');
     ["Violences", "Vols", "Autres"].forEach(cat => {
@@ -315,15 +335,128 @@ Promise.all([
     document.getElementById('cb-volume').addEventListener('change', appliquer);
     document.getElementById('cb-taux').addEventListener('change', appliquer);
     appliquer();
+    renderRessenti();
 }).catch(err => {
     document.getElementById('msg').innerHTML = '❌ Erreur de chargement des données.';
     console.error(err);
 });
 
+fetch('data/securite/ressenti.json')
+    .then(r => r.json())
+    .then(data => {
+        dataRessenti = data
+            .filter(d => d.indicateur === "Delinquance - probleme le plus preoccupant (societe)")
+            .sort((a, b) => a.annee - b.annee);
+        dataRessentiTerrorisme = data
+            .filter(d => d.indicateur === "Terrorisme, attentats - probleme le plus preoccupant (societe)")
+            .sort((a, b) => a.annee - b.annee);
+        renderRessenti();
+    })
+    .catch(err => console.error('Erreur ressenti.json :', err));
+
 function fermerPopup(overlayId, event) {
     if (event.target.id === overlayId) {
         document.getElementById(overlayId).classList.remove('visible');
     }
+}
+
+function tauxTotalFrance(annee) {
+    if (!allDataCat.length) return null;
+    const lignes = allDataCat.filter(r => r.Code_departement === 'FR' && r.annee === annee);
+    if (!lignes.length) return null;
+    const nombre = lignes.reduce((s, r) => s + r.nombre, 0);
+    const pop = lignes[0].insee_pop;
+    return (nombre / pop) * 100000;
+}
+
+function renderRessenti() {
+    if (!dataRessenti.length) return;
+
+    const years = dataRessenti.map(d => d.annee);
+    const valeurs = dataRessenti.map(d => d.valeur_pct);
+
+    if (chartRessenti) chartRessenti.destroy();
+    const datasetsRessenti = [{
+        label: 'Délinquance (%)',
+        data: valeurs,
+        borderColor: '#ffb300',
+        backgroundColor: 'transparent',
+        tension: 0.3,
+        pointRadius: 3
+    }];
+    if (dataRessentiTerrorisme.length) {
+        datasetsRessenti.push({
+            label: 'Terrorisme, attentats (%)',
+            data: years.map(y => {
+                const t = dataRessentiTerrorisme.find(d => d.annee === y);
+                return t ? t.valeur_pct : null;
+            }),
+            borderColor: '#9e9e9e',
+            backgroundColor: 'transparent',
+            borderDash: [4, 3],
+            tension: 0.3,
+            pointRadius: 3
+        });
+    }
+    chartRessenti = new Chart(document.getElementById('chartRessenti').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: datasetsRessenti
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: { color: '#e0e0e0', font: { size: 8 }, boxWidth: 10, padding: 6 }
+                }
+            },
+            scales: {
+                y: {
+                    title: { display: true, text: '%', color: '#ffaaaa' },
+                    ticks: { color: '#e0e0e0', font: { size: 9 } },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                x: {
+                    ticks: { color: '#e0e0e0', font: { size: 9 } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    const tbody = document.querySelector('#table-ressenti tbody');
+    tbody.innerHTML = '';
+    dataRessenti.forEach((point, idx) => {
+        const precedent = idx > 0 ? dataRessenti[idx - 1] : null;
+
+        let flechePerception = '';
+        if (precedent) {
+            if (point.valeur_pct > precedent.valeur_pct) flechePerception = ' <span style="color:#e53935">▲</span>';
+            else if (point.valeur_pct < precedent.valeur_pct) flechePerception = ' <span style="color:#43a047">▼</span>';
+        }
+
+        const tauxAnnee = tauxTotalFrance(point.annee);
+        let tauxTexte = '—';
+        if (tauxAnnee !== null) {
+            const tauxPrecedent = precedent ? tauxTotalFrance(precedent.annee) : null;
+            let flecheTaux = '';
+            if (tauxPrecedent !== null) {
+                if (tauxAnnee > tauxPrecedent) flecheTaux = ' <span style="color:#e53935">▲</span>';
+                else if (tauxAnnee < tauxPrecedent) flecheTaux = ' <span style="color:#43a047">▼</span>';
+            }
+            tauxTexte = Math.round(tauxAnnee) + flecheTaux;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${point.annee}</td><td>${point.valeur_pct}%${flechePerception}</td><td>${tauxTexte}</td>`;
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('carte-ressenti').style.display = 'block';
 }
 
 function appliquer() {
@@ -383,7 +516,7 @@ function appliquer() {
         });
     }
 
-    // --- Graphique Departements : meme logique que France, mais une fois par departement ---
+    // --- Graphique Departements ---
     const datasetsDep = [];
     if (showVolume) {
         selectedDeps.forEach(dep => {
