@@ -159,6 +159,7 @@
                         <thead><tr><th>Année</th><th>Préoccupation</th><th>Taux réel /100k</th></tr></thead>
                         <tbody></tbody>
                     </table>
+                    <p style="font-size:.68em;color:#aaa;margin-top:4px;">* 2008-2015 : estimation reconstruite (voir méthodologie ℹ)</p>
                 </div>
             </div>
             <div class="bloc-col">
@@ -193,14 +194,25 @@
             <button class="popup-close" onclick="document.getElementById('overlay-methodo').classList.remove('visible')">✕</button>
             <h2>📊 Méthodologie — Analyse Sécurité</h2>
             <p>Les données proviennent du <strong>Service Statistique Ministériel de la Sécurité Intérieure (SSMSI)</strong>.</p>
-            <p><a href="https://explore.data.gouv.fr/fr/datasets/621df2954fa5a3b5a023e23c/#/resources/75753852-aca0-4c53-bfd4-a29513358d2f" target="_blank" style="color:#ffaaaa;">Source officielle</a></p>
+            <p><a href="https://explore.data.gouv.fr/fr/datasets/621df2954fa5a3b5a023e23c/#/resources/75753852-aca0-4c53-bfd4-a29513358d2f" target="_blank" style="color:#ffaaaa;">Source officielle 2016-2025 (base départementale SSMSI)</a></p>
             <p>Les 18 indicateurs bruts sont regroupés en 3 catégories : Violences, Vols et cambriolages, Autres infractions.
                Cochez "Détailler dans le graphique" sur une catégorie pour voir sa composition exacte (par exemple,
                distinguer les escroqueries en ligne du trafic de stupéfiants dans "Autres infractions").
                Les amendes forfaitaires liées aux stupéfiants (AFD / hors AFD) sont exclues du total pour éviter un double comptage avec l'indicateur "Usage de stupéfiants".</p>
             <p>Le bloc "Ressenti vs réalité" compare le taux réel de délinquance en France (SSMSI) avec la part de Français
-               citant la délinquance comme le problème le plus préoccupant de la société (enquête Cadre de Vie et Sécurité,
-               SSMSI/INSEE). 2020 est absent car l'enquête n'a pas eu lieu cette année-là.</p>
+               citant la délinquance comme le problème le plus préoccupant de la société (enquête Cadre de Vie et Sécurité
+               2010-2021, puis enquête Vécu et Ressenti en matière de Sécurité depuis 2022 - échantillon élargi de 25 000 à
+               200 000 personnes, ce qui peut expliquer une partie de la hausse observée entre 2021 et 2022).
+               2020 est absent car l'enquête n'a pas eu lieu cette année-là.</p>
+            <p><strong>Historique France 2008-2015 (barres semi-transparentes / courbes en pointillés)</strong> : les Homicides
+               proviennent d'une série officielle SSMSI dédiée. Les 15 autres indicateurs sont reconstruits à partir des
+               107 anciennes catégories ("index") de l'État 4001, en sommant les index correspondant à chaque indicateur
+               moderne. Test de fiabilité sur les Homicides (seul point de comparaison disponible) : écart d'environ 4 à 5%
+               avec la donnée officielle. À considérer comme une estimation, jamais mélangée aux totaux officiels 2016-2025.</p>
+            <p>Sources complémentaires :
+               <a href="https://www.data.gouv.fr/datasets/chiffres-departementaux-mensuels-relatifs-aux-crimes-et-delits-enregistres-par-les-services-de-police-et-de-gendarmerie-depuis-janvier-1996" target="_blank" style="color:#ffaaaa;">Chiffres départementaux mensuels depuis 1996 (État 4001, data.gouv.fr)</a>
+               · <a href="https://www.insee.fr/fr/statistiques/1283853" target="_blank" style="color:#ffaaaa;">Population France 2008-2015 (INSEE, Bilan démographique)</a>
+               · <a href="https://www.interieur.gouv.fr/Interstats" target="_blank" style="color:#ffaaaa;">Publications SSMSI Interstats</a></p>
         </div>
     </div>
 </div>
@@ -369,6 +381,11 @@ function tauxTotalFrance(annee) {
     return (nombre / pop) * 100000;
 }
 
+function estEstimation(annee) {
+    const lignes = allDataCat.filter(r => r.Code_departement === 'FR' && r.annee === annee);
+    return lignes.length > 0 && lignes.some(r => r.estimation === true);
+}
+
 function renderRessenti() {
     if (!dataRessenti.length) return;
 
@@ -448,7 +465,8 @@ function renderRessenti() {
                 if (tauxAnnee > tauxPrecedent) flecheTaux = ' <span style="color:#e53935">▲</span>';
                 else if (tauxAnnee < tauxPrecedent) flecheTaux = ' <span style="color:#43a047">▼</span>';
             }
-            tauxTexte = Math.round(tauxAnnee) + flecheTaux;
+            const etoile = estEstimation(point.annee) ? '*' : '';
+            tauxTexte = Math.round(tauxAnnee) + etoile + flecheTaux;
         }
 
         const tr = document.createElement('tr');
@@ -483,7 +501,11 @@ function appliquer() {
                         type: 'bar',
                         label: ind,
                         stack: 'volume',
-                        backgroundColor: NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length],
+                        backgroundColor: years.map(y => {
+                            const estime = y < 2016;
+                            const couleur = NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length];
+                            return estime ? couleur + '80' : couleur;
+                        }),
                         data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
                         yAxisID: 'y'
                     });
@@ -494,7 +516,7 @@ function appliquer() {
                     type: 'bar',
                     label: cat,
                     stack: 'volume',
-                    backgroundColor: COULEURS_CATEGORIE[cat],
+                    backgroundColor: years.map(y => y < 2016 ? COULEURS_CATEGORIE[cat] + '80' : COULEURS_CATEGORIE[cat]),
                     data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? r.nombre : null; }),
                     yAxisID: 'y'
                 });
@@ -511,6 +533,13 @@ function appliquer() {
                 backgroundColor: 'transparent',
                 tension: 0.35,
                 yAxisID: 'y1',
+                segment: {
+                    borderDash: ctx => {
+                        const anneeGauche = years[ctx.p0.parsed.x];
+                        const anneeDroite = years[ctx.p1.parsed.x];
+                        return (anneeGauche < 2016 || anneeDroite < 2016) ? [5, 4] : undefined;
+                    }
+                },
                 data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
             });
         });

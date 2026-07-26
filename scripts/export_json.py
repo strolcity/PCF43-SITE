@@ -33,8 +33,8 @@ conn.row_factory = sqlite3.Row
 
 lignes = []
 
-# --- 1. Les donnees par departement ---
-for row in conn.execute("SELECT code_dep, annee, indicateur, nombre, insee_pop FROM delinquance"):
+# --- 1. Les donnees par departement (le pseudo-departement FR est gere a part, voir plus bas) ---
+for row in conn.execute("SELECT code_dep, annee, indicateur, nombre, insee_pop FROM delinquance WHERE code_dep != 'FR'"):
     lignes.append({
         "Code_departement": formater_code_dep(row["code_dep"]),
         "annee": row["annee"],
@@ -106,10 +106,39 @@ for (annee, categorie), valeurs in france_cat.items():
 conn.close()
 
 FICHIER_JSON_CATEGORIE = "../data/securite/delinquance_categories.json"
+
+# On ajoute l'historique France 2008-2015 (estimation reconstruite, voir Methodologie_historique),
+# calculee directement depuis les lignes brutes FR (jamais mélangée aux vues officielles 2016-2025)
+conn = sqlite3.connect(FICHIER_BASE)
+conn.row_factory = sqlite3.Row
+historique_categorie = {}
+for row in conn.execute("""
+    SELECT d.annee, r.categorie, d.nombre, d.insee_pop
+    FROM delinquance d
+    JOIN indicateurs_ref r ON d.indicateur = r.indicateur
+    WHERE d.code_dep = 'FR' AND d.annee < 2016 AND r.compte_dans_total = 'Oui'
+"""):
+    cle = (row["annee"], row["categorie"])
+    if cle not in historique_categorie:
+        historique_categorie[cle] = {"nombre": 0, "insee_pop": row["insee_pop"]}
+    historique_categorie[cle]["nombre"] += row["nombre"]
+conn.close()
+
+for (annee, categorie), valeurs in historique_categorie.items():
+    lignes_categorie.append({
+        "Code_departement": "FR",
+        "annee": annee,
+        "categorie": categorie,
+        "nombre": valeurs["nombre"],
+        "insee_pop": valeurs["insee_pop"],
+        "estimation": True
+    })
+
 with open(FICHIER_JSON_CATEGORIE, "w", encoding="utf-8") as f:
     json.dump(lignes_categorie, f, ensure_ascii=False)
 
 print(f"{len(lignes_categorie)} lignes ecrites dans {FICHIER_JSON_CATEGORIE}")
+print(f"Dont {len(historique_categorie)} lignes d'estimation historique (2008-2015)")
 
 # --- 4. La liste des indicateurs avec leur categorie (pour le detail deplie du site) ---
 conn = sqlite3.connect(FICHIER_BASE)
@@ -126,3 +155,17 @@ with open(FICHIER_JSON_REF, "w", encoding="utf-8") as f:
     json.dump(ref, f, ensure_ascii=False)
 
 print(f"{len(ref)} indicateurs ecrits dans {FICHIER_JSON_REF}")
+
+# --- 5. Historique Homicides France (seule serie qui remonte avant 2016) ---
+conn = sqlite3.connect(FICHIER_BASE)
+conn.row_factory = sqlite3.Row
+historique = [dict(row) for row in conn.execute(
+    "SELECT annee, nombre, insee_pop, taux_100k FROM homicides_historique_france ORDER BY annee"
+)]
+conn.close()
+
+FICHIER_JSON_HOMICIDES = "../data/securite/homicides_historique.json"
+with open(FICHIER_JSON_HOMICIDES, "w", encoding="utf-8") as f:
+    json.dump(historique, f, ensure_ascii=False)
+
+print(f"{len(historique)} annees ecrites dans {FICHIER_JSON_HOMICIDES}")
