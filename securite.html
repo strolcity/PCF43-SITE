@@ -43,9 +43,9 @@
             text-transform:uppercase;margin-bottom:14px;
         }
         .filtres-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;}
-        .filtres-col-droite{display:flex;flex-direction:column;gap:14px;flex:1;min-width:230px;}
+        .filtres-col-gauche, .filtres-col-droite{display:flex;flex-direction:column;gap:14px;flex:1;min-width:230px;}
         .bloc-col{background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;flex:1;min-width:230px;}
-        .filtres-col-droite .bloc-col{min-width:0;}
+        .filtres-col-gauche .bloc-col, .filtres-col-droite .bloc-col{min-width:0;}
         .bloc-col h3{
             font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;
             border-bottom:1px solid rgba(255,100,100,.35);padding-bottom:5px;margin-bottom:8px;
@@ -114,6 +114,10 @@
         .table-ressenti th, .table-ressenti td{padding:3px 4px;text-align:right;border-bottom:1px solid rgba(255,255,255,.08);}
         .table-ressenti th:first-child, .table-ressenti td:first-child{text-align:left;}
         .table-ressenti th{color:#ffaaaa;font-weight:normal;}
+        .carte-ina{cursor:pointer;transition:background .2s;}
+        .carte-ina:hover{background:rgba(255,255,255,.1);}
+        .ina-apercu{width:100%;border-radius:8px;display:block;margin-bottom:8px;}
+        .ina-teaser{font-size:.82em;color:#e0e0e0;line-height:1.5;}
         @media(max-width:900px){
             .graphiques-grid{grid-template-columns:1fr;}
         }
@@ -136,7 +140,7 @@
     <div class="filtres" id="panneau-filtres" style="display:none;">
         <h2>🔍 Choisissez votre analyse</h2>
         <div class="filtres-row">
-            <div class="filtres-col-droite">
+            <div class="filtres-col-gauche">
                 <div class="bloc-col">
                     <h3>Départements (graphique de droite)</h3>
                     <div id="deps-coches"></div>
@@ -152,6 +156,12 @@
                     <label><input type="checkbox" id="cb-volume" checked> Volume (barres empilées)</label>
                     <label><input type="checkbox" id="cb-taux" checked> Taux pour 100 000 hab. (courbes)</label>
                 </div>
+                <div class="bloc-col">
+                    <h3>Catégories (graphique France)</h3>
+                    <div id="categories-container"></div>
+                </div>
+            </div>
+            <div class="filtres-col-droite">
                 <div class="bloc-col" id="carte-ressenti" style="display:none;">
                     <h3>🧭 Ressenti vs réalité</h3>
                     <div class="canvas-wrap-mini"><canvas id="chartRessenti"></canvas></div>
@@ -161,10 +171,11 @@
                     </table>
                     <p style="font-size:.68em;color:#aaa;margin-top:4px;">* 2008-2015 : estimation reconstruite (voir méthodologie ℹ)</p>
                 </div>
-            </div>
-            <div class="bloc-col">
-                <h3>Catégories (graphique France)</h3>
-                <div id="categories-container"></div>
+                <div class="bloc-col carte-ina" onclick="document.getElementById('overlay-ina').classList.add('visible')">
+                    <h3>🎭 Jouez avec les mots</h3>
+                    <img src="https://i.postimg.cc/fW2XNsnK/securite.png" alt="Aperçu de l'outil data.ina.fr" class="ina-apercu">
+                    <p class="ina-teaser">Découvrez comment les médias parlent (ou pas) de la délinquance depuis 2019 →</p>
+                </div>
             </div>
         </div>
     </div>
@@ -187,6 +198,19 @@
             [Texte à personnaliser : ajoutez ici votre lecture des chiffres — tendances marquantes,
             comparaison Haute-Loire / France, points de vigilance, contexte politique local...]
         </p>
+    </div>
+
+    <div class="overlay" id="overlay-ina" onclick="fermerPopup('overlay-ina',event)">
+        <div class="popup">
+            <button class="popup-close" onclick="document.getElementById('overlay-ina').classList.remove('visible')">✕</button>
+            <h2>🎭 Jouez avec les mots</h2>
+            <img src="https://i.postimg.cc/fW2XNsnK/securite.png" alt="Aperçu de l'outil data.ina.fr" style="width:100%;border-radius:8px;margin-bottom:14px;">
+            <p>Amusez-vous à taper différents mots dans cet outil de l'INA pour voir combien de temps ils ont occupé les antennes françaises, année après année.</p>
+            <p>La réalité n'est pas toujours la même chose que la préoccupation qu'elle suscite. Mais d'où vient cette préoccupation ? C'est un peu l'histoire de la poule et de l'œuf : les médias reflètent-ils nos inquiétudes, ou contribuent-ils à les fabriquer ?</p>
+            <p style="text-align:center;margin-top:16px;">
+                <a href="https://data.ina.fr/s/TWvLBJ" target="_blank" style="display:inline-block;background:#d32f2f;color:white;padding:9px 22px;border-radius:6px;text-decoration:none;font-size:.9em;">Essayer l'outil data.ina.fr →</a>
+            </p>
+        </div>
     </div>
 
     <div class="overlay" id="overlay-methodo" onclick="fermerPopup('overlay-methodo',event)">
