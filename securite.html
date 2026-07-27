@@ -195,10 +195,52 @@
 
     <div class="analyse" id="analyse" style="display:none;">
         <h3>🧭 Notre analyse</h3>
-        <p>
-            [Texte à personnaliser : ajoutez ici votre lecture des chiffres — tendances marquantes,
-            comparaison Haute-Loire / France, points de vigilance, contexte politique local...]
-        </p>
+
+        <p><strong>Comment lire cette page.</strong> Le graphique "France entière" montre l'évolution par grande catégorie
+        (Violences, Vols, Autres infractions) ; celui de droite permet de comparer un ou plusieurs départements entre eux
+        ou avec la France. Le nuage de points en bas teste s'il existe un lien entre pauvreté locale et délinquance
+        enregistrée. Le Top 5 permet de voir, indicateur par indicateur, ce qui augmente ou baisse le plus depuis 2016 —
+        et de comparer votre département à la moyenne nationale. Seule la période 2016-2025 doit servir de base de
+        comparaison rigoureuse : avant 2016, la nomenclature du SSMSI était différente, et certains indicateurs (comme
+        les Destructions et dégradations, ou les Escroqueries) ne sont pas reconstituables sans créer un décalage
+        artificiel — c'est pour ça qu'ils n'apparaissent pas avant 2016 sur cette page.</p>
+
+        <p><strong>Zoom sur la Haute-Loire.</strong> Le total de délinquance enregistrée y est passé de 5 486 faits en 2016
+        à 6 680 en 2025, soit +21,8% — une hausse plus marquée qu'au niveau national (+8,7% sur la même période). Mais
+        le détail change beaucoup l'histoire : ce sont les Violences sexuelles (+195%), les Violences physiques
+        intrafamiliales (+170%) et les Escroqueries (+126%) qui tirent la hausse, pendant que les vols reculent nettement
+        (Vols dans les véhicules -54%, Vols avec armes -40%). Sur un aussi petit département, quelques dizaines de faits
+        en plus ou en moins suffisent à faire bouger fortement un pourcentage — à garder en tête avant de tirer des
+        conclusions trop définitives sur de petits nombres.</p>
+
+        <p><strong>Ressenti vs réalité : la poule ou l'œuf ?</strong> Le tableau du haut montre un vrai décrochage : entre
+        2019 et 2022, la part de Français citant la délinquance comme problème prioritaire a doublé (10% → 20%, puis 25%
+        en 2024), pendant que le taux réel de délinquance, lui, n'a pas connu de rupture comparable. Ce doublement de la
+        préoccupation coïncide aussi avec un changement d'enquête (CVS → VRS) qui a pu amplifier mécaniquement la mesure.
+        La question qu'on pose avec l'outil de l'INA ("Jouez avec les mots", en haut à droite) est justement celle-là :
+        est-ce que les médias reflètent une inquiétude déjà là, ou est-ce qu'ils contribuent à la faire naître et grandir
+        en lui donnant plus de temps d'antenne ? Les deux mécanismes jouent probablement ensemble, et on n'a pas la
+        preuve définitive de l'un ou de l'autre avec ces seules données — mais l'écart entre les deux courbes est bien
+        réel, lui.</p>
+
+        <p><strong>Une hausse réelle, mais pas à dramatiser.</strong> Non, tout n'augmente pas au même rythme, et c'est
+        important de le dire : sur 2016-2025, les vols reculent presque partout (armes, véhicules, cambriolages), pendant
+        que les violences sexuelles et intrafamiliales progressent fortement — en bonne partie parce que les victimes
+        portent davantage plainte qu'avant (effet MeToo à partir de 2017, politiques publiques comme le Grenelle des
+        violences conjugales), pas uniquement parce qu'il y aurait plus de faits. La délinquance "enregistrée" mesure ce
+        qui est signalé à la police, pas la réalité totale des faits commis. Une hausse d'un indicateur peut donc vouloir
+        dire "plus de faits", "plus de plaintes", ou les deux à la fois — le nuancer plutôt que l'additionner à tout le
+        reste pour crier au chaos généralisé, c'est exactement ce que cette page essaie de permettre.</p>
+    </div>
+
+    <div class="carte" id="carte-top5" style="display:none;margin-top:18px;">
+        <h3>🏆 Plus fortes évolutions par indicateur (2016 → dernière année)</h3>
+        <div style="margin-bottom:12px;">
+            <button class="btn-appliquer" id="btn-top5-hausses" style="margin-top:0;">📈 Top 5 hausses</button>
+            <button class="btn-appliquer" id="btn-top5-baisses" style="margin-top:0;background:#555;">📉 Top 5 baisses</button>
+        </div>
+        <div id="top5-contenu" style="display:flex;gap:16px;flex-wrap:wrap;"></div>
+        <p style="font-size:.7em;color:#aaa;margin-top:10px;">Comparaison sur les 16 indicateurs, uniquement 2016-2025 (période officielle et comparable). Les départements affichés sont ceux cochés dans "Départements" ci-dessus.</p>
     </div>
 
     <div class="carte" id="carte-correlation" style="display:none;margin-top:18px;">
@@ -650,6 +692,68 @@ function afficherCorrelation() {
     document.getElementById('carte-correlation').style.display = 'block';
 }
 
+// --- Top 5 hausses / baisses par indicateur (2016 -> derniere annee) ---
+let modeTop5 = 'hausses';
+
+function calculerTop5(codeDep) {
+    const annees = [...new Set(allDataBrut.filter(r => r.Code_departement === codeDep).map(r => r.annee))]
+        .filter(a => a >= 2016).sort((a, b) => a - b);
+    if (annees.length < 2) return [];
+    const premiere = annees[0], derniere = annees[annees.length - 1];
+
+    const resultats = [];
+    (refIndicateurs || []).forEach(ref => {
+        const ind = ref.indicateur;
+        const v1 = allDataBrut.find(r => r.Code_departement === codeDep && r.indicateur === ind && r.annee === premiere);
+        const v2 = allDataBrut.find(r => r.Code_departement === codeDep && r.indicateur === ind && r.annee === derniere);
+        if (v1 && v2 && v1.nombre > 0) {
+            resultats.push({ indicateur: ind, evolution: (v2.nombre / v1.nombre - 1) * 100 });
+        }
+    });
+    resultats.sort((a, b) => b.evolution - a.evolution);
+    return resultats;
+}
+
+function afficherTop5() {
+    const selectedDeps = Array.from(document.querySelectorAll('.cb-dep:checked')).map(cb => cb.value);
+    const entites = [{ code: 'FR', nom: 'France' }, ...selectedDeps.map(d => ({ code: d, nom: `${d} - ${NOMS_DEPARTEMENTS[d] || d}` }))];
+
+    const contenu = document.getElementById('top5-contenu');
+    contenu.innerHTML = '';
+
+    entites.forEach(entite => {
+        const classement = calculerTop5(entite.code);
+        if (!classement.length) return;
+        const liste = modeTop5 === 'hausses' ? classement.slice(0, 5) : classement.slice(-5).reverse();
+
+        const bloc = document.createElement('div');
+        bloc.style.cssText = 'flex:1;min-width:220px;background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;';
+        let html = `<h4 style="font-size:.85em;color:#ffaaaa;margin-bottom:8px;">${entite.nom}</h4><ol style="padding-left:18px;font-size:.82em;line-height:1.7;">`;
+        liste.forEach(item => {
+            const couleur = item.evolution >= 0 ? '#e53935' : '#43a047';
+            html += `<li>${item.indicateur} <strong style="color:${couleur}">${item.evolution >= 0 ? '+' : ''}${item.evolution.toFixed(0)}%</strong></li>`;
+        });
+        html += '</ol>';
+        bloc.innerHTML = html;
+        contenu.appendChild(bloc);
+    });
+
+    document.getElementById('carte-top5').style.display = 'block';
+}
+
+document.getElementById('btn-top5-hausses').addEventListener('click', () => {
+    modeTop5 = 'hausses';
+    document.getElementById('btn-top5-hausses').style.background = '#d32f2f';
+    document.getElementById('btn-top5-baisses').style.background = '#555';
+    afficherTop5();
+});
+document.getElementById('btn-top5-baisses').addEventListener('click', () => {
+    modeTop5 = 'baisses';
+    document.getElementById('btn-top5-baisses').style.background = '#d32f2f';
+    document.getElementById('btn-top5-hausses').style.background = '#555';
+    afficherTop5();
+});
+
 function appliquer() {
     const selectedCats = Array.from(document.querySelectorAll('.cb-categorie:checked')).map(cb => cb.value);
     const selectedDeps = Array.from(document.querySelectorAll('.cb-dep:checked')).map(cb => cb.value);
@@ -845,6 +949,8 @@ function appliquer() {
         data: { labels: years, datasets: datasetsDep },
         options: optionsCommunes('Taux pour 100 000 hab.')
     });
+
+    afficherTop5();
 }
 </script>
 </body>
