@@ -169,7 +169,7 @@
                         <thead><tr><th>Année</th><th>Préoccupation</th><th>Taux réel /100k</th></tr></thead>
                         <tbody></tbody>
                     </table>
-                    <p style="font-size:.68em;color:#aaa;margin-top:4px;">* 2008-2015 : estimation reconstruite (voir méthodologie ℹ)</p>
+                    <p style="font-size:.68em;color:#aaa;margin-top:4px;">* 2008-2015 : taux partiel (Violences + Vols seulement, catégorie "Autres" non reconstituable — voir méthodologie ℹ). Pas de comparaison flèche entre 2015 et 2016 (changement de périmètre).</p>
                 </div>
                 <div class="bloc-col carte-ina" onclick="document.getElementById('overlay-ina').classList.add('visible')">
                     <h3>🎭 Jouez avec les mots</h3>
@@ -185,6 +185,7 @@
             <h3>🇫🇷 France entière — par catégorie</h3>
             <button class="btn-info" onclick="document.getElementById('overlay-methodo').classList.add('visible')">ℹ</button>
             <div class="canvas-wrap"><canvas id="chartFrance"></canvas></div>
+            <p style="font-size:.7em;color:#aaa;margin-top:6px;">⚠ Avant 2016 (barres semi-transparentes) : catégorie "Autres infractions" non disponible. Le total visuel 2008-2015 n'est donc pas comparable au total 2016-2025 (voir méthodologie ℹ).</p>
         </div>
         <div class="carte">
             <h3>📍 Départements sélectionnés — total délinquance</h3>
@@ -432,9 +433,10 @@ function tauxTotalFrance(annee) {
     return (nombre / pop) * 100000;
 }
 
+// Un taux "avant 2016" est incomplet (categorie Autres absente, voir methodologie) :
+// il ne doit jamais etre presente comme comparable au taux complet 2016+
 function estEstimation(annee) {
-    const lignes = allDataCat.filter(r => r.Code_departement === 'FR' && r.annee === annee);
-    return lignes.length > 0 && lignes.some(r => r.estimation === true);
+    return annee < 2016;
 }
 
 function renderRessenti() {
@@ -529,13 +531,14 @@ function renderRessenti() {
         let tauxTexte = '—';
         if (tauxAnnee !== null) {
             const tauxPrecedent = precedent ? tauxTotalFrance(precedent.annee) : null;
+            const traverseCoupure = precedent && (precedent.annee < 2016) !== (point.annee < 2016);
             let flecheTaux = '';
-            if (tauxPrecedent !== null) {
+            if (tauxPrecedent !== null && !traverseCoupure) {
                 if (tauxAnnee > tauxPrecedent) flecheTaux = ' <span style="color:#e53935">▲</span>';
                 else if (tauxAnnee < tauxPrecedent) flecheTaux = ' <span style="color:#43a047">▼</span>';
             }
-            const etoile = estEstimation(point.annee) ? '*' : '';
-            tauxTexte = Math.round(tauxAnnee) + etoile + flecheTaux;
+            const etiquette = estEstimation(point.annee) ? ' <span style="color:#aaa;">(partiel*)</span>' : '';
+            tauxTexte = Math.round(tauxAnnee) + etiquette + flecheTaux;
         }
 
         const tr = document.createElement('tr');
