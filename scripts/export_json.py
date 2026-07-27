@@ -125,6 +125,8 @@ for row in conn.execute("""
 conn.close()
 
 for (annee, categorie), valeurs in historique_categorie.items():
+    if categorie == "Autres":
+        continue  # trop d'indicateurs manquants/peu fiables avant 2016 pour cette categorie (voir methodologie)
     lignes_categorie.append({
         "Code_departement": "FR",
         "annee": annee,
@@ -138,7 +140,7 @@ with open(FICHIER_JSON_CATEGORIE, "w", encoding="utf-8") as f:
     json.dump(lignes_categorie, f, ensure_ascii=False)
 
 print(f"{len(lignes_categorie)} lignes ecrites dans {FICHIER_JSON_CATEGORIE}")
-print(f"Dont {len(historique_categorie)} lignes d'estimation historique (2008-2015)")
+print(f"Dont {sum(1 for l in lignes_categorie if l.get('estimation'))} lignes d'estimation historique (2008-2015, categorie Autres exclue)")
 
 # --- 4. La liste des indicateurs avec leur categorie (pour le detail deplie du site) ---
 conn = sqlite3.connect(FICHIER_BASE)

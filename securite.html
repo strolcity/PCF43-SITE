@@ -253,10 +253,12 @@
                200 000 personnes, ce qui peut expliquer une partie de la hausse observée entre 2021 et 2022).
                2020 est absent car l'enquête n'a pas eu lieu cette année-là.</p>
             <p><strong>Historique France 2008-2015 (barres semi-transparentes / courbes en pointillés)</strong> : les Homicides
-               proviennent d'une série officielle SSMSI dédiée. Les 15 autres indicateurs sont reconstruits à partir des
-               107 anciennes catégories ("index") de l'État 4001, en sommant les index correspondant à chaque indicateur
-               moderne. Test de fiabilité sur les Homicides (seul point de comparaison disponible) : écart d'environ 4 à 5%
-               avec la donnée officielle. À considérer comme une estimation, jamais mélangée aux totaux officiels 2016-2025.</p>
+               proviennent d'une série officielle SSMSI dédiée. 13 des 15 autres indicateurs sont reconstruits à partir des
+               107 anciennes catégories ("index") de l'État 4001. Deux indicateurs (Destructions et dégradations, Escroqueries
+               et fraudes aux moyens de paiement) ont été retirés de cet historique après vérification : leur reconstruction
+               doublait quasiment au raccord avec 2016, signe d'un changement de périmètre plutôt que d'une évolution réelle.
+               Pour cette raison, la catégorie "Autres infractions" n'est pas affichée avant 2016. Test de fiabilité sur les
+               Homicides (seul point de comparaison disponible) : écart d'environ 4 à 5% avec la donnée officielle.</p>
             <p>Sources complémentaires :
                <a href="https://www.data.gouv.fr/datasets/chiffres-departementaux-mensuels-relatifs-aux-crimes-et-delits-enregistres-par-les-services-de-police-et-de-gendarmerie-depuis-janvier-1996" target="_blank" style="color:#ffaaaa;">Chiffres départementaux mensuels depuis 1996 (État 4001, data.gouv.fr)</a>
                · <a href="https://www.insee.fr/fr/statistiques/1283853" target="_blank" style="color:#ffaaaa;">Population France 2008-2015 (INSEE, Bilan démographique)</a>
@@ -693,23 +695,40 @@ function appliquer() {
     }
     if (showTaux) {
         selectedCats.forEach(cat => {
-            const serie = dataFrance.filter(r => r.categorie === cat);
-            datasetsFrance.push({
-                type: 'line',
-                label: cat + ' (taux)',
-                borderColor: COULEURS_CATEGORIE[cat],
-                backgroundColor: 'transparent',
-                tension: 0.35,
-                yAxisID: 'y1',
-                segment: {
-                    borderDash: ctx => {
-                        const anneeGauche = years[ctx.p0.parsed.x];
-                        const anneeDroite = years[ctx.p1.parsed.x];
-                        return (anneeGauche < 2016 || anneeDroite < 2016) ? [5, 4] : undefined;
-                    }
-                },
-                data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
-            });
+            if (detailCats.includes(cat)) {
+                (indicateursParCategorie[cat] || []).forEach((ind, i) => {
+                    const serie = allDataBrut.filter(r => r.Code_departement === 'FR' && r.indicateur === ind);
+                    datasetsFrance.push({
+                        type: 'line',
+                        label: ind + ' (taux)',
+                        borderColor: NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length],
+                        backgroundColor: 'transparent',
+                        borderWidth: 1.5,
+                        tension: 0.35,
+                        pointRadius: 2,
+                        yAxisID: 'y1',
+                        data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
+                    });
+                });
+            } else {
+                const serie = dataFrance.filter(r => r.categorie === cat);
+                datasetsFrance.push({
+                    type: 'line',
+                    label: cat + ' (taux)',
+                    borderColor: COULEURS_CATEGORIE[cat],
+                    backgroundColor: 'transparent',
+                    tension: 0.35,
+                    yAxisID: 'y1',
+                    segment: {
+                        borderDash: ctx => {
+                            const anneeGauche = years[ctx.p0.parsed.x];
+                            const anneeDroite = years[ctx.p1.parsed.x];
+                            return (anneeGauche < 2016 || anneeDroite < 2016) ? [5, 4] : undefined;
+                        }
+                    },
+                    data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
+                });
+            }
         });
     }
 
@@ -746,6 +765,24 @@ function appliquer() {
     }
     if (showTaux) {
         selectedDeps.forEach(dep => {
+            selectedCats.forEach(cat => {
+                if (detailCats.includes(cat)) {
+                    (indicateursParCategorie[cat] || []).forEach((ind, i) => {
+                        const serie = allDataBrut.filter(r => r.Code_departement === dep && r.indicateur === ind);
+                        datasetsDep.push({
+                            type: 'line',
+                            label: `${ind} (${dep}, taux)`,
+                            borderColor: NUANCES_CATEGORIE[cat][i % NUANCES_CATEGORIE[cat].length],
+                            backgroundColor: 'transparent',
+                            borderWidth: 1.5,
+                            tension: 0.35,
+                            pointRadius: 2,
+                            yAxisID: 'y1',
+                            data: years.map(y => { const r = serie.find(x => x.annee === y); return r ? (r.nombre / r.insee_pop) * 100000 : null; })
+                        });
+                    });
+                }
+            });
             const serie = allDataCat.filter(r => r.Code_departement === dep && selectedCats.includes(r.categorie));
             const data = years.map(y => {
                 const lignes = serie.filter(r => r.annee === y);
