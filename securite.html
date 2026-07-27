@@ -200,6 +200,30 @@
         </p>
     </div>
 
+    <div class="carte" id="carte-correlation" style="display:none;margin-top:18px;">
+        <h3>📊 Sécurité et pauvreté : y a-t-il un lien ?</h3>
+        <p style="font-size:.82em;color:#ccc;margin-bottom:10px;">
+            Chaque point est un département. Axe horizontal : indicateur économique (2021, dernière année INSEE
+            disponible). Axe vertical : taux de délinquance enregistrée en 2021 (même année, pour une comparaison
+            valide).
+        </p>
+        <div style="margin-bottom:10px;">
+            <label style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;font-size:.85em;">
+                <input type="radio" name="axe-x-correlation" value="taux_pauvrete_pct" checked> Taux de pauvreté
+            </label>
+            <label style="display:inline-flex;align-items:center;gap:6px;font-size:.85em;">
+                <input type="radio" name="axe-x-correlation" value="niveau_vie_median_euros"> Niveau de vie médian
+            </label>
+        </div>
+        <div class="canvas-wrap" style="height:420px;"><canvas id="chartCorrelation"></canvas></div>
+        <p id="correlation-texte" style="font-size:.85em;color:#e0e0e0;margin-top:10px;"></p>
+        <p style="font-size:.7em;color:#aaa;margin-top:6px;">
+            Source : Insee-DGFiP-Cnaf-Cnav-CCMSA, Fichier localisé social et fiscal (Filosofi) 2021 — dernier
+            millésime disponible (l'édition 2022 n'a pas pu être produite). Corrélation ne veut pas dire causalité :
+            un lien statistique peut venir d'un facteur commun (ex. urbanisation) plutôt que d'un effet direct.
+        </p>
+    </div>
+
     <div class="overlay" id="overlay-ina" onclick="fermerPopup('overlay-ina',event)">
         <div class="popup">
             <button class="popup-close" onclick="document.getElementById('overlay-ina').classList.remove('visible')">✕</button>
@@ -372,6 +396,7 @@ Promise.all([
     document.getElementById('cb-taux').addEventListener('change', appliquer);
     appliquer();
     renderRessenti();
+    afficherCorrelation();
 }).catch(err => {
     document.getElementById('msg').innerHTML = '❌ Erreur de chargement des données.';
     console.error(err);
@@ -423,7 +448,8 @@ function renderRessenti() {
         borderColor: '#ffb300',
         backgroundColor: 'transparent',
         tension: 0.3,
-        pointRadius: 3
+        pointRadius: 3,
+        yAxisID: 'y'
     }];
     if (dataRessentiTerrorisme.length) {
         datasetsRessenti.push({
@@ -436,9 +462,19 @@ function renderRessenti() {
             backgroundColor: 'transparent',
             borderDash: [4, 3],
             tension: 0.3,
-            pointRadius: 3
+            pointRadius: 3,
+            yAxisID: 'y'
         });
     }
+    datasetsRessenti.push({
+        label: 'Taux réel /100k',
+        data: years.map(y => tauxTotalFrance(y)),
+        borderColor: '#42a5f5',
+        backgroundColor: 'transparent',
+        tension: 0.3,
+        pointRadius: 3,
+        yAxisID: 'y1'
+    });
     chartRessenti = new Chart(document.getElementById('chartRessenti').getContext('2d'), {
         type: 'line',
         data: {
@@ -457,9 +493,16 @@ function renderRessenti() {
             },
             scales: {
                 y: {
+                    position: 'left',
                     title: { display: true, text: '%', color: '#ffaaaa' },
                     ticks: { color: '#e0e0e0', font: { size: 9 } },
                     grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y1: {
+                    position: 'right',
+                    title: { display: true, text: '/100k', color: '#ffaaaa' },
+                    ticks: { color: '#e0e0e0', font: { size: 9 } },
+                    grid: { display: false }
                 },
                 x: {
                     ticks: { color: '#e0e0e0', font: { size: 9 } },
@@ -499,6 +542,107 @@ function renderRessenti() {
     });
 
     document.getElementById('carte-ressenti').style.display = 'block';
+}
+
+// --- Nuage de points Securite / Pauvrete ---
+let dataPauvrete = [];
+let chartCorrelation;
+const NOMS_ECONOMIE = { taux_pauvrete_pct: "Taux de pauvreté (%)", niveau_vie_median_euros: "Niveau de vie médian (€)" };
+
+fetch('data/economie/pauvrete_niveau_vie.json')
+    .then(r => r.json())
+    .then(data => {
+        dataPauvrete = data;
+        document.querySelectorAll('input[name="axe-x-correlation"]').forEach(radio => {
+            radio.addEventListener('change', afficherCorrelation);
+        });
+        afficherCorrelation();
+    })
+    .catch(err => console.error('Erreur pauvrete_niveau_vie.json :', err));
+
+function calculerCorrelation(xs, ys) {
+    const n = xs.length;
+    const mx = xs.reduce((a, b) => a + b, 0) / n;
+    const my = ys.reduce((a, b) => a + b, 0) / n;
+    const cov = xs.reduce((s, x, i) => s + (x - mx) * (ys[i] - my), 0);
+    const sx = Math.sqrt(xs.reduce((s, x) => s + (x - mx) ** 2, 0));
+    const sy = Math.sqrt(ys.reduce((s, y) => s + (y - my) ** 2, 0));
+    return cov / (sx * sy);
+}
+
+function afficherCorrelation() {
+    if (!dataPauvrete.length || !allDataCat.length) return;
+    const radioCoche = document.querySelector('input[name="axe-x-correlation"]:checked');
+    if (!radioCoche) return;
+    const axeX = radioCoche.value;
+
+    const totauxDep = {};
+    allDataCat.filter(r => r.annee === 2021 && r.Code_departement !== 'FR').forEach(r => {
+        if (!totauxDep[r.Code_departement]) totauxDep[r.Code_departement] = { nombre: 0, pop: r.insee_pop };
+        totauxDep[r.Code_departement].nombre += r.nombre;
+    });
+
+    const points = [];
+    dataPauvrete.forEach(p => {
+        const dep = totauxDep[p.Code_departement];
+        if (!dep || p[axeX] == null) return;
+        points.push({
+            x: p[axeX],
+            y: (dep.nombre / dep.pop) * 100000,
+            label: `${p.Code_departement} - ${p.libelle}`
+        });
+    });
+
+    if (chartCorrelation) chartCorrelation.destroy();
+    chartCorrelation = new Chart(document.getElementById('chartCorrelation').getContext('2d'), {
+        type: 'scatter',
+        data: {
+            datasets: [{
+                label: 'Départements',
+                data: points,
+                backgroundColor: '#ffb300',
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => `${ctx.raw.label} : ${Math.round(ctx.raw.x)} / ${Math.round(ctx.raw.y)}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: NOMS_ECONOMIE[axeX], color: '#ffaaaa' },
+                    ticks: { color: '#e0e0e0' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y: {
+                    title: { display: true, text: 'Taux de délinquance 2021 /100k', color: '#ffaaaa' },
+                    ticks: { color: '#e0e0e0' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                }
+            }
+        }
+    });
+
+    const r = calculerCorrelation(points.map(p => p.x), points.map(p => p.y));
+    let force = "quasiment nulle";
+    if (Math.abs(r) >= 0.6) force = "forte";
+    else if (Math.abs(r) >= 0.35) force = "modérée";
+    else if (Math.abs(r) >= 0.15) force = "faible";
+    const sens = r >= 0 ? "plus élevé" : "plus bas";
+    document.getElementById('correlation-texte').innerHTML =
+        `<strong>Coefficient de corrélation : ${r.toFixed(2)}</strong> — corrélation ${force}. ` +
+        `${points.length} départements. Un coefficient positif signifie qu'un ${NOMS_ECONOMIE[axeX].toLowerCase()} ${sens} ` +
+        `s'accompagne plutôt d'un taux de délinquance plus élevé (et inversement pour un coefficient négatif).`;
+
+    document.getElementById('carte-correlation').style.display = 'block';
 }
 
 function appliquer() {
