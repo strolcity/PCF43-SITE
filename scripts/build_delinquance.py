@@ -56,12 +56,7 @@ conn.execute("""
     CREATE VIEW total_france AS
     SELECT annee, indicateur, SUM(nombre) AS nombre, SUM(insee_pop) AS insee_pop
     FROM delinquance
-    WHERE code_dep != 'FR'
-    GROUP BY annee, indicateur
-    UNION ALL
-    SELECT annee, indicateur, nombre, insee_pop
-    FROM delinquance
-    WHERE code_dep = 'FR';
+    GROUP BY annee, indicateur;
 """)
 
 conn.execute("DROP VIEW IF EXISTS total_delinquance;")
@@ -70,7 +65,7 @@ conn.execute("""
     SELECT d.code_dep, d.annee, SUM(d.nombre) AS nombre, MAX(d.insee_pop) AS insee_pop
     FROM delinquance d
     JOIN indicateurs_ref r ON d.indicateur = r.indicateur
-    WHERE r.compte_dans_total = 'Oui' AND d.code_dep != 'FR'
+    WHERE r.compte_dans_total = 'Oui'
     GROUP BY d.code_dep, d.annee;
 """)
 
@@ -88,17 +83,8 @@ conn.execute("""
     SELECT d.code_dep, d.annee, r.categorie, SUM(d.nombre) AS nombre, MAX(d.insee_pop) AS insee_pop
     FROM delinquance d
     JOIN indicateurs_ref r ON d.indicateur = r.indicateur
-    WHERE r.compte_dans_total = 'Oui' AND d.code_dep != 'FR'
+    WHERE r.compte_dans_total = 'Oui'
     GROUP BY d.code_dep, d.annee, r.categorie;
-""")
-
-conn.execute("DROP VIEW IF EXISTS homicides_historique_france;")
-conn.execute("""
-    CREATE VIEW homicides_historique_france AS
-    SELECT annee, nombre, insee_pop, (nombre * 100000.0 / insee_pop) AS taux_100k
-    FROM delinquance
-    WHERE code_dep = 'FR' AND indicateur = 'Homicides'
-    ORDER BY annee;
 """)
 
 conn.commit()
