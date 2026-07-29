@@ -237,6 +237,78 @@
         .popup a:hover {
             text-decoration: underline;
         }
+        /* Style pour aligner le camembert et l'image "Immigré" côte à côte */
+.camembert-and-image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    gap: 20px;
+}
+
+.camembert-and-image .pie-chart-box {
+    flex: 1;
+}
+
+.camembert-and-image .image-container {
+    flex: 1;
+    max-width: 300px;
+}
+
+/* Style pour masquer l'image "Gollum" par défaut */
+.gollum-container {
+    display: none;
+    position: relative;
+    margin: 20px auto;
+    text-align: center;
+}
+
+/* Afficher l'image "Gollum" au survol */
+.gollum-trigger:hover + .gollum-container {
+    display: block;
+}
+
+/* Style pour le déclencheur invisible (peut être un texte ou une icône) */
+.gollum-trigger {
+    cursor: pointer;
+    color: #ff5555;
+    font-weight: bold;
+    text-decoration: underline;
+    display: inline-block;
+    margin: 10px 0;
+}
+/* Style pour le conteneur de Gollum */
+.gollum-wrapper {
+    display: inline-block;
+    position: relative;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+/* Style pour le texte "Oh my good!!" */
+.gollum-trigger {
+    color: #ff5555;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* Style pour l'image Gollum (masquée par défaut) */
+.gollum-image {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 1000;
+    margin-top: 10px;
+    border-radius: 8px;
+    max-width: 200px;
+}
+
+/* Afficher l'image Gollum au survol du texte */
+.gollum-trigger:hover + .gollum-image {
+    display: block;
+}
 </style>
 </head>
 <body>
@@ -278,10 +350,20 @@
 
 <div class="text-box">
     <p><strong>Analyse :</strong></p>
-    <p>
-        - <strong> "on est submergé"</strong> : Depuis 1999,augmentation de moins de 4M pour prés de 5M de Français de "souche". <strong> "oh my good!!"</strong>
+    
+        - <strong> "on est submergé"</strong> : Depuis 1999,augmentation de moins de 4M pour prés de 5M de Français de "souche".
+        <!-- Conteneur pour Gollum -->
+<div class="gollum-wrapper">
+    <p class="gollum-trigger">Oh my good!!</p>
+    <img class="gollum-image" src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Gollum">
+</div>
         <br>
-        - <strong>"On va perdre nos origines chrétiennes</strong> : <a href="https://observatoire-immigration.fr/peut-on-evaluer-le-nombre-de-musulmans-vivant-en-france/" target="_blank">Selon l'observatoire de l'immigration:</a>aujourd'hui entre 12 et 18% . <strong> "oh my good!!"</strong>
+        - <strong>"On va perdre nos origines chrétiennes</strong> : <a href="https://observatoire-immigration.fr/peut-on-evaluer-le-nombre-de-musulmans-vivant-en-france/" target="_blank">Selon l'observatoire de l'immigration:</a>aujourd'hui entre 12 et 18% . 
+        <!-- Conteneur pour Gollum -->
+<div class="gollum-wrapper">
+    <p class="gollum-trigger">Oh my good!!</p>
+    <img class="gollum-image" src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Gollum">
+</div>
         <br>
         -<strong>La croissance basée sur la demande </strong> : l’immigration augmente mécaniquement le PIB par l’accroissement de la population totale du pays, par ses effets induits sur la consommation et les investissements publics ou privés.
         <br>
@@ -294,28 +376,40 @@
     </p>
 </div>
 
-        <!-- Camembert : Origines des immigrés -->
-        <h2>🌍 Origines des immigrés en France (2019)</h2>
-        <p><strong>Source :</strong> INSEE - Enquête Revenus fiscaux et sociaux 2019.</p>
+       <!-- Camembert : Origines des immigrés -->
+<h2>🌍 Origines des immigrés en France (2019)</h2>
+<p><strong>Source :</strong> INSEE - Enquête Revenus fiscaux et sociaux 2019.</p>
 
-        <div class="pie-chart-container">
-            <div class="pie-chart-box">
-                <canvas id="originesChart"></canvas>
-            </div>
-        </div>
+<div class="camembert-and-image">
+    <div class="pie-chart-box">
+        <canvas id="originesChart"></canvas>
+    </div>
 
-        <div class="text-box">
-            <p><strong>Analyse :</strong></p>
+    <!-- Image 1 : Immigré -->
+    <div class="image-container">
+        <img src="https://i.postimg.cc/L4x1dw79/immigre.jpg" alt="Immigré">
+        <div class="popup">
             <p>
-                - <strong>Afrique</strong> : 40% des immigrés (majorité Maghreb et Afrique subsaharienne).
-                <br>
-                - <strong>Europe</strong> : 35% (dont une partie de l’UE).
-                <br>
-                - <strong>Asie</strong> : 15% (Chine, Turquie, etc.).
-                <br>
-                - <strong>Amérique/Océanie</strong> : 10%.
+                <strong>Dire que certains immigrés choisiraient la France parce que “le système social est généreux” n’est pas un fait :</strong>
+                La vérité, c’est que beaucoup de personnes quittent leur pays pour des raisons bien plus complexes : guerres, violences, persécutions, effondrement économique, manque de perspectives et, très souvent, la nécessité de protéger les membres de la famille.
+            </p>
+            <p>
+                Quand des discours transforment l’immigration en menace culturelle ou quand ils suggèrent qu’il existerait “de bons” et “de mauvais” migrants selon une origine, ils alimentent la stigmatisation. Or en République laïque, <strong>le racisme n'est pas une opinion, c'est un délit.</strong>
+            </p>
+            <p>
+                Et surtout, réduire ces parcours à une “promenade vers la manne sociale” est une caricature. Voir un mensonge, il faudra nous expliquer pourquoi ceux qui traversent le plus grand charnier du monde, se dirigent pour traverser la Manche sur une autre coquille de noix.
+            </p>
+            <p>
+                Ils veulent juste une chance de vivre, de travailler, d’envoyer de l’aide à leurs proches, et de construire un avenir. La question à poser n’est pas “comment se servent-ils du système ?”, mais <strong>“quelles réponses républicaines, humaines et efficaces peut-on apporter : accueil, protection, intégration, lutte contre les réseaux criminels et voies légales”.</strong>
+            </p>
+            <p>
+                <a href="https://www.unhcr.org/fr/editions/rapport-semestriel-sur-les-tendances-mondiales" target="_blank">Rapport UNHCR</a><br>
+                <a href="https://www.lacimade.org/faq/pourquoi-migre-t-on/" target="_blank">Pourquoi migre-t-on ? (La Cimade)</a><br>
+                <a href="https://www.lacimade.org/publication/36707/" target="_blank">Et quand ils ne sont plus "réguliers", régularisons-les</a>
             </p>
         </div>
+    </div>
+</div>
 
         <!-- Section 2: Niveau de vie et décomposition des revenus -->
         <h2>💰 Niveau de vie : Décomposition des revenus (2019)</h2>
@@ -440,8 +534,7 @@
                 <br><br>
                 <strong>4. L’extrême droite ment</strong> :
                 Leur discours repose sur <strong>la peur</strong> et <strong>l’ignorance des chiffres</strong>.
-                <p>L’angoisse <strong>RESSENTI</strong> vient de l'échec MINORITAIRE de l'intégration de certains immigrés ou enfants d'immigrés </p>
-                </p>qui ne partagent pas les valeurs de la République en particulier la laïcité, l'égalité H/F et qui n'adhère pas au "modèle" français.</p>
+                <p>L'angoisse <strong>RESSENTI</strong> vient de l'échec MINORITAIRE de l'intégration de certains immigrés ou enfants d'immigrés, qui ne partagent pas les valeurs de la République, en particulier la laïcité, l'égalité H/F, et qui n'adhèrent pas au "modèle" français.</p>
                 </p>En réponse, leur argumentaire est la suppression des flux migratoire et de réduire les droits droits des étrangers,</p> 
                 </p>sans chercher à déterminer ce qui permettrait à l'état "fort" d'intégrer les populations qu'il choisit sur son sol.</p>
                 <p>Dans ce contexte, les discours les plus extrémistes rencontre une approbation de la population.</p> 
@@ -453,8 +546,13 @@
                 <p><strong>NOUS SOMMES LA SOLUTION, EUX LE PROBLÈME</strong></p>
                 <strong> Les immigrés sont des "voyous"</strong> une page est dédié "sécurité" 
                  <a href="https://www.insee.fr/fr/statistiques/5763585?sommaire=5763633" target="_blank">mais les chiffres sont ici</a> 
-                 <p>En 2019, 82 % des personnes mises en cause par la police et la gendarmerie se sont déclarées françaises et 18 % étrangères <strong>Oh my Good!!</strong></p>
-
+                En 2019, 82 % des personnes mises en cause par la police et la gendarmerie se sont déclarées françaises et 18 % étrangères <strong>Oh my Good!!</strong>
+<!-- Conteneur pour Gollum -->
+        <div class="gollum-wrapper">
+                <p class="gollum-trigger">Oh my good!!</p>
+                <img class="gollum-image" src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Gollum">
+        </div>
+</div>
             </p>
         </div>
 
@@ -793,37 +891,7 @@
         });
     </script>
 
-    <!-- Image 1 : Immigré -->
-    <div class="image-container">
-        <img src="https://i.postimg.cc/L4x1dw79/immigre.jpg" alt="Immigré">
-        <div class="popup">
-            <p>
-                <strong>Dire que certains immigrés choisiraient la France parce que “le système social est généreux” n’est pas un fait :</strong>
-                La vérité, c’est que beaucoup de personnes quittent leur pays pour des raisons bien plus complexes : guerres, violences, persécutions, effondrement économique, manque de perspectives et, très souvent, la nécessité de protéger les membres de la famille.
-            </p>
-            <p>
-                Quand des discours transforment l’immigration en menace culturelle ou quand ils suggèrent qu’il existerait “de bons” et “de mauvais” migrants selon une origine, ils alimentent la stigmatisation. Or en République laïque, <strong>le racisme n'est pas une opinion, c'est un délit.</strong>
-            </p>
-            <p>
-                Et surtout, réduire ces parcours à une “promenade vers la manne sociale” est une caricature. Voir un mensonge, il faudra nous expliquer pourquoi ceux qui traversent le plus grand charnier du monde, se dirigent pour traverser la Manche sur une autre coquille de noix.
-            </p>
-            <p>
-                Ils veulent juste une chance de vivre, de travailler, d’envoyer de l’aide à leurs proches, et de construire un avenir. La question à poser n’est pas “comment se servent-ils du système ?”, mais <strong>“quelles réponses républicaines, humaines et efficaces peut-on apporter : accueil, protection, intégration, lutte contre les réseaux criminels et voies légales”.</strong>
-            </p>
-            <p>
-                <a href="https://www.unhcr.org/fr/editions/rapport-semestriel-sur-les-tendances-mondiales" target="_blank">Rapport UNHCR</a><br>
-                <a href="https://www.lacimade.org/faq/pourquoi-migre-t-on/" target="_blank">Pourquoi migre-t-on ? (La Cimade)</a><br>
-                <a href="https://www.lacimade.org/publication/36707/" target="_blank">Et quand ils ne sont plus "réguliers", régularisons-les</a>
-            </p>
-        </div>
-    </div>
-
-    <!-- Image 2 : Golum -->
-    <div class="image-container">
-        <img src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Oh my good!!">
-        <div class="popup">
-            <p class="oh-my-good">Oh my good!!</p>
-        </div>
-    </div>
+      </div>
+</div>
 </body>
 </html>
