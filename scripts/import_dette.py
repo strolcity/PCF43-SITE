@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+"""
+import_dette.py
+----------------
+Lit Data_Dette_Compteurs.xlsx (data/economie/) et charge les 4 feuilles de
+données dans economie.db (la même base que import_economie.py, tables en plus).
+
+À lancer APRÈS import_economie.py (qui crée la base si elle n'existe pas encore).
+Rejouable autant de fois que nécessaire.
+"""
+
+import sqlite3
+import openpyxl
+from pathlib import Path
+
+RACINE = Path(__file__).resolve().parent.parent
+DOSSIER_ECONOMIE = RACINE / "data" / "economie"
+CHEMIN_DB = DOSSIER_ECONOMIE / "economie.db"
+FICHIER_DETTE = DOSSIER_ECONOMIE / "Data_Dette_Compteurs.xlsx"
+
+
+def lire_lignes(fichier, feuille, ligne_debut=2):
+    wb = openpyxl.load_workbook(fichier, data_only=True, read_only=True)
+    ws = wb[feuille]
+    for row in ws.iter_rows(min_row=ligne_debut, values_only=True):
+        if row[0] is None:
+            continue
+        yield row
+
+
+def import_dette(cur):
+    cur.execute("DROP TABLE IF EXISTS dette_publique_pib")
+    cur.execute("""
+        CREATE TABLE dette_publique_pib (
+            trimestre TEXT PRIMARY KEY,
+            dette_mdeur REAL,
+            dette_pct_pib REAL
+        )
+    """)
+    for trimestre, md, pct in lire_lignes(FICHIER_DETTE, "Dette_publique_PIB"):
+        cur.execute("INSERT INTO dette_publique_pib VALUES (?,?,?)", (trimestre, md, pct))
+
+    cur.execute("DROP TABLE IF EXISTS charge_dette_etat")
+    cur.execute("""
+        CREATE TABLE charge_dette_etat (
+            annee INTEGER PRIMARY KEY,
+            charge_mdeur REAL,
+            type TEXT
+        )
+    """)
+    for annee, val, typ in lire_lignes(FICHIER_DETTE, "Charge_dette_Etat"):
+        if not isinstance(annee, (int, float)):
+            continue  # ignore la ligne de note en bas de la feuille
+        cur.execute("INSERT INTO charge_dette_etat VALUES (?,?,?)", (int(annee), val, typ))
+
+    cur.execute("DROP TABLE IF EXISTS deficit_secu")
+    cur.execute("""
+        CREATE TABLE deficit_secu (
+            annee INTEGER,
+            deficit_mdeur REAL,
+            statut TEXT,
+            PRIMARY KEY (annee, statut)
+        )
+    """)
+    for annee, val, statut in lire_lignes(FICHIER_DETTE, "Deficit_secu"):
+        cur.execute("INSERT INTO deficit_secu VALUES (?,?,?)", (int(annee), val, statut))
+
+    cur.execute("DROP TABLE IF EXISTS dette_unedic")
+    cur.execute("""
+        CREATE TABLE dette_unedic (
+            annee INTEGER PRIMARY KEY,
+            endettement_mdeur REAL,
+            mesure TEXT
+        )
+    """)
+    for annee, val, mesure in lire_lignes(FICHIER_DETTE, "Dette_Unedic"):
+        cur.execute("INSERT INTO dette_unedic VALUES (?,?,?)", (int(annee), val, mesure))
+
+
+def main():
+    if not CHEMIN_DB.exists():
+        raise SystemExit(
+            f"{CHEMIN_DB} n'existe pas. Lancez d'abord import_economie.py."
+        )
+    conn = sqlite3.connect(CHEMIN_DB)
+    cur = conn.cursor()
+    print("Import compteurs dette...")
+    import_dette(cur)
+    conn.commit()
+    conn.close()
+    print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")
+
+
+if __name__ == "__main__":
+    main()

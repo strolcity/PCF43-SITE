@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PCF 43 - Économie</title>
+<link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --rouge:#d32f2f; --jaune:#ffeb3b;
+    --panel:rgba(0,0,0,0.62); --panel-soft:rgba(0,0,0,0.45); --line:rgba(255,255,255,0.15);
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:Arial, sans-serif; margin:0; padding:0;
+    background-image:url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
+    background-size:cover; background-position:center; background-attachment:fixed; color:white;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
+
+  header.top{ text-align:center; padding:34px 20px 8px; }
+  header.top .logo{ width:80px; height:80px; border-radius:50%; border:4px solid var(--rouge); background:rgba(0,0,0,0.45); padding:8px; }
+  header.top h1{ font-size:1.55em; text-shadow:2px 2px 4px rgba(0,0,0,0.8); margin:12px auto 0; max-width:800px; line-height:1.3; }
+  header.top h1 .accent{ color:var(--jaune); }
+
+  section{ padding:26px 0; }
+  h2.section-title{ font-size:1.3em; font-weight:normal; text-shadow:1px 1px 3px rgba(0,0,0,0.8); border-left:5px solid var(--rouge); padding-left:14px; margin:0 0 4px; }
+  p.section-dek{ color:#e6e6e6; max-width:700px; margin:0 0 20px 19px; font-size:0.9em; }
+
+  /* ---- 5 petits compteurs alignés ---- */
+  .grid5{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  @media (max-width:980px){ .grid5{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:620px){ .grid5{ grid-template-columns:repeat(2,1fr); } }
+  .c5-card{ background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--rouge); border-radius:6px; padding:12px 12px 8px; }
+  .c5-card .eyebrow{ text-transform:uppercase; font-size:0.62em; letter-spacing:0.05em; color:var(--jaune); margin-bottom:4px; }
+  .c5-card h4{ margin:0 0 6px; font-weight:normal; font-size:0.78em; color:#f2f2f2; line-height:1.25; min-height:2.6em; }
+  .c5-num{ font-size:1.5em; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.8); font-variant-numeric:tabular-nums; }
+  .c5-num small{ font-size:0.42em; font-weight:normal; color:#ccc; }
+  .c5-sub{ font-size:0.72em; color:var(--jaune); font-weight:bold; margin-top:1px; }
+  .c5-spark{ height:44px; margin:6px 0 2px; }
+  .c5-source{ font-size:0.6em; color:#aaa; line-height:1.35; margin-top:4px; }
+  .c5-source a{ color:#ddd; }
+
+  /* ---- graphiques principaux ---- */
+  .chart-card{ background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px; }
+  .chart-box{ position:relative; height:320px; }
+  .chart-box.tall{ height:380px; }
+  .legend-toggle{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .legend-toggle label{ display:flex; align-items:center; gap:6px; font-size:0.78em; padding:5px 10px; border:1px solid var(--line); border-radius:14px; cursor:pointer; user-select:none; background:rgba(255,255,255,0.06); color:#f0f0f0; }
+  .legend-toggle input{ accent-color:var(--jaune); }
+  .note{ font-size:0.78em; color:#ccc; margin:12px 0 0 19px; border-left:2px solid var(--jaune); padding-left:12px; max-width:760px; }
+  .note.alert{ border-left-color:var(--rouge); }
+  .note a{ color:var(--jaune); }
+  .callout{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:20px 0 0 19px; max-width:760px; }
+  .callout .box{ background:var(--panel-soft); border:1px solid var(--line); border-top:3px solid var(--jaune); padding:14px 16px; }
+  .callout .box.brick{ border-top-color:var(--rouge); }
+  .callout .box .num{ font-size:1.7em; font-weight:bold; }
+  .callout .box .lbl{ font-size:0.78em; color:#ddd; margin-top:4px; }
+  .compare-bars{ margin-left:19px; max-width:600px; }
+  .bar-row{ margin-bottom:16px; }
+  .bar-row .bar-label{ font-size:0.85em; margin-bottom:6px; display:flex; justify-content:space-between; }
+  .bar-track{ background:rgba(255,255,255,0.12); height:20px; border-radius:3px; overflow:hidden; }
+  .bar-fill{ height:100%; background:linear-gradient(90deg,var(--jaune),#ffb300); }
+  .bar-fill.dim{ background:linear-gradient(90deg,var(--rouge),#7a2018); }
+
+  /* ---- encadré analyse / solutions ---- */
+  .analyse-box{ margin:16px 0 0 19px; max-width:760px; background:rgba(255,255,255,0.93); color:#1a1a1a; border-radius:4px; padding:16px 18px; border-left:5px solid var(--jaune); }
+  .analyse-box .tag{ font-size:0.68em; text-transform:uppercase; letter-spacing:0.06em; color:#7a5d00; font-weight:bold; margin-bottom:6px; display:block; }
+  .analyse-box p{ margin:0; font-size:0.88em; line-height:1.55; font-style:italic; color:#555; }
+  .analyse-box p[contenteditable="true"]{ font-style:normal; color:#1a1a1a; outline:none; }
+  .analyse-box p[contenteditable="true"]:focus{ background:#fffbe6; }
+
+  footer.sources{ padding:14px 0 60px; font-size:0.74em; color:#ccc; text-align:center; line-height:1.8; }
+  footer.sources a{ color:var(--jaune); text-decoration:none; }
+  footer.sources a:hover{ text-decoration:underline; }
+  .draft-flag{ display:inline-block; margin-bottom:10px; padding:6px 14px; background:var(--rouge); color:#fff; border-radius:3px; font-size:0.85em; letter-spacing:0.05em; text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="https://i.postimg.cc/tT0MFfbS/pcf43.png" alt="PCF 43" class="logo">
+  <h1>La richesse est produite par les travailleurs.<br>
+      Alors pourquoi <span class="accent">nous culpabilise-t-on</span> sans arrêt ?<br>
+      Essayons de comprendre.</h1>
+</header>
+
+<!-- ===================== 5 COMPTEURS : CE QU'ILS NOUS DISENT ===================== -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Voilà ce qu'ils nous disent</h2>
+    <p class="section-dek">Les chiffres qui reviennent en boucle dans le débat public — dette, déficit, "trop de dépenses". Sourcés officiellement, sans mise en scène.</p>
+    <div class="grid5">
+
+      <div class="c5-card">
+        <div class="eyebrow">Dette publique</div>
+        <h4>Dette / PIB, en temps réel estimé</h4>
+        <div class="c5-num" id="liveDette">0<small> Md€</small></div>
+        <div class="c5-sub" id="pctDette">0,0 %</div>
+        <div class="c5-spark"><canvas id="sparkDette"></canvas></div>
+        <div class="c5-source">T1 2026, Insee. <a href="https://www.insee.fr/fr/statistiques/2830301" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
+        <div class="eyebrow">Charge de la dette</div>
+        <h4>Intérêts payés par l'État</h4>
+        <div class="c5-num" id="liveCharge">0<small> Md€</small></div>
+        <div class="c5-sub" id="pctCharge">0,0 %</div>
+        <div class="c5-spark"><canvas id="sparkCharge"></canvas></div>
+        <div class="c5-source">2026, Sénat (PLF 2026). <a href="https://www.senat.fr/rap/l25-139-312/l25-139-312_mono.html" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
+        <div class="eyebrow">Protection sociale</div>
+        <h4>Dépenses sociales en % du PIB</h4>
+        <div class="c5-num" id="numDepSoc">0<small> %</small></div>
+        <div class="c5-spark"><canvas id="sparkDepSoc"></canvas></div>
+        <div class="c5-source">1959→2024, DREES. <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
+        <div class="eyebrow">Sécurité sociale</div>
+        <h4>Déficit régimes de base + FSV</h4>
+        <div class="c5-num" id="numDeficit">0<small> Md€</small></div>
+        <div class="c5-spark"><canvas id="sparkDeficit"></canvas></div>
+        <div class="c5-source">2024→2026, Cour des comptes. <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
+        <div class="eyebrow">Assurance chômage</div>
+        <h4>Endettement de l'Unédic</h4>
+        <div class="c5-num" id="numUnedic">0<small> Md€</small></div>
+        <div class="c5-spark"><canvas id="sparkUnedic"></canvas></div>
+        <div class="c5-source">2017→2023, Ass. nationale/Unédic. <a href="https://www.unedic.org" target="_blank">Source ↗</a></div>
+      </div>
+
+    </div>
+    <p class="note alert">Les compteurs "en temps réel" (dette, charge) sont des estimations qui prolongent le dernier chiffre officiel connu — ce ne sont pas des mesures en direct, l'Insee et le PLF ne publient que trimestriellement/annuellement.</p>
+  </div>
+</section>
+
+<!-- ===================== NOS GRAPHIQUES ===================== -->
+<section style="padding-top:10px;">
+  <div class="wrap">
+    <h2 class="section-title" style="border-left-color:var(--jaune);">Nos graphiques, nos commentaires, nos solutions</h2>
+    <p class="section-dek">La même rigueur, une autre lecture : d'où vient la richesse, et comment elle est partagée.</p>
+  </div>
+</section>
+
+<!-- 1. PIB -->
+<section style="padding-top:0;">
+  <div class="wrap">
+    <h2 class="section-title">Le PIB, en euros courants et en euros constants</h2>
+    <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année.</p>
+    <div class="chart-card"><div class="chart-box tall"><canvas id="chartPib"></canvas></div></div>
+    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a>. PIB annuel = somme des 4 trimestres.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2. International -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">La France est-elle vraiment à la traîne ?</h2>
+    <p class="section-dek">Croissance du PIB, France comparée à ses voisins. Cochez ou décochez les pays pour comparer.</p>
+    <div class="chart-card">
+      <div class="legend-toggle" id="intlToggle"></div>
+      <div class="chart-box"><canvas id="chartIntl"></canvas></div>
+    </div>
+    <p class="note">Source : <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE, Perspectives économiques n°119 (2026) ↗</a>. Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : la comparaison a-t-elle un sens, quels pays s'en sortent mieux et pourquoi, nos propositions...</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Financement Sécu -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Le financement de notre bien commun</h2>
+    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
+    <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
+    <div class="callout">
+      <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
+      <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
+    </div>
+    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4. Pauvreté / IFI -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Pauvreté et concentration des patrimoines</h2>
+    <p class="section-dek">La Haute-Loire est un peu moins pauvre que la moyenne nationale — mais avec un niveau de vie médian aussi un peu plus bas. Pendant ce temps, le nombre de hauts patrimoines progresse fortement à l'échelle nationale.</p>
+    <div class="compare-bars">
+      <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — Haute-Loire</span><strong>12,4&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div></div>
+      <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — France métropolitaine</span><strong>15,9&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill dim" style="width:100%"></div></div></div>
+    </div>
+    <div class="chart-card" style="margin-top:22px;"><div class="chart-box"><canvas id="chartIfi"></canvas></div></div>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ↗</a> ; <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière).</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : ce que ça dit des inégalités locales, nos propositions de fiscalité du patrimoine...</p>
+    </div>
+  </div>
+</section>
+
+<footer class="sources">
+  <div class="wrap">
+    <span class="draft-flag">Maquette de travail — données réelles, mise en page à valider</span><br><br>
+    Sources : <a href="https://www.insee.fr/fr/statistiques/2830301" target="_blank">Insee (dette)</a> ·
+    <a href="https://www.senat.fr/rap/l25-139-312/l25-139-312_mono.html" target="_blank">Sénat (charge de la dette)</a> ·
+    <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES</a> ·
+    <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf</a> ·
+    <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Cour des comptes</a> ·
+    <a href="https://www.assemblee-nationale.fr/dyn/16/questions/QANR5L16QE1708.pdf" target="_blank">Assemblée nationale</a> ·
+    <a href="https://www.unedic.org" target="_blank">Unédic</a> ·
+    <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee (Filosofi)</a> ·
+    <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP (IFI)</a> ·
+    <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE</a><br><br>
+    <a href="index.html">← Retour à l'accueil</a>
+  </div>
+</footer>
+
+<script>
+let DATA = null;
+Chart.defaults.font.family = "Arial, sans-serif";
+Chart.defaults.color = "#e6e6e6";
+const JAUNE="#ffeb3b", ROUGE="#d32f2f", BLANC="#ffffff", GRIS="#9aa0ab";
+const COUNTRY_COLORS = { "France": ROUGE, "Allemagne": BLANC, "Etats-Unis": JAUNE, "Japon": "#7fd67f", "Royaume-Uni": "#b39ddb", "Zone_euro": GRIS, "OCDE_moyenne": "#c9b896" };
+const GRID = "rgba(255,255,255,0.08)";
+
+function fmt(n,d){ return n.toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+function sparkline(canvasId, points, color, valueKey){
+  new Chart(document.getElementById(canvasId), {
+    type:'line',
+    data:{ labels: points.map((p,i)=>i), datasets:[{ data: points.map(p=>p[valueKey]), borderColor: color, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.25,
+      segment:{ borderDash: ctx => (points[ctx.p1DataIndex].prevision ? [4,3] : undefined) } }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{enabled:false}}, scales:{ x:{display:false}, y:{display:false} } }
+  });
+}
+
+async function chargerDonnees() {
+  const reponse = await fetch('data/economie/economie_data.json');
+  DATA = await reponse.json();
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
+  await chargerDonnees();
+
+
+  // ---- Compteur Dette/PIB (avec sparkline des 12 derniers trimestres) ----
+  const detteQ = DATA.extra.dette_pib_trim;
+  const DETTE_BASE = detteQ[detteQ.length-1].md, DETTE_PCT = detteQ[detteQ.length-1].pct;
+  const DETTE_EUR_S = 9.7; // Md€/s, cf. Indicateurs_ref
+  const DETTE_DEPART = new Date("2026-04-01T00:00:00Z");
+  function liveDette(){ return DETTE_BASE + Math.max((Date.now()-DETTE_DEPART.getTime())/1000,0)*DETTE_EUR_S; }
+  const elDette = document.getElementById('liveDette');
+  function tickDette(){ elDette.innerHTML = fmt(liveDette(),0)+' <small>Md€</small>'; }
+  tickDette(); setInterval(tickDette, 1000);
+  document.getElementById('pctDette').textContent = fmt(DETTE_PCT,1)+' % du PIB';
+  sparkline('sparkDette', detteQ, ROUGE, 'pct');
+
+  // ---- Compteur Charge de la dette ----
+  const chargeS = DATA.extra.charge_dette;
+  const CHARGE_2026 = chargeS[0].v; // 60.4
+  const RECETTES_ETAT = 300;
+  const CHARGE_EUR_S = CHARGE_2026*1e9/(365*86400)/1e9; // Md€/s
+  function liveCharge(){ const now=new Date(); const soy=new Date(Date.UTC(now.getUTCFullYear(),0,1)); return Math.min((now-soy)/1000*CHARGE_EUR_S, CHARGE_2026); }
+  const elCharge = document.getElementById('liveCharge');
+  function tickCharge(){ elCharge.innerHTML = fmt(liveCharge(),1)+' <small>Md€</small>'; }
+  tickCharge(); setInterval(tickCharge, 1000);
+  document.getElementById('pctCharge').textContent = fmt(CHARGE_2026/RECETTES_ETAT*100,1)+' % des recettes';
+  sparkline('sparkCharge', chargeS, JAUNE, 'v');
+
+  // ---- Petits compteurs simples ----
+  function miniCounter(numId, sparkId, points, color, suffix, decimals){
+    const last = points[points.length-1];
+    document.getElementById(numId).innerHTML = fmt(last.v,decimals)+' <small>'+suffix+'</small>';
+    sparkline(sparkId, points, color, 'v');
+  }
+  miniCounter('numDepSoc','sparkDepSoc', DATA.extra.depenses_sociales_pct_pib, JAUNE, '%', 1);
+  miniCounter('numDeficit','sparkDeficit', DATA.extra.deficit_secu, ROUGE, 'Md€', 1);
+  miniCounter('numUnedic','sparkUnedic', DATA.extra.unedic_dette, '#7fd67f', 'Md€', 1);
+
+  // ---- 1. PIB ----
+  new Chart(document.getElementById('chartPib'), {
+    type: 'line',
+    data: { labels: DATA.pib_annuel.map(d=>d.annee), datasets: [
+      { label:'PIB en valeur (prix courants)', data: DATA.pib_annuel.map(d=>d.valeur), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
+      { label:'PIB en volume (prix constants, base 2020)', data: DATA.pib_annuel.map(d=>d.volume), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom', labels:{color:'#fff'}}},
+      scales:{ y:{ title:{display:true,text:"Milliards d'euros", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
+  // ---- 2. International ----
+  const toggleDiv = document.getElementById('intlToggle');
+  const countries = Object.keys(DATA.international);
+  const defaultOn = ["France","Allemagne","Etats-Unis"];
+  countries.forEach(c => {
+    const id='chk_'+c; const lbl=document.createElement('label');
+    lbl.innerHTML = `<input type="checkbox" id="${id}" ${defaultOn.includes(c)?'checked':''}> ${c.replace('_',' ')}`;
+    toggleDiv.appendChild(lbl);
+  });
+  const allYearsIntl = [...new Set(Object.values(DATA.international).flat().map(d=>d.annee))].sort((a,b)=>a-b);
+  function buildIntlDatasets(){
+    return countries.filter(c=>document.getElementById('chk_'+c).checked).map(c=>{
+      const byYear = Object.fromEntries(DATA.international[c].map(d=>[d.annee,d]));
+      return { label:c.replace('_',' '), data: allYearsIntl.map(y=>byYear[y]?byYear[y].v:null),
+        borderColor: COUNTRY_COLORS[c]||GRIS, backgroundColor:'transparent', borderWidth: c==='France'?3:1.5, pointRadius:0, spanGaps:true,
+        segment:{ borderDash: ctx => (allYearsIntl[ctx.p1DataIndex] >= 2026 ? [5,4] : undefined) } };
+    });
+  }
+  const intlChart = new Chart(document.getElementById('chartIntl'), {
+    type:'line', data:{ labels: allYearsIntl, datasets: buildIntlDatasets() },
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{display:false}},
+      scales:{ y:{ title:{display:true,text:'% de croissance (nominale)', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+  countries.forEach(c => document.getElementById('chk_'+c).addEventListener('change', () => { intlChart.data.datasets = buildIntlDatasets(); intlChart.update(); }));
+
+  // ---- 3. Financement Sécu ----
+  new Chart(document.getElementById('chartSecu'), {
+    data: { labels: DATA.secu_pct_pib.map(d=>d.annee), datasets: [
+      { type:'line', label:'Prestations sociales (% du PIB)', data: DATA.secu_pct_pib.map(d=>d.total), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'line', label:'dont retraites (% du PIB)', data: DATA.secu_pct_pib.map(d=>d.retraites), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'bar', label:'Exonérations de cotisations (% du PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.6)', yAxisID:'y' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff'}}},
+      scales:{ y:{ title:{display:true,text:'% du PIB', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ type:'linear', ticks:{stepSize:5, color:'#ccc'}, grid:{display:false} } } }
+  });
+
+  // ---- 4. IFI ----
+  new Chart(document.getElementById('chartIfi'), {
+    type:'bar', data:{ labels: DATA.ifi.map(d=>d.annee), datasets:[{ label:"Foyers assujettis à l'IFI (France)", data: DATA.ifi.map(d=>d.redevables), backgroundColor:'rgba(255,235,59,0.55)', borderColor:JAUNE, borderWidth:1 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ y:{ title:{display:true,text:'Nombre de foyers', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+});
+</script>
+</body>
+</html>
