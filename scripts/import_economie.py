@@ -22,7 +22,7 @@ from pathlib import Path
 # ----------------------------------------------------------------------
 RACINE = Path(__file__).resolve().parent.parent   # dossier du site (SITE_PCF_43)
 DOSSIER_ECONOMIE = RACINE / "data" / "economie"
-CHEMIN_DB = RACINE / "economie.db"
+CHEMIN_DB = DOSSIER_ECONOMIE / "economie.db"      # même logique que data/securite/securite.db
 
 FICHIER_PIB = DOSSIER_ECONOMIE / "Data_PIB.xlsx"
 FICHIER_PAUVRETE = DOSSIER_ECONOMIE / "Data_Pauvrete_Patrimoine.xlsx"
