@@ -8,105 +8,50 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{
-    --rouge:#d32f2f;
-    --jaune:#ffeb3b;
-    --panel:rgba(0,0,0,0.62);
-    --panel-soft:rgba(0,0,0,0.45);
-    --line:rgba(255,255,255,0.15);
+    --rouge:#d32f2f; --jaune:#ffeb3b;
+    --panel:rgba(0,0,0,0.62); --panel-soft:rgba(0,0,0,0.45); --line:rgba(255,255,255,0.15);
   }
   *{box-sizing:border-box;}
   body{
-    font-family:Arial, sans-serif;
-    margin:0; padding:0;
+    font-family:Arial, sans-serif; margin:0; padding:0;
     background-image:url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-    color:white;
+    background-size:cover; background-position:center; background-attachment:fixed; color:white;
   }
-  .wrap{max-width:1040px; margin:0 auto; padding:0 20px;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
 
-  header.top{ text-align:center; padding:36px 20px 10px; }
-  header.top .logo{
-    width:90px; height:90px; border-radius:50%;
-    border:4px solid var(--rouge); background:rgba(0,0,0,0.45); padding:8px;
-  }
-  header.top h1{
-    font-size:1.7em; text-shadow:2px 2px 4px rgba(0,0,0,0.8);
-    margin:14px auto 0; max-width:820px; line-height:1.3;
-  }
+  header.top{ text-align:center; padding:34px 20px 8px; }
+  header.top .logo{ width:80px; height:80px; border-radius:50%; border:4px solid var(--rouge); background:rgba(0,0,0,0.45); padding:8px; }
+  header.top h1{ font-size:1.55em; text-shadow:2px 2px 4px rgba(0,0,0,0.8); margin:12px auto 0; max-width:800px; line-height:1.3; }
   header.top h1 .accent{ color:var(--jaune); }
 
-  section{ padding:30px 0; }
-  section.compteurs{ padding-top:34px; }
+  section{ padding:26px 0; }
+  h2.section-title{ font-size:1.3em; font-weight:normal; text-shadow:1px 1px 3px rgba(0,0,0,0.8); border-left:5px solid var(--rouge); padding-left:14px; margin:0 0 4px; }
+  p.section-dek{ color:#e6e6e6; max-width:700px; margin:0 0 20px 19px; font-size:0.9em; }
 
-  h2.section-title{
-    font-size:1.4em; font-weight:normal;
-    text-shadow:1px 1px 3px rgba(0,0,0,0.8);
-    border-left:5px solid var(--rouge);
-    padding-left:14px;
-    margin:0 0 6px;
-  }
-  p.section-dek{
-    color:#e6e6e6; max-width:680px; margin:0 0 22px 19px; font-size:0.92em;
-  }
-
-  /* ---- gros compteurs dette ---- */
-  .grid-compteurs{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
-  @media (max-width:720px){ .grid-compteurs{ grid-template-columns:1fr; } }
-  .compteur-card{
-    background:var(--panel); border:1px solid var(--line); border-top:4px solid var(--rouge);
-    border-radius:6px; padding:22px 22px 18px;
-  }
-  .compteur-card .eyebrow{
-    text-transform:uppercase; letter-spacing:0.08em; font-size:0.72em; color:var(--jaune); margin-bottom:6px;
-  }
-  .compteur-card h3{ margin:0 0 14px; font-size:1.05em; font-weight:normal; color:#f0f0f0; }
-  .compteur-live{ font-size:2.5em; font-weight:bold; text-shadow:1px 1px 3px rgba(0,0,0,0.9); font-variant-numeric:tabular-nums; }
-  .compteur-live small{ font-size:0.4em; font-weight:normal; color:#ddd; }
-  .compteur-pct{ font-size:1.15em; color:var(--jaune); margin-top:2px; font-weight:bold; }
-  .gauge-track{ margin-top:14px; height:16px; background:rgba(255,255,255,0.15); border-radius:8px; overflow:hidden; position:relative; }
-  .gauge-fill{ height:100%; background:linear-gradient(90deg,#ffb300,var(--rouge)); width:0%; transition:width 1.4s ease-out; }
-  .gauge-ref{ position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--jaune); }
-  .gauge-ref-label{ position:absolute; top:18px; font-size:0.68em; color:var(--jaune); transform:translateX(-50%); white-space:nowrap; }
-  .compteur-detail{ font-size:0.78em; color:#ddd; margin-top:22px; line-height:1.5; }
-
-  .analyse-box{
-    margin-top:16px; background:rgba(255,255,255,0.92); color:#1a1a1a; border-radius:4px;
-    padding:16px 18px; border-left:5px solid var(--rouge);
-  }
-  .analyse-box .tag{ font-size:0.68em; text-transform:uppercase; letter-spacing:0.06em; color:var(--rouge); font-weight:bold; margin-bottom:6px; display:block; }
-  .analyse-box p{ margin:0; font-size:0.88em; line-height:1.5; font-style:italic; color:#555; }
-  .analyse-box p[contenteditable="true"]{ font-style:normal; color:#1a1a1a; outline:none; }
-  .analyse-box p[contenteditable="true"]:focus{ background:#fffbe6; }
-
-  /* ---- petits compteurs d'évolution ---- */
-  .grid-mini{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  @media (max-width:820px){ .grid-mini{ grid-template-columns:1fr; } }
-  .mini-card{
-    background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:16px 18px 10px;
-  }
-  .mini-card .eyebrow{ text-transform:uppercase; font-size:0.68em; letter-spacing:0.06em; color:var(--jaune); margin-bottom:4px; }
-  .mini-card h4{ margin:0 0 8px; font-weight:normal; font-size:0.95em; color:#f2f2f2; line-height:1.3; min-height:2.4em; }
-  .mini-card .mini-num{ font-size:1.9em; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.8); }
-  .mini-card .mini-num small{ font-size:0.42em; font-weight:normal; color:#ccc; }
-  .mini-sparkline{ height:70px; margin:8px 0 4px; }
-  .mini-card .mini-source{ font-size:0.66em; color:#bbb; line-height:1.4; }
+  /* ---- 5 petits compteurs alignés ---- */
+  .grid5{ display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  @media (max-width:980px){ .grid5{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:620px){ .grid5{ grid-template-columns:repeat(2,1fr); } }
+  .c5-card{ background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--rouge); border-radius:6px; padding:12px 12px 8px; }
+  .c5-card .eyebrow{ text-transform:uppercase; font-size:0.62em; letter-spacing:0.05em; color:var(--jaune); margin-bottom:4px; }
+  .c5-card h4{ margin:0 0 6px; font-weight:normal; font-size:0.78em; color:#f2f2f2; line-height:1.25; min-height:2.6em; }
+  .c5-num{ font-size:1.5em; font-weight:bold; text-shadow:1px 1px 2px rgba(0,0,0,0.8); font-variant-numeric:tabular-nums; }
+  .c5-num small{ font-size:0.42em; font-weight:normal; color:#ccc; }
+  .c5-sub{ font-size:0.72em; color:var(--jaune); font-weight:bold; margin-top:1px; }
+  .c5-spark{ height:44px; margin:6px 0 2px; }
+  .c5-source{ font-size:0.6em; color:#aaa; line-height:1.35; margin-top:4px; }
+  .c5-source a{ color:#ddd; }
 
   /* ---- graphiques principaux ---- */
-  .chart-card{
-    background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px;
-  }
+  .chart-card{ background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px; }
   .chart-box{ position:relative; height:320px; }
   .chart-box.tall{ height:380px; }
   .legend-toggle{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
-  .legend-toggle label{
-    display:flex; align-items:center; gap:6px; font-size:0.78em; padding:5px 10px;
-    border:1px solid var(--line); border-radius:14px; cursor:pointer; user-select:none; background:rgba(255,255,255,0.06); color:#f0f0f0;
-  }
+  .legend-toggle label{ display:flex; align-items:center; gap:6px; font-size:0.78em; padding:5px 10px; border:1px solid var(--line); border-radius:14px; cursor:pointer; user-select:none; background:rgba(255,255,255,0.06); color:#f0f0f0; }
   .legend-toggle input{ accent-color:var(--jaune); }
   .note{ font-size:0.78em; color:#ccc; margin:12px 0 0 19px; border-left:2px solid var(--jaune); padding-left:12px; max-width:760px; }
   .note.alert{ border-left-color:var(--rouge); }
+  .note a{ color:var(--jaune); }
   .callout{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin:20px 0 0 19px; max-width:760px; }
   .callout .box{ background:var(--panel-soft); border:1px solid var(--line); border-top:3px solid var(--jaune); padding:14px 16px; }
   .callout .box.brick{ border-top-color:var(--rouge); }
@@ -119,13 +64,17 @@
   .bar-fill{ height:100%; background:linear-gradient(90deg,var(--jaune),#ffb300); }
   .bar-fill.dim{ background:linear-gradient(90deg,var(--rouge),#7a2018); }
 
-  footer.sources{ padding:14px 0 60px; font-size:0.72em; color:#ccc; text-align:center; }
+  /* ---- encadré analyse / solutions ---- */
+  .analyse-box{ margin:16px 0 0 19px; max-width:760px; background:rgba(255,255,255,0.93); color:#1a1a1a; border-radius:4px; padding:16px 18px; border-left:5px solid var(--jaune); }
+  .analyse-box .tag{ font-size:0.68em; text-transform:uppercase; letter-spacing:0.06em; color:#7a5d00; font-weight:bold; margin-bottom:6px; display:block; }
+  .analyse-box p{ margin:0; font-size:0.88em; line-height:1.55; font-style:italic; color:#555; }
+  .analyse-box p[contenteditable="true"]{ font-style:normal; color:#1a1a1a; outline:none; }
+  .analyse-box p[contenteditable="true"]:focus{ background:#fffbe6; }
+
+  footer.sources{ padding:14px 0 60px; font-size:0.74em; color:#ccc; text-align:center; line-height:1.8; }
   footer.sources a{ color:var(--jaune); text-decoration:none; }
   footer.sources a:hover{ text-decoration:underline; }
-  .draft-flag{
-    display:inline-block; margin-bottom:10px; padding:6px 14px; background:var(--rouge);
-    color:#fff; border-radius:3px; font-size:0.85em; letter-spacing:0.05em; text-transform:uppercase;
-  }
+  .draft-flag{ display:inline-block; margin-bottom:10px; padding:6px 14px; background:var(--rouge); color:#fff; border-radius:3px; font-size:0.85em; letter-spacing:0.05em; text-transform:uppercase; }
 </style>
 </head>
 <body>
@@ -137,93 +86,83 @@
       Essayons de comprendre.</h1>
 </header>
 
-<!-- ===================== GROS COMPTEURS DETTE ===================== -->
-<section class="compteurs">
-  <div class="wrap">
-    <div class="grid-compteurs">
-      <div class="compteur-card">
-        <div class="eyebrow">Dette publique</div>
-        <h3>Dette publique de la France, en temps réel estimé</h3>
-        <div class="compteur-live" id="liveDette">0 <small>Md€</small></div>
-        <div class="compteur-pct" id="pctDette">0,0 % du PIB</div>
-        <div class="gauge-track">
-          <div class="gauge-fill" id="gaugeDette"></div>
-          <div class="gauge-ref" style="left:40%;"></div>
-          <div class="gauge-ref-label" style="left:40%;">Seuil Maastricht : 60 %</div>
-        </div>
-        <div class="compteur-detail">
-          117,5 % du PIB au 1ᵉʳ trimestre 2026 (3 536,1 Md€) — Insee, dette au sens de Maastricht.
-          Estimation qui prolonge la dernière évolution trimestrielle connue (+75,6 Md€ au T1 2026,
-          soit environ 9 700 €/seconde) : ce n'est pas une mesure officielle en direct.
-        </div>
-        <div class="analyse-box">
-          <span class="tag">✏️ Notre analyse — à compléter</span>
-          <p contenteditable="true">Cliquez ici pour écrire votre analyse : d'où vient cette dette, qui la détient, et pourquoi la comparaison brute avec un budget de ménage ne tient pas...</p>
-        </div>
-      </div>
-
-      <div class="compteur-card">
-        <div class="eyebrow">Charge de la dette</div>
-        <h3>Ce que coûtent les intérêts de la dette à l'État</h3>
-        <div class="compteur-live" id="liveCharge">0 <small>Md€</small></div>
-        <div class="compteur-pct" id="pctCharge">0,0 % des recettes de l'État</div>
-        <div class="gauge-track"><div class="gauge-fill" id="gaugeCharge"></div></div>
-        <div class="compteur-detail">
-          77,4 Md€ prévus en 2026 pour les seuls intérêts de la dette, soit près d'un quart (24,3 %)
-          des 319 Md€ de recettes nettes prévues (loi de finances 2026, promulguée le 19 février 2026
-          via l'article 49.3). Compteur basé sur un rythme constant sur l'année (≈2 450 €/seconde).
-        </div>
-        <div class="analyse-box">
-          <span class="tag">✏️ Notre analyse — à compléter</span>
-          <p contenteditable="true">Cliquez ici pour écrire votre analyse : à qui profitent ces intérêts, comparaison avec d'autres budgets, lien avec les politiques d'exonérations...</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== PETITS COMPTEURS EVOLUTION ===================== -->
+<!-- ===================== 5 COMPTEURS : CE QU'ILS NOUS DISENT ===================== -->
 <section>
   <div class="wrap">
-    <h2 class="section-title">Trois évolutions à suivre</h2>
-    <p class="section-dek">Moins spectaculaire qu'un chiffre unique, mais plus honnête : ce que ces montants racontent, c'est surtout leur tendance dans le temps.</p>
-    <div class="grid-mini">
-      <div class="mini-card">
+    <h2 class="section-title">Voilà ce qu'ils nous disent</h2>
+    <p class="section-dek">Les chiffres qui reviennent en boucle dans le débat public — dette, déficit, "trop de dépenses". Sourcés officiellement, sans mise en scène.</p>
+    <div class="grid5">
+
+      <div class="c5-card">
+        <div class="eyebrow">Dette publique</div>
+        <h4>Dette / PIB, en temps réel estimé</h4>
+        <div class="c5-num" id="liveDette">0<small> Md€</small></div>
+        <div class="c5-sub" id="pctDette">0,0 %</div>
+        <div class="c5-spark"><canvas id="sparkDette"></canvas></div>
+        <div class="c5-source">T1 2026, Insee. <a href="https://www.insee.fr/fr/statistiques/2830301" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
+        <div class="eyebrow">Charge de la dette</div>
+        <h4>Intérêts payés par l'État</h4>
+        <div class="c5-num" id="liveCharge">0<small> Md€</small></div>
+        <div class="c5-sub" id="pctCharge">0,0 %</div>
+        <div class="c5-spark"><canvas id="sparkCharge"></canvas></div>
+        <div class="c5-source">2026, Sénat (PLF 2026). <a href="https://www.senat.fr/rap/l25-139-312/l25-139-312_mono.html" target="_blank">Source ↗</a></div>
+      </div>
+
+      <div class="c5-card">
         <div class="eyebrow">Protection sociale</div>
         <h4>Dépenses sociales en % du PIB</h4>
-        <div class="mini-num" id="numDepSoc">0<small> %</small></div>
-        <div class="mini-sparkline"><canvas id="sparkDepSoc"></canvas></div>
-        <div class="mini-source">1959 → 2024. Source : DREES, Comptes de la protection sociale.</div>
+        <div class="c5-num" id="numDepSoc">0<small> %</small></div>
+        <div class="c5-spark"><canvas id="sparkDepSoc"></canvas></div>
+        <div class="c5-source">1959→2024, DREES. <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">Source ↗</a></div>
       </div>
-      <div class="mini-card">
+
+      <div class="c5-card">
         <div class="eyebrow">Sécurité sociale</div>
-        <h4>Déficit des régimes obligatoires + FSV</h4>
-        <div class="mini-num" id="numDeficit">0<small> Md€</small></div>
-        <div class="mini-sparkline"><canvas id="sparkDeficit"></canvas></div>
-        <div class="mini-source">2022 → 2026 (2026 = prévision LFSS). Source : Commission des comptes de la Sécurité sociale, LFSS 2026.</div>
+        <h4>Déficit régimes de base + FSV</h4>
+        <div class="c5-num" id="numDeficit">0<small> Md€</small></div>
+        <div class="c5-spark"><canvas id="sparkDeficit"></canvas></div>
+        <div class="c5-source">2024→2026, Cour des comptes. <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Source ↗</a></div>
       </div>
-      <div class="mini-card">
+
+      <div class="c5-card">
         <div class="eyebrow">Assurance chômage</div>
         <h4>Endettement de l'Unédic</h4>
-        <div class="mini-num" id="numUnedic">0<small> Md€</small></div>
-        <div class="mini-sparkline"><canvas id="sparkUnedic"></canvas></div>
-        <div class="mini-source">2017 → 2023 (net), 2026 = prévision (brut). Source : Assemblée nationale (rép. écrite), Unédic, rapports financiers.</div>
+        <div class="c5-num" id="numUnedic">0<small> Md€</small></div>
+        <div class="c5-spark"><canvas id="sparkUnedic"></canvas></div>
+        <div class="c5-source">2017→2023, Ass. nationale/Unédic. <a href="https://www.unedic.org" target="_blank">Source ↗</a></div>
       </div>
+
     </div>
+    <p class="note alert">Les compteurs "en temps réel" (dette, charge) sont des estimations qui prolongent le dernier chiffre officiel connu — ce ne sont pas des mesures en direct, l'Insee et le PLF ne publient que trimestriellement/annuellement.</p>
   </div>
 </section>
 
-<!-- ===================== 1. PIB ===================== -->
-<section>
+<!-- ===================== NOS GRAPHIQUES ===================== -->
+<section style="padding-top:10px;">
+  <div class="wrap">
+    <h2 class="section-title" style="border-left-color:var(--jaune);">Nos graphiques, nos commentaires, nos solutions</h2>
+    <p class="section-dek">La même rigueur, une autre lecture : d'où vient la richesse, et comment elle est partagée.</p>
+  </div>
+</section>
+
+<!-- 1. PIB -->
+<section style="padding-top:0;">
   <div class="wrap">
     <h2 class="section-title">Le PIB, en euros courants et en euros constants</h2>
     <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année.</p>
     <div class="chart-card"><div class="chart-box tall"><canvas id="chartPib"></canvas></div></div>
-    <p class="note">Source : Insee, comptes nationaux trimestriels, base 2020. PIB annuel = somme des 4 trimestres.</p>
+    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a>. PIB annuel = somme des 4 trimestres.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
+    </div>
   </div>
 </section>
 
-<!-- ===================== 2. International ===================== -->
+<!-- 2. International -->
 <section>
   <div class="wrap">
     <h2 class="section-title">La France est-elle vraiment à la traîne ?</h2>
@@ -232,11 +171,15 @@
       <div class="legend-toggle" id="intlToggle"></div>
       <div class="chart-box"><canvas id="chartIntl"></canvas></div>
     </div>
-    <p class="note">Source : OCDE, Perspectives économiques n°119 (2026). Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
+    <p class="note">Source : <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE, Perspectives économiques n°119 (2026) ↗</a>. Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : la comparaison a-t-elle un sens, quels pays s'en sortent mieux et pourquoi, nos propositions...</p>
+    </div>
   </div>
 </section>
 
-<!-- ===================== 3. Financement Sécu ===================== -->
+<!-- 3. Financement Sécu -->
 <section>
   <div class="wrap">
     <h2 class="section-title">Le financement de notre bien commun</h2>
@@ -246,11 +189,15 @@
       <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
       <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
     </div>
-    <p class="note alert">Sources : DREES, Comptes de la protection sociale (1959-2024) ; Urssaf, exonérations de cotisations par mesure (2004-2025).</p>
+    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
+    </div>
   </div>
 </section>
 
-<!-- ===================== 4. Pauvreté / IFI ===================== -->
+<!-- 4. Pauvreté / IFI -->
 <section>
   <div class="wrap">
     <h2 class="section-title">Pauvreté et concentration des patrimoines</h2>
@@ -260,70 +207,87 @@
       <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — France métropolitaine</span><strong>15,9&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill dim" style="width:100%"></div></div></div>
     </div>
     <div class="chart-card" style="margin-top:22px;"><div class="chart-box"><canvas id="chartIfi"></canvas></div></div>
-    <p class="note">Sources : Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ; DGFiP, statistiques IFI 2018-2025 (France entière).</p>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ↗</a> ; <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière).</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : ce que ça dit des inégalités locales, nos propositions de fiscalité du patrimoine...</p>
+    </div>
   </div>
 </section>
 
 <footer class="sources">
   <div class="wrap">
     <span class="draft-flag">Maquette de travail — données réelles, mise en page à valider</span><br><br>
-    Sources générales : Insee, DREES, Urssaf, DGFiP, Sénat (PLF 2026), Assemblée nationale, Unédic, OCDE.<br>
+    Sources : <a href="https://www.insee.fr/fr/statistiques/2830301" target="_blank">Insee (dette)</a> ·
+    <a href="https://www.senat.fr/rap/l25-139-312/l25-139-312_mono.html" target="_blank">Sénat (charge de la dette)</a> ·
+    <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES</a> ·
+    <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf</a> ·
+    <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Cour des comptes</a> ·
+    <a href="https://www.assemblee-nationale.fr/dyn/16/questions/QANR5L16QE1708.pdf" target="_blank">Assemblée nationale</a> ·
+    <a href="https://www.unedic.org" target="_blank">Unédic</a> ·
+    <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee (Filosofi)</a> ·
+    <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP (IFI)</a> ·
+    <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE</a><br><br>
     <a href="index.html">← Retour à l'accueil</a>
   </div>
 </footer>
 
 <script>
-const DATA = {"pib_annuel": [{"annee": 1950, "valeur": 15.4, "volume": 309.7}, {"annee": 1951, "valeur": 19.4, "volume": 326.0}, {"annee": 1952, "valeur": 22.6, "volume": 337.2}, {"annee": 1953, "valeur": 23.4, "volume": 347.9}, {"annee": 1954, "valeur": 24.9, "volume": 368.1}, {"annee": 1955, "valeur": 26.8, "volume": 387.8}, {"annee": 1956, "valeur": 29.5, "volume": 407.5}, {"annee": 1957, "valeur": 33.4, "volume": 430.4}, {"annee": 1958, "valeur": 38.5, "volume": 442.5}, {"annee": 1959, "valeur": 42.1, "volume": 454.1}, {"annee": 1960, "valeur": 46.6, "volume": 490.6}, {"annee": 1961, "valeur": 50.5, "volume": 515.6}, {"annee": 1962, "valeur": 56.6, "volume": 549.4}, {"annee": 1963, "valeur": 63.4, "volume": 584.1}, {"annee": 1964, "valeur": 70.3, "volume": 622.4}, {"annee": 1965, "valeur": 76.0, "volume": 652.4}, {"annee": 1966, "valeur": 82.3, "volume": 686.0}, {"annee": 1967, "valeur": 88.9, "volume": 719.0}, {"annee": 1968, "valeur": 96.9, "volume": 751.7}, {"annee": 1969, "valeur": 111.4, "volume": 805.0}, {"annee": 1970, "valeur": 124.7, "volume": 854.9}, {"annee": 1971, "valeur": 139.1, "volume": 900.3}, {"annee": 1972, "valeur": 155.1, "volume": 940.6}, {"annee": 1973, "valeur": 177.8, "volume": 999.1}, {"annee": 1974, "valeur": 207.3, "volume": 1043.0}, {"annee": 1975, "valeur": 233.6, "volume": 1033.4}, {"annee": 1976, "valeur": 269.7, "volume": 1078.3}, {"annee": 1977, "valeur": 303.9, "volume": 1116.3}, {"annee": 1978, "valeur": 345.2, "volume": 1160.5}, {"annee": 1979, "valeur": 394.5, "volume": 1203.5}, {"annee": 1980, "valeur": 447.3, "volume": 1223.3}, {"annee": 1981, "valeur": 504.6, "volume": 1237.8}, {"annee": 1982, "valeur": 578.9, "volume": 1267.6}, {"annee": 1983, "valeur": 642.5, "volume": 1283.6}, {"annee": 1984, "valeur": 699.5, "volume": 1305.1}, {"annee": 1985, "valeur": 750.1, "volume": 1326.8}, {"annee": 1986, "valeur": 807.9, "volume": 1357.7}, {"annee": 1987, "valeur": 849.1, "volume": 1392.6}, {"annee": 1988, "valeur": 917.1, "volume": 1457.6}, {"annee": 1989, "valeur": 989.6, "volume": 1524.4}, {"annee": 1990, "valeur": 1044.5, "volume": 1567.0}, {"annee": 1991, "valeur": 1083.8, "volume": 1587.2}, {"annee": 1992, "valeur": 1121.3, "volume": 1609.6}, {"annee": 1993, "valeur": 1134.3, "volume": 1602.7}, {"annee": 1994, "valeur": 1172.3, "volume": 1641.2}, {"annee": 1995, "valeur": 1214.9, "volume": 1681.6}, {"annee": 1996, "valeur": 1247.4, "volume": 1704.2}, {"annee": 1997, "valeur": 1290.1, "volume": 1747.1}, {"annee": 1998, "valeur": 1347.0, "volume": 1807.6}, {"annee": 1999, "valeur": 1394.1, "volume": 1866.6}, {"annee": 2000, "valeur": 1475.5, "volume": 1948.2}, {"annee": 2001, "valeur": 1531.2, "volume": 1984.0}, {"annee": 2002, "valeur": 1580.5, "volume": 2006.3}, {"annee": 2003, "valeur": 1624.8, "volume": 2026.1}, {"annee": 2004, "valeur": 1692.9, "volume": 2077.2}, {"annee": 2005, "valeur": 1760.5, "volume": 2118.5}, {"annee": 2006, "valeur": 1848.3, "volume": 2180.7}, {"annee": 2007, "valeur": 1939.2, "volume": 2234.7}, {"annee": 2008, "valeur": 1989.0, "volume": 2240.5}, {"annee": 2009, "valeur": 1937.0, "volume": 2179.5}, {"annee": 2010, "valeur": 1994.0, "volume": 2219.5}, {"annee": 2011, "valeur": 2061.0, "volume": 2274.6}, {"annee": 2012, "valeur": 2088.0, "volume": 2279.8}, {"annee": 2013, "valeur": 2123.2, "volume": 2301.0}, {"annee": 2014, "valeur": 2156.5, "volume": 2323.9}, {"annee": 2015, "valeur": 2202.8, "volume": 2347.1}, {"annee": 2016, "valeur": 2230.6, "volume": 2364.4}, {"annee": 2017, "valeur": 2294.5, "volume": 2418.1}, {"annee": 2018, "valeur": 2356.8, "volume": 2456.4}, {"annee": 2019, "valeur": 2435.5, "volume": 2508.1}, {"annee": 2020, "valeur": 2317.3, "volume": 2317.3}, {"annee": 2021, "valeur": 2504.7, "volume": 2474.6}, {"annee": 2022, "valeur": 2652.5, "volume": 2543.9}, {"annee": 2023, "valeur": 2837.7, "volume": 2590.2}, {"annee": 2024, "valeur": 2936.9, "volume": 2627.1}, {"annee": 2025, "valeur": 2995.2, "volume": 2650.4}], "international": {"Etats-Unis": [{"annee": 1990, "v": 5.7, "type": "Historique"}, {"annee": 1991, "v": 3.27, "type": "Historique"}, {"annee": 1992, "v": 5.88, "type": "Historique"}, {"annee": 1993, "v": 5.19, "type": "Historique"}, {"annee": 1994, "v": 6.25, "type": "Historique"}, {"annee": 1995, "v": 4.84, "type": "Historique"}, {"annee": 1996, "v": 5.67, "type": "Historique"}, {"annee": 1997, "v": 6.25, "type": "Historique"}, {"annee": 1998, "v": 5.66, "type": "Historique"}, {"annee": 1999, "v": 6.27, "type": "Historique"}, {"annee": 2000, "v": 6.44, "type": "Historique"}, {"annee": 2001, "v": 3.23, "type": "Historique"}, {"annee": 2002, "v": 3.28, "type": "Historique"}, {"annee": 2003, "v": 4.83, "type": "Historique"}, {"annee": 2004, "v": 6.64, "type": "Historique"}, {"annee": 2005, "v": 6.73, "type": "Historique"}, {"annee": 2006, "v": 5.95, "type": "Historique"}, {"annee": 2007, "v": 4.77, "type": "Historique"}, {"annee": 2008, "v": 2.04, "type": "Historique"}, {"annee": 2009, "v": -1.98, "type": "Historique"}, {"annee": 2010, "v": 3.94, "type": "Historique"}, {"annee": 2011, "v": 3.66, "type": "Historique"}, {"annee": 2012, "v": 4.19, "type": "Historique"}, {"annee": 2013, "v": 3.86, "type": "Historique"}, {"annee": 2014, "v": 4.31, "type": "Historique"}, {"annee": 2015, "v": 3.9, "type": "Historique"}, {"annee": 2016, "v": 2.79, "type": "Historique"}, {"annee": 2017, "v": 4.29, "type": "Historique"}, {"annee": 2018, "v": 5.33, "type": "Historique"}, {"annee": 2019, "v": 4.28, "type": "Historique"}, {"annee": 2020, "v": -0.76, "type": "Historique"}, {"annee": 2021, "v": 11.0, "type": "Historique"}, {"annee": 2022, "v": 9.82, "type": "Historique"}, {"annee": 2023, "v": 6.74, "type": "Historique"}, {"annee": 2024, "v": 5.34, "type": "Historique"}, {"annee": 2025, "v": 5.0, "type": "Historique"}, {"annee": 2026, "v": 5.8, "type": "Prévision"}, {"annee": 2027, "v": 3.92, "type": "Prévision"}], "France": [{"annee": 1990, "v": 5.55, "type": "Historique"}, {"annee": 1991, "v": 3.76, "type": "Historique"}, {"annee": 1992, "v": 3.46, "type": "Historique"}, {"annee": 1993, "v": 1.15, "type": "Historique"}, {"annee": 1994, "v": 3.35, "type": "Historique"}, {"annee": 1995, "v": 3.63, "type": "Historique"}, {"annee": 1996, "v": 2.68, "type": "Historique"}, {"annee": 1997, "v": 3.42, "type": "Historique"}, {"annee": 1998, "v": 4.41, "type": "Historique"}, {"annee": 1999, "v": 3.5, "type": "Historique"}, {"annee": 2000, "v": 5.84, "type": "Historique"}, {"annee": 2001, "v": 3.78, "type": "Historique"}, {"annee": 2002, "v": 3.21, "type": "Historique"}, {"annee": 2003, "v": 2.81, "type": "Historique"}, {"annee": 2004, "v": 4.19, "type": "Historique"}, {"annee": 2005, "v": 3.99, "type": "Historique"}, {"annee": 2006, "v": 4.98, "type": "Historique"}, {"annee": 2007, "v": 4.93, "type": "Historique"}, {"annee": 2008, "v": 2.57, "type": "Historique"}, {"annee": 2009, "v": -2.62, "type": "Historique"}, {"annee": 2010, "v": 2.94, "type": "Historique"}, {"annee": 2011, "v": 3.36, "type": "Historique"}, {"annee": 2012, "v": 1.31, "type": "Historique"}, {"annee": 2013, "v": 1.68, "type": "Historique"}, {"annee": 2014, "v": 1.57, "type": "Historique"}, {"annee": 2015, "v": 2.14, "type": "Historique"}, {"annee": 2016, "v": 1.26, "type": "Historique"}, {"annee": 2017, "v": 2.86, "type": "Historique"}, {"annee": 2018, "v": 2.72, "type": "Historique"}, {"annee": 2019, "v": 3.33, "type": "Historique"}, {"annee": 2020, "v": -4.85, "type": "Historique"}, {"annee": 2021, "v": 8.1, "type": "Historique"}, {"annee": 2022, "v": 5.9, "type": "Historique"}, {"annee": 2023, "v": 6.69, "type": "Historique"}, {"annee": 2024, "v": 3.22, "type": "Historique"}, {"annee": 2025, "v": 2.15, "type": "Historique"}, {"annee": 2026, "v": 2.31, "type": "Prévision"}, {"annee": 2027, "v": 2.6, "type": "Prévision"}], "Japon": [{"annee": 1990, "v": 7.96, "type": "Historique"}, {"annee": 1991, "v": 6.02, "type": "Historique"}, {"annee": 1992, "v": 2.42, "type": "Historique"}, {"annee": 1993, "v": 0.61, "type": "Historique"}, {"annee": 1994, "v": 0.98, "type": "Historique"}, {"annee": 1995, "v": 1.68, "type": "Historique"}, {"annee": 1996, "v": 2.97, "type": "Historique"}, {"annee": 1997, "v": 1.44, "type": "Historique"}, {"annee": 1998, "v": -1.95, "type": "Historique"}, {"annee": 1999, "v": -1.69, "type": "Historique"}, {"annee": 2000, "v": 1.74, "type": "Historique"}, {"annee": 2001, "v": -0.73, "type": "Historique"}, {"annee": 2002, "v": -1.31, "type": "Historique"}, {"annee": 2003, "v": -0.41, "type": "Historique"}, {"annee": 2004, "v": 0.83, "type": "Historique"}, {"annee": 2005, "v": 0.51, "type": "Historique"}, {"annee": 2006, "v": 0.59, "type": "Historique"}, {"annee": 2007, "v": 0.74, "type": "Historique"}, {"annee": 2008, "v": -2.06, "type": "Historique"}, {"annee": 2009, "v": -6.37, "type": "Historique"}, {"annee": 2010, "v": 2.16, "type": "Historique"}, {"annee": 2011, "v": -1.76, "type": "Historique"}, {"annee": 2012, "v": 0.85, "type": "Historique"}, {"annee": 2013, "v": 1.82, "type": "Historique"}, {"annee": 2014, "v": 2.66, "type": "Historique"}, {"annee": 2015, "v": 3.91, "type": "Historique"}, {"annee": 2016, "v": 1.29, "type": "Historique"}, {"annee": 2017, "v": 1.65, "type": "Historique"}, {"annee": 2018, "v": 0.71, "type": "Historique"}, {"annee": 2019, "v": 0.47, "type": "Historique"}, {"annee": 2020, "v": -3.11, "type": "Historique"}, {"annee": 2021, "v": 3.52, "type": "Historique"}, {"annee": 2022, "v": 1.98, "type": "Historique"}, {"annee": 2023, "v": 5.32, "type": "Historique"}, {"annee": 2024, "v": 3.04, "type": "Historique"}, {"annee": 2025, "v": 4.52, "type": "Historique"}, {"annee": 2026, "v": 2.89, "type": "Prévision"}, {"annee": 2027, "v": 3.29, "type": "Prévision"}], "OCDE_moyenne": [{"annee": 1990, "v": 10.48, "type": "Historique"}, {"annee": 1991, "v": 8.72, "type": "Historique"}, {"annee": 1992, "v": 8.17, "type": "Historique"}, {"annee": 1993, "v": 7.01, "type": "Historique"}, {"annee": 1994, "v": 9.05, "type": "Historique"}, {"annee": 1995, "v": 9.22, "type": "Historique"}, {"annee": 1996, "v": 8.77, "type": "Historique"}, {"annee": 1997, "v": 8.76, "type": "Historique"}, {"annee": 1998, "v": 7.12, "type": "Historique"}, {"annee": 1999, "v": 6.18, "type": "Historique"}, {"annee": 2000, "v": 7.54, "type": "Historique"}, {"annee": 2001, "v": 4.64, "type": "Historique"}, {"annee": 2002, "v": 4.22, "type": "Historique"}, {"annee": 2003, "v": 4.47, "type": "Historique"}, {"annee": 2004, "v": 5.97, "type": "Historique"}, {"annee": 2005, "v": 5.5, "type": "Historique"}, {"annee": 2006, "v": 5.92, "type": "Historique"}, {"annee": 2007, "v": 5.41, "type": "Historique"}, {"annee": 2008, "v": 2.96, "type": "Historique"}, {"annee": 2009, "v": -2.34, "type": "Historique"}, {"annee": 2010, "v": 4.49, "type": "Historique"}, {"annee": 2011, "v": 4.04, "type": "Historique"}, {"annee": 2012, "v": 3.09, "type": "Historique"}, {"annee": 2013, "v": 3.23, "type": "Historique"}, {"annee": 2014, "v": 4.09, "type": "Historique"}, {"annee": 2015, "v": 4.15, "type": "Historique"}, {"annee": 2016, "v": 3.4, "type": "Historique"}, {"annee": 2017, "v": 4.99, "type": "Historique"}, {"annee": 2018, "v": 4.94, "type": "Historique"}, {"annee": 2019, "v": 4.09, "type": "Historique"}, {"annee": 2020, "v": -1.79, "type": "Historique"}, {"annee": 2021, "v": 11.09, "type": "Historique"}, {"annee": 2022, "v": 13.25, "type": "Historique"}, {"annee": 2023, "v": 9.3, "type": "Historique"}, {"annee": 2024, "v": 7.37, "type": "Historique"}, {"annee": 2025, "v": 6.32, "type": "Historique"}, {"annee": 2026, "v": 5.98, "type": "Prévision"}, {"annee": 2027, "v": 4.64, "type": "Prévision"}], "Royaume-Uni": [{"annee": 1990, "v": 9.14, "type": "Historique"}, {"annee": 1991, "v": 5.21, "type": "Historique"}, {"annee": 1992, "v": 3.55, "type": "Historique"}, {"annee": 1993, "v": 5.34, "type": "Historique"}, {"annee": 1994, "v": 5.33, "type": "Historique"}, {"annee": 1995, "v": 5.09, "type": "Historique"}, {"annee": 1996, "v": 6.86, "type": "Historique"}, {"annee": 1997, "v": 4.92, "type": "Historique"}, {"annee": 1998, "v": 4.62, "type": "Historique"}, {"annee": 1999, "v": 4.38, "type": "Historique"}, {"annee": 2000, "v": 5.54, "type": "Historique"}, {"annee": 2001, "v": 4.14, "type": "Historique"}, {"annee": 2002, "v": 3.83, "type": "Historique"}, {"annee": 2003, "v": 5.68, "type": "Historique"}, {"annee": 2004, "v": 5.12, "type": "Historique"}, {"annee": 2005, "v": 5.73, "type": "Historique"}, {"annee": 2006, "v": 5.33, "type": "Historique"}, {"annee": 2007, "v": 4.98, "type": "Historique"}, {"annee": 2008, "v": 3.25, "type": "Historique"}, {"annee": 2009, "v": -2.67, "type": "Historique"}, {"annee": 2010, "v": 3.62, "type": "Historique"}, {"annee": 2011, "v": 3.35, "type": "Historique"}, {"annee": 2012, "v": 3.1, "type": "Historique"}, {"annee": 2013, "v": 3.91, "type": "Historique"}, {"annee": 2014, "v": 4.81, "type": "Historique"}, {"annee": 2015, "v": 2.82, "type": "Historique"}, {"annee": 2016, "v": 3.98, "type": "Historique"}, {"annee": 2017, "v": 4.61, "type": "Historique"}, {"annee": 2018, "v": 3.54, "type": "Historique"}, {"annee": 2019, "v": 3.75, "type": "Historique"}, {"annee": 2020, "v": -5.69, "type": "Historique"}, {"annee": 2021, "v": 9.32, "type": "Historique"}, {"annee": 2022, "v": 11.12, "type": "Historique"}, {"annee": 2023, "v": 6.63, "type": "Historique"}, {"annee": 2024, "v": 5.03, "type": "Historique"}, {"annee": 2025, "v": 5.06, "type": "Historique"}, {"annee": 2026, "v": 4.18, "type": "Prévision"}, {"annee": 2027, "v": 3.22, "type": "Prévision"}], "Allemagne": [{"annee": 1992, "v": 6.98, "type": "Historique"}, {"annee": 1993, "v": 2.76, "type": "Historique"}, {"annee": 1994, "v": 4.66, "type": "Historique"}, {"annee": 1995, "v": 3.44, "type": "Historique"}, {"annee": 1996, "v": 1.54, "type": "Historique"}, {"annee": 1997, "v": 2.08, "type": "Historique"}, {"annee": 1998, "v": 2.58, "type": "Historique"}, {"annee": 1999, "v": 2.58, "type": "Historique"}, {"annee": 2000, "v": 2.75, "type": "Historique"}, {"annee": 2001, "v": 3.22, "type": "Historique"}, {"annee": 2002, "v": 1.3, "type": "Historique"}, {"annee": 2003, "v": 0.77, "type": "Historique"}, {"annee": 2004, "v": 1.86, "type": "Historique"}, {"annee": 2005, "v": 1.6, "type": "Historique"}, {"annee": 2006, "v": 4.5, "type": "Historique"}, {"annee": 2007, "v": 4.89, "type": "Historique"}, {"annee": 2008, "v": 1.59, "type": "Historique"}, {"annee": 2009, "v": -3.63, "type": "Historique"}, {"annee": 2010, "v": 4.73, "type": "Historique"}, {"annee": 2011, "v": 5.11, "type": "Historique"}, {"annee": 2012, "v": 2.09, "type": "Historique"}, {"annee": 2013, "v": 2.52, "type": "Historique"}, {"annee": 2014, "v": 4.11, "type": "Historique"}, {"annee": 2015, "v": 3.19, "type": "Historique"}, {"annee": 2016, "v": 3.42, "type": "Historique"}, {"annee": 2017, "v": 4.62, "type": "Historique"}, {"annee": 2018, "v": 3.04, "type": "Historique"}, {"annee": 2019, "v": 3.04, "type": "Historique"}, {"annee": 2020, "v": -2.81, "type": "Historique"}, {"annee": 2021, "v": 6.66, "type": "Historique"}, {"annee": 2022, "v": 8.43, "type": "Historique"}, {"annee": 2023, "v": 5.98, "type": "Historique"}, {"annee": 2024, "v": 2.62, "type": "Historique"}, {"annee": 2025, "v": 3.37, "type": "Historique"}, {"annee": 2026, "v": 3.33, "type": "Prévision"}, {"annee": 2027, "v": 3.98, "type": "Prévision"}], "Zone_euro": [{"annee": 1992, "v": 5.92, "type": "Historique"}, {"annee": 1993, "v": 2.93, "type": "Historique"}, {"annee": 1994, "v": 5.17, "type": "Historique"}, {"annee": 1995, "v": 5.27, "type": "Historique"}, {"annee": 1996, "v": 3.52, "type": "Historique"}, {"annee": 1997, "v": 4.18, "type": "Historique"}, {"annee": 1998, "v": 4.41, "type": "Historique"}, {"annee": 1999, "v": 4.08, "type": "Historique"}, {"annee": 2000, "v": 5.39, "type": "Historique"}, {"annee": 2001, "v": 4.75, "type": "Historique"}, {"annee": 2002, "v": 3.43, "type": "Historique"}, {"annee": 2003, "v": 2.97, "type": "Historique"}, {"annee": 2004, "v": 4.04, "type": "Historique"}, {"annee": 2005, "v": 3.76, "type": "Historique"}, {"annee": 2006, "v": 5.48, "type": "Historique"}, {"annee": 2007, "v": 5.49, "type": "Historique"}, {"annee": 2008, "v": 2.34, "type": "Historique"}, {"annee": 2009, "v": -3.47, "type": "Historique"}, {"annee": 2010, "v": 2.73, "type": "Historique"}, {"annee": 2011, "v": 2.91, "type": "Historique"}, {"annee": 2012, "v": 0.37, "type": "Historique"}, {"annee": 2013, "v": 1.15, "type": "Historique"}, {"annee": 2014, "v": 2.42, "type": "Historique"}, {"annee": 2015, "v": 3.44, "type": "Historique"}, {"annee": 2016, "v": 2.64, "type": "Historique"}, {"annee": 2017, "v": 3.91, "type": "Historique"}, {"annee": 2018, "v": 3.3, "type": "Historique"}, {"annee": 2019, "v": 3.35, "type": "Historique"}, {"annee": 2020, "v": -4.43, "type": "Historique"}, {"annee": 2021, "v": 8.54, "type": "Historique"}, {"annee": 2022, "v": 9.03, "type": "Historique"}, {"annee": 2023, "v": 6.61, "type": "Historique"}, {"annee": 2024, "v": 3.82, "type": "Historique"}, {"annee": 2025, "v": 3.91, "type": "Historique"}, {"annee": 2026, "v": 3.14, "type": "Prévision"}, {"annee": 2027, "v": 3.63, "type": "Prévision"}]}, "secu_pct_pib": [{"annee": 1959, "total": 14.83, "retraites": 5.25}, {"annee": 1960, "total": 14.74, "retraites": 5.1}, {"annee": 1961, "total": 15.3, "retraites": 5.29}, {"annee": 1962, "total": 16.18, "retraites": 5.54}, {"annee": 1963, "total": 17.11, "retraites": 5.86}, {"annee": 1964, "total": 17.52, "retraites": 6.15}, {"annee": 1965, "total": 17.91, "retraites": 6.51}, {"annee": 1966, "total": 18.0, "retraites": 6.83}, {"annee": 1967, "total": 18.18, "retraites": 6.96}, {"annee": 1968, "total": 18.4, "retraites": 7.39}, {"annee": 1969, "total": 18.31, "retraites": 7.31}, {"annee": 1970, "total": 18.17, "retraites": 7.29}, {"annee": 1971, "total": 18.25, "retraites": 7.26}, {"annee": 1972, "total": 18.6, "retraites": 7.42}, {"annee": 1973, "total": 18.72, "retraites": 7.5}, {"annee": 1974, "total": 19.0, "retraites": 7.78}, {"annee": 1975, "total": 21.37, "retraites": 8.72}, {"annee": 1976, "total": 21.5, "retraites": 8.96}, {"annee": 1977, "total": 22.18, "retraites": 9.32}, {"annee": 1978, "total": 23.15, "retraites": 9.59}, {"annee": 1979, "total": 23.39, "retraites": 9.7}, {"annee": 1980, "total": 23.89, "retraites": 9.9}, {"annee": 1981, "total": 25.25, "retraites": 10.39}, {"annee": 1982, "total": 26.17, "retraites": 10.64}, {"annee": 1983, "total": 26.37, "retraites": 10.73}, {"annee": 1984, "total": 26.67, "retraites": 11.08}, {"annee": 1985, "total": 26.89, "retraites": 11.38}, {"annee": 1986, "total": 26.55, "retraites": 11.3}, {"annee": 1987, "total": 26.27, "retraites": 11.29}, {"annee": 1988, "total": 25.82, "retraites": 11.19}, {"annee": 1989, "total": 25.72, "retraites": 11.1}, {"annee": 1990, "total": 25.93, "retraites": 11.1}, {"annee": 1991, "total": 26.45, "retraites": 11.35}, {"annee": 1992, "total": 27.25, "retraites": 11.69}, {"annee": 1993, "total": 28.55, "retraites": 12.19}, {"annee": 1994, "total": 28.44, "retraites": 12.27}, {"annee": 1995, "total": 28.54, "retraites": 12.4}, {"annee": 1996, "total": 28.63, "retraites": 12.4}, {"annee": 1997, "total": 28.46, "retraites": 12.49}, {"annee": 1998, "total": 28.12, "retraites": 12.38}, {"annee": 1999, "total": 28.12, "retraites": 12.39}, {"annee": 2000, "total": 27.5, "retraites": 12.07}, {"annee": 2001, "total": 27.81, "retraites": 12.11}, {"annee": 2002, "total": 28.46, "retraites": 12.28}, {"annee": 2003, "total": 29.07, "retraites": 12.46}, {"annee": 2004, "total": 29.25, "retraites": 12.57}, {"annee": 2005, "total": 29.22, "retraites": 12.68}, {"annee": 2006, "total": 28.8, "retraites": 12.78}, {"annee": 2007, "total": 28.61, "retraites": 12.84}, {"annee": 2008, "total": 28.88, "retraites": 13.14}, {"annee": 2009, "total": 31.16, "retraites": 14.07}, {"annee": 2010, "total": 31.16, "retraites": 14.15}, {"annee": 2011, "total": 30.99, "retraites": 14.23}, {"annee": 2012, "total": 31.61, "retraites": 14.52}, {"annee": 2013, "total": 31.98, "retraites": 14.73}, {"annee": 2014, "total": 32.18, "retraites": 14.79}, {"annee": 2015, "total": 32.09, "retraites": 14.73}, {"annee": 2016, "total": 32.34, "retraites": 14.81}, {"annee": 2017, "total": 32.02, "retraites": 14.65}, {"annee": 2018, "total": 31.79, "retraites": 14.62}, {"annee": 2019, "total": 31.58, "retraites": 14.45}, {"annee": 2020, "total": 35.47, "retraites": 15.51}, {"annee": 2021, "total": 33.6, "retraites": 14.59}, {"annee": 2022, "total": 32.2, "retraites": 14.39}, {"annee": 2023, "total": 31.35, "retraites": 14.12}, {"annee": 2024, "total": 31.75, "retraites": 14.53}], "exonerations": [{"annee": 2004, "total_meuros": 18952.0, "reduction_fillon_meuros": 6673.0, "pct_pib": 1.12}, {"annee": 2005, "total_meuros": 20481.0, "reduction_fillon_meuros": 10666.0, "pct_pib": 1.16}, {"annee": 2006, "total_meuros": 23201.0, "reduction_fillon_meuros": 19195.0, "pct_pib": 1.26}, {"annee": 2007, "total_meuros": 25408.0, "reduction_fillon_meuros": 20456.0, "pct_pib": 1.31}, {"annee": 2008, "total_meuros": 27942.0, "reduction_fillon_meuros": 21020.0, "pct_pib": 1.4}, {"annee": 2009, "total_meuros": 27077.0, "reduction_fillon_meuros": 20596.0, "pct_pib": 1.4}, {"annee": 2010, "total_meuros": 27323.0, "reduction_fillon_meuros": 20679.0, "pct_pib": 1.37}, {"annee": 2011, "total_meuros": 25387.0, "reduction_fillon_meuros": 19028.0, "pct_pib": 1.23}, {"annee": 2012, "total_meuros": 25510.0, "reduction_fillon_meuros": 19843.0, "pct_pib": 1.22}, {"annee": 2013, "total_meuros": 36064.0, "reduction_fillon_meuros": 19662.0, "pct_pib": 1.7}, {"annee": 2014, "total_meuros": 42095.0, "reduction_fillon_meuros": 19795.0, "pct_pib": 1.95}, {"annee": 2015, "total_meuros": 45735.0, "reduction_fillon_meuros": 20719.0, "pct_pib": 2.08}, {"annee": 2016, "total_meuros": 49428.0, "reduction_fillon_meuros": 21141.0, "pct_pib": 2.22}, {"annee": 2017, "total_meuros": 55596.0, "reduction_fillon_meuros": 22201.0, "pct_pib": 2.42}, {"annee": 2018, "total_meuros": 52655.0, "reduction_fillon_meuros": 22799.0, "pct_pib": 2.23}, {"annee": 2019, "total_meuros": 60836.0, "reduction_fillon_meuros": 26308.0, "pct_pib": 2.5}, {"annee": 2020, "total_meuros": 58928.0, "reduction_fillon_meuros": 24947.0, "pct_pib": 2.54}, {"annee": 2021, "total_meuros": 64774.0, "reduction_fillon_meuros": 28701.0, "pct_pib": 2.59}, {"annee": 2022, "total_meuros": 73527.0, "reduction_fillon_meuros": 34197.0, "pct_pib": 2.77}, {"annee": 2023, "total_meuros": 80356.0, "reduction_fillon_meuros": 37742.0, "pct_pib": 2.83}, {"annee": 2024, "total_meuros": 80631.0, "reduction_fillon_meuros": 37630.0, "pct_pib": 2.75}, {"annee": 2025, "total_meuros": 78801.0, "reduction_fillon_meuros": 37402.0, "pct_pib": 2.63}], "pauvrete": {"Haute-Loire (43)": {"Niveau de vie médian (€)": 25140.0, "Taux de pauvreté (%)": 12.4}, "France métropolitaine": {"Niveau de vie médian (€)": 25920.0, "Taux de pauvreté (%)": 15.9}}, "ifi": [{"annee": 2018, "redevables": 132619}, {"annee": 2019, "redevables": 139108}, {"annee": 2020, "redevables": 143336}, {"annee": 2021, "redevables": 152691}, {"annee": 2022, "redevables": 163895}, {"annee": 2023, "redevables": 176000}, {"annee": 2024, "redevables": 186000}, {"annee": 2025, "redevables": 193500}], "extra": {"depenses_sociales_pct_pib": [{"annee": 1959, "v": 14.8}, {"annee": 1960, "v": 14.7}, {"annee": 1961, "v": 15.3}, {"annee": 1962, "v": 16.2}, {"annee": 1963, "v": 17.1}, {"annee": 1964, "v": 17.5}, {"annee": 1965, "v": 17.9}, {"annee": 1966, "v": 18.0}, {"annee": 1967, "v": 18.2}, {"annee": 1968, "v": 18.4}, {"annee": 1969, "v": 18.3}, {"annee": 1970, "v": 18.2}, {"annee": 1971, "v": 18.3}, {"annee": 1972, "v": 18.6}, {"annee": 1973, "v": 18.7}, {"annee": 1974, "v": 19.0}, {"annee": 1975, "v": 21.4}, {"annee": 1976, "v": 21.5}, {"annee": 1977, "v": 22.2}, {"annee": 1978, "v": 23.1}, {"annee": 1979, "v": 23.4}, {"annee": 1980, "v": 23.9}, {"annee": 1981, "v": 25.3}, {"annee": 1982, "v": 26.2}, {"annee": 1983, "v": 26.4}, {"annee": 1984, "v": 26.7}, {"annee": 1985, "v": 26.9}, {"annee": 1986, "v": 26.5}, {"annee": 1987, "v": 26.3}, {"annee": 1988, "v": 25.8}, {"annee": 1989, "v": 25.7}, {"annee": 1990, "v": 25.9}, {"annee": 1991, "v": 26.5}, {"annee": 1992, "v": 27.2}, {"annee": 1993, "v": 28.5}, {"annee": 1994, "v": 28.4}, {"annee": 1995, "v": 28.5}, {"annee": 1996, "v": 28.6}, {"annee": 1997, "v": 28.5}, {"annee": 1998, "v": 28.1}, {"annee": 1999, "v": 28.1}, {"annee": 2000, "v": 27.5}, {"annee": 2001, "v": 27.8}, {"annee": 2002, "v": 28.5}, {"annee": 2003, "v": 29.1}, {"annee": 2004, "v": 29.2}, {"annee": 2005, "v": 29.2}, {"annee": 2006, "v": 28.8}, {"annee": 2007, "v": 28.6}, {"annee": 2008, "v": 28.9}, {"annee": 2009, "v": 31.2}, {"annee": 2010, "v": 31.2}, {"annee": 2011, "v": 31.0}, {"annee": 2012, "v": 31.6}, {"annee": 2013, "v": 32.0}, {"annee": 2014, "v": 32.2}, {"annee": 2015, "v": 32.1}, {"annee": 2016, "v": 32.3}, {"annee": 2017, "v": 32.0}, {"annee": 2018, "v": 31.8}, {"annee": 2019, "v": 31.6}, {"annee": 2020, "v": 35.5}, {"annee": 2021, "v": 33.6}, {"annee": 2022, "v": 32.2}, {"annee": 2023, "v": 31.3}, {"annee": 2024, "v": 31.8}], "deficit_secu": [{"annee": 2022, "v": 17.0}, {"annee": 2023, "v": 11.1}, {"annee": 2024, "v": 18.3}, {"annee": 2025, "v": 23.0}, {"annee": 2026, "v": 19.4, "prevision": true}], "unedic_dette": [{"annee": 2017, "v": 33.5}, {"annee": 2018, "v": 35.5}, {"annee": 2019, "v": 36.8}, {"annee": 2020, "v": 54.6}, {"annee": 2021, "v": 63.6}, {"annee": 2022, "v": 64.6}, {"annee": 2023, "v": 63.2}, {"annee": 2026, "v": 60.8, "prevision": true}]}};
+const DATA = {"pib_annuel": [{"annee": 1950, "valeur": 15.4, "volume": 309.7}, {"annee": 1951, "valeur": 19.4, "volume": 326.0}, {"annee": 1952, "valeur": 22.6, "volume": 337.2}, {"annee": 1953, "valeur": 23.4, "volume": 347.9}, {"annee": 1954, "valeur": 24.9, "volume": 368.1}, {"annee": 1955, "valeur": 26.8, "volume": 387.8}, {"annee": 1956, "valeur": 29.5, "volume": 407.5}, {"annee": 1957, "valeur": 33.4, "volume": 430.4}, {"annee": 1958, "valeur": 38.5, "volume": 442.5}, {"annee": 1959, "valeur": 42.1, "volume": 454.1}, {"annee": 1960, "valeur": 46.6, "volume": 490.6}, {"annee": 1961, "valeur": 50.5, "volume": 515.6}, {"annee": 1962, "valeur": 56.6, "volume": 549.4}, {"annee": 1963, "valeur": 63.4, "volume": 584.1}, {"annee": 1964, "valeur": 70.3, "volume": 622.4}, {"annee": 1965, "valeur": 76.0, "volume": 652.4}, {"annee": 1966, "valeur": 82.3, "volume": 686.0}, {"annee": 1967, "valeur": 88.9, "volume": 719.0}, {"annee": 1968, "valeur": 96.9, "volume": 751.7}, {"annee": 1969, "valeur": 111.4, "volume": 805.0}, {"annee": 1970, "valeur": 124.7, "volume": 854.9}, {"annee": 1971, "valeur": 139.1, "volume": 900.3}, {"annee": 1972, "valeur": 155.1, "volume": 940.6}, {"annee": 1973, "valeur": 177.8, "volume": 999.1}, {"annee": 1974, "valeur": 207.3, "volume": 1043.0}, {"annee": 1975, "valeur": 233.6, "volume": 1033.4}, {"annee": 1976, "valeur": 269.7, "volume": 1078.3}, {"annee": 1977, "valeur": 303.9, "volume": 1116.3}, {"annee": 1978, "valeur": 345.2, "volume": 1160.5}, {"annee": 1979, "valeur": 394.5, "volume": 1203.5}, {"annee": 1980, "valeur": 447.3, "volume": 1223.3}, {"annee": 1981, "valeur": 504.6, "volume": 1237.8}, {"annee": 1982, "valeur": 578.9, "volume": 1267.6}, {"annee": 1983, "valeur": 642.5, "volume": 1283.6}, {"annee": 1984, "valeur": 699.5, "volume": 1305.1}, {"annee": 1985, "valeur": 750.1, "volume": 1326.8}, {"annee": 1986, "valeur": 807.9, "volume": 1357.7}, {"annee": 1987, "valeur": 849.1, "volume": 1392.6}, {"annee": 1988, "valeur": 917.1, "volume": 1457.6}, {"annee": 1989, "valeur": 989.6, "volume": 1524.4}, {"annee": 1990, "valeur": 1044.5, "volume": 1567.0}, {"annee": 1991, "valeur": 1083.8, "volume": 1587.2}, {"annee": 1992, "valeur": 1121.3, "volume": 1609.6}, {"annee": 1993, "valeur": 1134.3, "volume": 1602.7}, {"annee": 1994, "valeur": 1172.3, "volume": 1641.2}, {"annee": 1995, "valeur": 1214.9, "volume": 1681.6}, {"annee": 1996, "valeur": 1247.4, "volume": 1704.2}, {"annee": 1997, "valeur": 1290.1, "volume": 1747.1}, {"annee": 1998, "valeur": 1347.0, "volume": 1807.6}, {"annee": 1999, "valeur": 1394.1, "volume": 1866.6}, {"annee": 2000, "valeur": 1475.5, "volume": 1948.2}, {"annee": 2001, "valeur": 1531.2, "volume": 1984.0}, {"annee": 2002, "valeur": 1580.5, "volume": 2006.3}, {"annee": 2003, "valeur": 1624.8, "volume": 2026.1}, {"annee": 2004, "valeur": 1692.9, "volume": 2077.2}, {"annee": 2005, "valeur": 1760.5, "volume": 2118.5}, {"annee": 2006, "valeur": 1848.3, "volume": 2180.7}, {"annee": 2007, "valeur": 1939.2, "volume": 2234.7}, {"annee": 2008, "valeur": 1989.0, "volume": 2240.5}, {"annee": 2009, "valeur": 1937.0, "volume": 2179.5}, {"annee": 2010, "valeur": 1994.0, "volume": 2219.5}, {"annee": 2011, "valeur": 2061.0, "volume": 2274.6}, {"annee": 2012, "valeur": 2088.0, "volume": 2279.8}, {"annee": 2013, "valeur": 2123.2, "volume": 2301.0}, {"annee": 2014, "valeur": 2156.5, "volume": 2323.9}, {"annee": 2015, "valeur": 2202.8, "volume": 2347.1}, {"annee": 2016, "valeur": 2230.6, "volume": 2364.4}, {"annee": 2017, "valeur": 2294.5, "volume": 2418.1}, {"annee": 2018, "valeur": 2356.8, "volume": 2456.4}, {"annee": 2019, "valeur": 2435.5, "volume": 2508.1}, {"annee": 2020, "valeur": 2317.3, "volume": 2317.3}, {"annee": 2021, "valeur": 2504.7, "volume": 2474.6}, {"annee": 2022, "valeur": 2652.5, "volume": 2543.9}, {"annee": 2023, "valeur": 2837.7, "volume": 2590.2}, {"annee": 2024, "valeur": 2936.9, "volume": 2627.1}, {"annee": 2025, "valeur": 2995.2, "volume": 2650.4}], "international": {"Etats-Unis": [{"annee": 1990, "v": 5.7, "type": "Historique"}, {"annee": 1991, "v": 3.27, "type": "Historique"}, {"annee": 1992, "v": 5.88, "type": "Historique"}, {"annee": 1993, "v": 5.19, "type": "Historique"}, {"annee": 1994, "v": 6.25, "type": "Historique"}, {"annee": 1995, "v": 4.84, "type": "Historique"}, {"annee": 1996, "v": 5.67, "type": "Historique"}, {"annee": 1997, "v": 6.25, "type": "Historique"}, {"annee": 1998, "v": 5.66, "type": "Historique"}, {"annee": 1999, "v": 6.27, "type": "Historique"}, {"annee": 2000, "v": 6.44, "type": "Historique"}, {"annee": 2001, "v": 3.23, "type": "Historique"}, {"annee": 2002, "v": 3.28, "type": "Historique"}, {"annee": 2003, "v": 4.83, "type": "Historique"}, {"annee": 2004, "v": 6.64, "type": "Historique"}, {"annee": 2005, "v": 6.73, "type": "Historique"}, {"annee": 2006, "v": 5.95, "type": "Historique"}, {"annee": 2007, "v": 4.77, "type": "Historique"}, {"annee": 2008, "v": 2.04, "type": "Historique"}, {"annee": 2009, "v": -1.98, "type": "Historique"}, {"annee": 2010, "v": 3.94, "type": "Historique"}, {"annee": 2011, "v": 3.66, "type": "Historique"}, {"annee": 2012, "v": 4.19, "type": "Historique"}, {"annee": 2013, "v": 3.86, "type": "Historique"}, {"annee": 2014, "v": 4.31, "type": "Historique"}, {"annee": 2015, "v": 3.9, "type": "Historique"}, {"annee": 2016, "v": 2.79, "type": "Historique"}, {"annee": 2017, "v": 4.29, "type": "Historique"}, {"annee": 2018, "v": 5.33, "type": "Historique"}, {"annee": 2019, "v": 4.28, "type": "Historique"}, {"annee": 2020, "v": -0.76, "type": "Historique"}, {"annee": 2021, "v": 11.0, "type": "Historique"}, {"annee": 2022, "v": 9.82, "type": "Historique"}, {"annee": 2023, "v": 6.74, "type": "Historique"}, {"annee": 2024, "v": 5.34, "type": "Historique"}, {"annee": 2025, "v": 5.0, "type": "Historique"}, {"annee": 2026, "v": 5.8, "type": "Prévision"}, {"annee": 2027, "v": 3.92, "type": "Prévision"}], "France": [{"annee": 1990, "v": 5.55, "type": "Historique"}, {"annee": 1991, "v": 3.76, "type": "Historique"}, {"annee": 1992, "v": 3.46, "type": "Historique"}, {"annee": 1993, "v": 1.15, "type": "Historique"}, {"annee": 1994, "v": 3.35, "type": "Historique"}, {"annee": 1995, "v": 3.63, "type": "Historique"}, {"annee": 1996, "v": 2.68, "type": "Historique"}, {"annee": 1997, "v": 3.42, "type": "Historique"}, {"annee": 1998, "v": 4.41, "type": "Historique"}, {"annee": 1999, "v": 3.5, "type": "Historique"}, {"annee": 2000, "v": 5.84, "type": "Historique"}, {"annee": 2001, "v": 3.78, "type": "Historique"}, {"annee": 2002, "v": 3.21, "type": "Historique"}, {"annee": 2003, "v": 2.81, "type": "Historique"}, {"annee": 2004, "v": 4.19, "type": "Historique"}, {"annee": 2005, "v": 3.99, "type": "Historique"}, {"annee": 2006, "v": 4.98, "type": "Historique"}, {"annee": 2007, "v": 4.93, "type": "Historique"}, {"annee": 2008, "v": 2.57, "type": "Historique"}, {"annee": 2009, "v": -2.62, "type": "Historique"}, {"annee": 2010, "v": 2.94, "type": "Historique"}, {"annee": 2011, "v": 3.36, "type": "Historique"}, {"annee": 2012, "v": 1.31, "type": "Historique"}, {"annee": 2013, "v": 1.68, "type": "Historique"}, {"annee": 2014, "v": 1.57, "type": "Historique"}, {"annee": 2015, "v": 2.14, "type": "Historique"}, {"annee": 2016, "v": 1.26, "type": "Historique"}, {"annee": 2017, "v": 2.86, "type": "Historique"}, {"annee": 2018, "v": 2.72, "type": "Historique"}, {"annee": 2019, "v": 3.33, "type": "Historique"}, {"annee": 2020, "v": -4.85, "type": "Historique"}, {"annee": 2021, "v": 8.1, "type": "Historique"}, {"annee": 2022, "v": 5.9, "type": "Historique"}, {"annee": 2023, "v": 6.69, "type": "Historique"}, {"annee": 2024, "v": 3.22, "type": "Historique"}, {"annee": 2025, "v": 2.15, "type": "Historique"}, {"annee": 2026, "v": 2.31, "type": "Prévision"}, {"annee": 2027, "v": 2.6, "type": "Prévision"}], "Japon": [{"annee": 1990, "v": 7.96, "type": "Historique"}, {"annee": 1991, "v": 6.02, "type": "Historique"}, {"annee": 1992, "v": 2.42, "type": "Historique"}, {"annee": 1993, "v": 0.61, "type": "Historique"}, {"annee": 1994, "v": 0.98, "type": "Historique"}, {"annee": 1995, "v": 1.68, "type": "Historique"}, {"annee": 1996, "v": 2.97, "type": "Historique"}, {"annee": 1997, "v": 1.44, "type": "Historique"}, {"annee": 1998, "v": -1.95, "type": "Historique"}, {"annee": 1999, "v": -1.69, "type": "Historique"}, {"annee": 2000, "v": 1.74, "type": "Historique"}, {"annee": 2001, "v": -0.73, "type": "Historique"}, {"annee": 2002, "v": -1.31, "type": "Historique"}, {"annee": 2003, "v": -0.41, "type": "Historique"}, {"annee": 2004, "v": 0.83, "type": "Historique"}, {"annee": 2005, "v": 0.51, "type": "Historique"}, {"annee": 2006, "v": 0.59, "type": "Historique"}, {"annee": 2007, "v": 0.74, "type": "Historique"}, {"annee": 2008, "v": -2.06, "type": "Historique"}, {"annee": 2009, "v": -6.37, "type": "Historique"}, {"annee": 2010, "v": 2.16, "type": "Historique"}, {"annee": 2011, "v": -1.76, "type": "Historique"}, {"annee": 2012, "v": 0.85, "type": "Historique"}, {"annee": 2013, "v": 1.82, "type": "Historique"}, {"annee": 2014, "v": 2.66, "type": "Historique"}, {"annee": 2015, "v": 3.91, "type": "Historique"}, {"annee": 2016, "v": 1.29, "type": "Historique"}, {"annee": 2017, "v": 1.65, "type": "Historique"}, {"annee": 2018, "v": 0.71, "type": "Historique"}, {"annee": 2019, "v": 0.47, "type": "Historique"}, {"annee": 2020, "v": -3.11, "type": "Historique"}, {"annee": 2021, "v": 3.52, "type": "Historique"}, {"annee": 2022, "v": 1.98, "type": "Historique"}, {"annee": 2023, "v": 5.32, "type": "Historique"}, {"annee": 2024, "v": 3.04, "type": "Historique"}, {"annee": 2025, "v": 4.52, "type": "Historique"}, {"annee": 2026, "v": 2.89, "type": "Prévision"}, {"annee": 2027, "v": 3.29, "type": "Prévision"}], "OCDE_moyenne": [{"annee": 1990, "v": 10.48, "type": "Historique"}, {"annee": 1991, "v": 8.72, "type": "Historique"}, {"annee": 1992, "v": 8.17, "type": "Historique"}, {"annee": 1993, "v": 7.01, "type": "Historique"}, {"annee": 1994, "v": 9.05, "type": "Historique"}, {"annee": 1995, "v": 9.22, "type": "Historique"}, {"annee": 1996, "v": 8.77, "type": "Historique"}, {"annee": 1997, "v": 8.76, "type": "Historique"}, {"annee": 1998, "v": 7.12, "type": "Historique"}, {"annee": 1999, "v": 6.18, "type": "Historique"}, {"annee": 2000, "v": 7.54, "type": "Historique"}, {"annee": 2001, "v": 4.64, "type": "Historique"}, {"annee": 2002, "v": 4.22, "type": "Historique"}, {"annee": 2003, "v": 4.47, "type": "Historique"}, {"annee": 2004, "v": 5.97, "type": "Historique"}, {"annee": 2005, "v": 5.5, "type": "Historique"}, {"annee": 2006, "v": 5.92, "type": "Historique"}, {"annee": 2007, "v": 5.41, "type": "Historique"}, {"annee": 2008, "v": 2.96, "type": "Historique"}, {"annee": 2009, "v": -2.34, "type": "Historique"}, {"annee": 2010, "v": 4.49, "type": "Historique"}, {"annee": 2011, "v": 4.04, "type": "Historique"}, {"annee": 2012, "v": 3.09, "type": "Historique"}, {"annee": 2013, "v": 3.23, "type": "Historique"}, {"annee": 2014, "v": 4.09, "type": "Historique"}, {"annee": 2015, "v": 4.15, "type": "Historique"}, {"annee": 2016, "v": 3.4, "type": "Historique"}, {"annee": 2017, "v": 4.99, "type": "Historique"}, {"annee": 2018, "v": 4.94, "type": "Historique"}, {"annee": 2019, "v": 4.09, "type": "Historique"}, {"annee": 2020, "v": -1.79, "type": "Historique"}, {"annee": 2021, "v": 11.09, "type": "Historique"}, {"annee": 2022, "v": 13.25, "type": "Historique"}, {"annee": 2023, "v": 9.3, "type": "Historique"}, {"annee": 2024, "v": 7.37, "type": "Historique"}, {"annee": 2025, "v": 6.32, "type": "Historique"}, {"annee": 2026, "v": 5.98, "type": "Prévision"}, {"annee": 2027, "v": 4.64, "type": "Prévision"}], "Royaume-Uni": [{"annee": 1990, "v": 9.14, "type": "Historique"}, {"annee": 1991, "v": 5.21, "type": "Historique"}, {"annee": 1992, "v": 3.55, "type": "Historique"}, {"annee": 1993, "v": 5.34, "type": "Historique"}, {"annee": 1994, "v": 5.33, "type": "Historique"}, {"annee": 1995, "v": 5.09, "type": "Historique"}, {"annee": 1996, "v": 6.86, "type": "Historique"}, {"annee": 1997, "v": 4.92, "type": "Historique"}, {"annee": 1998, "v": 4.62, "type": "Historique"}, {"annee": 1999, "v": 4.38, "type": "Historique"}, {"annee": 2000, "v": 5.54, "type": "Historique"}, {"annee": 2001, "v": 4.14, "type": "Historique"}, {"annee": 2002, "v": 3.83, "type": "Historique"}, {"annee": 2003, "v": 5.68, "type": "Historique"}, {"annee": 2004, "v": 5.12, "type": "Historique"}, {"annee": 2005, "v": 5.73, "type": "Historique"}, {"annee": 2006, "v": 5.33, "type": "Historique"}, {"annee": 2007, "v": 4.98, "type": "Historique"}, {"annee": 2008, "v": 3.25, "type": "Historique"}, {"annee": 2009, "v": -2.67, "type": "Historique"}, {"annee": 2010, "v": 3.62, "type": "Historique"}, {"annee": 2011, "v": 3.35, "type": "Historique"}, {"annee": 2012, "v": 3.1, "type": "Historique"}, {"annee": 2013, "v": 3.91, "type": "Historique"}, {"annee": 2014, "v": 4.81, "type": "Historique"}, {"annee": 2015, "v": 2.82, "type": "Historique"}, {"annee": 2016, "v": 3.98, "type": "Historique"}, {"annee": 2017, "v": 4.61, "type": "Historique"}, {"annee": 2018, "v": 3.54, "type": "Historique"}, {"annee": 2019, "v": 3.75, "type": "Historique"}, {"annee": 2020, "v": -5.69, "type": "Historique"}, {"annee": 2021, "v": 9.32, "type": "Historique"}, {"annee": 2022, "v": 11.12, "type": "Historique"}, {"annee": 2023, "v": 6.63, "type": "Historique"}, {"annee": 2024, "v": 5.03, "type": "Historique"}, {"annee": 2025, "v": 5.06, "type": "Historique"}, {"annee": 2026, "v": 4.18, "type": "Prévision"}, {"annee": 2027, "v": 3.22, "type": "Prévision"}], "Allemagne": [{"annee": 1992, "v": 6.98, "type": "Historique"}, {"annee": 1993, "v": 2.76, "type": "Historique"}, {"annee": 1994, "v": 4.66, "type": "Historique"}, {"annee": 1995, "v": 3.44, "type": "Historique"}, {"annee": 1996, "v": 1.54, "type": "Historique"}, {"annee": 1997, "v": 2.08, "type": "Historique"}, {"annee": 1998, "v": 2.58, "type": "Historique"}, {"annee": 1999, "v": 2.58, "type": "Historique"}, {"annee": 2000, "v": 2.75, "type": "Historique"}, {"annee": 2001, "v": 3.22, "type": "Historique"}, {"annee": 2002, "v": 1.3, "type": "Historique"}, {"annee": 2003, "v": 0.77, "type": "Historique"}, {"annee": 2004, "v": 1.86, "type": "Historique"}, {"annee": 2005, "v": 1.6, "type": "Historique"}, {"annee": 2006, "v": 4.5, "type": "Historique"}, {"annee": 2007, "v": 4.89, "type": "Historique"}, {"annee": 2008, "v": 1.59, "type": "Historique"}, {"annee": 2009, "v": -3.63, "type": "Historique"}, {"annee": 2010, "v": 4.73, "type": "Historique"}, {"annee": 2011, "v": 5.11, "type": "Historique"}, {"annee": 2012, "v": 2.09, "type": "Historique"}, {"annee": 2013, "v": 2.52, "type": "Historique"}, {"annee": 2014, "v": 4.11, "type": "Historique"}, {"annee": 2015, "v": 3.19, "type": "Historique"}, {"annee": 2016, "v": 3.42, "type": "Historique"}, {"annee": 2017, "v": 4.62, "type": "Historique"}, {"annee": 2018, "v": 3.04, "type": "Historique"}, {"annee": 2019, "v": 3.04, "type": "Historique"}, {"annee": 2020, "v": -2.81, "type": "Historique"}, {"annee": 2021, "v": 6.66, "type": "Historique"}, {"annee": 2022, "v": 8.43, "type": "Historique"}, {"annee": 2023, "v": 5.98, "type": "Historique"}, {"annee": 2024, "v": 2.62, "type": "Historique"}, {"annee": 2025, "v": 3.37, "type": "Historique"}, {"annee": 2026, "v": 3.33, "type": "Prévision"}, {"annee": 2027, "v": 3.98, "type": "Prévision"}], "Zone_euro": [{"annee": 1992, "v": 5.92, "type": "Historique"}, {"annee": 1993, "v": 2.93, "type": "Historique"}, {"annee": 1994, "v": 5.17, "type": "Historique"}, {"annee": 1995, "v": 5.27, "type": "Historique"}, {"annee": 1996, "v": 3.52, "type": "Historique"}, {"annee": 1997, "v": 4.18, "type": "Historique"}, {"annee": 1998, "v": 4.41, "type": "Historique"}, {"annee": 1999, "v": 4.08, "type": "Historique"}, {"annee": 2000, "v": 5.39, "type": "Historique"}, {"annee": 2001, "v": 4.75, "type": "Historique"}, {"annee": 2002, "v": 3.43, "type": "Historique"}, {"annee": 2003, "v": 2.97, "type": "Historique"}, {"annee": 2004, "v": 4.04, "type": "Historique"}, {"annee": 2005, "v": 3.76, "type": "Historique"}, {"annee": 2006, "v": 5.48, "type": "Historique"}, {"annee": 2007, "v": 5.49, "type": "Historique"}, {"annee": 2008, "v": 2.34, "type": "Historique"}, {"annee": 2009, "v": -3.47, "type": "Historique"}, {"annee": 2010, "v": 2.73, "type": "Historique"}, {"annee": 2011, "v": 2.91, "type": "Historique"}, {"annee": 2012, "v": 0.37, "type": "Historique"}, {"annee": 2013, "v": 1.15, "type": "Historique"}, {"annee": 2014, "v": 2.42, "type": "Historique"}, {"annee": 2015, "v": 3.44, "type": "Historique"}, {"annee": 2016, "v": 2.64, "type": "Historique"}, {"annee": 2017, "v": 3.91, "type": "Historique"}, {"annee": 2018, "v": 3.3, "type": "Historique"}, {"annee": 2019, "v": 3.35, "type": "Historique"}, {"annee": 2020, "v": -4.43, "type": "Historique"}, {"annee": 2021, "v": 8.54, "type": "Historique"}, {"annee": 2022, "v": 9.03, "type": "Historique"}, {"annee": 2023, "v": 6.61, "type": "Historique"}, {"annee": 2024, "v": 3.82, "type": "Historique"}, {"annee": 2025, "v": 3.91, "type": "Historique"}, {"annee": 2026, "v": 3.14, "type": "Prévision"}, {"annee": 2027, "v": 3.63, "type": "Prévision"}]}, "secu_pct_pib": [{"annee": 1959, "total": 14.83, "retraites": 5.25}, {"annee": 1960, "total": 14.74, "retraites": 5.1}, {"annee": 1961, "total": 15.3, "retraites": 5.29}, {"annee": 1962, "total": 16.18, "retraites": 5.54}, {"annee": 1963, "total": 17.11, "retraites": 5.86}, {"annee": 1964, "total": 17.52, "retraites": 6.15}, {"annee": 1965, "total": 17.91, "retraites": 6.51}, {"annee": 1966, "total": 18.0, "retraites": 6.83}, {"annee": 1967, "total": 18.18, "retraites": 6.96}, {"annee": 1968, "total": 18.4, "retraites": 7.39}, {"annee": 1969, "total": 18.31, "retraites": 7.31}, {"annee": 1970, "total": 18.17, "retraites": 7.29}, {"annee": 1971, "total": 18.25, "retraites": 7.26}, {"annee": 1972, "total": 18.6, "retraites": 7.42}, {"annee": 1973, "total": 18.72, "retraites": 7.5}, {"annee": 1974, "total": 19.0, "retraites": 7.78}, {"annee": 1975, "total": 21.37, "retraites": 8.72}, {"annee": 1976, "total": 21.5, "retraites": 8.96}, {"annee": 1977, "total": 22.18, "retraites": 9.32}, {"annee": 1978, "total": 23.15, "retraites": 9.59}, {"annee": 1979, "total": 23.39, "retraites": 9.7}, {"annee": 1980, "total": 23.89, "retraites": 9.9}, {"annee": 1981, "total": 25.25, "retraites": 10.39}, {"annee": 1982, "total": 26.17, "retraites": 10.64}, {"annee": 1983, "total": 26.37, "retraites": 10.73}, {"annee": 1984, "total": 26.67, "retraites": 11.08}, {"annee": 1985, "total": 26.89, "retraites": 11.38}, {"annee": 1986, "total": 26.55, "retraites": 11.3}, {"annee": 1987, "total": 26.27, "retraites": 11.29}, {"annee": 1988, "total": 25.82, "retraites": 11.19}, {"annee": 1989, "total": 25.72, "retraites": 11.1}, {"annee": 1990, "total": 25.93, "retraites": 11.1}, {"annee": 1991, "total": 26.45, "retraites": 11.35}, {"annee": 1992, "total": 27.25, "retraites": 11.69}, {"annee": 1993, "total": 28.55, "retraites": 12.19}, {"annee": 1994, "total": 28.44, "retraites": 12.27}, {"annee": 1995, "total": 28.54, "retraites": 12.4}, {"annee": 1996, "total": 28.63, "retraites": 12.4}, {"annee": 1997, "total": 28.46, "retraites": 12.49}, {"annee": 1998, "total": 28.12, "retraites": 12.38}, {"annee": 1999, "total": 28.12, "retraites": 12.39}, {"annee": 2000, "total": 27.5, "retraites": 12.07}, {"annee": 2001, "total": 27.81, "retraites": 12.11}, {"annee": 2002, "total": 28.46, "retraites": 12.28}, {"annee": 2003, "total": 29.07, "retraites": 12.46}, {"annee": 2004, "total": 29.25, "retraites": 12.57}, {"annee": 2005, "total": 29.22, "retraites": 12.68}, {"annee": 2006, "total": 28.8, "retraites": 12.78}, {"annee": 2007, "total": 28.61, "retraites": 12.84}, {"annee": 2008, "total": 28.88, "retraites": 13.14}, {"annee": 2009, "total": 31.16, "retraites": 14.07}, {"annee": 2010, "total": 31.16, "retraites": 14.15}, {"annee": 2011, "total": 30.99, "retraites": 14.23}, {"annee": 2012, "total": 31.61, "retraites": 14.52}, {"annee": 2013, "total": 31.98, "retraites": 14.73}, {"annee": 2014, "total": 32.18, "retraites": 14.79}, {"annee": 2015, "total": 32.09, "retraites": 14.73}, {"annee": 2016, "total": 32.34, "retraites": 14.81}, {"annee": 2017, "total": 32.02, "retraites": 14.65}, {"annee": 2018, "total": 31.79, "retraites": 14.62}, {"annee": 2019, "total": 31.58, "retraites": 14.45}, {"annee": 2020, "total": 35.47, "retraites": 15.51}, {"annee": 2021, "total": 33.6, "retraites": 14.59}, {"annee": 2022, "total": 32.2, "retraites": 14.39}, {"annee": 2023, "total": 31.35, "retraites": 14.12}, {"annee": 2024, "total": 31.75, "retraites": 14.53}], "exonerations": [{"annee": 2004, "total_meuros": 18952.0, "reduction_fillon_meuros": 6673.0, "pct_pib": 1.12}, {"annee": 2005, "total_meuros": 20481.0, "reduction_fillon_meuros": 10666.0, "pct_pib": 1.16}, {"annee": 2006, "total_meuros": 23201.0, "reduction_fillon_meuros": 19195.0, "pct_pib": 1.26}, {"annee": 2007, "total_meuros": 25408.0, "reduction_fillon_meuros": 20456.0, "pct_pib": 1.31}, {"annee": 2008, "total_meuros": 27942.0, "reduction_fillon_meuros": 21020.0, "pct_pib": 1.4}, {"annee": 2009, "total_meuros": 27077.0, "reduction_fillon_meuros": 20596.0, "pct_pib": 1.4}, {"annee": 2010, "total_meuros": 27323.0, "reduction_fillon_meuros": 20679.0, "pct_pib": 1.37}, {"annee": 2011, "total_meuros": 25387.0, "reduction_fillon_meuros": 19028.0, "pct_pib": 1.23}, {"annee": 2012, "total_meuros": 25510.0, "reduction_fillon_meuros": 19843.0, "pct_pib": 1.22}, {"annee": 2013, "total_meuros": 36064.0, "reduction_fillon_meuros": 19662.0, "pct_pib": 1.7}, {"annee": 2014, "total_meuros": 42095.0, "reduction_fillon_meuros": 19795.0, "pct_pib": 1.95}, {"annee": 2015, "total_meuros": 45735.0, "reduction_fillon_meuros": 20719.0, "pct_pib": 2.08}, {"annee": 2016, "total_meuros": 49428.0, "reduction_fillon_meuros": 21141.0, "pct_pib": 2.22}, {"annee": 2017, "total_meuros": 55596.0, "reduction_fillon_meuros": 22201.0, "pct_pib": 2.42}, {"annee": 2018, "total_meuros": 52655.0, "reduction_fillon_meuros": 22799.0, "pct_pib": 2.23}, {"annee": 2019, "total_meuros": 60836.0, "reduction_fillon_meuros": 26308.0, "pct_pib": 2.5}, {"annee": 2020, "total_meuros": 58928.0, "reduction_fillon_meuros": 24947.0, "pct_pib": 2.54}, {"annee": 2021, "total_meuros": 64774.0, "reduction_fillon_meuros": 28701.0, "pct_pib": 2.59}, {"annee": 2022, "total_meuros": 73527.0, "reduction_fillon_meuros": 34197.0, "pct_pib": 2.77}, {"annee": 2023, "total_meuros": 80356.0, "reduction_fillon_meuros": 37742.0, "pct_pib": 2.83}, {"annee": 2024, "total_meuros": 80631.0, "reduction_fillon_meuros": 37630.0, "pct_pib": 2.75}, {"annee": 2025, "total_meuros": 78801.0, "reduction_fillon_meuros": 37402.0, "pct_pib": 2.63}], "pauvrete": {"Haute-Loire (43)": {"Niveau de vie médian (€)": 25140.0, "Taux de pauvreté (%)": 12.4}, "France métropolitaine": {"Niveau de vie médian (€)": 25920.0, "Taux de pauvreté (%)": 15.9}}, "ifi": [{"annee": 2018, "redevables": 132619}, {"annee": 2019, "redevables": 139108}, {"annee": 2020, "redevables": 143336}, {"annee": 2021, "redevables": 152691}, {"annee": 2022, "redevables": 163895}, {"annee": 2023, "redevables": 176000}, {"annee": 2024, "redevables": 186000}, {"annee": 2025, "redevables": 193500}], "extra": {"depenses_sociales_pct_pib": [{"annee": 1959, "v": 14.8}, {"annee": 1960, "v": 14.7}, {"annee": 1961, "v": 15.3}, {"annee": 1962, "v": 16.2}, {"annee": 1963, "v": 17.1}, {"annee": 1964, "v": 17.5}, {"annee": 1965, "v": 17.9}, {"annee": 1966, "v": 18.0}, {"annee": 1967, "v": 18.2}, {"annee": 1968, "v": 18.4}, {"annee": 1969, "v": 18.3}, {"annee": 1970, "v": 18.2}, {"annee": 1971, "v": 18.3}, {"annee": 1972, "v": 18.6}, {"annee": 1973, "v": 18.7}, {"annee": 1974, "v": 19.0}, {"annee": 1975, "v": 21.4}, {"annee": 1976, "v": 21.5}, {"annee": 1977, "v": 22.2}, {"annee": 1978, "v": 23.1}, {"annee": 1979, "v": 23.4}, {"annee": 1980, "v": 23.9}, {"annee": 1981, "v": 25.3}, {"annee": 1982, "v": 26.2}, {"annee": 1983, "v": 26.4}, {"annee": 1984, "v": 26.7}, {"annee": 1985, "v": 26.9}, {"annee": 1986, "v": 26.5}, {"annee": 1987, "v": 26.3}, {"annee": 1988, "v": 25.8}, {"annee": 1989, "v": 25.7}, {"annee": 1990, "v": 25.9}, {"annee": 1991, "v": 26.5}, {"annee": 1992, "v": 27.2}, {"annee": 1993, "v": 28.5}, {"annee": 1994, "v": 28.4}, {"annee": 1995, "v": 28.5}, {"annee": 1996, "v": 28.6}, {"annee": 1997, "v": 28.5}, {"annee": 1998, "v": 28.1}, {"annee": 1999, "v": 28.1}, {"annee": 2000, "v": 27.5}, {"annee": 2001, "v": 27.8}, {"annee": 2002, "v": 28.5}, {"annee": 2003, "v": 29.1}, {"annee": 2004, "v": 29.2}, {"annee": 2005, "v": 29.2}, {"annee": 2006, "v": 28.8}, {"annee": 2007, "v": 28.6}, {"annee": 2008, "v": 28.9}, {"annee": 2009, "v": 31.2}, {"annee": 2010, "v": 31.2}, {"annee": 2011, "v": 31.0}, {"annee": 2012, "v": 31.6}, {"annee": 2013, "v": 32.0}, {"annee": 2014, "v": 32.2}, {"annee": 2015, "v": 32.1}, {"annee": 2016, "v": 32.3}, {"annee": 2017, "v": 32.0}, {"annee": 2018, "v": 31.8}, {"annee": 2019, "v": 31.6}, {"annee": 2020, "v": 35.5}, {"annee": 2021, "v": 33.6}, {"annee": 2022, "v": 32.2}, {"annee": 2023, "v": 31.3}, {"annee": 2024, "v": 31.8}], "deficit_secu": [{"annee": 2024, "v": 15.3}, {"annee": 2025, "v": 21.6}, {"annee": 2026, "v": 19.4, "prevision": true}], "unedic_dette": [{"annee": 2017, "v": 33.5}, {"annee": 2018, "v": 35.5}, {"annee": 2019, "v": 36.8}, {"annee": 2020, "v": 54.6}, {"annee": 2021, "v": 63.6}, {"annee": 2022, "v": 64.6}, {"annee": 2023, "v": 63.2}, {"annee": 2026, "v": 60.8, "prevision": true}], "deficit_secu_revise_2026": 23.2, "dette_pib_trim": [{"t": "2023-T2", "md": 3055.9, "pct": 111.2}, {"t": "2023-T3", "md": 3095.8, "pct": 110.8}, {"t": "2023-T4", "md": 3103.2, "pct": 109.5}, {"t": "2024-T1", "md": 3163.0, "pct": 110.0}, {"t": "2024-T2", "md": 3232.4, "pct": 111.6}, {"t": "2024-T3", "md": 3303.0, "pct": 113.1}, {"t": "2024-T4", "md": 3306.1, "pct": 112.6}, {"t": "2025-T1", "md": 3346.3, "pct": 113.4}, {"t": "2025-T2", "md": 3417.2, "pct": 115.2}, {"t": "2025-T3", "md": 3484.1, "pct": 117.0}, {"t": "2025-T4", "md": 3460.5, "pct": 115.7}, {"t": "2026-T1", "md": 3536.1, "pct": 117.5}], "charge_dette": [{"annee": 2026, "v": 60.4}, {"annee": 2027, "v": 70.0, "prevision": true}, {"annee": 2029, "v": 90.2, "prevision": true}, {"annee": 2030, "v": 100.0, "prevision": true}]}};
 Chart.defaults.font.family = "Arial, sans-serif";
 Chart.defaults.color = "#e6e6e6";
 const JAUNE="#ffeb3b", ROUGE="#d32f2f", BLANC="#ffffff", GRIS="#9aa0ab";
 const COUNTRY_COLORS = { "France": ROUGE, "Allemagne": BLANC, "Etats-Unis": JAUNE, "Japon": "#7fd67f", "Royaume-Uni": "#b39ddb", "Zone_euro": GRIS, "OCDE_moyenne": "#c9b896" };
 const GRID = "rgba(255,255,255,0.08)";
 
-// ---------- Compteurs dette (identiques à la version précédente) ----------
-const DETTE_BASE_MDEUR = 3536.1, DETTE_PCT_PIB = 117.5, DETTE_EUR_PAR_SEC = 9.7;
-const DETTE_DEPART = new Date("2026-04-01T00:00:00Z");
-const CHARGE_TOTALE_MDEUR = 77.4, CHARGE_PCT_RECETTES = 24.3, CHARGE_EUR_PAR_SEC = 2.45;
-function formatMd(n){ return n.toLocaleString('fr-FR', {minimumFractionDigits:1, maximumFractionDigits:1}); }
-function liveDetteValue(){ return DETTE_BASE_MDEUR + Math.max((Date.now()-DETTE_DEPART.getTime())/1000,0)*DETTE_EUR_PAR_SEC; }
-function liveChargeValue(){ const now=new Date(); const soy=new Date(Date.UTC(now.getUTCFullYear(),0,1)); return Math.min((now-soy)/1000*CHARGE_EUR_PAR_SEC, CHARGE_TOTALE_MDEUR); }
-function animateCount(el, target, suffix, duration){
-  let start=null;
-  function step(ts){ if(!start) start=ts; const p=Math.min((ts-start)/duration,1); el.innerHTML=formatMd(target*p)+' <small>'+suffix+'</small>'; if(p<1) requestAnimationFrame(step); }
-  requestAnimationFrame(step);
+function fmt(n,d){ return n.toLocaleString('fr-FR',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+function sparkline(canvasId, points, color, valueKey){
+  new Chart(document.getElementById(canvasId), {
+    type:'line',
+    data:{ labels: points.map((p,i)=>i), datasets:[{ data: points.map(p=>p[valueKey]), borderColor: color, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.25,
+      segment:{ borderDash: ctx => (points[ctx.p1DataIndex].prevision ? [4,3] : undefined) } }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{enabled:false}}, scales:{ x:{display:false}, y:{display:false} } }
+  });
 }
+
 window.addEventListener('DOMContentLoaded', () => {
-  const elDette=document.getElementById('liveDette'), elCharge=document.getElementById('liveCharge');
-  animateCount(elDette, liveDetteValue(), 'Md€', 1400);
-  animateCount(elCharge, liveChargeValue(), 'Md€', 1400);
-  document.getElementById('pctDette').textContent = '117,5 % du PIB';
-  document.getElementById('pctCharge').textContent = '24,3 % des recettes de l\'État';
-  setTimeout(() => {
-    document.getElementById('gaugeDette').style.width = Math.min(DETTE_PCT_PIB/150*100,100)+'%';
-    document.getElementById('gaugeCharge').style.width = Math.min(CHARGE_PCT_RECETTES/40*100,100)+'%';
-  }, 150);
-  setInterval(() => {
-    elDette.innerHTML = formatMd(liveDetteValue())+' <small>Md€</small>';
-    elCharge.innerHTML = formatMd(liveChargeValue())+' <small>Md€</small>';
-  }, 1000);
 
-  // ---------- Petits compteurs évolution (sparklines) ----------
-  function sparkline(canvasId, points, color, numElId, suffix, decimals){
+  // ---- Compteur Dette/PIB (avec sparkline des 12 derniers trimestres) ----
+  const detteQ = DATA.extra.dette_pib_trim;
+  const DETTE_BASE = detteQ[detteQ.length-1].md, DETTE_PCT = detteQ[detteQ.length-1].pct;
+  const DETTE_EUR_S = 9.7; // Md€/s, cf. Indicateurs_ref
+  const DETTE_DEPART = new Date("2026-04-01T00:00:00Z");
+  function liveDette(){ return DETTE_BASE + Math.max((Date.now()-DETTE_DEPART.getTime())/1000,0)*DETTE_EUR_S; }
+  const elDette = document.getElementById('liveDette');
+  function tickDette(){ elDette.innerHTML = fmt(liveDette(),0)+' <small>Md€</small>'; }
+  tickDette(); setInterval(tickDette, 1000);
+  document.getElementById('pctDette').textContent = fmt(DETTE_PCT,1)+' % du PIB';
+  sparkline('sparkDette', detteQ, ROUGE, 'pct');
+
+  // ---- Compteur Charge de la dette ----
+  const chargeS = DATA.extra.charge_dette;
+  const CHARGE_2026 = chargeS[0].v; // 60.4
+  const RECETTES_ETAT = 300;
+  const CHARGE_EUR_S = CHARGE_2026*1e9/(365*86400)/1e9; // Md€/s
+  function liveCharge(){ const now=new Date(); const soy=new Date(Date.UTC(now.getUTCFullYear(),0,1)); return Math.min((now-soy)/1000*CHARGE_EUR_S, CHARGE_2026); }
+  const elCharge = document.getElementById('liveCharge');
+  function tickCharge(){ elCharge.innerHTML = fmt(liveCharge(),1)+' <small>Md€</small>'; }
+  tickCharge(); setInterval(tickCharge, 1000);
+  document.getElementById('pctCharge').textContent = fmt(CHARGE_2026/RECETTES_ETAT*100,1)+' % des recettes';
+  sparkline('sparkCharge', chargeS, JAUNE, 'v');
+
+  // ---- Petits compteurs simples ----
+  function miniCounter(numId, sparkId, points, color, suffix, decimals){
     const last = points[points.length-1];
-    document.getElementById(numElId).innerHTML = last.v.toLocaleString('fr-FR',{minimumFractionDigits:decimals,maximumFractionDigits:decimals}) + ' <small>'+suffix+'</small>';
-    new Chart(document.getElementById(canvasId), {
-      type: 'line',
-      data: { labels: points.map(p=>p.annee), datasets: [{ data: points.map(p=>p.v), borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.25,
-        segment: { borderDash: ctx => (points[ctx.p1DataIndex].prevision ? [4,3] : undefined) } }] },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{enabled:true}},
-        scales:{ x:{ display:false }, y:{ display:false } } }
-    });
+    document.getElementById(numId).innerHTML = fmt(last.v,decimals)+' <small>'+suffix+'</small>';
+    sparkline(sparkId, points, color, 'v');
   }
-  sparkline('sparkDepSoc', DATA.extra.depenses_sociales_pct_pib, JAUNE, 'numDepSoc', '%', 1);
-  sparkline('sparkDeficit', DATA.extra.deficit_secu, ROUGE, 'numDeficit', 'Md€', 1);
-  sparkline('sparkUnedic', DATA.extra.unedic_dette, '#7fd67f', 'numUnedic', 'Md€', 1);
+  miniCounter('numDepSoc','sparkDepSoc', DATA.extra.depenses_sociales_pct_pib, JAUNE, '%', 1);
+  miniCounter('numDeficit','sparkDeficit', DATA.extra.deficit_secu, ROUGE, 'Md€', 1);
+  miniCounter('numUnedic','sparkUnedic', DATA.extra.unedic_dette, '#7fd67f', 'Md€', 1);
 
-  // ---------- 1. PIB ----------
+  // ---- 1. PIB ----
   new Chart(document.getElementById('chartPib'), {
     type: 'line',
     data: { labels: DATA.pib_annuel.map(d=>d.annee), datasets: [
@@ -335,7 +299,7 @@ window.addEventListener('DOMContentLoaded', () => {
       scales:{ y:{ title:{display:true,text:"Milliards d'euros", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
   });
 
-  // ---------- 2. International ----------
+  // ---- 2. International ----
   const toggleDiv = document.getElementById('intlToggle');
   const countries = Object.keys(DATA.international);
   const defaultOn = ["France","Allemagne","Etats-Unis"];
@@ -360,7 +324,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
   countries.forEach(c => document.getElementById('chk_'+c).addEventListener('change', () => { intlChart.data.datasets = buildIntlDatasets(); intlChart.update(); }));
 
-  // ---------- 3. Financement Sécu ----------
+  // ---- 3. Financement Sécu ----
   new Chart(document.getElementById('chartSecu'), {
     data: { labels: DATA.secu_pct_pib.map(d=>d.annee), datasets: [
       { type:'line', label:'Prestations sociales (% du PIB)', data: DATA.secu_pct_pib.map(d=>d.total), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
@@ -371,7 +335,7 @@ window.addEventListener('DOMContentLoaded', () => {
       scales:{ y:{ title:{display:true,text:'% du PIB', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ type:'linear', ticks:{stepSize:5, color:'#ccc'}, grid:{display:false} } } }
   });
 
-  // ---------- 4. IFI ----------
+  // ---- 4. IFI ----
   new Chart(document.getElementById('chartIfi'), {
     type:'bar', data:{ labels: DATA.ifi.map(d=>d.annee), datasets:[{ label:"Foyers assujettis à l'IFI (France)", data: DATA.ifi.map(d=>d.redevables), backgroundColor:'rgba(255,235,59,0.55)', borderColor:JAUNE, borderWidth:1 }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
