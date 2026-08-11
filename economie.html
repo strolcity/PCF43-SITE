@@ -19,6 +19,23 @@
   }
   .wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
 
+  /* ---- barre de navigation ---- */
+  nav.topnav{
+    position:sticky; top:0; z-index:50;
+    display:flex; justify-content:center; gap:14px; flex-wrap:wrap;
+    padding:10px 16px; background:rgba(0,0,0,0.75); backdrop-filter:blur(4px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.topnav .nav-item{
+    width:42px; height:42px; border-radius:50%; overflow:hidden;
+    border:2px solid rgba(255,255,255,0.35); display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.08); transition:border-color .15s, transform .15s;
+  }
+  nav.topnav .nav-item:hover{ border-color:var(--jaune); transform:scale(1.08); }
+  nav.topnav .nav-item.active{ border-color:var(--rouge); border-width:3px; }
+  nav.topnav .nav-item img{ width:100%; height:100%; object-fit:cover; }
+  nav.topnav .nav-placeholder{ font-size:1.3em; }
+
   header.top{ text-align:center; padding:34px 20px 8px; }
   header.top .logo{ width:80px; height:80px; border-radius:50%; border:4px solid var(--rouge); background:rgba(0,0,0,0.45); padding:8px; }
   header.top h1{ font-size:1.55em; text-shadow:2px 2px 4px rgba(0,0,0,0.8); margin:12px auto 0; max-width:800px; line-height:1.3; }
@@ -41,6 +58,24 @@
   .c5-spark{ height:44px; margin:6px 0 2px; }
   .c5-source{ font-size:0.6em; color:#aaa; line-height:1.35; margin-top:4px; }
   .c5-source a{ color:#ddd; }
+
+  /* ---- PIB : mise en page graphique + pile ---- */
+  .pib-layout{ display:flex; gap:18px; align-items:stretch; margin-left:19px; }
+  .pib-chart-col{ flex:1 1 65%; margin-left:0; }
+  .pile-card{
+    flex:1 1 30%; min-width:220px; background:var(--panel); border:1px solid var(--line); border-top:3px solid var(--jaune);
+    border-radius:6px; padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  }
+  .pile-eyebrow{ text-transform:uppercase; font-size:0.66em; letter-spacing:0.06em; color:var(--jaune); margin-bottom:10px; }
+  .pile-scene{ position:relative; width:100%; height:110px; display:flex; align-items:flex-end; justify-content:center; gap:4px; }
+  .pile-worker{ font-size:1.8em; margin-right:6px; margin-bottom:2px; }
+  .pile-stack{ display:flex; flex-wrap:wrap-reverse; align-content:flex-start; gap:2px; width:90px; height:100%; align-items:flex-end; }
+  .pile-stone{ width:12px; height:12px; border-radius:50%; background:radial-gradient(circle at 30% 30%, #d8b978, #8a6a2a); flex-shrink:0; }
+  .pile-year{ font-size:1.3em; font-weight:bold; margin-top:10px; font-variant-numeric:tabular-nums; }
+  .pile-value{ font-size:1.6em; font-weight:bold; color:var(--jaune); font-variant-numeric:tabular-nums; }
+  .pile-value small{ font-size:0.5em; color:#ccc; font-weight:normal; }
+  .pile-caption{ font-size:0.72em; color:#ccc; margin-top:10px; line-height:1.4; }
+  @media (max-width:820px){ .pib-layout{ flex-direction:column; } .pib-chart-col{ margin-left:0; } }
 
   /* ---- graphiques principaux ---- */
   .chart-card{ background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px; }
@@ -78,6 +113,30 @@
 </style>
 </head>
 <body>
+
+<nav class="topnav">
+  <a href="index.html" class="nav-item" title="Accueil">
+    <img src="https://i.postimg.cc/tT0MFfbS/pcf43.png" alt="Accueil PCF 43">
+  </a>
+  <a href="analyse.html" class="nav-item" title="Élections">
+    <span class="nav-placeholder">🗳️</span>
+  </a>
+  <a href="securite.html" class="nav-item" title="Sécurité">
+    <span class="nav-placeholder">🛡️</span>
+  </a>
+  <a href="economie.html" class="nav-item active" title="Économie">
+    <span class="nav-placeholder">📊</span>
+  </a>
+  <a href="emploi.html" class="nav-item" title="Emploi">
+    <span class="nav-placeholder">💼</span>
+  </a>
+  <a href="immigration.html" class="nav-item" title="Immigration">
+    <span class="nav-placeholder">🧔</span>
+  </a>
+  <a href="extreme-droite.html" class="nav-item" title="Extrême droite">
+    <span class="nav-placeholder">⚠️</span>
+  </a>
+</nav>
 
 <header class="top">
   <img src="https://i.postimg.cc/tT0MFfbS/pcf43.png" alt="PCF 43" class="logo">
@@ -152,9 +211,26 @@
 <section style="padding-top:0;">
   <div class="wrap">
     <h2 class="section-title">Le PIB, en euros courants et en euros constants</h2>
-    <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année.</p>
-    <div class="chart-card"><div class="chart-box tall"><canvas id="chartPib"></canvas></div></div>
+    <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année. Les points marqués sur la courbe signalent des décisions monétaires qui ont gonflé la masse d'argent en circulation — survolez ou touchez un point pour en savoir plus, cliquez pour la source.</p>
+
+    <div class="pib-layout">
+      <div class="chart-card pib-chart-col"><div class="chart-box tall"><canvas id="chartPib"></canvas></div></div>
+
+      <div class="pile-card">
+        <div class="pile-eyebrow">La richesse s'accumule</div>
+        <div class="pile-scene">
+          <span class="pile-worker">👷</span>
+          <div class="pile-stack" id="pileStack"></div>
+        </div>
+        <div class="pile-year" id="pileYear">1950</div>
+        <div class="pile-value" id="pileValue">0 <small>Md€</small></div>
+        <div class="pile-caption">Chaque pierre = un peu plus de PIB produit dans l'année. Le tas grossit, mais qui en profite ?</div>
+      </div>
+    </div>
+
     <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a>. PIB annuel = somme des 4 trimestres.</p>
+    <p class="note alert">Points sur la courbe : <a href="https://fr.wikipedia.org/wiki/Choc_Nixon" target="_blank">1971, choc Nixon ↗</a> · <a href="https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" target="_blank">2008, refinancement illimité des banques par la BCE ↗</a> · <a href="https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" target="_blank">2015, premier programme de rachat de dette de la BCE ↗</a> · <a href="https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" target="_blank">2020, PEPP covid, 1 850 Md€ ↗</a>.</p>
+
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
@@ -294,17 +370,61 @@ window.addEventListener('DOMContentLoaded', async () => {
   miniCounter('numDeficit','sparkDeficit', DATA.extra.deficit_secu, ROUGE, 'Md€', 1);
   miniCounter('numUnedic','sparkUnedic', DATA.extra.unedic_dette, '#7fd67f', 'Md€', 1);
 
-  // ---- 1. PIB ----
-  new Chart(document.getElementById('chartPib'), {
+  // ---- 1. PIB, avec vignettes sur événements monétaires ----
+  const EVENEMENTS_MONETAIRES = {
+    1971: { titre:"Choc Nixon", texte:"Les États-Unis suspendent la convertibilité du dollar en or : fin du système de Bretton Woods, début des changes flottants.", lien:"https://fr.wikipedia.org/wiki/Choc_Nixon" },
+    2008: { titre:"Crise financière", texte:"À partir d'octobre 2008, la BCE prête aux banques à taux fixe et sans limite de montant (refinancement illimité), pour éviter l'effondrement du système bancaire.", lien:"https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" },
+    2015: { titre:"Premier \"quantitative easing\" de la BCE", texte:"Le 22 janvier 2015, la BCE lance son premier programme de rachat de dette publique et privée : 60 Md€/mois.", lien:"https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" },
+    2020: { titre:"PEPP — plan d'urgence Covid", texte:"Programme d'achats d'urgence de la BCE face à la pandémie : 750 Md€ en mars 2020, porté à 1 350 puis 1 850 Md€ en fin d'année.", lien:"https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" },
+  };
+  const anneesPib = DATA.pib_annuel.map(d=>d.annee);
+  const volumesPib = DATA.pib_annuel.map(d=>d.volume);
+  const pointsAnnotation = anneesPib.map(a => EVENEMENTS_MONETAIRES[a] ? 6 : 0);
+  const pointsCouleur = anneesPib.map(a => EVENEMENTS_MONETAIRES[a] ? ROUGE : 'transparent');
+
+  const chartPib = new Chart(document.getElementById('chartPib'), {
     type: 'line',
-    data: { labels: DATA.pib_annuel.map(d=>d.annee), datasets: [
+    data: { labels: anneesPib, datasets: [
       { label:'PIB en valeur (prix courants)', data: DATA.pib_annuel.map(d=>d.valeur), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
-      { label:'PIB en volume (prix constants, base 2020)', data: DATA.pib_annuel.map(d=>d.volume), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
+      { label:'PIB en volume (prix constants, base 2020)', data: volumesPib, borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, tension:0.15,
+        pointRadius: pointsAnnotation, pointHoverRadius: pointsAnnotation.map(r=>r?9:4), pointBackgroundColor: pointsCouleur, pointBorderColor: JAUNE, pointBorderWidth: 2 },
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
-      plugins:{legend:{position:'bottom', labels:{color:'#fff'}}},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'nearest', axis:'x', intersect:false},
+      onClick:(evt, elements) => {
+        if(!elements.length) return;
+        const idx = elements[0].index;
+        const annee = anneesPib[idx];
+        if(EVENEMENTS_MONETAIRES[annee]) window.open(EVENEMENTS_MONETAIRES[annee].lien, '_blank');
+      },
+      onHover:(evt, elements) => { evt.native.target.style.cursor = elements.some(e=>EVENEMENTS_MONETAIRES[anneesPib[e.index]]) ? 'pointer' : 'default'; },
+      plugins:{ legend:{position:'bottom', labels:{color:'#fff'}},
+        tooltip:{ callbacks:{ afterBody:(items) => {
+          const annee = anneesPib[items[0].dataIndex];
+          const ev = EVENEMENTS_MONETAIRES[annee];
+          return ev ? ['', '📌 ' + ev.titre, ev.texte, '(cliquer pour la source)'] : [];
+        } } } },
       scales:{ y:{ title:{display:true,text:"Milliards d'euros", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
   });
+
+  // ---- Encart animé : la richesse s'accumule ----
+  const pileStack = document.getElementById('pileStack');
+  const pileYear = document.getElementById('pileYear');
+  const pileValue = document.getElementById('pileValue');
+  const maxVolume = Math.max(...volumesPib);
+  let pileIdx = 0;
+  function renderPile(){
+    const d = DATA.pib_annuel[pileIdx];
+    pileYear.textContent = d.annee;
+    pileValue.innerHTML = fmt(d.volume,0) + ' <small>Md€</small>';
+    const nbPierres = Math.max(1, Math.round((d.volume / maxVolume) * 40));
+    if(pileStack.childElementCount !== nbPierres){
+      pileStack.innerHTML = '';
+      for(let i=0;i<nbPierres;i++){ const s=document.createElement('div'); s.className='pile-stone'; pileStack.appendChild(s); }
+    }
+    pileIdx = (pileIdx + 1) % DATA.pib_annuel.length;
+  }
+  renderPile();
+  setInterval(renderPile, 700);
 
   // ---- 2. International ----
   const toggleDiv = document.getElementById('intlToggle');
