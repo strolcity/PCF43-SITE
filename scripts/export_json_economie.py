@@ -117,6 +117,35 @@ def main():
             {"annee": a, "smic": s, "boeuf": b, "heures": round(h, 2)} for a, s, b, h in cur.fetchall()
         ]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='salaires_prix_indices'")
+    if cur.fetchone():
+        cur.execute("SELECT annee, smic_indice, prix_indice, salaire_median_indice FROM salaires_prix_indices ORDER BY annee")
+        extra["salaires_prix"] = [
+            {"annee": a, "smic": s, "prix": p, "salaire_median": sm} for a, s, p, sm in cur.fetchall()
+        ]
+
+    # ---- 4 branches de la protection sociale, en % du PIB (calculé, pas stocké en dur) ----
+    cur.execute("""
+        SELECT p.annee, p.sante_meuros, p.famille_meuros, p.emploi_meuros, pa.pib_valeur_mdeur_annuel
+        FROM protection_sociale p JOIN vue_pib_annuel pa ON pa.annee = p.annee
+        ORDER BY p.annee
+    """)
+    extra["secu_branches_pct_pib"] = [
+        {
+            "annee": a,
+            "sante": round(100 * (sante / 1000) / pib, 2),
+            "famille": round(100 * (famille / 1000) / pib, 2),
+            "chomage": round(100 * (emploi / 1000) / pib, 2),
+        }
+        for a, sante, famille, emploi, pib in cur.fetchall()
+    ]
+
+    # ---- Pauvreté vs IFI : personnes pauvres (France) vs foyers IFI (France) ----
+    extra["pauvrete_vs_ifi"] = {
+        "personnes_pauvres": {"annee": 2023, "valeur": 9800000, "unite": "personnes"},
+        "foyers_ifi": {"annee": 2025, "valeur": 193500, "unite": "foyers fiscaux"},
+    }
+
     data["extra"] = extra
 
     conn.close()

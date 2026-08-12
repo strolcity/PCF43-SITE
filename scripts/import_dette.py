@@ -101,6 +101,31 @@ def import_pouvoir_achat(cur):
         cur.execute("INSERT INTO smic_boeuf VALUES (?,?,?,?)", (int(annee), smic, boeuf, heures))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Salaires_Prix.xlsx (Smic / salaire médian / indice des prix)
+# ----------------------------------------------------------------------
+FICHIER_SALAIRES_PRIX = DOSSIER_ECONOMIE / "Data_Salaires_Prix.xlsx"
+
+
+def import_salaires_prix(cur):
+    if not FICHIER_SALAIRES_PRIX.exists():
+        print(f"  (ignoré : {FICHIER_SALAIRES_PRIX.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS salaires_prix_indices")
+    cur.execute("""
+        CREATE TABLE salaires_prix_indices (
+            annee INTEGER PRIMARY KEY,
+            smic_indice REAL,
+            prix_indice REAL,
+            salaire_median_indice REAL
+        )
+    """)
+    for annee, smic, prix, sal in lire_lignes(FICHIER_SALAIRES_PRIX, "Salaires_Prix_Indices"):
+        if not isinstance(annee, (int, float)):
+            continue
+        cur.execute("INSERT INTO salaires_prix_indices VALUES (?,?,?,?)", (int(annee), smic, prix, sal))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -112,6 +137,8 @@ def main():
     import_dette(cur)
     print("Import pouvoir d'achat (Smic/bœuf)...")
     import_pouvoir_achat(cur)
+    print("Import salaires/prix (indices)...")
+    import_salaires_prix(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

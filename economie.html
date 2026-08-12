@@ -275,16 +275,25 @@
 <section>
   <div class="wrap">
     <h2 class="section-title">Le financement de notre bien commun</h2>
-    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
+    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Quatre grandes branches en composent l'essentiel : la santé, la famille, le chômage et les retraites. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
     <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
     <div class="callout">
       <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
       <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
     </div>
-    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>.</p>
+    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>. La branche "chômage" correspond au risque "emploi" des comptes de la protection sociale (Unédic + dispositifs publics de l'emploi), pas uniquement à l'Unédic.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
+    </div>
+
+    <h3 class="sub-title">Salaires et prix : qui suit qui ?</h3>
+    <p class="section-dek">Smic, salaire médian et prix à la consommation, ramenés à une base commune (100 en 1990) pour comparer leurs évolutions plutôt que leurs niveaux, qui ne sont pas dans la même unité.</p>
+    <div class="chart-card"><div class="chart-box"><canvas id="chartSalairesPrix"></canvas></div></div>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Smic et indice des prix, Ministère du Travail/Insee ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/serie/010752396" target="_blank">Salaire médian, Insee ↗</a>. Toutes les séries sont en euros courants, non déflatées — c'est justement la comparaison avec l'indice des prix qui permet de juger de l'évolution réelle.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : qui a le mieux suivi l'inflation, ce que ça dit du partage de la valeur ajoutée, nos propositions...</p>
     </div>
   </div>
 </section>
@@ -293,13 +302,22 @@
 <section>
   <div class="wrap">
     <h2 class="section-title">Pauvreté et concentration des patrimoines</h2>
-    <p class="section-dek">La Haute-Loire est un peu moins pauvre que la moyenne nationale — mais avec un niveau de vie médian aussi un peu plus bas. Pendant ce temps, le nombre de hauts patrimoines progresse fortement à l'échelle nationale.</p>
+    <p class="section-dek">La Haute-Loire est un peu moins pauvre que la moyenne nationale — mais avec un niveau de vie médian aussi un peu plus bas. À l'échelle nationale, la pauvreté touche infiniment plus de monde que le haut du patrimoine ne compte de foyers.</p>
     <div class="compare-bars">
       <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — Haute-Loire</span><strong>12,4&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div></div>
       <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — France métropolitaine</span><strong>15,9&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill dim" style="width:100%"></div></div></div>
     </div>
-    <div class="chart-card" style="margin-top:22px;"><div class="chart-box"><canvas id="chartIfi"></canvas></div></div>
-    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ↗</a> ; <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière).</p>
+
+    <div class="pib-layout" style="margin-top:22px;">
+      <div class="chart-card pib-chart-col"><div class="chart-box"><canvas id="chartIfi"></canvas></div></div>
+      <div class="pile-card" style="justify-content:flex-start;">
+        <div class="pile-eyebrow">France entière, unités différentes</div>
+        <div class="chart-box" style="height:180px;"><canvas id="chartPauvreteIfi"></canvas></div>
+        <div class="pile-caption" style="margin-top:14px;">⚠️ À gauche : 9,8 millions de <strong>personnes</strong> pauvres (2023). À droite : 193 500 <strong>foyers fiscaux</strong> assujettis à l'IFI (2025). Deux unités différentes — comparaison d'échelle, pas un ratio direct.</div>
+      </div>
+    </div>
+
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/8600989" target="_blank">Insee Première n°2063, pauvreté 2023 ↗</a> ; <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière).</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : ce que ça dit des inégalités locales, nos propositions de fiscalité du patrimoine...</p>
@@ -482,12 +500,27 @@ window.addEventListener('DOMContentLoaded', async () => {
   // ---- 3. Financement Sécu ----
   new Chart(document.getElementById('chartSecu'), {
     data: { labels: DATA.secu_pct_pib.map(d=>d.annee), datasets: [
-      { type:'line', label:'Prestations sociales (% du PIB)', data: DATA.secu_pct_pib.map(d=>d.total), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'line', label:'dont retraites (% du PIB)', data: DATA.secu_pct_pib.map(d=>d.retraites), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'bar', label:'Exonérations de cotisations (% du PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.6)', yAxisID:'y' },
+      { type:'line', label:'Prestations sociales, total (% PIB)', data: DATA.secu_pct_pib.map(d=>d.total), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'line', label:'Retraites (% PIB)', data: DATA.secu_pct_pib.map(d=>d.retraites), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'line', label:'Santé (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.sante), borderColor:'#7fd67f', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'line', label:'Famille (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.famille), borderColor:'#b39ddb', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'line', label:'Chômage (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.chomage), borderColor:'#4fc3f7', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
+      { type:'bar', label:'Exonérations de cotisations (% PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.55)', yAxisID:'y' },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff', boxWidth:12, font:{size:10}}}},
+      scales:{ y:{ title:{display:true,text:'% du PIB', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ type:'linear', ticks:{stepSize:5, color:'#ccc'}, grid:{display:false} } } }
+  });
+
+  // ---- Salaires et prix (indices base 100) ----
+  new Chart(document.getElementById('chartSalairesPrix'), {
+    type: 'line',
+    data: { labels: DATA.extra.salaires_prix.map(d=>d.annee), datasets: [
+      { label:'Smic horaire brut', data: DATA.extra.salaires_prix.map(d=>d.smic), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
+      { label:'Salaire médian (secteur privé)', data: DATA.extra.salaires_prix.map(d=>d.salaire_median), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
+      { label:'Indice des prix à la consommation', data: DATA.extra.salaires_prix.map(d=>d.prix), borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2, borderDash:[5,4], pointRadius:0, tension:0.15 },
     ]},
     options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff'}}},
-      scales:{ y:{ title:{display:true,text:'% du PIB', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ type:'linear', ticks:{stepSize:5, color:'#ccc'}, grid:{display:false} } } }
+      scales:{ y:{ title:{display:true,text:'Indice, base 100 en 1990', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
   });
 
   // ---- 4. IFI ----
@@ -495,6 +528,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     type:'bar', data:{ labels: DATA.ifi.map(d=>d.annee), datasets:[{ label:"Foyers assujettis à l'IFI (France)", data: DATA.ifi.map(d=>d.redevables), backgroundColor:'rgba(255,235,59,0.55)', borderColor:JAUNE, borderWidth:1 }] },
     options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
       scales:{ y:{ title:{display:true,text:'Nombre de foyers', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
+  // ---- Pauvreté vs IFI (échelle logarithmique, unités différentes) ----
+  const pvi = DATA.extra.pauvrete_vs_ifi;
+  new Chart(document.getElementById('chartPauvreteIfi'), {
+    type:'bar',
+    data:{ labels:['Personnes pauvres\\n(' + pvi.personnes_pauvres.annee + ')', 'Foyers IFI\\n(' + pvi.foyers_ifi.annee + ')'],
+      datasets:[{ data:[pvi.personnes_pauvres.valeur, pvi.foyers_ifi.valeur], backgroundColor:[ROUGE, JAUNE] }] },
+    options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:(item) => item.raw.toLocaleString('fr-FR') + (item.dataIndex===0 ? ' personnes' : ' foyers') } } },
+      scales:{ x:{ type:'logarithmic', ticks:{color:'#ccc', callback:(v)=> [1e5,1e6,1e7].includes(v) ? v.toLocaleString('fr-FR') : null}, grid:{color:GRID} },
+        y:{ ticks:{color:'#ccc'}, grid:{display:false} } } }
   });
 });
 </script>
