@@ -77,6 +77,30 @@ def import_dette(cur):
         cur.execute("INSERT INTO dette_unedic VALUES (?,?,?)", (int(annee), val, mesure))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_PouvoirAchat.xlsx (Smic / prix du bœuf)
+# Regroupé dans ce même script pour éviter un fichier de plus à retenir.
+# ----------------------------------------------------------------------
+FICHIER_POUVOIR_ACHAT = DOSSIER_ECONOMIE / "Data_PouvoirAchat.xlsx"
+
+
+def import_pouvoir_achat(cur):
+    if not FICHIER_POUVOIR_ACHAT.exists():
+        print(f"  (ignoré : {FICHIER_POUVOIR_ACHAT.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS smic_boeuf")
+    cur.execute("""
+        CREATE TABLE smic_boeuf (
+            annee INTEGER PRIMARY KEY,
+            smic_horaire_brut_eur REAL,
+            prix_boeuf_filet_eur REAL,
+            heures_smic_necessaires REAL
+        )
+    """)
+    for annee, smic, boeuf, heures in lire_lignes(FICHIER_POUVOIR_ACHAT, "Smic_Boeuf"):
+        cur.execute("INSERT INTO smic_boeuf VALUES (?,?,?,?)", (int(annee), smic, boeuf, heures))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -86,6 +110,8 @@ def main():
     cur = conn.cursor()
     print("Import compteurs dette...")
     import_dette(cur)
+    print("Import pouvoir d'achat (Smic/bœuf)...")
+    import_pouvoir_achat(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

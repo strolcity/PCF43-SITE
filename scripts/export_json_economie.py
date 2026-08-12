@@ -107,6 +107,16 @@ def main():
     cur.execute("SELECT annee, total_prestations_pct_pib FROM vue_protection_sociale_pct_pib ORDER BY annee")
     extra["depenses_sociales_pct_pib"] = [{"annee": a, "v": round(v, 1)} for a, v in cur.fetchall()]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='smic_boeuf'")
+    if cur.fetchone():
+        cur.execute("""
+            SELECT annee, smic_horaire_brut_eur, prix_boeuf_filet_eur, heures_smic_necessaires
+            FROM smic_boeuf ORDER BY annee
+        """)
+        extra["smic_boeuf"] = [
+            {"annee": a, "smic": s, "boeuf": b, "heures": round(h, 2)} for a, s, b, h in cur.fetchall()
+        ]
+
     data["extra"] = extra
 
     conn.close()

@@ -76,6 +76,7 @@
   .pile-value small{ font-size:0.5em; color:#ccc; font-weight:normal; }
   .pile-caption{ font-size:0.72em; color:#ccc; margin-top:10px; line-height:1.4; }
   @media (max-width:820px){ .pib-layout{ flex-direction:column; } .pib-chart-col{ margin-left:0; } }
+  h3.sub-title{ font-size:1.05em; font-weight:normal; color:#f0f0f0; margin:36px 0 6px 19px; border-left:3px solid var(--jaune); padding-left:12px; }
 
   /* ---- graphiques principaux ---- */
   .chart-card{ background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px; }
@@ -234,6 +235,21 @@
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
+    </div>
+
+    <h3 class="sub-title">Le prix réel du travail : combien d'heures de Smic pour 1 kg de bœuf ?</h3>
+    <p class="section-dek">Le PIB grossit, mais qu'est-ce que ça change concrètement pour un salaire au Smic ? On a croisé nous-mêmes deux séries officielles Insee : le Smic horaire brut et le prix moyen du bœuf, depuis 1992.</p>
+    <div class="chart-card">
+      <div class="chart-box"><canvas id="chartPouvoirAchat"></canvas></div>
+    </div>
+    <div class="callout">
+      <div class="box"><div class="num">3h46</div><div class="lbl">le point le plus favorable, en 2005</div></div>
+      <div class="box brick"><div class="num">4h08</div><div class="lbl">en 2026 — presque revenu au niveau de 1992 (4h32)</div></div>
+    </div>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Ministère du Travail, Smic horaire brut ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442432" target="_blank">Insee, prix du bœuf (filet) ↗</a>. Calcul : prix du bœuf ÷ Smic horaire brut. Pas une dégradation continue : un creux en 2005, puis une remontée.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce creux en 2005 puis cette remontée, ce que ça dit du pouvoir d'achat réel, nos propositions...</p>
     </div>
   </div>
 </section>
@@ -425,6 +441,18 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   renderPile();
   setInterval(renderPile, 700);
+
+  // ---- Heures de Smic pour 1 kg de boeuf ----
+  new Chart(document.getElementById('chartPouvoirAchat'), {
+    type: 'line',
+    data: { labels: DATA.extra.smic_boeuf.map(d=>d.annee), datasets: [
+      { label:"Heures de Smic pour 1 kg de bœuf (filet)", data: DATA.extra.smic_boeuf.map(d=>d.heures),
+        borderColor: JAUNE, backgroundColor:'rgba(255,235,59,0.12)', fill:true, borderWidth:2, pointRadius:3, pointBackgroundColor: JAUNE, tension:0.2 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: (item) => item.parsed.y.toFixed(2) + ' heures' } } },
+      scales:{ y:{ title:{display:true,text:"Heures de travail au Smic", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
 
   // ---- 2. International ----
   const toggleDiv = document.getElementById('intlToggle');
