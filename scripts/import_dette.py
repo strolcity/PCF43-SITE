@@ -117,13 +117,15 @@ def import_salaires_prix(cur):
             annee INTEGER PRIMARY KEY,
             smic_indice REAL,
             prix_indice REAL,
-            salaire_median_indice REAL
+            salaire_median_indice REAL,
+            smic_eur_heure REAL,
+            salaire_median_eur_an REAL
         )
     """)
-    for annee, smic, prix, sal in lire_lignes(FICHIER_SALAIRES_PRIX, "Salaires_Prix_Indices"):
+    for annee, smic, prix, sal, smic_eur, sal_eur in lire_lignes(FICHIER_SALAIRES_PRIX, "Salaires_Prix_Indices"):
         if not isinstance(annee, (int, float)):
             continue
-        cur.execute("INSERT INTO salaires_prix_indices VALUES (?,?,?,?)", (int(annee), smic, prix, sal))
+        cur.execute("INSERT INTO salaires_prix_indices VALUES (?,?,?,?,?,?)", (int(annee), smic, prix, sal, smic_eur, sal_eur))
 
 
 def main():

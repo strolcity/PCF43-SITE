@@ -49,11 +49,13 @@ def main():
 
     # ---- Financement de la Sécu ----
     cur.execute("""
-        SELECT annee, total_prestations_pct_pib, retraites_pct_pib
+        SELECT annee, total_prestations_pct_pib, retraites_pct_pib, total_prestations_meuros, vieillesse_survie_meuros
         FROM vue_protection_sociale_pct_pib ORDER BY annee
     """)
     data["secu_pct_pib"] = [
-        {"annee": a, "total": round(t, 2), "retraites": round(r, 2)} for a, t, r in cur.fetchall()
+        {"annee": a, "total": round(t, 2), "retraites": round(r, 2),
+         "total_mdeur": round(tm/1000, 1), "retraites_mdeur": round(rm/1000, 1)}
+        for a, t, r, tm, rm in cur.fetchall()
     ]
 
     cur.execute("""
@@ -119,9 +121,13 @@ def main():
 
     cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='salaires_prix_indices'")
     if cur.fetchone():
-        cur.execute("SELECT annee, smic_indice, prix_indice, salaire_median_indice FROM salaires_prix_indices ORDER BY annee")
+        cur.execute("""
+            SELECT annee, smic_indice, prix_indice, salaire_median_indice, smic_eur_heure, salaire_median_eur_an
+            FROM salaires_prix_indices ORDER BY annee
+        """)
         extra["salaires_prix"] = [
-            {"annee": a, "smic": s, "prix": p, "salaire_median": sm} for a, s, p, sm in cur.fetchall()
+            {"annee": a, "smic": s, "prix": p, "salaire_median": sm, "smic_eur": se, "salaire_median_eur": sme}
+            for a, s, p, sm, se, sme in cur.fetchall()
         ]
 
     # ---- 4 branches de la protection sociale, en % du PIB (calculé, pas stocké en dur) ----
@@ -136,6 +142,9 @@ def main():
             "sante": round(100 * (sante / 1000) / pib, 2),
             "famille": round(100 * (famille / 1000) / pib, 2),
             "chomage": round(100 * (emploi / 1000) / pib, 2),
+            "sante_mdeur": round(sante/1000, 1),
+            "famille_mdeur": round(famille/1000, 1),
+            "chomage_mdeur": round(emploi/1000, 1),
         }
         for a, sante, famille, emploi, pib in cur.fetchall()
     ]

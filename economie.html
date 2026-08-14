@@ -288,8 +288,11 @@
     </div>
 
     <h3 class="sub-title">Salaires et prix : qui suit qui ?</h3>
-    <p class="section-dek">Smic, salaire médian et prix à la consommation, ramenés à une base commune (100 en 1990) pour comparer leurs évolutions plutôt que leurs niveaux, qui ne sont pas dans la même unité.</p>
-    <div class="chart-card"><div class="chart-box"><canvas id="chartSalairesPrix"></canvas></div></div>
+    <p class="section-dek">Smic, salaire médian et prix à la consommation. Par défaut en indice (base 100 en 1990) pour comparer les évolutions ; basculez en euros pour les montants réels — mais l'indice des prix n'a pas d'équivalent en euros, il disparaît donc de cette vue.</p>
+    <div class="chart-card">
+      <div class="legend-toggle"><label><input type="checkbox" id="toggleValeurSalaires"> Afficher en valeur (€) plutôt qu'en indice</label></div>
+      <div class="chart-box"><canvas id="chartSalairesPrix"></canvas></div>
+    </div>
     <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Smic et indice des prix, Ministère du Travail/Insee ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/serie/010752396" target="_blank">Salaire médian, Insee ↗</a>. Toutes les séries sont en euros courants, non déflatées — c'est justement la comparaison avec l'indice des prix qui permet de juger de l'évolution réelle.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
@@ -498,30 +501,73 @@ window.addEventListener('DOMContentLoaded', async () => {
   countries.forEach(c => document.getElementById('chk_'+c).addEventListener('change', () => { intlChart.data.datasets = buildIntlDatasets(); intlChart.update(); }));
 
   // ---- 3. Financement Sécu ----
+  // IMPORTANT : chaque série a une plage d'années différente (prestations 1959+, exonérations 2004+).
+  // En axe X linéaire, il faut donner des paires {x,y} explicites à CHAQUE dataset, sinon Chart.js
+  // aligne les séries par position dans le tableau (index 0 de chaque dataset ensemble) plutôt que par
+  // année réelle — c'est ce qui causait le décalage des exonérations sur les mauvaises années.
+  const secuMap = Object.fromEntries(DATA.secu_pct_pib.map(d=>[d.annee, d]));
+  const branchesMap = Object.fromEntries(DATA.extra.secu_branches_pct_pib.map(d=>[d.annee, d]));
+  const exoMap = Object.fromEntries(DATA.exonerations.map(d=>[d.annee, d]));
+
+  function xyPct(map, annees, cle){ return annees.map(a => map[a] ? {x:a, y:map[a][cle]} : {x:a, y:null}); }
+
   new Chart(document.getElementById('chartSecu'), {
-    data: { labels: DATA.secu_pct_pib.map(d=>d.annee), datasets: [
-      { type:'line', label:'Prestations sociales, total (% PIB)', data: DATA.secu_pct_pib.map(d=>d.total), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'line', label:'Retraites (% PIB)', data: DATA.secu_pct_pib.map(d=>d.retraites), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'line', label:'Santé (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.sante), borderColor:'#7fd67f', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'line', label:'Famille (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.famille), borderColor:'#b39ddb', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'line', label:'Chômage (% PIB)', data: DATA.extra.secu_branches_pct_pib.map(d=>d.chomage), borderColor:'#4fc3f7', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1 },
-      { type:'bar', label:'Exonérations de cotisations (% PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.55)', yAxisID:'y' },
+    data: { datasets: [
+      { type:'line', label:'Prestations sociales, total (% PIB)', data: xyPct(secuMap, anneesPib, 'total'), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1,
+        _mdeurKey:'total_mdeur', _map:secuMap },
+      { type:'line', label:'Retraites (% PIB)', data: xyPct(secuMap, anneesPib, 'retraites'), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, yAxisID:'y', tension:0.1,
+        _mdeurKey:'retraites_mdeur', _map:secuMap },
+      { type:'line', label:'Santé (% PIB)', data: xyPct(branchesMap, anneesPib, 'sante'), borderColor:'#7fd67f', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1,
+        _mdeurKey:'sante_mdeur', _map:branchesMap },
+      { type:'line', label:'Famille (% PIB)', data: xyPct(branchesMap, anneesPib, 'famille'), borderColor:'#b39ddb', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1,
+        _mdeurKey:'famille_mdeur', _map:branchesMap },
+      { type:'line', label:'Chômage (% PIB)', data: xyPct(branchesMap, anneesPib, 'chomage'), borderColor:'#4fc3f7', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1,
+        _mdeurKey:'chomage_mdeur', _map:branchesMap },
+      { type:'bar', label:'Exonérations de cotisations (% PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.55)', yAxisID:'y',
+        _mdeurKey:'total_meuros', _map:exoMap, _mdeurDivide:1000 },
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff', boxWidth:12, font:{size:10}}}},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{position:'bottom', labels:{color:'#fff', boxWidth:12, font:{size:10}}},
+        tooltip:{ callbacks:{ label: (item) => {
+          const ds = item.dataset;
+          const annee = item.parsed.x;
+          const row = ds._map[annee];
+          if(!row) return ds.label + ' : pas de donnée cette année';
+          const mdeur = ds._mdeurDivide ? row[ds._mdeurKey]/ds._mdeurDivide : row[ds._mdeurKey];
+          return `${ds.label} : ${item.parsed.y.toFixed(2)} % (${fmt(mdeur,1)} Md€)`;
+        } } } },
       scales:{ y:{ title:{display:true,text:'% du PIB', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ type:'linear', ticks:{stepSize:5, color:'#ccc'}, grid:{display:false} } } }
   });
 
-  // ---- Salaires et prix (indices base 100) ----
-  new Chart(document.getElementById('chartSalairesPrix'), {
-    type: 'line',
-    data: { labels: DATA.extra.salaires_prix.map(d=>d.annee), datasets: [
-      { label:'Smic horaire brut', data: DATA.extra.salaires_prix.map(d=>d.smic), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
-      { label:'Salaire médian (secteur privé)', data: DATA.extra.salaires_prix.map(d=>d.salaire_median), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
-      { label:'Indice des prix à la consommation', data: DATA.extra.salaires_prix.map(d=>d.prix), borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2, borderDash:[5,4], pointRadius:0, tension:0.15 },
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff'}}},
-      scales:{ y:{ title:{display:true,text:'Indice, base 100 en 1990', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
-  });
+  // ---- Salaires et prix : indice ou valeur en € (bouton bascule) ----
+  const anneesSP = DATA.extra.salaires_prix.map(d=>d.annee);
+  const toggleValeur = document.getElementById('toggleValeurSalaires');
+  let chartSalairesPrix;
+  function buildChartSalairesPrix(enValeur){
+    if(chartSalairesPrix) chartSalairesPrix.destroy();
+    const datasets = enValeur ? [
+      { label:'Smic horaire brut (€/h)', data: DATA.extra.salaires_prix.map(d=>d.smic_eur), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15, yAxisID:'y' },
+      { label:'Salaire médian annuel (€/an)', data: DATA.extra.salaires_prix.map(d=>d.salaire_median_eur), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15, yAxisID:'y1' },
+    ] : [
+      { label:'Smic horaire brut', data: DATA.extra.salaires_prix.map(d=>d.smic), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15, yAxisID:'y' },
+      { label:'Salaire médian (secteur privé)', data: DATA.extra.salaires_prix.map(d=>d.salaire_median), borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15, yAxisID:'y' },
+      { label:'Indice des prix à la consommation', data: DATA.extra.salaires_prix.map(d=>d.prix), borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2, borderDash:[5,4], pointRadius:0, tension:0.15, yAxisID:'y' },
+    ];
+    const scales = enValeur ? {
+      y: { position:'left', title:{display:true,text:'Smic (€/heure)', color:JAUNE}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+      y1: { position:'right', title:{display:true,text:'Salaire médian (€/an)', color:'#fff'}, grid:{display:false}, ticks:{color:'#ccc'} },
+      x: { grid:{display:false}, ticks:{color:'#ccc'} },
+    } : {
+      y: { title:{display:true,text:'Indice, base 100 en 1990', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+      x: { grid:{display:false}, ticks:{color:'#ccc'} },
+    };
+    chartSalairesPrix = new Chart(document.getElementById('chartSalairesPrix'), {
+      type:'line', data:{ labels: anneesSP, datasets },
+      options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false}, plugins:{legend:{position:'bottom', labels:{color:'#fff'}}}, scales }
+    });
+  }
+  buildChartSalairesPrix(false);
+  toggleValeur.addEventListener('change', () => buildChartSalairesPrix(toggleValeur.checked));
 
   // ---- 4. IFI ----
   new Chart(document.getElementById('chartIfi'), {
@@ -530,16 +576,16 @@ window.addEventListener('DOMContentLoaded', async () => {
       scales:{ y:{ title:{display:true,text:'Nombre de foyers', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
   });
 
-  // ---- Pauvreté vs IFI (échelle logarithmique, unités différentes) ----
+  // ---- Pauvreté vs IFI (colonnes verticales, échelle logarithmique car unités différentes) ----
   const pvi = DATA.extra.pauvrete_vs_ifi;
   new Chart(document.getElementById('chartPauvreteIfi'), {
     type:'bar',
-    data:{ labels:['Personnes pauvres\\n(' + pvi.personnes_pauvres.annee + ')', 'Foyers IFI\\n(' + pvi.foyers_ifi.annee + ')'],
+    data:{ labels:['Personnes pauvres (' + pvi.personnes_pauvres.annee + ')', 'Foyers IFI (' + pvi.foyers_ifi.annee + ')'],
       datasets:[{ data:[pvi.personnes_pauvres.valeur, pvi.foyers_ifi.valeur], backgroundColor:[ROUGE, JAUNE] }] },
-    options:{ responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
         tooltip:{ callbacks:{ label:(item) => item.raw.toLocaleString('fr-FR') + (item.dataIndex===0 ? ' personnes' : ' foyers') } } },
-      scales:{ x:{ type:'logarithmic', ticks:{color:'#ccc', callback:(v)=> [1e5,1e6,1e7].includes(v) ? v.toLocaleString('fr-FR') : null}, grid:{color:GRID} },
-        y:{ ticks:{color:'#ccc'}, grid:{display:false} } } }
+      scales:{ y:{ type:'logarithmic', title:{display:true,text:'Échelle logarithmique', color:'#ccc'}, ticks:{color:'#ccc', callback:(v)=> [1e5,1e6,1e7].includes(v) ? v.toLocaleString('fr-FR') : null}, grid:{color:GRID} },
+        x:{ ticks:{color:'#ccc', font:{size:10}}, grid:{display:false} } } }
   });
 });
 </script>
