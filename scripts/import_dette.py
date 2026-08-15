@@ -128,6 +128,41 @@ def import_salaires_prix(cur):
         cur.execute("INSERT INTO salaires_prix_indices VALUES (?,?,?,?,?,?)", (int(annee), smic, prix, sal, smic_eur, sal_eur))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Capital_Travail.xlsx (taux de marge / dividendes vs FBCF)
+# ----------------------------------------------------------------------
+FICHIER_CAPITAL_TRAVAIL = DOSSIER_ECONOMIE / "Data_Capital_Travail.xlsx"
+
+
+def import_capital_travail(cur):
+    if not FICHIER_CAPITAL_TRAVAIL.exists():
+        print(f"  (ignoré : {FICHIER_CAPITAL_TRAVAIL.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS partage_capital_travail")
+    cur.execute("""
+        CREATE TABLE partage_capital_travail (
+            annee INTEGER PRIMARY KEY,
+            taux_marge_pct REAL,
+            part_salariale_pct REAL
+        )
+    """)
+    for annee, tm, ps in lire_lignes(FICHIER_CAPITAL_TRAVAIL, "Partage_Capital_Travail"):
+        cur.execute("INSERT INTO partage_capital_travail VALUES (?,?,?)", (int(annee), tm, ps))
+
+    cur.execute("DROP TABLE IF EXISTS dividendes_investissement")
+    cur.execute("""
+        CREATE TABLE dividendes_investissement (
+            annee INTEGER PRIMARY KEY,
+            dividendes_mdeur REAL,
+            fbcf_mdeur REAL,
+            dividendes_indice REAL,
+            fbcf_indice REAL
+        )
+    """)
+    for annee, div, fbcf, di, fi in lire_lignes(FICHIER_CAPITAL_TRAVAIL, "Dividendes_Investissement"):
+        cur.execute("INSERT INTO dividendes_investissement VALUES (?,?,?,?,?)", (int(annee), div, fbcf, di, fi))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -141,6 +176,8 @@ def main():
     import_pouvoir_achat(cur)
     print("Import salaires/prix (indices)...")
     import_salaires_prix(cur)
+    print("Import capital/travail...")
+    import_capital_travail(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

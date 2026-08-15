@@ -130,6 +130,24 @@ def main():
             for a, s, p, sm, se, sme in cur.fetchall()
         ]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='partage_capital_travail'")
+    if cur.fetchone():
+        cur.execute("SELECT annee, taux_marge_pct, part_salariale_pct FROM partage_capital_travail ORDER BY annee")
+        extra["partage_capital_travail"] = [
+            {"annee": a, "taux_marge": tm, "part_salariale": ps} for a, tm, ps in cur.fetchall()
+        ]
+
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dividendes_investissement'")
+    if cur.fetchone():
+        cur.execute("""
+            SELECT annee, dividendes_mdeur, fbcf_mdeur, dividendes_indice, fbcf_indice
+            FROM dividendes_investissement ORDER BY annee
+        """)
+        extra["dividendes_investissement"] = [
+            {"annee": a, "dividendes": d, "fbcf": f, "dividendes_indice": di, "fbcf_indice": fi}
+            for a, d, f, di, fi in cur.fetchall()
+        ]
+
     # ---- 4 branches de la protection sociale, en % du PIB (calculé, pas stocké en dur) ----
     cur.execute("""
         SELECT p.annee, p.sante_meuros, p.famille_meuros, p.emploi_meuros, pa.pib_valeur_mdeur_annuel

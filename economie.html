@@ -78,6 +78,31 @@
   @media (max-width:820px){ .pib-layout{ flex-direction:column; } .pib-chart-col{ margin-left:0; } }
   h3.sub-title{ font-size:1.05em; font-weight:normal; color:#f0f0f0; margin:36px 0 6px 19px; border-left:3px solid var(--jaune); padding-left:12px; }
 
+  /* ---- calculette pouvoir d'achat ---- */
+  .calc-card{ margin-left:19px; }
+  .calc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px 20px; }
+  @media (max-width:560px){ .calc-grid{ grid-template-columns:1fr; } }
+  .calc-field label{ display:block; font-size:0.78em; color:#ccc; margin-bottom:5px; }
+  .calc-field select, .calc-field input{
+    width:100%; padding:9px 10px; border-radius:4px; border:1px solid var(--line);
+    background:rgba(255,255,255,0.08); color:#fff; font-family:Arial, sans-serif; font-size:0.95em;
+  }
+  .calc-field input::placeholder{ color:#888; }
+  .calc-bouton{
+    margin-top:20px; padding:11px 22px; background:var(--jaune); color:#1a1a1a; font-weight:bold;
+    border:none; border-radius:4px; cursor:pointer; font-family:Arial, sans-serif; font-size:0.95em;
+  }
+  .calc-bouton:hover{ background:#ffd54f; }
+  .calc-resultat{
+    margin-top:22px; padding:18px 20px; background:rgba(255,255,255,0.07); border-radius:6px; border-left:4px solid var(--jaune);
+  }
+  .calc-resultat .calc-ligne{ display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.92em; }
+  .calc-resultat .calc-ligne:last-child{ border-bottom:none; }
+  .calc-resultat .calc-ligne strong{ font-variant-numeric:tabular-nums; }
+  .calc-resultat .calc-verdict{ margin-top:14px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.15); font-size:1.05em; }
+  .calc-positif{ color:#7fd67f; }
+  .calc-negatif{ color:var(--rouge); }
+
   /* ---- graphiques principaux ---- */
   .chart-card{ background:var(--panel-soft); border:1px solid var(--line); border-radius:6px; padding:20px; margin-left:19px; }
   .chart-box{ position:relative; height:320px; }
@@ -254,6 +279,30 @@
   </div>
 </section>
 
+<!-- 1bis. Capital / Travail -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Qui reçoit la richesse produite ?</h2>
+    <p class="section-dek">Chaque année, la valeur ajoutée par les entreprises se partage entre les salaires versés aux travailleurs et l'excédent brut d'exploitation (EBE), qui sert aux entreprises à investir, rembourser leurs dettes, ou verser des dividendes.</p>
+    <div class="chart-card"><div class="chart-box"><canvas id="chartPartage"></canvas></div></div>
+    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/8574689" target="_blank">Insee, comptes nationaux annuels, tableau 7.101 (sociétés non financières) ↗</a>. Taux de marge = EBE / valeur ajoutée. Part salariale = rémunération des salariés / valeur ajoutée.</p>
+
+    <h3 class="sub-title">La financiarisation en un graphique : où va l'argent de l'EBE ?</h3>
+    <p class="section-dek">Une partie de l'EBE sert à investir réellement (machines, locaux, outils) — c'est la FBCF. Une autre part est reversée aux actionnaires en dividendes. Depuis 1993, les deux ont progressé, mais pas au même rythme.</p>
+    <div class="chart-card"><div class="chart-box"><canvas id="chartFinanciarisation"></canvas></div></div>
+    <div class="callout">
+      <div class="box brick"><div class="num">x6</div><div class="lbl">les dividendes versés ont été multipliés par 6 depuis 1993</div></div>
+      <div class="box"><div class="num">x3</div><div class="lbl">l'investissement productif (FBCF), lui, n'a que triplé sur la même période</div></div>
+    </div>
+    <p class="note alert">Source : <a href="https://www.insee.fr/fr/statistiques/8574689" target="_blank">Insee, comptes nationaux annuels, tableau 7.101 ↗</a>. Indices base 100 en 1993 (première année disponible pour les dividendes dans cette série).</p>
+
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : ce que dit ce partage sur qui profite de la croissance, notre position sur la fiscalité des dividendes, nos propositions...</p>
+    </div>
+  </div>
+</section>
+
 <!-- 2. International -->
 <section>
   <div class="wrap">
@@ -297,6 +346,32 @@
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : qui a le mieux suivi l'inflation, ce que ça dit du partage de la valeur ajoutée, nos propositions...</p>
+    </div>
+
+    <h3 class="sub-title">Votre calculette de pouvoir d'achat</h3>
+    <p class="section-dek">Vous avez doublé votre salaire depuis vos débuts ? Ça ne veut pas forcément dire que vous vous êtes enrichi. Entrez vos deux salaires pour voir votre vraie progression, une fois l'inflation retirée — et où vous vous situez.</p>
+    <div class="chart-card calc-card">
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label for="calcAnneeDebut">Année de début</label>
+          <select id="calcAnneeDebut"></select>
+        </div>
+        <div class="calc-field">
+          <label for="calcSalaireDebut">Salaire net mensuel de l'époque (€)</label>
+          <input type="number" id="calcSalaireDebut" placeholder="ex : 1200" min="0">
+        </div>
+        <div class="calc-field">
+          <label for="calcAnneeFin">Année actuelle</label>
+          <select id="calcAnneeFin"></select>
+        </div>
+        <div class="calc-field">
+          <label for="calcSalaireFin">Salaire net mensuel actuel (€)</label>
+          <input type="number" id="calcSalaireFin" placeholder="ex : 2400" min="0">
+        </div>
+      </div>
+      <button id="calcBouton" class="calc-bouton">Calculer ma vraie progression</button>
+      <div id="calcResultat" class="calc-resultat" style="display:none;"></div>
+      <p class="note" style="margin-left:0;">Calcul à partir de vos données Smic/salaire médian/prix (1990-2024). Comparaison au salaire médian net annuel des postes à temps complet du secteur privé (Insee) — votre situation personnelle (temps partiel, primes, statut) peut faire varier la lecture.</p>
     </div>
   </div>
 </section>
@@ -463,6 +538,35 @@ window.addEventListener('DOMContentLoaded', async () => {
   renderPile();
   setInterval(renderPile, 700);
 
+  // ---- Partage capital / travail ----
+  new Chart(document.getElementById('chartPartage'), {
+    type: 'line',
+    data: { labels: DATA.extra.partage_capital_travail.map(d=>d.annee), datasets: [
+      { label:'Part salariale (% de la valeur ajoutée)', data: DATA.extra.partage_capital_travail.map(d=>d.part_salariale), borderColor: BLANC, backgroundColor:'rgba(255,255,255,0.06)', fill:true, borderWidth:2, pointRadius:0, tension:0.15 },
+      { label:"Taux de marge / EBE (% de la valeur ajoutée)", data: DATA.extra.partage_capital_travail.map(d=>d.taux_marge), borderColor: JAUNE, backgroundColor:'rgba(255,235,59,0.10)', fill:true, borderWidth:2, pointRadius:0, tension:0.15 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom', labels:{color:'#fff'}}, tooltip:{callbacks:{label:(item)=> item.dataset.label+' : '+item.parsed.y.toFixed(1)+' %'}}},
+      scales:{ y:{ title:{display:true,text:'% de la valeur ajoutée', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
+  // ---- Financiarisation : dividendes vs FBCF ----
+  new Chart(document.getElementById('chartFinanciarisation'), {
+    type: 'line',
+    data: { labels: DATA.extra.dividendes_investissement.map(d=>d.annee), datasets: [
+      { label:'Dividendes versés', data: DATA.extra.dividendes_investissement.map(d=>d.dividendes_indice), borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.15 },
+      { label:'Investissement productif (FBCF)', data: DATA.extra.dividendes_investissement.map(d=>d.fbcf_indice), borderColor: '#7fd67f', backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.15 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom', labels:{color:'#fff'}},
+        tooltip:{callbacks:{label:(item)=>{
+          const row = DATA.extra.dividendes_investissement[item.dataIndex];
+          const mdeur = item.datasetIndex===0 ? row.dividendes : row.fbcf;
+          return `${item.dataset.label} : indice ${item.parsed.y.toFixed(0)} (${fmt(mdeur,1)} Md€)`;
+        }}} },
+      scales:{ y:{ title:{display:true,text:"Indice, base 100 en 1993", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
   // ---- Heures de Smic pour 1 kg de boeuf ----
   new Chart(document.getElementById('chartPouvoirAchat'), {
     type: 'line',
@@ -568,6 +672,59 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   buildChartSalairesPrix(false);
   toggleValeur.addEventListener('change', () => buildChartSalairesPrix(toggleValeur.checked));
+
+  // ---- Calculette de pouvoir d'achat ----
+  const spMap = Object.fromEntries(DATA.extra.salaires_prix.map(d=>[d.annee, d]));
+  const anneesDispo = DATA.extra.salaires_prix.map(d=>d.annee);
+  const selDebut = document.getElementById('calcAnneeDebut');
+  const selFin = document.getElementById('calcAnneeFin');
+  anneesDispo.forEach(a => {
+    selDebut.innerHTML += `<option value="${a}" ${a===anneesDispo[0]?'selected':''}>${a}</option>`;
+    selFin.innerHTML += `<option value="${a}" ${a===anneesDispo[anneesDispo.length-1]?'selected':''}>${a}</option>`;
+  });
+
+  document.getElementById('calcBouton').addEventListener('click', () => {
+    const aDebut = parseInt(selDebut.value), aFin = parseInt(selFin.value);
+    const sDebut = parseFloat(document.getElementById('calcSalaireDebut').value);
+    const sFin = parseFloat(document.getElementById('calcSalaireFin').value);
+    const resDiv = document.getElementById('calcResultat');
+    if(!sDebut || !sFin || sDebut<=0 || sFin<=0){
+      resDiv.style.display='block';
+      resDiv.innerHTML = '<div class="calc-ligne">Merci de renseigner les deux salaires.</div>';
+      return;
+    }
+    if(aFin <= aDebut){
+      resDiv.style.display='block';
+      resDiv.innerHTML = "<div class=\"calc-ligne\">L'année de fin doit être après l'année de début.</div>";
+      return;
+    }
+    const rowDebut = spMap[aDebut], rowFin = spMap[aFin];
+    const progressionNominale = (sFin/sDebut - 1) * 100;
+    const inflationPeriode = (rowFin.prix/rowDebut.prix - 1) * 100;
+    const progressionReelle = ((sFin/sDebut) / (rowFin.prix/rowDebut.prix) - 1) * 100;
+    const progressionSmic = (rowFin.smic/rowDebut.smic - 1) * 100;
+    const progressionMedian = (rowFin.salaire_median/rowDebut.salaire_median - 1) * 100;
+    const salaireFinAnnuel = sFin * 12;
+    const medianFinAnnuel = rowFin.salaire_median_eur;
+    const ecartMedian = (salaireFinAnnuel/medianFinAnnuel - 1) * 100;
+
+    const cls = (v) => v >= 0 ? 'calc-positif' : 'calc-negatif';
+    const sign = (v) => v >= 0 ? '+' : '';
+
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = `
+      <div class="calc-ligne"><span>Progression nominale de votre salaire (${aDebut}→${aFin})</span><strong>${sign(progressionNominale)}${progressionNominale.toFixed(0)} %</strong></div>
+      <div class="calc-ligne"><span>Inflation sur la même période</span><strong>${sign(inflationPeriode)}${inflationPeriode.toFixed(0)} %</strong></div>
+      <div class="calc-ligne"><span>Le Smic, sur la même période</span><strong>${sign(progressionSmic)}${progressionSmic.toFixed(0)} %</strong></div>
+      <div class="calc-ligne"><span>Le salaire médian, sur la même période</span><strong>${sign(progressionMedian)}${progressionMedian.toFixed(0)} %</strong></div>
+      <div class="calc-ligne"><span>Votre salaire ${aFin} vs le salaire médian ${aFin}</span><strong class="${cls(ecartMedian)}">${sign(ecartMedian)}${ecartMedian.toFixed(0)} %</strong></div>
+      <div class="calc-verdict ${cls(progressionReelle)}">
+        ${progressionReelle >= 0
+          ? `Votre pouvoir d'achat réel a progressé de ${progressionReelle.toFixed(0)} % — vous vous êtes réellement enrichi, au-delà de l'inflation.`
+          : `Votre pouvoir d'achat réel a reculé de ${Math.abs(progressionReelle).toFixed(0)} % — malgré la hausse de votre salaire affiché, vous pouvez vous offrir moins qu'avant.`}
+      </div>
+    `;
+  });
 
   // ---- 4. IFI ----
   new Chart(document.getElementById('chartIfi'), {
