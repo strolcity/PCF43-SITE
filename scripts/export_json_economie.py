@@ -159,6 +159,13 @@ def main():
             for t, o, a, p, pr, ap, tx in cur.fetchall()
         ]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='vignette_salaires'")
+    if cur.fetchone():
+        cur.execute("SELECT repere, montant_eur_mois, type, ordre FROM vignette_salaires ORDER BY ordre")
+        extra["vignette_salaires"] = [
+            {"repere": r, "montant": m, "type": t} for r, m, t, o in cur.fetchall()
+        ]
+
     # ---- 4 branches de la protection sociale, en % du PIB (calculé, pas stocké en dur) ----
     cur.execute("""
         SELECT p.annee, p.sante_meuros, p.famille_meuros, p.emploi_meuros, pa.pib_valeur_mdeur_annuel

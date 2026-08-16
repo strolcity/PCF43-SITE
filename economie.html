@@ -326,6 +326,11 @@
     <h2 class="section-title">Le financement de notre bien commun</h2>
     <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Quatre grandes branches en composent l'essentiel : la santé, la famille, le chômage et les retraites. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
     <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
+
+    <h3 class="sub-title">Qui touche ce salaire, exactement ?</h3>
+    <p class="section-dek">La réduction générale de cotisations patronales (notre "niche à 80 Md€") s'éteint à 1,6 Smic. Placé sur l'échelle des salaires, ce seuil tombe... juste au-dessus du salaire médian. Ça éclaire une question simple : qui profite vraiment de cette exonération, et qui reste-t-il au-dessus pour financer le reste ?</p>
+    <div class="chart-card"><div class="chart-box" style="height:200px;"><canvas id="chartVignetteSalaires"></canvas></div></div>
+    <p class="note alert">Le seuil fiscal (en rouge) est une estimation : il est fixé officiellement en Smic BRUT (1,6 Smic, 2 883 €/mois brut en 2025), converti ici en net à titre indicatif pour la comparaison — ce n'est pas un chiffre officiel. À partir de 2026, ce seuil passe à 3 Smic (réforme motivée par la lutte contre la "smicardisation", rapport Bozio-Wasmer). Source : <a href="https://www.insee.fr/fr/statistiques/8657156" target="_blank">Insee, Les salaires dans le secteur privé en 2024 ↗</a>.</p>
     <div class="callout">
       <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
       <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
@@ -583,6 +588,27 @@ window.addEventListener('DOMContentLoaded', async () => {
           return `${item.dataset.label} : indice ${item.parsed.y.toFixed(0)} (${fmt(mdeur,1)} Md€)`;
         }}} },
       scales:{ y:{ title:{display:true,text:"Indice, base 100 en 1993", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
+  // ---- Vignette : où se situe le Smic, le seuil fiscal, le salaire médian et moyen ----
+  new Chart(document.getElementById('chartVignetteSalaires'), {
+    type: 'bar',
+    data: {
+      labels: DATA.extra.vignette_salaires.map(d=>d.repere),
+      datasets: [{
+        data: DATA.extra.vignette_salaires.map(d=>d.montant),
+        backgroundColor: DATA.extra.vignette_salaires.map(d=> d.type==='Seuil fiscal' ? ROUGE : JAUNE),
+      }]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{ legend:{display:false},
+        tooltip:{ callbacks:{ label:(item) => item.raw.toLocaleString('fr-FR') + ' € / mois' } } },
+      scales:{
+        x:{ title:{display:true,text:'€ nets par mois (EQTP)', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+        y:{ ticks:{color:'#ccc', font:{size:10}}, grid:{display:false} }
+      }
+    }
   });
 
   // ---- Redistribution : avant/après, par tranche ----

@@ -192,6 +192,31 @@ def import_redistribution(cur):
                      (tranche, int(ordre), avant, prel, prest, apres, taux))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Vignette_Salaires.xlsx (repères Smic/médian/moyen/seuil)
+# ----------------------------------------------------------------------
+FICHIER_VIGNETTE_SALAIRES = DOSSIER_ECONOMIE / "Data_Vignette_Salaires.xlsx"
+
+
+def import_vignette_salaires(cur):
+    if not FICHIER_VIGNETTE_SALAIRES.exists():
+        print(f"  (ignoré : {FICHIER_VIGNETTE_SALAIRES.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS vignette_salaires")
+    cur.execute("""
+        CREATE TABLE vignette_salaires (
+            repere TEXT,
+            montant_eur_mois REAL,
+            type TEXT,
+            ordre INTEGER PRIMARY KEY
+        )
+    """)
+    for repere, montant, typ, ordre in lire_lignes(FICHIER_VIGNETTE_SALAIRES, "Vignette_Salaires"):
+        if not isinstance(ordre, (int, float)):
+            continue
+        cur.execute("INSERT INTO vignette_salaires VALUES (?,?,?,?)", (repere, montant, typ, int(ordre)))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -209,6 +234,8 @@ def main():
     import_capital_travail(cur)
     print("Import redistribution 2024...")
     import_redistribution(cur)
+    print("Import vignette salaires...")
+    import_vignette_salaires(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")
