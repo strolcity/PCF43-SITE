@@ -163,6 +163,35 @@ def import_capital_travail(cur):
         cur.execute("INSERT INTO dividendes_investissement VALUES (?,?,?,?,?)", (int(annee), div, fbcf, di, fi))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Redistribution.xlsx (niveau de vie avant/après, par tranche)
+# ----------------------------------------------------------------------
+FICHIER_REDISTRIBUTION = DOSSIER_ECONOMIE / "Data_Redistribution.xlsx"
+
+
+def import_redistribution(cur):
+    if not FICHIER_REDISTRIBUTION.exists():
+        print(f"  (ignoré : {FICHIER_REDISTRIBUTION.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS redistribution_2024")
+    cur.execute("""
+        CREATE TABLE redistribution_2024 (
+            tranche TEXT,
+            ordre INTEGER PRIMARY KEY,
+            niveau_vie_avant_eur REAL,
+            prelevements_eur REAL,
+            prestations_eur REAL,
+            niveau_vie_apres_eur REAL,
+            taux_redistribution_pct REAL
+        )
+    """)
+    for tranche, ordre, avant, prel, prest, apres, taux in lire_lignes(FICHIER_REDISTRIBUTION, "Redistribution_2024"):
+        if not isinstance(ordre, (int, float)):
+            continue  # ignore la ligne de note en bas de la feuille
+        cur.execute("INSERT INTO redistribution_2024 VALUES (?,?,?,?,?,?,?)",
+                     (tranche, int(ordre), avant, prel, prest, apres, taux))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -178,6 +207,8 @@ def main():
     import_salaires_prix(cur)
     print("Import capital/travail...")
     import_capital_travail(cur)
+    print("Import redistribution 2024...")
+    import_redistribution(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

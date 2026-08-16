@@ -376,6 +376,24 @@
   </div>
 </section>
 
+<!-- 3bis. Redistribution -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Ce que la solidarité redonne</h2>
+    <p class="section-dek">"L'assistanat" : un mot qu'on entend beaucoup. Les chiffres officiels racontent autre chose — un système où presque tout le monde cotise, et où la redistribution profite d'abord à ceux qui ont le moins, pas par charité, mais parce que c'est justement l'objet du système.</p>
+    <div class="chart-card"><div class="chart-box tall"><canvas id="chartRedistribution"></canvas></div></div>
+    <div class="callout">
+      <div class="box"><div class="num">+154&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus modestes après redistribution (4 710 € → 11 960 €/an)</div></div>
+      <div class="box brick"><div class="num">-25&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus aisés après redistribution (99 300 € → 74 410 €/an)</div></div>
+    </div>
+    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/8612544?sommaire=8612596" target="_blank">Insee Références, France portrait social, édition 2025 (fiche Redistribution monétaire) ↗</a>. Ne couvre que la redistribution monétaire (prestations familiales, logement, minima sociaux, prime d'activité, impôt sur le revenu, IFI) — hors retraites et chômage, considérés comme des revenus de remplacement, pas de la redistribution.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce n'est pas de "l'assistanat" mais un système auquel tout le monde contribue selon ses moyens, nos propositions...</p>
+    </div>
+  </div>
+</section>
+
 <!-- 4. Pauvreté / IFI -->
 <section>
   <div class="wrap">
@@ -565,6 +583,28 @@ window.addEventListener('DOMContentLoaded', async () => {
           return `${item.dataset.label} : indice ${item.parsed.y.toFixed(0)} (${fmt(mdeur,1)} Md€)`;
         }}} },
       scales:{ y:{ title:{display:true,text:"Indice, base 100 en 1993", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+
+  // ---- Redistribution : avant/après, par tranche ----
+  const redis = DATA.extra.redistribution_2024;
+  new Chart(document.getElementById('chartRedistribution'), {
+    type:'bar',
+    data:{ labels: redis.map(d=>d.tranche), datasets:[
+      { label:'Niveau de vie avant redistribution', data: redis.map(d=>d.avant), backgroundColor:'rgba(255,255,255,0.35)' },
+      { label:'Niveau de vie après redistribution', data: redis.map(d=>d.apres), backgroundColor: (ctx) => {
+          const v = redis[ctx.dataIndex] ? redis[ctx.dataIndex].taux : 0;
+          return v >= 0 ? 'rgba(127,214,127,0.75)' : 'rgba(211,47,47,0.65)';
+        } },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{position:'bottom', labels:{color:'#fff'}},
+        tooltip:{ callbacks:{ afterBody:(items) => {
+          const row = redis[items[0].dataIndex];
+          const sign = row.taux>=0 ? '+' : '';
+          return [`Variation : ${sign}${row.taux.toFixed(1)} %`, `dont prélèvements : ${row.prelevements.toLocaleString('fr-FR')} €`, `dont prestations : +${row.prestations.toLocaleString('fr-FR')} €`];
+        } } } },
+      scales:{ y:{ title:{display:true,text:'€ par unité de consommation / an', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+        x:{ ticks:{color:'#ccc', font:{size:9}}, grid:{display:false} } } }
   });
 
   // ---- Heures de Smic pour 1 kg de boeuf ----

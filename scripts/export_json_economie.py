@@ -148,6 +148,17 @@ def main():
             for a, d, f, di, fi in cur.fetchall()
         ]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='redistribution_2024'")
+    if cur.fetchone():
+        cur.execute("""
+            SELECT tranche, ordre, niveau_vie_avant_eur, prelevements_eur, prestations_eur, niveau_vie_apres_eur, taux_redistribution_pct
+            FROM redistribution_2024 ORDER BY ordre
+        """)
+        extra["redistribution_2024"] = [
+            {"tranche": t, "avant": a, "prelevements": p, "prestations": pr, "apres": ap, "taux": tx}
+            for t, o, a, p, pr, ap, tx in cur.fetchall()
+        ]
+
     # ---- 4 branches de la protection sociale, en % du PIB (calculé, pas stocké en dur) ----
     cur.execute("""
         SELECT p.annee, p.sante_meuros, p.famille_meuros, p.emploi_meuros, pa.pib_valeur_mdeur_annuel
