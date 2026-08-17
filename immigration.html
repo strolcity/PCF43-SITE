@@ -309,6 +309,63 @@
 .gollum-trigger:hover + .gollum-image {
     display: block;
 }
+/* Style pour le conteneur de l'image Zombis */
+.zombis-container {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+}
+
+/* Style pour l'image Zombis */
+.zombis-image {
+    max-width: 200px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.zombis-image:hover {
+    transform: scale(1.05);
+}
+
+/* Style pour le pop-up */
+.zombis-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+/* Style pour le contenu du pop-up */
+.zombis-popup-content {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Style pour les punchlines */
+.zombis-popup-content p {
+    margin: 10px 0;
+}
+
+/* Style pour le bouton de fermeture */
+.zombis-popup-close {
+    color: #ff5555;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: right;
+    display: block;
+}
 </style>
 </head>
 <body>
@@ -491,6 +548,57 @@
                 <p><strong>L’identité française ? C’est comme une soupe : plus on y met d’ingrédients, meilleur c’est.</strong></p>
                 <p><strong>Les migrants volent nos emplois ? Non, ils comblent nos manques.</strong>, "Priorité nationale = priorité au chômage.</p>
             </p>
+            <!-- Image Zombis avec pop-up -->
+<div class="zombis-container">
+    <img
+        class="zombis-image"
+        src="https://i.postimg.cc/bNqGS2F0/Zombis.gif"
+        alt="Zombis"
+        onclick="openZombisPopup()"
+    >
+</div>
+
+<!-- Pop-up pour Zombis -->
+<div id="zombisPopup" class="zombis-popup">
+    <span class="zombis-popup-close" onclick="closeZombisPopup()">&times;</span>
+    <div class="zombis-popup-content">
+        <p><strong>« C’est l’immigration qui cause tous les problèmes. »</strong></p>
+        <p><em>Punchline : « Pratique : on met l’origine dans la boîte “cause” et on n’ouvre jamais le contenu. »</em></p>
+
+        <p><strong>« On ne peut plus accueillir. »</strong></p>
+        <p><em>Punchline : « Traduction : on ne veut plus gérer, on veut trier—et on appelle ça une fatalité. »</em></p>
+
+        <p><strong>« Il faut des règles claires. »</strong></p>
+        <p><em>Punchline : « Claires comme… “qui décide du tri” ? Parce que c’est rarement écrit. »</em></p>
+
+        <p><strong>« On commence par “le bon”, ensuite “les autres”. »</strong></p>
+        <p><em>Punchline : « La société du “premier tri” : tout le monde espère être dans la première pile. »</em></p>
+
+        <p><strong>« Priorité à nos compatriotes. » (et donc “les autres” en face)</strong></p>
+        <p><em>Punchline : « “Nos compatriotes” : joli, mais pourquoi le droit changerait selon le passeport ? »</em></p>
+
+        <p><strong>« La France d’abord. »</strong></p>
+        <p><em>Punchline : « La France d’abord… et le reste ensuite, en espérant que “ensuite” devienne “jamais”. »</em></p>
+
+        <p><strong>« Zéro immigration illégale / tolérance zéro. »</strong></p>
+        <p><em>Punchline : « Tolérance zéro : zéro question sur les causes, zéro débat sur les moyens, mais beaucoup de slogans. »</em></p>
+
+        <p><strong>« Le pays se fait envahir. »</strong></p>
+        <p><em>Punchline : « Quand on appelle tout “invasion”, on n’a plus besoin de chiffres—juste de panique. »</em></p>
+
+        <p><strong>« Il faut lutter contre l’insécurité. » (puis amalgame)</strong></p>
+        <p><em>Punchline : « L’insécurité est un problème d’actes. Si on la traite par origine, c’est plus une chasse aux étiquettes qu’une solution. »</em></p>
+
+        <p><strong>« On protège l’identité. » (souvent “identité = origine”)</strong></p>
+        <p><em>Punchline : « Protéger une culture, c’est pas interdire des gens de respirer. »</em></p>
+
+        <p><strong>« Les frontières doivent être fermées. »</strong></p>
+        <p><em>Punchline : « Fermées pour qui ? Parce que les règles sans exceptions deviennent vite des injustices sans aveux. »</em></p>
+
+        <p><strong>« On veut la “méritocratie” pour l’immigration. »</strong></p>
+        <p><em>Punchline : « Mérite-t-on d’avoir un visage différent ? Si oui, alors ce n’est plus une méritocratie, c’est un concours de hasard. »</em></p>
+    </div>
+</div>
         </div>
 
         <!-- Exemple Wauquiez -->
@@ -890,6 +998,23 @@
                 }
             }
         });
+            // Fonction pour ouvrir le pop-up Zombis
+    function openZombisPopup() {
+        document.getElementById("zombisPopup").style.display = "block";
+    }
+
+    // Fonction pour fermer le pop-up Zombis
+    function closeZombisPopup() {
+        document.getElementById("zombisPopup").style.display = "none";
+    }
+
+    // Fermer le pop-up si on clique en dehors
+    window.onclick = function(event) {
+        const popup = document.getElementById("zombisPopup");
+        if (event.target === popup) {
+            popup.style.display = "none";
+        }
+    };
     </script>
 
       </div>
