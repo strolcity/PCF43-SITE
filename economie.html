@@ -204,26 +204,12 @@
         <div class="c5-source">1959→2024, DREES. <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">Source ↗</a></div>
       </div>
 
-      <div class="c5-card">
-        <div class="eyebrow">Sécurité sociale</div>
-        <h4>Déficit régimes de base + FSV</h4>
-        <div class="c5-num" id="numDeficit">0<small> Md€</small></div>
-        <div class="c5-spark"><canvas id="sparkDeficit"></canvas></div>
-        <div class="c5-source">2024→2026, Cour des comptes. <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Source ↗</a></div>
-      </div>
-
-      <div class="c5-card">
-        <div class="eyebrow">Assurance chômage</div>
-        <h4>Endettement de l'Unédic</h4>
-        <div class="c5-num" id="numUnedic">0<small> Md€</small></div>
-        <div class="c5-spark"><canvas id="sparkUnedic"></canvas></div>
-        <div class="c5-source">2017→2023, Ass. nationale/Unédic. <a href="https://www.unedic.org" target="_blank">Source ↗</a></div>
-      </div>
-
+      
     </div>
     <p class="note alert">Les compteurs "en temps réel" (dette, charge) sont des estimations qui prolongent le dernier chiffre officiel connu — ce ne sont pas des mesures en direct, l'Insee et le PLF ne publient que trimestriellement/annuellement.</p>
   </div>
 </section>
+
 
 <!-- ===================== NOS GRAPHIQUES ===================== -->
 <section style="padding-top:10px;">
@@ -233,6 +219,8 @@
   </div>
 </section>
 
+
+<!-- 1. PIB + International (fusionné) -->
 <!-- 1. PIB -->
 <section style="padding-top:0;">
   <div class="wrap">
@@ -257,26 +245,20 @@
     <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a>. PIB annuel = somme des 4 trimestres.</p>
     <p class="note alert">Points sur la courbe : <a href="https://fr.wikipedia.org/wiki/Choc_Nixon" target="_blank">1971, choc Nixon ↗</a> · <a href="https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" target="_blank">2008, refinancement illimité des banques par la BCE ↗</a> · <a href="https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" target="_blank">2015, premier programme de rachat de dette de la BCE ↗</a> · <a href="https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" target="_blank">2020, PEPP covid, 1 850 Md€ ↗</a>.</p>
 
+    <h3 class="sub-title">La France est-elle vraiment à la traîne ?</h3>
+    <p class="section-dek">Croissance du PIB, France comparée à ses voisins. Cochez ou décochez les pays pour comparer.</p>
+    <div class="chart-card">
+      <div class="legend-toggle" id="intlToggle"></div>
+      <div class="chart-box"><canvas id="chartIntl"></canvas></div>
+    </div>
+    <p class="note">Source : <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE, Perspectives économiques n°119 (2026) ↗</a>. Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
+
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
     </div>
 
-    <h3 class="sub-title">Le prix réel du travail : combien d'heures de Smic pour 1 kg de bœuf ?</h3>
-    <p class="section-dek">Le PIB grossit, mais qu'est-ce que ça change concrètement pour un salaire au Smic ? On a croisé nous-mêmes deux séries officielles Insee : le Smic horaire brut et le prix moyen du bœuf, depuis 1992.</p>
-    <div class="chart-card">
-      <div class="chart-box"><canvas id="chartPouvoirAchat"></canvas></div>
-    </div>
-    <div class="callout">
-      <div class="box"><div class="num">3h46</div><div class="lbl">le point le plus favorable, en 2005</div></div>
-      <div class="box brick"><div class="num">4h08</div><div class="lbl">en 2026 — presque revenu au niveau de 1992 (4h32)</div></div>
-    </div>
-    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Ministère du Travail, Smic horaire brut ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442432" target="_blank">Insee, prix du bœuf (filet) ↗</a>. Calcul : prix du bœuf ÷ Smic horaire brut. Pas une dégradation continue : un creux en 2005, puis une remontée.</p>
-    <div class="analyse-box">
-      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce creux en 2005 puis cette remontée, ce que ça dit du pouvoir d'achat réel, nos propositions...</p>
-    </div>
-  </div>
+      </div>
 </section>
 
 <!-- 1bis. Capital / Travail -->
@@ -303,57 +285,32 @@
   </div>
 </section>
 
-<!-- 2. International -->
+
+<!-- Le prix réel du travail -->
 <section>
   <div class="wrap">
-    <h2 class="section-title">La France est-elle vraiment à la traîne ?</h2>
-    <p class="section-dek">Croissance du PIB, France comparée à ses voisins. Cochez ou décochez les pays pour comparer.</p>
+    <h2 class="section-title">Le prix réel du travail : combien d'heures de Smic pour 1 kg de bœuf ?</h2>
+    <p class="section-dek">Le PIB grossit, mais qu'est-ce que ça change concrètement pour un salaire au Smic ? On a croisé nous-mêmes deux séries officielles Insee : le Smic horaire brut et le prix moyen du bœuf, depuis 1992.</p>
     <div class="chart-card">
-      <div class="legend-toggle" id="intlToggle"></div>
-      <div class="chart-box"><canvas id="chartIntl"></canvas></div>
+      <div class="chart-box"><canvas id="chartPouvoirAchat"></canvas></div>
     </div>
-    <p class="note">Source : <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE, Perspectives économiques n°119 (2026) ↗</a>. Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
+    <div class="callout">
+      <div class="box"><div class="num">3h46</div><div class="lbl">le point le plus favorable, en 2005</div></div>
+      <div class="box brick"><div class="num">4h08</div><div class="lbl">en 2026 — presque revenu au niveau de 1992 (4h32)</div></div>
+    </div>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Ministère du Travail, Smic horaire brut ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442432" target="_blank">Insee, prix du bœuf (filet) ↗</a>. Calcul : prix du bœuf ÷ Smic horaire brut. Pas une dégradation continue : un creux en 2005, puis une remontée.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : la comparaison a-t-elle un sens, quels pays s'en sortent mieux et pourquoi, nos propositions...</p>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce creux en 2005 puis cette remontée, ce que ça dit du pouvoir d'achat réel, nos propositions...</p>
     </div>
+
   </div>
 </section>
 
-<!-- 3. Financement Sécu -->
+<!-- Calculette -->
 <section>
   <div class="wrap">
-    <h2 class="section-title">Le financement de notre bien commun</h2>
-    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Quatre grandes branches en composent l'essentiel : la santé, la famille, le chômage et les retraites. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
-    <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
-
-    <h3 class="sub-title">Qui touche ce salaire, exactement ?</h3>
-    <p class="section-dek">La réduction générale de cotisations patronales (notre "niche à 80 Md€") s'éteint à 1,6 Smic. Placé sur l'échelle des salaires, ce seuil tombe... juste au-dessus du salaire médian. Ça éclaire une question simple : qui profite vraiment de cette exonération, et qui reste-t-il au-dessus pour financer le reste ?</p>
-    <div class="chart-card"><div class="chart-box" style="height:200px;"><canvas id="chartVignetteSalaires"></canvas></div></div>
-    <p class="note alert">Le seuil fiscal (en rouge) est une estimation : il est fixé officiellement en Smic BRUT (1,6 Smic, 2 883 €/mois brut en 2025), converti ici en net à titre indicatif pour la comparaison — ce n'est pas un chiffre officiel. À partir de 2026, ce seuil passe à 3 Smic (réforme motivée par la lutte contre la "smicardisation", rapport Bozio-Wasmer). Source : <a href="https://www.insee.fr/fr/statistiques/8657156" target="_blank">Insee, Les salaires dans le secteur privé en 2024 ↗</a>.</p>
-    <div class="callout">
-      <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
-      <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
-    </div>
-    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>. La branche "chômage" correspond au risque "emploi" des comptes de la protection sociale (Unédic + dispositifs publics de l'emploi), pas uniquement à l'Unédic.</p>
-    <div class="analyse-box">
-      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
-    </div>
-
-    <h3 class="sub-title">Salaires et prix : qui suit qui ?</h3>
-    <p class="section-dek">Smic, salaire médian et prix à la consommation. Par défaut en indice (base 100 en 1990) pour comparer les évolutions ; basculez en euros pour les montants réels — mais l'indice des prix n'a pas d'équivalent en euros, il disparaît donc de cette vue.</p>
-    <div class="chart-card">
-      <div class="legend-toggle"><label><input type="checkbox" id="toggleValeurSalaires"> Afficher en valeur (€) plutôt qu'en indice</label></div>
-      <div class="chart-box"><canvas id="chartSalairesPrix"></canvas></div>
-    </div>
-    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Smic et indice des prix, Ministère du Travail/Insee ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/serie/010752396" target="_blank">Salaire médian, Insee ↗</a>. Toutes les séries sont en euros courants, non déflatées — c'est justement la comparaison avec l'indice des prix qui permet de juger de l'évolution réelle.</p>
-    <div class="analyse-box">
-      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : qui a le mieux suivi l'inflation, ce que ça dit du partage de la valeur ajoutée, nos propositions...</p>
-    </div>
-
-    <h3 class="sub-title">Votre calculette de pouvoir d'achat</h3>
+    <h2 class="section-title">Votre calculette de pouvoir d'achat</h2>
     <p class="section-dek">Vous avez doublé votre salaire depuis vos débuts ? Ça ne veut pas forcément dire que vous vous êtes enrichi. Entrez vos deux salaires pour voir votre vraie progression, une fois l'inflation retirée — et où vous vous situez.</p>
     <div class="chart-card calc-card">
       <div class="calc-grid">
@@ -378,31 +335,29 @@
       <div id="calcResultat" class="calc-resultat" style="display:none;"></div>
       <p class="note" style="margin-left:0;">Calcul à partir de vos données Smic/salaire médian/prix (1990-2024). Comparaison au salaire médian net annuel des postes à temps complet du secteur privé (Insee) — votre situation personnelle (temps partiel, primes, statut) peut faire varier la lecture.</p>
     </div>
+
   </div>
 </section>
 
-<!-- 3bis. Redistribution -->
+<!-- Salaires + Pauvrete -->
 <section>
   <div class="wrap">
-    <h2 class="section-title">Ce que la solidarité redonne</h2>
-    <p class="section-dek">"L'assistanat" : un mot qu'on entend beaucoup. Les chiffres officiels racontent autre chose — un système où presque tout le monde cotise, et où la redistribution profite d'abord à ceux qui ont le moins, pas par charité, mais parce que c'est justement l'objet du système.</p>
-    <div class="chart-card"><div class="chart-box tall"><canvas id="chartRedistribution"></canvas></div></div>
-    <div class="callout">
-      <div class="box"><div class="num">+154&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus modestes après redistribution (4 710 € → 11 960 €/an)</div></div>
-      <div class="box brick"><div class="num">-25&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus aisés après redistribution (99 300 € → 74 410 €/an)</div></div>
+    <h2 class="section-title">Des salaires qui stagnent, une pauvreté bien réelle</h2>
+    <p class="section-dek">Deux visages de la même pièce : la question n'est pas "qui a le plus", mais qui décroche. La misère n'est pas répartie chez "les riches" — elle est structurellement en bas de l'échelle, pendant que le sommet s'éloigne.</p>
+    <h3 class="sub-title">Salaires et prix : qui suit qui ?</h3>
+    <p class="section-dek">Smic, salaire médian et prix à la consommation. Par défaut en indice (base 100 en 1990) pour comparer les évolutions ; basculez en euros pour les montants réels — mais l'indice des prix n'a pas d'équivalent en euros, il disparaît donc de cette vue.</p>
+    <div class="chart-card">
+      <div class="legend-toggle"><label><input type="checkbox" id="toggleValeurSalaires"> Afficher en valeur (€) plutôt qu'en indice</label></div>
+      <div class="chart-box"><canvas id="chartSalairesPrix"></canvas></div>
     </div>
-    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/8612544?sommaire=8612596" target="_blank">Insee Références, France portrait social, édition 2025 (fiche Redistribution monétaire) ↗</a>. Ne couvre que la redistribution monétaire (prestations familiales, logement, minima sociaux, prime d'activité, impôt sur le revenu, IFI) — hors retraites et chômage, considérés comme des revenus de remplacement, pas de la redistribution.</p>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Smic et indice des prix, Ministère du Travail/Insee ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/serie/010752396" target="_blank">Salaire médian, Insee ↗</a>. Toutes les séries sont en euros courants, non déflatées — c'est justement la comparaison avec l'indice des prix qui permet de juger de l'évolution réelle.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce n'est pas de "l'assistanat" mais un système auquel tout le monde contribue selon ses moyens, nos propositions...</p>
+      <p contenteditable="true">Cliquez ici pour écrire : qui a le mieux suivi l'inflation, ce que ça dit du partage de la valeur ajoutée, nos propositions...</p>
     </div>
-  </div>
-</section>
 
-<!-- 4. Pauvreté / IFI -->
-<section>
-  <div class="wrap">
-    <h2 class="section-title">Pauvreté et concentration des patrimoines</h2>
+    
+    
     <p class="section-dek">La Haute-Loire est un peu moins pauvre que la moyenne nationale — mais avec un niveau de vie médian aussi un peu plus bas. À l'échelle nationale, la pauvreté touche infiniment plus de monde que le haut du patrimoine ne compte de foyers.</p>
     <div class="compare-bars">
       <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — Haute-Loire</span><strong>12,4&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div></div>
@@ -425,6 +380,50 @@
     </div>
   </div>
 </section>
+
+<!-- Financement -->
+<!-- 3. Financement Sécu -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Le financement de notre bien commun</h2>
+    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Quatre grandes branches en composent l'essentiel : la santé, la famille, le chômage et les retraites. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
+    <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
+
+    <h3 class="sub-title">Qui touche ce salaire, exactement ?</h3>
+    <p class="section-dek">La réduction générale de cotisations patronales (notre "niche à 80 Md€") s'éteint à 1,6 Smic. Placé sur l'échelle des salaires, ce seuil tombe... juste au-dessus du salaire médian. Ça éclaire une question simple : qui profite vraiment de cette exonération, et qui reste-t-il au-dessus pour financer le reste ?</p>
+    <div class="chart-card"><div class="chart-box" style="height:200px;"><canvas id="chartVignetteSalaires"></canvas></div></div>
+    <p class="note alert">Le seuil fiscal (en rouge) est une estimation : il est fixé officiellement en Smic BRUT (1,6 Smic, 2 883 €/mois brut en 2025), converti ici en net à titre indicatif pour la comparaison — ce n'est pas un chiffre officiel. À partir de 2026, ce seuil passe à 3 Smic (réforme motivée par la lutte contre la "smicardisation", rapport Bozio-Wasmer). Source : <a href="https://www.insee.fr/fr/statistiques/8657156" target="_blank">Insee, Les salaires dans le secteur privé en 2024 ↗</a>.</p>
+    <div class="callout">
+      <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
+      <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
+    </div>
+    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>. La branche "chômage" correspond au risque "emploi" des comptes de la protection sociale (Unédic + dispositifs publics de l'emploi), pas uniquement à l'Unédic.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
+    </div>
+
+      </div>
+</section>
+
+<!-- 3bis. Redistribution -->
+<section>
+  <div class="wrap">
+    <h2 class="section-title">Ce que la solidarité redonne</h2>
+    <p class="section-dek">"L'assistanat" : un mot qu'on entend beaucoup. Les chiffres officiels racontent autre chose — un système où presque tout le monde cotise, et où la redistribution profite d'abord à ceux qui ont le moins, pas par charité, mais parce que c'est justement l'objet du système.</p>
+    <div class="chart-card"><div class="chart-box tall"><canvas id="chartRedistribution"></canvas></div></div>
+    <div class="callout">
+      <div class="box"><div class="num">+154&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus modestes après redistribution (4 710 € → 11 960 €/an)</div></div>
+      <div class="box brick"><div class="num">-25&nbsp;%</div><div class="lbl">niveau de vie des 10 % les plus aisés après redistribution (99 300 € → 74 410 €/an)</div></div>
+    </div>
+    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/8612544?sommaire=8612596" target="_blank">Insee Références, France portrait social, édition 2025 (fiche Redistribution monétaire) ↗</a>. Ne couvre que la redistribution monétaire (prestations familiales, logement, minima sociaux, prime d'activité, impôt sur le revenu, IFI) — hors retraites et chômage, considérés comme des revenus de remplacement, pas de la redistribution.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce n'est pas de "l'assistanat" mais un système auquel tout le monde contribue selon ses moyens, nos propositions...</p>
+    </div>
+  </div>
+</section>
+
 
 <footer class="sources">
   <div class="wrap">
