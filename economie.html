@@ -501,8 +501,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     sparkline(sparkId, points, color, 'v');
   }
   miniCounter('numDepSoc','sparkDepSoc', DATA.extra.depenses_sociales_pct_pib, JAUNE, '%', 1);
-  miniCounter('numDeficit','sparkDeficit', DATA.extra.deficit_secu, ROUGE, 'Md€', 1);
-  miniCounter('numUnedic','sparkUnedic', DATA.extra.unedic_dette, '#7fd67f', 'Md€', 1);
 
   // ---- 1. PIB, avec vignettes sur événements monétaires ----
   const EVENEMENTS_MONETAIRES = {
