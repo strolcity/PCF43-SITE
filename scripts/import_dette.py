@@ -217,6 +217,27 @@ def import_vignette_salaires(cur):
         cur.execute("INSERT INTO vignette_salaires VALUES (?,?,?,?)", (repere, montant, typ, int(ordre)))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Pauvrete_Nombre.xlsx (personnes pauvres, seuil 50 %, en nombre)
+# ----------------------------------------------------------------------
+FICHIER_PAUVRETE_NOMBRE = DOSSIER_ECONOMIE / "Data_Pauvrete_Nombre.xlsx"
+
+
+def import_pauvrete_nombre(cur):
+    if not FICHIER_PAUVRETE_NOMBRE.exists():
+        print(f"  (ignoré : {FICHIER_PAUVRETE_NOMBRE.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS pauvrete_nombre_seuil50")
+    cur.execute("""
+        CREATE TABLE pauvrete_nombre_seuil50 (
+            annee INTEGER PRIMARY KEY,
+            nombre_personnes_pauvres INTEGER
+        )
+    """)
+    for annee, nb in lire_lignes(FICHIER_PAUVRETE_NOMBRE, "Pauvrete_nombre_seuil50"):
+        cur.execute("INSERT INTO pauvrete_nombre_seuil50 VALUES (?,?)", (int(annee), nb))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -236,6 +257,8 @@ def main():
     import_redistribution(cur)
     print("Import vignette salaires...")
     import_vignette_salaires(cur)
+    print("Import pauvreté (nombre, seuil 50%)...")
+    import_pauvrete_nombre(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

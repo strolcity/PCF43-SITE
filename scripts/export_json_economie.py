@@ -191,6 +191,11 @@ def main():
         "foyers_ifi": {"annee": 2025, "valeur": 193500, "unite": "foyers fiscaux"},
     }
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='pauvrete_nombre_seuil50'")
+    if cur.fetchone():
+        cur.execute("SELECT annee, nombre_personnes_pauvres FROM pauvrete_nombre_seuil50 ORDER BY annee")
+        extra["pauvrete_nombre_seuil50"] = [{"annee": a, "v": n} for a, n in cur.fetchall()]
+
     data["extra"] = extra
 
     conn.close()

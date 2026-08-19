@@ -358,22 +358,11 @@
 
     
     
-    <p class="section-dek">La Haute-Loire est un peu moins pauvre que la moyenne nationale — mais avec un niveau de vie médian aussi un peu plus bas. À l'échelle nationale, la pauvreté touche infiniment plus de monde que le haut du patrimoine ne compte de foyers.</p>
-    <div class="compare-bars">
-      <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — Haute-Loire</span><strong>12,4&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill" style="width:78%"></div></div></div>
-      <div class="bar-row"><div class="bar-label"><span>Taux de pauvreté — France métropolitaine</span><strong>15,9&nbsp;%</strong></div><div class="bar-track"><div class="bar-fill dim" style="width:100%"></div></div></div>
-    </div>
+    <h3 class="sub-title">Le compte n'y est pas : pauvreté et fortune, deux trajectoires</h3>
+    <p class="section-dek">Pendant que le nombre de foyers assujettis à l'IFI progresse (barres dorées), le nombre de personnes pauvres au seuil de 50 % suit sa propre trajectoire (courbe rouge) — deux échelles très différentes, mais la même question : combien de pauvres en plus, pour combien de riches en plus, chaque année ?</p>
+    <div class="chart-card" style="margin-top:22px;"><div class="chart-box tall"><canvas id="chartIfi"></canvas></div></div>
 
-    <div class="pib-layout" style="margin-top:22px;">
-      <div class="chart-card pib-chart-col"><div class="chart-box"><canvas id="chartIfi"></canvas></div></div>
-      <div class="pile-card" style="justify-content:flex-start;">
-        <div class="pile-eyebrow">France entière, unités différentes</div>
-        <div class="chart-box" style="height:180px;"><canvas id="chartPauvreteIfi"></canvas></div>
-        <div class="pile-caption" style="margin-top:14px;">⚠️ À gauche : 9,8 millions de <strong>personnes</strong> pauvres (2023). À droite : 193 500 <strong>foyers fiscaux</strong> assujettis à l'IFI (2025). Deux unités différentes — comparaison d'échelle, pas un ratio direct.</div>
-      </div>
-    </div>
-
-    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/8984752" target="_blank">Insee-DGFiP-Cnaf-Cnav-CCMSA, Filosofi 2023 ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/8600989" target="_blank">Insee Première n°2063, pauvreté 2023 ↗</a> ; <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière).</p>
+    <p class="note">Sources : <a href="https://www.impots.gouv.fr/impot-sur-la-fortune-immobiliere-ifi" target="_blank">DGFiP, statistiques IFI 2018-2025 ↗</a> (France entière) ; <a href="https://www.insee.fr/fr/statistiques/2381340" target="_blank">Insee, personnes pauvres au seuil de 50 % ↗</a> (France métropolitaine, 1996-2024). Survolez le graphique pour voir l'évolution d'une année sur l'autre pour chaque série.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : ce que ça dit des inégalités locales, nos propositions de fiscalité du patrimoine...</p>
@@ -789,23 +778,50 @@ window.addEventListener('DOMContentLoaded', async () => {
     `;
   });
 
-  // ---- 4. IFI ----
-  new Chart(document.getElementById('chartIfi'), {
-    type:'bar', data:{ labels: DATA.ifi.map(d=>d.annee), datasets:[{ label:"Foyers assujettis à l'IFI (France)", data: DATA.ifi.map(d=>d.redevables), backgroundColor:'rgba(255,235,59,0.55)', borderColor:JAUNE, borderWidth:1 }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ y:{ title:{display:true,text:'Nombre de foyers', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
-  });
+  // ---- 4. IFI + courbe rouge pauvreté (seuil 50%), avec deltas annee/annee dans le tooltip ----
+  const ifiMap = Object.fromEntries(DATA.ifi.map(d=>[d.annee, d.redevables]));
+  const pauvMap = Object.fromEntries((DATA.extra.pauvrete_nombre_seuil50||[]).map(d=>[d.annee, d.v]));
+  const anneesIfi = DATA.ifi.map(d=>d.annee);
 
-  // ---- Pauvreté vs IFI (colonnes verticales, échelle logarithmique car unités différentes) ----
-  const pvi = DATA.extra.pauvrete_vs_ifi;
-  new Chart(document.getElementById('chartPauvreteIfi'), {
-    type:'bar',
-    data:{ labels:['Personnes pauvres (' + pvi.personnes_pauvres.annee + ')', 'Foyers IFI (' + pvi.foyers_ifi.annee + ')'],
-      datasets:[{ data:[pvi.personnes_pauvres.valeur, pvi.foyers_ifi.valeur], backgroundColor:[ROUGE, JAUNE] }] },
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false},
-        tooltip:{ callbacks:{ label:(item) => item.raw.toLocaleString('fr-FR') + (item.dataIndex===0 ? ' personnes' : ' foyers') } } },
-      scales:{ y:{ type:'logarithmic', title:{display:true,text:'Échelle logarithmique', color:'#ccc'}, ticks:{color:'#ccc', callback:(v)=> [1e5,1e6,1e7].includes(v) ? v.toLocaleString('fr-FR') : null}, grid:{color:GRID} },
-        x:{ ticks:{color:'#ccc', font:{size:10}}, grid:{display:false} } } }
+  new Chart(document.getElementById('chartIfi'), {
+    data: {
+      labels: anneesIfi,
+      datasets: [
+        { type:'bar', label:"Foyers assujettis à l'IFI (France)", data: anneesIfi.map(a=>ifiMap[a]),
+          backgroundColor:'rgba(255,235,59,0.55)', borderColor:JAUNE, borderWidth:1, yAxisID:'y' },
+        { type:'line', label:'Personnes pauvres, seuil 50% (France métro.)',
+          data: anneesIfi.map(a => pauvMap[a] !== undefined ? pauvMap[a] : null),
+          borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:3, pointBackgroundColor: ROUGE,
+          spanGaps:true, yAxisID:'y1' },
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{position:'bottom', labels:{color:'#fff'}},
+        tooltip:{ callbacks:{ afterBody: (items) => {
+          const annee = items[0].parsed.x !== undefined ? anneesIfi[items[0].dataIndex] : anneesIfi[items[0].dataIndex];
+          const idx = anneesIfi.indexOf(annee);
+          if (idx <= 0) return [];
+          const anneePrec = anneesIfi[idx-1];
+          const lignes = [];
+          if (ifiMap[annee] !== undefined && ifiMap[anneePrec] !== undefined) {
+            const delta = ifiMap[annee] - ifiMap[anneePrec];
+            lignes.push(`Foyers IFI : ${delta>=0?'+':''}${delta.toLocaleString('fr-FR')} vs ${anneePrec}`);
+          }
+          if (pauvMap[annee] !== undefined && pauvMap[anneePrec] !== undefined) {
+            const delta2 = pauvMap[annee] - pauvMap[anneePrec];
+            lignes.push(`Personnes pauvres : ${delta2>=0?'+':''}${delta2.toLocaleString('fr-FR')} vs ${anneePrec}`);
+          }
+          return lignes;
+        } } }
+      },
+      scales:{
+        y:{ position:'left', title:{display:true,text:'Nombre de foyers IFI', color:JAUNE}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+        y1:{ position:'right', title:{display:true,text:'Personnes pauvres (seuil 50%)', color:ROUGE}, grid:{display:false}, ticks:{color:'#ccc'} },
+        x:{ grid:{display:false}, ticks:{color:'#ccc'} }
+      }
+    }
   });
 });
 </script>
