@@ -118,6 +118,21 @@
   .callout .box.brick{ border-top-color:var(--rouge); }
   .callout .box .num{ font-size:1.7em; font-weight:bold; }
   .callout .box .lbl{ font-size:0.78em; color:#ddd; margin-top:4px; }
+
+  /* ---- face-à-face (comparatif coup de poing) ---- */
+  .face-a-face{ display:flex; align-items:center; gap:0; margin:22px 0 0 19px; max-width:760px; flex-wrap:wrap; }
+  .face-card{
+    flex:1 1 260px; background:var(--panel); border:1px solid var(--line); border-top:4px solid var(--jaune);
+    border-radius:6px; padding:26px 22px; text-align:center;
+  }
+  .face-card.brick{ border-top-color:var(--rouge); }
+  .face-num{ font-size:2.6em; font-weight:bold; line-height:1; text-shadow:1px 1px 3px rgba(0,0,0,0.8); }
+  .face-num span{ font-size:0.4em; font-weight:normal; color:#ccc; margin-left:6px; }
+  .face-lbl{ font-size:0.82em; color:#ddd; margin-top:10px; line-height:1.4; }
+  .face-vs{ flex:0 0 90px; text-align:center; padding:10px; }
+  .face-ratio{ font-size:1.6em; font-weight:bold; color:var(--jaune); text-shadow:1px 1px 3px rgba(0,0,0,0.8); }
+  .face-vs-lbl{ font-size:0.66em; color:#aaa; margin-top:4px; }
+  @media (max-width:640px){ .face-a-face{ flex-direction:column; } .face-vs{ flex:none; } }
   .compare-bars{ margin-left:19px; max-width:600px; }
   .bar-row{ margin-bottom:16px; }
   .bar-row .bar-label{ font-size:0.85em; margin-bottom:6px; display:flex; justify-content:space-between; }
@@ -375,21 +390,47 @@
 <section>
   <div class="wrap">
     <h2 class="section-title">Le financement de notre bien commun</h2>
-    <p class="section-dek">Les prestations sociales représentent près d'un tiers du PIB. Quatre grandes branches en composent l'essentiel : la santé, la famille, le chômage et les retraites. Face à cela, l'État a multiplié les exonérations de cotisations patronales.</p>
+    <p class="section-dek">Quatre grandes branches composent l'essentiel des prestations sociales : la santé, la famille, le chômage et les retraites — près d'un tiers du PIB.</p>
     <div class="chart-card"><div class="chart-box tall"><canvas id="chartSecu"></canvas></div></div>
+    <p class="note">Source : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a>. La branche "chômage" correspond au risque "emploi" des comptes de la protection sociale (Unédic + dispositifs publics de l'emploi), pas uniquement à l'Unédic.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions</span>
+      <p contenteditable="true">C'est notre salaire différé. Si les cotisations patronales et salariales continuent de baisser, il faudra sortir sa carte bleue au lieu de sa carte verte à la pharmacie — et pour la retraite, piocher dans son Livret A (pour celles et ceux qui ont pu se permettre d'épargner un peu) pour aller chercher sa baguette de pain.</p>
+    </div>
 
-    <h3 class="sub-title">Qui touche ce salaire, exactement ?</h3>
-    <p class="section-dek">La réduction générale de cotisations patronales (notre "niche à 80 Md€") s'éteint à 1,6 Smic. Placé sur l'échelle des salaires, ce seuil tombe... juste au-dessus du salaire médian. Ça éclaire une question simple : qui profite vraiment de cette exonération, et qui reste-t-il au-dessus pour financer le reste ?</p>
-    <div class="chart-card"><div class="chart-box" style="height:200px;"><canvas id="chartVignetteSalaires"></canvas></div></div>
-    <p class="note alert">Le seuil fiscal (en rouge) est une estimation : il est fixé officiellement en Smic BRUT (1,6 Smic, 2 883 €/mois brut en 2025), converti ici en net à titre indicatif pour la comparaison — ce n'est pas un chiffre officiel. À partir de 2026, ce seuil passe à 3 Smic (réforme motivée par la lutte contre la "smicardisation", rapport Bozio-Wasmer). Source : <a href="https://www.insee.fr/fr/statistiques/8657156" target="_blank">Insee, Les salaires dans le secteur privé en 2024 ↗</a>.</p>
+    <h3 class="sub-title">80 Md€ d'exonérations, 21,6 Md€ de déficit — qui plombe qui ?</h3>
+    <p class="section-dek">Chaque année, on nous parle du "trou de la Sécu". On parle beaucoup moins fort du trou qu'on lui a soi-même creusé.</p>
+    <div class="face-a-face">
+      <div class="face-card brick">
+        <div class="face-num">78,8<span>Md€</span></div>
+        <div class="face-lbl">Exonérations de cotisations patronales versées en 2025</div>
+      </div>
+      <div class="face-vs">
+        <div class="face-ratio">×3,6</div>
+        <div class="face-vs-lbl">c'est le rapport entre les deux</div>
+      </div>
+      <div class="face-card">
+        <div class="face-num">21,6<span>Md€</span></div>
+        <div class="face-lbl">Déficit des régimes de base + FSV, constaté la même année</div>
+      </div>
+    </div>
     <div class="callout">
       <div class="box brick"><div class="num">+78&nbsp;%</div><div class="lbl">hausse du coût de la réduction générale bas salaires depuis 2016 (21,1 → 37,6 Md€)</div></div>
       <div class="box"><div class="num">14,5&nbsp;%</div><div class="lbl">du PIB consacré aux seules pensions de retraite en 2024</div></div>
     </div>
-    <p class="note alert">Sources : <a href="https://data.drees.solidarites-sante.gouv.fr/explore/dataset/305_les-comptes-de-la-protection-sociale/" target="_blank">DREES, Comptes de la protection sociale ↗</a> ; <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a>. La branche "chômage" correspond au risque "emploi" des comptes de la protection sociale (Unédic + dispositifs publics de l'emploi), pas uniquement à l'Unédic.</p>
+    <p class="note alert">Sources : <a href="https://open.urssaf.fr/explore/dataset/exos-secteur-prive-france-entiere-par-mesures/" target="_blank">Urssaf, exonérations de cotisations par mesure ↗</a> ; <a href="https://www.ccomptes.fr/fr/publications/securite-sociale-2026" target="_blank">Cour des comptes, rapport Sécurité sociale 2026 ↗</a>. Champ des exonérations : secteur privé Urssaf (le débat sénatorial de 2024 cite jusqu'à 80 Md€ "tous régimes").</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
       <p contenteditable="true">Cliquez ici pour écrire : à qui profitent ces exonérations, ce qu'elles coûtent à la Sécu, nos propositions de financement alternatif...</p>
+    </div>
+
+    <h3 class="sub-title">Qui touche ce salaire, exactement ?</h3>
+    <p class="section-dek">Cette même réduction générale s'éteint à 1,6 Smic. Placé sur l'échelle des salaires, ce seuil tombe... juste au-dessus du salaire médian. Ce n'est donc pas une aide ciblée sur quelques bas salaires isolés : elle pèse sur toute la moitié basse de l'échelle des salaires — bien plus large que le "trou" de 21,6 Md€ qu'on nous demande de combler.</p>
+    <div class="chart-card"><div class="chart-box" style="height:200px;"><canvas id="chartVignetteSalaires"></canvas></div></div>
+    <p class="note alert">Le seuil fiscal (en rouge) est une estimation : il est fixé officiellement en Smic BRUT (1,6 Smic, 2 883 €/mois brut en 2025), converti ici en net à titre indicatif pour la comparaison — ce n'est pas un chiffre officiel. À partir de 2026, ce seuil passe à 3 Smic (réforme motivée par la lutte contre la "smicardisation", rapport Bozio-Wasmer). Source : <a href="https://www.insee.fr/fr/statistiques/8657156" target="_blank">Insee, Les salaires dans le secteur privé en 2024 ↗</a>.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi élargir le seuil à 3 Smic ne suffira pas à lui seul, nos propositions...</p>
     </div>
 
       </div>
@@ -679,8 +720,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         _mdeurKey:'famille_mdeur', _map:branchesMap },
       { type:'line', label:'Chômage (% PIB)', data: xyPct(branchesMap, anneesPib, 'chomage'), borderColor:'#4fc3f7', backgroundColor:'transparent', borderWidth:1.5, pointRadius:0, yAxisID:'y', tension:0.1,
         _mdeurKey:'chomage_mdeur', _map:branchesMap },
-      { type:'bar', label:'Exonérations de cotisations (% PIB)', data: DATA.exonerations.map(d=>({x:d.annee,y:d.pct_pib})), backgroundColor:'rgba(211,47,47,0.55)', yAxisID:'y',
-        _mdeurKey:'total_meuros', _map:exoMap, _mdeurDivide:1000 },
     ]},
     options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
       plugins:{ legend:{position:'bottom', labels:{color:'#fff', boxWidth:12, font:{size:10}}},
