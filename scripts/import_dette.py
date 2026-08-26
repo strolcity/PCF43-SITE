@@ -238,6 +238,43 @@ def import_pauvrete_nombre(cur):
         cur.execute("INSERT INTO pauvrete_nombre_seuil50 VALUES (?,?)", (int(annee), nb))
 
 
+# ----------------------------------------------------------------------
+# Ajout : Data_Produits_Essentiels.xlsx (heures de Smic par produit + contraste essentiel/non)
+# ----------------------------------------------------------------------
+FICHIER_PRODUITS = DOSSIER_ECONOMIE / "Data_Produits_Essentiels.xlsx"
+
+
+def import_produits_essentiels(cur):
+    if not FICHIER_PRODUITS.exists():
+        print(f"  (ignoré : {FICHIER_PRODUITS.name} absent)")
+        return
+    cur.execute("DROP TABLE IF EXISTS heures_smic_produits")
+    cur.execute("""
+        CREATE TABLE heures_smic_produits (
+            annee INTEGER PRIMARY KEY,
+            smic_horaire_brut_eur REAL,
+            prix_boeuf_eur_kg REAL, heures_boeuf REAL,
+            prix_pain_eur_kg REAL, heures_pain REAL,
+            prix_gazole_eur_l REAL, heures_gazole REAL
+        )
+    """)
+    for row in lire_lignes(FICHIER_PRODUITS, "Heures_Smic_Produits"):
+        cur.execute("INSERT INTO heures_smic_produits VALUES (?,?,?,?,?,?,?,?)", tuple(row))
+
+    cur.execute("DROP TABLE IF EXISTS indice_essentiel_non_essentiel")
+    cur.execute("""
+        CREATE TABLE indice_essentiel_non_essentiel (
+            annee INTEGER PRIMARY KEY,
+            indice_logement_eau_gaz REAL,
+            indice_vetements REAL
+        )
+    """)
+    for annee, lg, ve in lire_lignes(FICHIER_PRODUITS, "Indice_Essentiel_NonEssent"):
+        if not isinstance(annee, (int, float)):
+            continue
+        cur.execute("INSERT INTO indice_essentiel_non_essentiel VALUES (?,?,?)", (int(annee), lg, ve))
+
+
 def main():
     if not CHEMIN_DB.exists():
         raise SystemExit(
@@ -259,6 +296,8 @@ def main():
     import_vignette_salaires(cur)
     print("Import pauvreté (nombre, seuil 50%)...")
     import_pauvrete_nombre(cur)
+    print("Import produits essentiels...")
+    import_produits_essentiels(cur)
     conn.commit()
     conn.close()
     print(f"Terminé. Tables ajoutées à : {CHEMIN_DB}")

@@ -304,19 +304,29 @@
 <!-- Le prix réel du travail -->
 <section>
   <div class="wrap">
-    <h2 class="section-title">Le prix réel du travail : combien d'heures de Smic pour 1 kg de bœuf ?</h2>
-    <p class="section-dek">Le PIB grossit, mais qu'est-ce que ça change concrètement pour un salaire au Smic ? On a croisé nous-mêmes deux séries officielles Insee : le Smic horaire brut et le prix moyen du bœuf, depuis 1992.</p>
+    <h2 class="section-title">Le prix réel du travail : combien d'heures de Smic pour ça ?</h2>
+    <p class="section-dek">Le PIB grossit, mais qu'est-ce que ça change concrètement pour un salaire au Smic ? On a croisé nous-mêmes le Smic horaire brut avec le prix de plusieurs produits du quotidien, depuis 1992. Cochez ou décochez pour comparer.</p>
     <div class="chart-card">
+      <div class="legend-toggle" id="produitsToggle"></div>
       <div class="chart-box"><canvas id="chartPouvoirAchat"></canvas></div>
     </div>
     <div class="callout">
-      <div class="box"><div class="num">3h46</div><div class="lbl">le point le plus favorable, en 2005</div></div>
-      <div class="box brick"><div class="num">4h08</div><div class="lbl">en 2026 — presque revenu au niveau de 1992 (4h32)</div></div>
+      <div class="box"><div class="num">3h46</div><div class="lbl">bœuf : le point le plus favorable, en 2005</div></div>
+      <div class="box brick"><div class="num">+59&nbsp;%</div><div class="lbl">gazole : temps de travail nécessaire depuis 1992 (+0,10h → +0,16h/litre)</div></div>
     </div>
-    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Ministère du Travail, Smic horaire brut ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442432" target="_blank">Insee, prix du bœuf (filet) ↗</a>. Calcul : prix du bœuf ÷ Smic horaire brut. Pas une dégradation continue : un creux en 2005, puis une remontée.</p>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Ministère du Travail, Smic horaire brut ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442432" target="_blank">Insee, prix du bœuf ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442423" target="_blank">Insee, prix du pain ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/000442588" target="_blank">Insee, prix du gazole ↗</a>. Calcul : prix ÷ Smic horaire brut. Le bœuf et le pain se sont plutôt améliorés depuis les années 2000 ; le gazole, lui, s'est nettement dégradé.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : pourquoi ce creux en 2005 puis cette remontée, ce que ça dit du pouvoir d'achat réel, nos propositions...</p>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi l'énergie pèse plus lourd que l'alimentaire dans le pouvoir d'achat réel, nos propositions...</p>
+    </div>
+
+    <h3 class="sub-title">Ce que "l'inflation moyenne" cache : l'essentiel monte, l'accessoire baisse</h3>
+    <p class="section-dek">Le logement, l'eau, le gaz et l'électricité — des dépenses qu'on ne peut pas éviter — ont vu leur indice de prix plus que doubler depuis 1996. L'habillement, une dépense plus arbitrable, a à peine bougé. Un chiffre d'inflation "moyen" écrase cet écart et cache que ce ne sont jamais les mêmes qui trinquent.</p>
+    <div class="chart-card"><div class="chart-box"><canvas id="chartEssentielNonEssentiel"></canvas></div></div>
+    <p class="note alert">Sources : <a href="https://www.insee.fr/fr/statistiques/serie/001762868" target="_blank">Insee, indice des prix — logement, eau, gaz, électricité ↗</a> · <a href="https://www.insee.fr/fr/statistiques/serie/001762705" target="_blank">Insee, indice des prix — vêtements ↗</a>. Indices base 100 en 2015.</p>
+    <div class="analyse-box">
+      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
+      <p contenteditable="true">Cliquez ici pour écrire : pourquoi une inflation "moyenne" masque des réalités très différentes selon le budget des ménages, nos propositions...</p>
     </div>
 
   </div>
@@ -660,16 +670,50 @@ window.addEventListener('DOMContentLoaded', async () => {
         x:{ ticks:{color:'#ccc', font:{size:9}}, grid:{display:false} } } }
   });
 
-  // ---- Heures de Smic pour 1 kg de boeuf ----
-  new Chart(document.getElementById('chartPouvoirAchat'), {
+  // ---- Heures de Smic pour plusieurs produits (cases à cocher) ----
+  const produitsDef = [
+    { key: 'boeuf', label: 'Bœuf (1 kg)', color: JAUNE, defaut: true },
+    { key: 'pain', label: 'Pain (1 kg)', color: '#7fd67f', defaut: true },
+    { key: 'gazole', label: 'Gazole (1 litre)', color: ROUGE, defaut: true },
+  ];
+  const produitsToggleDiv = document.getElementById('produitsToggle');
+  produitsDef.forEach(p => {
+    const lbl = document.createElement('label');
+    lbl.innerHTML = `<input type="checkbox" id="chkprod_${p.key}" ${p.defaut ? 'checked' : ''}> ${p.label}`;
+    produitsToggleDiv.appendChild(lbl);
+  });
+  const anneesProduits = DATA.extra.heures_smic_produits.map(d=>d.annee);
+  function buildProduitsDatasets(){
+    return produitsDef.filter(p => document.getElementById('chkprod_'+p.key).checked).map(p => ({
+      label: p.label,
+      data: DATA.extra.heures_smic_produits.map(d => d[p.key+'_h']),
+      borderColor: p.color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 2, pointBackgroundColor: p.color, tension: 0.2,
+    }));
+  }
+  const chartProduits = new Chart(document.getElementById('chartPouvoirAchat'), {
     type: 'line',
-    data: { labels: DATA.extra.smic_boeuf.map(d=>d.annee), datasets: [
-      { label:"Heures de Smic pour 1 kg de bœuf (filet)", data: DATA.extra.smic_boeuf.map(d=>d.heures),
-        borderColor: JAUNE, backgroundColor:'rgba(255,235,59,0.12)', fill:true, borderWidth:2, pointRadius:3, pointBackgroundColor: JAUNE, tension:0.2 },
+    data: { labels: anneesProduits, datasets: buildProduitsDatasets() },
+    options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{position:'bottom', labels:{color:'#fff'}}, tooltip:{ callbacks:{ label: (item) => item.dataset.label + ' : ' + item.parsed.y.toFixed(2) + ' h' } } },
+      scales:{ y:{ title:{display:true,text:"Heures de travail au Smic", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+  });
+  produitsDef.forEach(p => document.getElementById('chkprod_'+p.key).addEventListener('change', () => {
+    chartProduits.data.datasets = buildProduitsDatasets();
+    chartProduits.update();
+  }));
+
+  // ---- Essentiel vs non-essentiel (indices) ----
+  new Chart(document.getElementById('chartEssentielNonEssentiel'), {
+    type: 'line',
+    data: { labels: DATA.extra.indice_essentiel_non_essentiel.map(d=>d.annee), datasets: [
+      { label:'Logement, eau, gaz, électricité (essentiel)', data: DATA.extra.indice_essentiel_non_essentiel.map(d=>d.logement),
+        borderColor: ROUGE, backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.15 },
+      { label:'Vêtements (non contraint)', data: DATA.extra.indice_essentiel_non_essentiel.map(d=>d.vetements),
+        borderColor: '#7fd67f', backgroundColor:'transparent', borderWidth:2.5, pointRadius:0, tension:0.15 },
     ]},
     options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: (item) => item.parsed.y.toFixed(2) + ' heures' } } },
-      scales:{ y:{ title:{display:true,text:"Heures de travail au Smic", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+      plugins:{ legend:{position:'bottom', labels:{color:'#fff'}} },
+      scales:{ y:{ title:{display:true,text:'Indice, base 100 en 2015', color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
   });
 
   // ---- 2. International ----

@@ -196,6 +196,24 @@ def main():
         cur.execute("SELECT annee, nombre_personnes_pauvres FROM pauvrete_nombre_seuil50 ORDER BY annee")
         extra["pauvrete_nombre_seuil50"] = [{"annee": a, "v": n} for a, n in cur.fetchall()]
 
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='heures_smic_produits'")
+    if cur.fetchone():
+        cur.execute("""
+            SELECT annee, prix_boeuf_eur_kg, heures_boeuf, prix_pain_eur_kg, heures_pain, prix_gazole_eur_l, heures_gazole
+            FROM heures_smic_produits ORDER BY annee
+        """)
+        extra["heures_smic_produits"] = [
+            {"annee": a, "boeuf_prix": bp, "boeuf_h": bh, "pain_prix": pp, "pain_h": ph, "gazole_prix": gp, "gazole_h": gh}
+            for a, bp, bh, pp, ph, gp, gh in cur.fetchall()
+        ]
+
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='indice_essentiel_non_essentiel'")
+    if cur.fetchone():
+        cur.execute("SELECT annee, indice_logement_eau_gaz, indice_vetements FROM indice_essentiel_non_essentiel ORDER BY annee")
+        extra["indice_essentiel_non_essentiel"] = [
+            {"annee": a, "logement": lg, "vetements": ve} for a, lg, ve in cur.fetchall()
+        ]
+
     data["extra"] = extra
 
     conn.close()
