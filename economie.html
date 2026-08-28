@@ -230,7 +230,7 @@
 <section style="padding-top:10px;">
   <div class="wrap">
     <h2 class="section-title" style="border-left-color:var(--jaune);">Nos graphiques, nos commentaires, nos solutions</h2>
-    <p class="section-dek">La même rigueur, une autre lecture : d'où vient la richesse et comment elle est partagée.</p>
+    <p class="section-dek">La même rigueur, une autre lecture : d'où vient la richesse, et comment elle est partagée.</p>
   </div>
 </section>
 
@@ -240,7 +240,7 @@
 <section style="padding-top:0;">
   <div class="wrap">
     <h2 class="section-title">Le PIB, en euros courants et en euros constants</h2>
-    <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année. Les points marqués sur la courbe signalent des décisions monétaires qui ont gonflé la masse d'argent en circulation — survolez ou touchez un point pour en savoir plus, cliquez pour la source.</p>
+    <p class="section-dek">Le PIB "en valeur" gonfle avec l'inflation. Le PIB "en volume" retire cet effet : c'est lui qui mesure la vraie richesse produite en plus chaque année. Cochez "CAC 40" dans la légende pour superposer la bourse : depuis 50 ans, l'argent qui circule sur les marchés financiers s'est largement détaché de la richesse réellement produite. Les points marqués sur la courbe signalent des décisions monétaires qui ont changé la donne — survolez ou touchez un point pour en savoir plus, cliquez pour la source.</p>
 
     <div class="pib-layout">
       <div class="chart-card pib-chart-col"><div class="chart-box tall"><canvas id="chartPib"></canvas></div></div>
@@ -257,7 +257,7 @@
       </div>
     </div>
 
-    <p class="note">Source : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a>. PIB annuel = somme des 4 trimestres.</p>
+    <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a> (PIB annuel = somme des 4 trimestres) ; CAC 40 : points de repère historiques bien documentés (records, krachs), pas une cotation quotidienne — l'échelle de droite sert à comparer la tendance, pas à lire une valeur précise.</p>
     <p class="note alert">Points sur la courbe : <a href="https://fr.wikipedia.org/wiki/Choc_Nixon" target="_blank">1971, choc Nixon ↗</a> · <a href="https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" target="_blank">2008, refinancement illimité des banques par la BCE ↗</a> · <a href="https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" target="_blank">2015, premier programme de rachat de dette de la BCE ↗</a> · <a href="https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" target="_blank">2020, PEPP covid, 1 850 Md€ ↗</a>.</p>
 
     <h3 class="sub-title">La France est-elle vraiment à la traîne ?</h3>
@@ -269,8 +269,8 @@
     <p class="note">Source : <a href="https://www.oecd.org/fr/data/indicators/real-gdp-forecast.html" target="_blank">OCDE, Perspectives économiques n°119 (2026) ↗</a>. Croissance nominale (non corrigée de l'inflation propre à chaque pays).</p>
 
     <div class="analyse-box">
-      <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Cliquez ici pour écrire : qui produit cette richesse, où va-t-elle, nos propositions...</p>
+      <span class="tag">✏️ Notre analyse & nos solutions</span>
+      <p contenteditable="true">Depuis 1971, la monnaie n'est plus adossée à rien de physique : sa valeur ne tient qu'à la confiance qu'on lui accorde, et ce sont les banques centrales et les marchés financiers qui, depuis, en régulent le robinet — pas les parlements. Regardez l'écart qui se creuse entre le PIB en volume (la richesse réellement produite, courbe blanche) et le CAC 40 : les grandes créations monétaires de 2008, 2015 et 2020 étaient présentées comme des mesures d'urgence pour "sauver l'économie" — dans les faits, elles ont d'abord recapitalisé le système financier, avant de ruisseler, difficilement et partiellement, vers le reste de l'économie. Le PIB en volume, lui, progresse à un rythme sans commune mesure. Ce n'est pas une accusation d'un complot : c'est un choix de politique monétaire, qui pourrait être fait autrement.</p>
     </div>
 
       </div>
@@ -542,24 +542,33 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
   miniCounter('numDepSoc','sparkDepSoc', DATA.extra.depenses_sociales_pct_pib, JAUNE, '%', 1);
 
-  // ---- 1. PIB, avec vignettes sur événements monétaires ----
+  // ---- 1. PIB, avec vignettes sur événements monétaires + CAC 40 en option ----
   const EVENEMENTS_MONETAIRES = {
-    1971: { titre:"Choc Nixon", texte:"Les États-Unis suspendent la convertibilité du dollar en or : fin du système de Bretton Woods, début des changes flottants.", lien:"https://fr.wikipedia.org/wiki/Choc_Nixon" },
-    2008: { titre:"Crise financière", texte:"À partir d'octobre 2008, la BCE prête aux banques à taux fixe et sans limite de montant (refinancement illimité), pour éviter l'effondrement du système bancaire.", lien:"https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" },
-    2015: { titre:"Premier \"quantitative easing\" de la BCE", texte:"Le 22 janvier 2015, la BCE lance son premier programme de rachat de dette publique et privée : 60 Md€/mois.", lien:"https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" },
-    2020: { titre:"PEPP — plan d'urgence Covid", texte:"Programme d'achats d'urgence de la BCE face à la pandémie : 750 Md€ en mars 2020, porté à 1 350 puis 1 850 Md€ en fin d'année.", lien:"https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" },
+    1971: { titre:"Choc Nixon", texte:"Les États-Unis suspendent la convertibilité du dollar en or : fin du système de Bretton Woods, début des changes flottants. Depuis, la monnaie n'est plus adossée à rien de physique — sa valeur ne tient qu'à la confiance qu'on lui accorde.", lien:"https://fr.wikipedia.org/wiki/Choc_Nixon" },
+    2008: { titre:"Crise financière", texte:"Après l'effondrement bancaire de 2008, l'État français apporte des garanties et des recapitalisations aux banques (SPPE), et la BCE ouvre un refinancement illimité. Ces sommes ont globalement été récupérées avec intérêts — mais le système qui a produit la crise n'a pas été réformé en profondeur.", lien:"https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" },
+    2015: { titre:"Premier \"quantitative easing\" de la BCE", texte:"Le 22 janvier 2015, la BCE lance son premier programme de rachat de dette publique et privée à grande échelle : 60 Md€/mois. Cet argent recapitalise en priorité le système financier, pas les services publics.", lien:"https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" },
+    2020: { titre:"PEPP — plan d'urgence Covid", texte:"Programme d'achats d'urgence de la BCE face à la pandémie : 750 Md€ en mars 2020, porté à 1 850 Md€ en fin d'année. La bourse s'effondre pendant le confinement (mars 2020), puis rattrape tout son retard dès 2021 — plus vite que les salaires.", lien:"https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" },
   };
   const anneesPib = DATA.pib_annuel.map(d=>d.annee);
   const volumesPib = DATA.pib_annuel.map(d=>d.volume);
   const pointsAnnotation = anneesPib.map(a => EVENEMENTS_MONETAIRES[a] ? 6 : 0);
   const pointsCouleur = anneesPib.map(a => EVENEMENTS_MONETAIRES[a] ? ROUGE : 'transparent');
 
+  // CAC 40 : tracé simplifié à partir de quelques points de repère bien documentés
+  // (pas une cotation quotidienne — sert à montrer la tendance et les records historiques).
+  const CAC40_REPERES = {
+    2000: 6922, 2003: 2403, 2007: 6168, 2009: 2519, 2015: 4637,
+    2019: 5978, 2020: 5551, 2022: 6474, 2024: 7380, 2026: 8100,
+  };
+  const cac40Data = anneesPib.map(a => CAC40_REPERES[a] !== undefined ? CAC40_REPERES[a] : null);
+
   const chartPib = new Chart(document.getElementById('chartPib'), {
     type: 'line',
     data: { labels: anneesPib, datasets: [
-      { label:'PIB en valeur (prix courants)', data: DATA.pib_annuel.map(d=>d.valeur), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15 },
-      { label:'PIB en volume (prix constants, base 2020)', data: volumesPib, borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, tension:0.15,
+      { label:'PIB en valeur (prix courants)', data: DATA.pib_annuel.map(d=>d.valeur), borderColor: JAUNE, backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:0.15, yAxisID:'y' },
+      { label:'PIB en volume (prix constants, base 2020)', data: volumesPib, borderColor: BLANC, backgroundColor:'transparent', borderWidth:2, tension:0.15, yAxisID:'y',
         pointRadius: pointsAnnotation, pointHoverRadius: pointsAnnotation.map(r=>r?9:4), pointBackgroundColor: pointsCouleur, pointBorderColor: JAUNE, pointBorderWidth: 2 },
+      { label:'CAC 40 (repères, échelle de droite)', data: cac40Data, borderColor: '#e57373', backgroundColor:'transparent', borderWidth:2, borderDash:[6,4], pointRadius:4, pointBackgroundColor:'#e57373', spanGaps:true, tension:0.25, yAxisID:'y1', hidden:true },
     ]},
     options:{ responsive:true, maintainAspectRatio:false, interaction:{mode:'nearest', axis:'x', intersect:false},
       onClick:(evt, elements) => {
@@ -575,7 +584,11 @@ window.addEventListener('DOMContentLoaded', async () => {
           const ev = EVENEMENTS_MONETAIRES[annee];
           return ev ? ['', '📌 ' + ev.titre, ev.texte, '(cliquer pour la source)'] : [];
         } } } },
-      scales:{ y:{ title:{display:true,text:"Milliards d'euros", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} }, x:{ grid:{display:false}, ticks:{color:'#ccc'} } } }
+      scales:{
+        y:{ title:{display:true,text:"Milliards d'euros", color:'#ccc'}, grid:{color:GRID}, ticks:{color:'#ccc'} },
+        y1:{ position:'right', title:{display:true,text:'CAC 40 (points, repères)', color:'#e57373'}, grid:{display:false}, ticks:{color:'#ccc'} },
+        x:{ grid:{display:false}, ticks:{color:'#ccc'} }
+      } }
   });
 
   // ---- Encart animé : la richesse s'accumule ----
