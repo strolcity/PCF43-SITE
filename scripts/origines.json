@@ -1,0 +1,537 @@
+{
+  "source": "INSEE, https://www.insee.fr/fr/statistiques/2861345#tableau-figure1_radio1",
+  "annee": 2024,
+  "champ": "France, flux d'entrées 2024",
+  "immigres": {
+    "continents": [
+      {
+        "continent": "Afrique",
+        "effectifs": 143700,
+        "part_pct": 45.9
+      },
+      {
+        "continent": "Europe",
+        "effectifs": 83300,
+        "part_pct": 26.6
+      },
+      {
+        "continent": "Asie",
+        "effectifs": 56600,
+        "part_pct": 18.1
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "effectifs": 29600,
+        "part_pct": 9.5
+      }
+    ],
+    "detail_pays": [
+      {
+        "continent": "Afrique",
+        "pays": "Algérie",
+        "effectifs": 24700,
+        "part_pct": 7.9
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Maroc",
+        "effectifs": 23300,
+        "part_pct": 7.4
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Tunisie",
+        "effectifs": 15100,
+        "part_pct": 4.8
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Côte d'Ivoire",
+        "effectifs": 9400,
+        "part_pct": 3
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Cameroun",
+        "effectifs": 8100,
+        "part_pct": 2.6
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Sénégal",
+        "effectifs": 7100,
+        "part_pct": 2.3
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Guinée",
+        "effectifs": 6700,
+        "part_pct": 2.1
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Congo",
+        "effectifs": 4800,
+        "part_pct": 1.5
+      },
+      {
+        "continent": "Afrique",
+        "pays": "République démocratique du Congo",
+        "effectifs": 4400,
+        "part_pct": 1.4
+      },
+      {
+        "continent": "Afrique",
+        "pays": "Comores",
+        "effectifs": 3800,
+        "part_pct": 1.2
+      },
+      {
+        "continent": "Europe",
+        "pays": "Italie",
+        "effectifs": 9000,
+        "part_pct": 2.9
+      },
+      {
+        "continent": "Europe",
+        "pays": "Allemagne",
+        "effectifs": 7500,
+        "part_pct": 2.4
+      },
+      {
+        "continent": "Europe",
+        "pays": "Belgique",
+        "effectifs": 7300,
+        "part_pct": 2.3
+      },
+      {
+        "continent": "Europe",
+        "pays": "Espagne",
+        "effectifs": 6800,
+        "part_pct": 2.2
+      },
+      {
+        "continent": "Europe",
+        "pays": "Portugal",
+        "effectifs": 6200,
+        "part_pct": 2
+      },
+      {
+        "continent": "Europe",
+        "pays": "Ukraine",
+        "effectifs": 5800,
+        "part_pct": 1.9
+      },
+      {
+        "continent": "Europe",
+        "pays": "Royaume-Uni",
+        "effectifs": 5700,
+        "part_pct": 1.8
+      },
+      {
+        "continent": "Europe",
+        "pays": "Roumanie",
+        "effectifs": 5300,
+        "part_pct": 1.7
+      },
+      {
+        "continent": "Europe",
+        "pays": "Suisse",
+        "effectifs": 4500,
+        "part_pct": 1.4
+      },
+      {
+        "continent": "Europe",
+        "pays": "Russie",
+        "effectifs": 3300,
+        "part_pct": 1.1
+      },
+      {
+        "continent": "Asie",
+        "pays": "Chine",
+        "effectifs": 8600,
+        "part_pct": 2.7
+      },
+      {
+        "continent": "Asie",
+        "pays": "Turquie",
+        "effectifs": 7900,
+        "part_pct": 2.5
+      },
+      {
+        "continent": "Asie",
+        "pays": "Afghanistan",
+        "effectifs": 6000,
+        "part_pct": 1.9
+      },
+      {
+        "continent": "Asie",
+        "pays": "Inde",
+        "effectifs": 5700,
+        "part_pct": 1.8
+      },
+      {
+        "continent": "Asie",
+        "pays": "Liban",
+        "effectifs": 3700,
+        "part_pct": 1.2
+      },
+      {
+        "continent": "Asie",
+        "pays": "Bangladesh",
+        "effectifs": 3000,
+        "part_pct": 1
+      },
+      {
+        "continent": "Asie",
+        "pays": "Vietnam",
+        "effectifs": 2200,
+        "part_pct": 0.7
+      },
+      {
+        "continent": "Asie",
+        "pays": "Syrie",
+        "effectifs": 2200,
+        "part_pct": 0.7
+      },
+      {
+        "continent": "Asie",
+        "pays": "Pakistan",
+        "effectifs": 2100,
+        "part_pct": 0.7
+      },
+      {
+        "continent": "Asie",
+        "pays": "Iran",
+        "effectifs": 2000,
+        "part_pct": 0.6
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Brésil",
+        "effectifs": 6700,
+        "part_pct": 2.1
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "États-Unis",
+        "effectifs": 5000,
+        "part_pct": 1.6
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Colombie",
+        "effectifs": 2800,
+        "part_pct": 0.9
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Mexique",
+        "effectifs": 1700,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Canada",
+        "effectifs": 1600,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Vénézuela",
+        "effectifs": 1600,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Haïti",
+        "effectifs": 1500,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Argentine",
+        "effectifs": 1300,
+        "part_pct": 0.4
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Pérou",
+        "effectifs": 1200,
+        "part_pct": 0.4
+      },
+      {
+        "continent": "Amérique, Océanie",
+        "pays": "Australie",
+        "effectifs": 1100,
+        "part_pct": 0.4
+      }
+    ]
+  },
+  "etrangers": {
+    "continents": [
+      {
+        "continent": "Africains",
+        "effectifs": 130400,
+        "part_pct": 44.3
+      },
+      {
+        "continent": "Européens",
+        "effectifs": 85300,
+        "part_pct": 29
+      },
+      {
+        "continent": "Asiatiques",
+        "effectifs": 51900,
+        "part_pct": 17.6
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "effectifs": 26500,
+        "part_pct": 9
+      }
+    ],
+    "detail_pays": [
+      {
+        "continent": "Africains",
+        "pays": "Algériens",
+        "effectifs": 22100,
+        "part_pct": 7.5
+      },
+      {
+        "continent": "Africains",
+        "pays": "Marocains",
+        "effectifs": 21000,
+        "part_pct": 7.1
+      },
+      {
+        "continent": "Africains",
+        "pays": "Tunisiens",
+        "effectifs": 14500,
+        "part_pct": 4.9
+      },
+      {
+        "continent": "Africains",
+        "pays": "Ivoiriens",
+        "effectifs": 8800,
+        "part_pct": 3
+      },
+      {
+        "continent": "Africains",
+        "pays": "Camerounais",
+        "effectifs": 6900,
+        "part_pct": 2.3
+      },
+      {
+        "continent": "Africains",
+        "pays": "Guinéens",
+        "effectifs": 6600,
+        "part_pct": 2.2
+      },
+      {
+        "continent": "Africains",
+        "pays": "Sénégalais",
+        "effectifs": 5700,
+        "part_pct": 1.9
+      },
+      {
+        "continent": "Africains",
+        "pays": "Congolais",
+        "effectifs": 4900,
+        "part_pct": 1.7
+      },
+      {
+        "continent": "Africains",
+        "pays": "Zaïrois",
+        "effectifs": 4100,
+        "part_pct": 1.4
+      },
+      {
+        "continent": "Africains",
+        "pays": "Comoriens",
+        "effectifs": 3700,
+        "part_pct": 1.3
+      },
+      {
+        "continent": "Européens",
+        "pays": "Italiens",
+        "effectifs": 10100,
+        "part_pct": 3.4
+      },
+      {
+        "continent": "Européens",
+        "pays": "Espagnols",
+        "effectifs": 8200,
+        "part_pct": 2.8
+      },
+      {
+        "continent": "Européens",
+        "pays": "Portugais",
+        "effectifs": 7600,
+        "part_pct": 2.6
+      },
+      {
+        "continent": "Européens",
+        "pays": "Allemands",
+        "effectifs": 7400,
+        "part_pct": 2.5
+      },
+      {
+        "continent": "Européens",
+        "pays": "Belges",
+        "effectifs": 7300,
+        "part_pct": 2.5
+      },
+      {
+        "continent": "Européens",
+        "pays": "Roumains",
+        "effectifs": 5600,
+        "part_pct": 1.9
+      },
+      {
+        "continent": "Européens",
+        "pays": "Ukrainiens",
+        "effectifs": 5500,
+        "part_pct": 1.9
+      },
+      {
+        "continent": "Européens",
+        "pays": "Britanniques",
+        "effectifs": 5300,
+        "part_pct": 1.8
+      },
+      {
+        "continent": "Européens",
+        "pays": "Suisses",
+        "effectifs": 4200,
+        "part_pct": 1.4
+      },
+      {
+        "continent": "Européens",
+        "pays": "Russes",
+        "effectifs": 3200,
+        "part_pct": 1.1
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Chinois",
+        "effectifs": 8400,
+        "part_pct": 2.9
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Turcs",
+        "effectifs": 7200,
+        "part_pct": 2.4
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Afghans",
+        "effectifs": 5900,
+        "part_pct": 2
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Indiens",
+        "effectifs": 5000,
+        "part_pct": 1.7
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Libanais",
+        "effectifs": 3300,
+        "part_pct": 1.1
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Bangladais",
+        "effectifs": 3000,
+        "part_pct": 1
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Syriens",
+        "effectifs": 2100,
+        "part_pct": 0.7
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Pakistanais",
+        "effectifs": 2000,
+        "part_pct": 0.7
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Japonais",
+        "effectifs": 1800,
+        "part_pct": 0.6
+      },
+      {
+        "continent": "Asiatiques",
+        "pays": "Vietnamiens",
+        "effectifs": 1800,
+        "part_pct": 0.6
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Brésiliens",
+        "effectifs": 6100,
+        "part_pct": 2.1
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Américains (États-Unis)",
+        "effectifs": 4800,
+        "part_pct": 1.6
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Colombiens",
+        "effectifs": 2500,
+        "part_pct": 0.9
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Haïtiens",
+        "effectifs": 1700,
+        "part_pct": 0.6
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Canadiens",
+        "effectifs": 1600,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Mexicains",
+        "effectifs": 1400,
+        "part_pct": 0.5
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Vénézuéliens",
+        "effectifs": 1200,
+        "part_pct": 0.4
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Argentins",
+        "effectifs": 1000,
+        "part_pct": 0.3
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Australiens",
+        "effectifs": 1000,
+        "part_pct": 0.3
+      },
+      {
+        "continent": "Américains, Océaniens",
+        "pays": "Péruviens",
+        "effectifs": 1000,
+        "part_pct": 0.3
+      }
+    ]
+  }
+}

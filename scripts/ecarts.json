@@ -1,0 +1,43 @@
+{
+  "source": "INSEE, Enquête Revenus fiscaux et sociaux 2019",
+  "annee": 2019,
+  "labels": [
+    "Personne seule",
+    "Famille monoparentale",
+    "Couple sans enfant",
+    "Couple 1-2 enfants",
+    "Couple 3+ enfants",
+    "Ménage complexe",
+    "Ensemble"
+  ],
+  "series": [
+    {
+      "label": "Écart avant transferts (%)",
+      "data": [
+        -15.4,
+        -36.3,
+        -23.5,
+        -25.6,
+        -50.2,
+        -23.6,
+        -29.6
+      ],
+      "backgroundColor": "rgba(255, 85, 85, 0.7)",
+      "borderColor": "#ff5555"
+    },
+    {
+      "label": "Écart après transferts (%)",
+      "data": [
+        -11.2,
+        -21.8,
+        -19.5,
+        -20.3,
+        -37,
+        -18.4,
+        -22.8
+      ],
+      "backgroundColor": "rgba(85, 255, 85, 0.7)",
+      "borderColor": "#55ff55"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "source": "INSEE, Enquête Revenus fiscaux et sociaux 2019, https://www.insee.fr/fr/statistiques/7941379?sommaire=7941491#graphique-figure3",
+  "annee": 2019,
+  "categories": [
+    "Immigrés",
+    "Descendants d'immigrés",
+    "Ni immigrés ni descendants"
+  ],
+  "series": [
+    {
+      "label": "Revenus d'activité",
+      "data": [
+        15080,
+        18300,
+        20110
+      ],
+      "backgroundColor": "rgba(255, 85, 85, 0.7)",
+      "borderColor": "#ff5555"
+    },
+    {
+      "label": "Allocations chômage",
+      "data": [
+        900,
+        930,
+        690
+      ],
+      "backgroundColor": "rgba(255, 170, 0, 0.7)",
+      "borderColor": "#ffaa00"
+    },
+    {
+      "label": "Pensions/retraites",
+      "data": [
+        3920,
+        3820,
+        6920
+      ],
+      "backgroundColor": "rgba(85, 255, 85, 0.7)",
+      "borderColor": "#55ff55"
+    },
+    {
+      "label": "Revenus patrimoine",
+      "data": [
+        1380,
+        1650,
+        2540
+      ],
+      "backgroundColor": "rgba(255, 255, 85, 0.7)",
+      "borderColor": "#ffff55"
+    },
+    {
+      "label": "Prestations sociales",
+      "data": [
+        2380,
+        2300,
+        1200
+      ],
+      "backgroundColor": "rgba(85, 85, 255, 0.7)",
+      "borderColor": "#5555ff"
+    },
+    {
+      "label": "Impôts directs",
+      "data": [
+        -3140,
+        -3840,
+        -4870
+      ],
+      "backgroundColor": "rgba(255, 85, 255, 0.7)",
+      "borderColor": "#ff55ff"
+    }
+  ],
+  "niveau_de_vie_moyen_eur": {
+    "Immigrés": 20520,
+    "Descendants d'immigrés": 23160,
+    "Ni immigrés ni descendants": 26590
+  },
+  "taux_pauvrete_seuil_1288e_mois": [
+    {
+      "population": "Étrangers",
+      "taux_pct": 31.5
+    },
+    {
+      "population": "Ensemble de la population",
+      "taux_pct": 11.1
+    }
+  ]
+}

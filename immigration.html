@@ -95,6 +95,7 @@
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             padding: 10px;
+            position: relative;
         }
 
         /* Tableaux */
@@ -175,7 +176,7 @@
                 font-size: 0.9em;
             }
         }
-    
+
         /* Style pour les conteneurs d'images et pop-ups */
         .image-container {
             display: inline-block;
@@ -183,7 +184,6 @@
             position: relative;
         }
 
-        /* Style pour les images */
         .image-container img {
             max-width: 200px;
             border-radius: 8px;
@@ -195,7 +195,6 @@
             transform: scale(1.05);
         }
 
-        /* Style pour les pop-ups */
         .popup {
             position: absolute;
             background-color: #f8f9fa;
@@ -210,25 +209,21 @@
             font-size: 14px;
         }
 
-        /* Afficher le pop-up au survol */
         .image-container:hover .popup {
             display: block;
         }
 
-        /* Style pour le texte en gras et coloré */
         .popup strong {
-            color: #d9534f; /* Rouge pour les parties importantes */
+            color: #d9534f;
             font-weight: bold;
         }
 
-        /* Style pour "Oh my good!!" */
         .popup .oh-my-good {
-            color: #5cb85c; /* Vert */
+            color: #5cb85c;
             font-weight: bold;
             font-size: 16px;
         }
 
-        /* Style pour les liens */
         .popup a {
             color: #007bff;
             text-decoration: none;
@@ -237,136 +232,137 @@
         .popup a:hover {
             text-decoration: underline;
         }
-        /* Style pour aligner le camembert et l'image "Immigré" côte à côte */
-.camembert-and-image {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 0;
-    gap: 20px;
-}
 
-.camembert-and-image .pie-chart-box {
-    flex: 1;
-}
+        .camembert-and-image {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 20px;
+        }
 
-.camembert-and-image .image-container {
-    flex: 1;
-    max-width: 300px;
-}
+        .camembert-and-image .pie-chart-box {
+            flex: 1;
+        }
 
-/* Style pour masquer l'image "Gollum" par défaut */
-.gollum-container {
-    display: none;
-    position: relative;
-    margin: 20px auto;
-    text-align: center;
-}
+        .camembert-and-image .image-container {
+            flex: 1;
+            max-width: 300px;
+        }
 
-/* Afficher l'image "Gollum" au survol */
-.gollum-trigger:hover + .gollum-container {
-    display: block;
-}
+        .gollum-container {
+            display: none;
+            position: relative;
+            margin: 20px auto;
+            text-align: center;
+        }
 
-/* Style pour le déclencheur invisible (peut être un texte ou une icône) */
-.gollum-trigger {
-    cursor: pointer;
-    color: #ff5555;
-    font-weight: bold;
-    text-decoration: underline;
-    display: inline-block;
-    margin: 10px 0;
-}
-/* Style pour le conteneur de Gollum */
-.gollum-wrapper {
-    display: inline-block;
-    position: relative;
-    margin: 10px 0;
-    cursor: pointer;
-}
+        .gollum-trigger:hover + .gollum-container {
+            display: block;
+        }
 
-/* Style pour le texte "Oh my good!!" */
-.gollum-trigger {
-    color: #ff5555;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-}
+        .gollum-trigger {
+            cursor: pointer;
+            color: #ff5555;
+            font-weight: bold;
+            text-decoration: underline;
+            display: inline-block;
+            margin: 10px 0;
+        }
 
-/* Style pour l'image Gollum (masquée par défaut) */
-.gollum-image {
-    display: none;
-    position: absolute;
-    left: 0;
-    top: 100%;
-    z-index: 1000;
-    margin-top: 10px;
-    border-radius: 8px;
-    max-width: 200px;
-}
+        .gollum-wrapper {
+            display: inline-block;
+            position: relative;
+            margin: 10px 0;
+            cursor: pointer;
+        }
 
-/* Afficher l'image Gollum au survol du texte */
-.gollum-trigger:hover + .gollum-image {
-    display: block;
-}
-/* Style pour le conteneur de l'image Zombis */
-.zombis-container {
-    display: inline-block;
-    margin: 10px;
-    cursor: pointer;
-}
+        .gollum-image {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            z-index: 1000;
+            margin-top: 10px;
+            border-radius: 8px;
+            max-width: 200px;
+        }
 
-/* Style pour l'image Zombis */
-.zombis-image {
-    max-width: 200px;
-    border-radius: 8px;
-    transition: transform 0.2s;
-}
+        .gollum-trigger:hover + .gollum-image {
+            display: block;
+        }
 
-.zombis-image:hover {
-    transform: scale(1.05);
-}
+        .zombis-container {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+        }
 
-/* Style pour le pop-up */
-.zombis-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.9);
-    color: #e0e0e0;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 600px;
-    z-index: 1000;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-    overflow-y: auto;
-    max-height: 80vh;
-}
+        .zombis-image {
+            max-width: 200px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
 
-/* Style pour le contenu du pop-up */
-.zombis-popup-content {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    text-align: justify;
-}
+        .zombis-image:hover {
+            transform: scale(1.05);
+        }
 
-/* Style pour les punchlines */
-.zombis-popup-content p {
-    margin: 10px 0;
-}
+        .zombis-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
 
-/* Style pour le bouton de fermeture */
-.zombis-popup-close {
-    color: #ff5555;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: right;
-    display: block;
-}
-</style>
+        .zombis-popup-content {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .zombis-popup-content p {
+            margin: 10px 0;
+        }
+
+        .zombis-popup-close {
+            color: #ff5555;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: right;
+            display: block;
+        }
+
+        /* Pop-up détail pays (camembert origines) */
+        .origines-popup {
+            display: none;
+            position: absolute;
+            background-color: rgba(20,20,20,0.97);
+            border: 1px solid #ff5555;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #e0e0e0;
+            max-width: 260px;
+            z-index: 1000;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+        .origines-popup table { width: 100%; margin: 4px 0 0 0; background: transparent; }
+        .origines-popup th, .origines-popup td { padding: 2px 4px; border: none; font-size: 12px; }
+        .origines-popup th { background: transparent; color: #ff5555; }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -399,74 +395,75 @@
 
         <!-- Graphique 1: Évolution de la population (volumes + %) -->
         <h2>📈 Évolution de la population en France (1921-2025)</h2>
-<p><strong>Source :</strong> <a href="https://www.insee.fr/fr/statistiques/3633212" target="_blank">INSEE - Population étrangère en France</a></p>
+        <p><strong>Source :</strong> <a href="https://www.insee.fr/fr/statistiques/3633212" target="_blank">INSEE - Population étrangère en France</a></p>
 
-<div class="chart-container">
-    <canvas id="populationChart"></canvas>
-</div>
+        <div class="chart-container">
+            <canvas id="populationChart"></canvas>
+        </div>
 
-<div class="text-box">
-    <p><strong>Analyse :</strong></p>
-    
-        - <strong> "on est submergé"</strong> : Depuis 1999,augmentation de moins de 4M pour prés de 5M de Français de "souche".
-        <!-- Conteneur pour Gollum -->
+        <div class="text-box">
+            <p><strong>Analyse :</strong></p>
+
+                - <strong> "on est submergé"</strong> : Depuis 1999,augmentation de moins de 4M pour prés de 5M de Français de "souche".
+                <!-- Conteneur pour Gollum -->
 <div class="gollum-wrapper">
     <p class="gollum-trigger">Oh my good!!</p>
     <img class="gollum-image" src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Gollum">
 </div>
-        <br>
-        - <strong>"On va perdre nos origines chrétiennes</strong> : <a href="https://observatoire-immigration.fr/peut-on-evaluer-le-nombre-de-musulmans-vivant-en-france/" target="_blank">Selon l'observatoire de l'immigration:</a>aujourd'hui entre 12 et 18% . 
-        <!-- Conteneur pour Gollum -->
+                <br>
+                - <strong>"On va perdre nos origines chrétiennes</strong> : <a href="https://observatoire-immigration.fr/peut-on-evaluer-le-nombre-de-musulmans-vivant-en-france/" target="_blank">Selon l'observatoire de l'immigration:</a>aujourd'hui entre 12 et 18% . 
+                <!-- Conteneur pour Gollum -->
 <div class="gollum-wrapper">
     <p class="gollum-trigger">Oh my good!!</p>
     <img class="gollum-image" src="https://i.postimg.cc/Kjy17qND/golum.gif" alt="Gollum">
 </div>
-        <br>
-        -<strong>La croissance basée sur la demande </strong> : l’immigration augmente mécaniquement le PIB par l’accroissement de la population totale du pays, par ses effets induits sur la consommation et les investissements publics ou privés.
-        <br>
-        -<p><strong>Si les immigrés et les descendants d’immigrés étaient autant en emploi que les personnes sans ascendance migratoire</strong></p> 
-        <p>• Le taux d’emploi en France serait celui des personnes sans ascendance migratoire soit 70,7 % au lieu de 68,4 % actuellement, soit une augmentation de 3,36%.</p>
-        <p>• Grâce à ce taux d’emploi plus élevé de 3,36%, le PIB français se serait élevé en 2024 à 3015 milliards d’euros au lieu de 2917 milliards d’euros21, soit une augmentation de 98 milliards d’euros.</p>
-        <p></p>• Grâce à ce taux d’emploi plus élevé de 3,36%, le PIB français se serait élevé en 2024 à 3015 milliards d’euros au lieu de 2917 milliards d’euros21, soit une augmentation de 98 milliards d’euros.
-        <p>• Grâce à ce taux d’emploi plus élevé de 3,36%, le PIB français se serait élevé en 2024 à 3015 milliards d’euros au lieu de 2917 milliards d’euros21, soit une augmentation de 98 milliards d’euros.</p> 
-        <p><strong>La dicrimination est néfaste à l'économie</strong></p> 
-    </p>
-</div>
+                <br>
+                -<strong>La croissance basée sur la demande </strong> : l’immigration augmente mécaniquement le PIB par l’accroissement de la population totale du pays, par ses effets induits sur la consommation et les investissements publics ou privés.
+                <br>
+                -<p><strong>Si les immigrés et les descendants d’immigrés étaient autant en emploi que les personnes sans ascendance migratoire</strong></p>
+                <p>• Le taux d’emploi en France serait celui des personnes sans ascendance migratoire soit 70,7 % au lieu de 68,4 % actuellement, soit une augmentation de 3,36%.</p>
+                <p>• Grâce à ce taux d’emploi plus élevé de 3,36%, le PIB français se serait élevé en 2024 à 3015 milliards d’euros au lieu de 2917 milliards d’euros21, soit une augmentation de 98 milliards d’euros.</p>
 
-       <!-- Camembert : Origines des immigrés -->
-<h2>🌍 Origines des immigrés en France (2019)</h2>
-<p><strong>Source :</strong> INSEE - Enquête Revenus fiscaux et sociaux 2019.</p>
-
-<div class="camembert-and-image">
-    <div class="pie-chart-box">
-        <canvas id="originesChart"></canvas>
-    </div>
-
-    <!-- Image 1 : Immigré -->
-    <div class="image-container">
-        <img src="https://i.postimg.cc/L4x1dw79/immigre.jpg" alt="Immigré">
-        <div class="popup">
-            <p>
-                <strong>Dire que certains immigrés choisiraient la France parce que “le système social est généreux” n’est pas un fait :</strong>
-                La vérité, c’est que beaucoup de personnes quittent leur pays pour des raisons bien plus complexes : guerres, violences, persécutions, effondrement économique, manque de perspectives et, très souvent, la nécessité de protéger les membres de la famille.
-            </p>
-            <p>
-                Quand des discours transforment l’immigration en menace culturelle ou quand ils suggèrent qu’il existerait “de bons” et “de mauvais” migrants selon une origine, ils alimentent la stigmatisation. Or en République laïque, <strong>le racisme n'est pas une opinion, c'est un délit.</strong>
-            </p>
-            <p>
-                Et surtout, réduire ces parcours à une “promenade vers la manne sociale” est une caricature. Voir un mensonge, il faudra nous expliquer pourquoi ceux qui traversent le plus grand charnier méditéranéen, se dirigent ensuite pour traverser la Manche sur une autre coquille de noix.
-            </p>
-            <p>
-                Ils veulent juste une chance de vivre, de travailler, d’envoyer de l’aide à leurs proches, et de construire un avenir. La question à poser n’est pas “comment se servent-ils du système ?”, mais <strong>“quelles réponses républicaines, humaines et efficaces peut-on apporter : accueil, protection, intégration, lutte contre les réseaux criminels et voies légales”.</strong>
-            </p>
-            <p>
-                <a href="https://www.unhcr.org/fr/editions/rapport-semestriel-sur-les-tendances-mondiales" target="_blank">Rapport UNHCR</a><br>
-                <a href="https://www.lacimade.org/faq/pourquoi-migre-t-on/" target="_blank">Pourquoi migre-t-on ? (La Cimade)</a><br>
-                <a href="https://www.lacimade.org/publication/36707/" target="_blank">Et quand ils ne sont plus "réguliers", régularisons-les</a>
+                <p><strong>La dicrimination est néfaste à l'économie</strong></p>
             </p>
         </div>
-    </div>
-</div>
+
+       <!-- Camembert : Origines des immigrés -->
+        <h2>🌍 Origines des immigrés en France (2024)</h2>
+        <p><strong>Source :</strong> <a href="https://www.insee.fr/fr/statistiques/2861345#tableau-figure1_radio1" target="_blank">INSEE - Estimations des flux d'entrées 2024</a></p>
+        <p><em>Note : répartition des arrivées de l'année 2024 (flux), et non de l'ensemble des immigrés déjà présents en France (stock).</em></p>
+
+        <div class="camembert-and-image">
+            <div class="pie-chart-box">
+                <canvas id="originesChart"></canvas>
+                <div id="originesPopup" class="origines-popup"></div>
+            </div>
+
+            <!-- Image 1 : Immigré -->
+            <div class="image-container">
+                <img src="https://i.postimg.cc/L4x1dw79/immigre.jpg" alt="Immigré">
+                <div class="popup">
+                    <p>
+                        <strong>Dire que certains immigrés choisiraient la France parce que “le système social est généreux” n’est pas un fait :</strong>
+                        La vérité, c’est que beaucoup de personnes quittent leur pays pour des raisons bien plus complexes : guerres, violences, persécutions, effondrement économique, manque de perspectives et, très souvent, la nécessité de protéger les membres de la famille.
+                    </p>
+                    <p>
+                        Quand des discours transforment l’immigration en menace culturelle ou quand ils suggèrent qu’il existerait “de bons” et “de mauvais” migrants selon une origine, ils alimentent la stigmatisation. Or en République laïque, <strong>le racisme n'est pas une opinion, c'est un délit.</strong>
+                    </p>
+                    <p>
+                        Et surtout, réduire ces parcours à une “promenade vers la manne sociale” est une caricature. Voir un mensonge, il faudra nous expliquer pourquoi ceux qui traversent le plus grand charnier méditéranéen, se dirigent ensuite pour traverser la Manche sur une autre coquille de noix.
+                    </p>
+                    <p>
+                        Ils veulent juste une chance de vivre, de travailler, d’envoyer de l’aide à leurs proches, et de construire un avenir. La question à poser n’est pas “comment se servent-ils du système ?”, mais <strong>“quelles réponses républicaines, humaines et efficaces peut-on apporter : accueil, protection, intégration, lutte contre les réseaux criminels et voies légales”.</strong>
+                    </p>
+                    <p>
+                        <a href="https://www.unhcr.org/fr/editions/rapport-semestriel-sur-les-tendances-mondiales" target="_blank">Rapport UNHCR</a><br>
+                        <a href="https://www.lacimade.org/faq/pourquoi-migre-t-on/" target="_blank">Pourquoi migre-t-on ? (La Cimade)</a><br>
+                        <a href="https://www.lacimade.org/publication/36707/" target="_blank">Et quand ils ne sont plus "réguliers", régularisons-les</a>
+                    </p>
+                </div>
+            </div>
+        </div>
 
         <!-- Section 2: Niveau de vie et décomposition des revenus -->
         <h2>💰 Niveau de vie : Décomposition des revenus (2019)</h2>
@@ -499,7 +496,7 @@
                 &nbsp;&nbsp;&nbsp;→ Moins d’<strong>impôts directs</strong> (-4 870€ vs -3 140€) car leurs revenus sont plus élevés.
                 <p>Dans les datas, vous trouverez aussi et remarquerez que le taux de pauvreté (1288€/mois) des étrangers est de 31,5% contre 11,10%</p>
             </p>
-            <p><strong>La dicrimination est néfaste à l'économie</strong></p> 
+            <p><strong>La dicrimination est néfaste à l'économie</strong></p>
         </div>
 
         <!-- Graphique 3: Écarts de niveau de vie -->
@@ -643,7 +640,7 @@
                 <strong>4. L’extrême droite ment</strong> :
                 Leur discours repose sur <strong>la peur</strong> et <strong>l’ignorance des chiffres</strong>.
                 <p>L'angoisse <strong>RESSENTI</strong> vient de l'échec MINORITAIRE de l'intégration de certains immigrés ou enfants d'immigrés, qui ne partagent pas les valeurs de la République, en particulier la laïcité, l'égalité H/F, et qui n'adhèrent pas au "modèle" français.</p>
-                </p>En réponse, leur argumentaire est la suppression des flux migratoire et de réduire les droits droits des étrangers,</p> 
+                </p>En réponse, leur argumentaire est la suppression des flux migratoire et de réduire les droits droits des étrangers,</p>
                 </p>sans chercher à déterminer ce qui permettrait à l'état "fort" d'intégrer les populations qu'il choisit sur son sol.</p>
                 <p>Dans ce contexte, les discours les plus extrémistes rencontre une approbation de la population. MAIS VOUS ETES MANIPULER (Attention à la lobotamisation avec CNews)</p>
                  <a href="https://data.ina.fr/s/3JdpRs" target="_blank" style="display:inline-block;background:#d32f2f;color:white;padding:9px 22px;border-radius:6px;text-decoration:none;font-size:.9em;">Essayer l'outil data.ina.fr →</a>
@@ -679,120 +676,88 @@
 
     <!-- Scripts pour les graphiques -->
     <script>
-    // Graphique 1: Évolution de la population (volumes uniquement)
-    const populationCtx = document.getElementById('populationChart').getContext('2d');
-    const populationChart = new Chart(populationCtx, {
-        type: 'line',
-        data: {
-            labels: ['1921', '1926', '1931', '1936', '1946', '1954', '1962', '1968', '1975', '1982', '1990', '1999', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024 (p)', '2025 (p)'],
-            datasets: [
-                {
-                    label: 'Étrangers (milliers)',
-                    data: [1532, 2409, 2715, 2198, 1744, 1765, 2151, 2621, 3442, 3714, 3645, 3322, 3648, 3682, 3715, 3771, 3818, 3889, 3981, 4084, 4289, 4428, 4542, 4704, 4850, 5000, 5149, 5236, 5331, 5635, 6046, 6297],
-                    borderColor: '#ff5555',
+    // ===== Graphique 1 : Évolution de la population (data/immigration/population.json) =====
+    fetch('data/immigration/population.json')
+      .then(r => r.json())
+      .then(pop => {
+        const populationCtx = document.getElementById('populationChart').getContext('2d');
+        new Chart(populationCtx, {
+            type: 'line',
+            data: {
+                labels: pop.annees,
+                datasets: pop.series.map(s => ({
+                    label: s.label,
+                    data: s.data,
+                    borderColor: s.color,
                     backgroundColor: 'transparent',
                     tension: 0.4,
+                    spanGaps: true,
                     yAxisID: 'y'
-                },
-                {
-                    label: 'Français par acquisition (milliers)',
-                    data: [254, 361, 517, 517, 853, 1068, 1267, 1320, 1392, 1422, 1792, 2376, 2669, 2709, 2754, 2791, 2822, 2842, 2867, 2893, 2928, 2952, 2983, 3008, 3026, 3047, 3057, 3076, 3106, 3152, 3214, 3336],
-                    borderColor: '#ffaa00',
-                    backgroundColor: 'transparent',
-                    tension: 0.4,
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'Français de naissance (milliers)',
-                    data: [37011, 38153, 38468, 38468, 37251, 39948, 43042, 45713, 47765, 49160, 52641, 54446, 56869, 57210, 57493, 57743, 57973, 58203, 58394, 58588, 58914, 59043, 59078, 59116, 59211, 59236, 59378, 59618, 59623, 59385, 59618],
-                    borderColor: '#55ff55',
-                    backgroundColor: 'transparent',
-                    tension: 0.4,
-                    yAxisID: 'y'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false,
+                }))
             },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Évolution des volumes (milliers) des étrangers, Français par acquisition et Français de naissance (1921-2025)',
-                    color: '#ff5555'
-                },
-                legend: {
-                    labels: {
-                        color: '#e0e0e0'
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.dataset.label || '';
-                            label += ': ' + context.parsed.y + ' milliers';
-                            return label;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
+            options: {
+                responsive: true,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
                     title: {
                         display: true,
-                        text: 'Volume (milliers)',
-                        color: '#e0e0e0'
+                        text: 'Évolution des volumes (milliers) des étrangers, Français par acquisition et Français de naissance (1921-2025)',
+                        color: '#ff5555'
                     },
-                    ticks: {
-                        color: '#e0e0e0',
-                        callback: function(value) {
-                            return value + 'K';
+                    legend: { labels: { color: '#e0e0e0' } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (context.parsed.y === null) return label + ': donnée non disponible';
+                                return label + ': ' + context.parsed.y + ' milliers';
+                            }
                         }
-                    },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
                     }
                 },
-                x: {
-                    ticks: {
-                        color: '#e0e0e0',
-                        maxRotation: 45,
-                        minRotation: 45
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'Volume (milliers)', color: '#e0e0e0' },
+                        ticks: { color: '#e0e0e0', callback: value => value + 'K' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
+                    x: {
+                        ticks: { color: '#e0e0e0', maxRotation: 45, minRotation: 45 },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     }
                 }
             }
-        }
-    });
+        });
+      });
 
-        // Camembert : Origines des immigrés
+    // ===== Camembert : Origines des immigrés (data/immigration/origines.json) =====
+    fetch('data/immigration/origines.json')
+      .then(r => r.json())
+      .then(origines => {
+        const continents = origines.immigres.continents;
+        const detailByContinent = {};
+        origines.immigres.detail_pays.forEach(p => {
+            if (!detailByContinent[p.continent]) detailByContinent[p.continent] = [];
+            detailByContinent[p.continent].push(p);
+        });
+
         const originesCtx = document.getElementById('originesChart').getContext('2d');
-        const originesChart = new Chart(originesCtx, {
+        new Chart(originesCtx, {
             type: 'pie',
             data: {
-                labels: ['Afrique', 'Europe', 'Asie', 'Amérique/Océanie'],
+                labels: continents.map(c => c.continent),
                 datasets: [{
-                    data: [40, 35, 15, 10],
+                    data: continents.map(c => c.part_pct),
                     backgroundColor: [
                         'rgba(255, 85, 85, 0.7)',
                         'rgba(85, 255, 85, 0.7)',
                         'rgba(255, 255, 85, 0.7)',
                         'rgba(85, 85, 255, 0.7)'
                     ],
-                    borderColor: [
-                        '#ff5555',
-                        '#55ff55',
-                        '#ffff55',
-                        '#5555ff'
-                    ],
+                    borderColor: ['#ff5555', '#55ff55', '#ffff55', '#5555ff'],
                     borderWidth: 1
                 }]
             },
@@ -801,78 +766,64 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Répartition des immigrés par origine (2019)',
+                        text: "Répartition des immigrés arrivés en 2024, par continent d'origine",
                         color: '#ff5555'
                     },
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            color: '#e0e0e0'
-                        }
-                    },
+                    legend: { position: 'right', labels: { color: '#e0e0e0' } },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                return label + ': ' + value + '%';
+                                const c = continents[context.dataIndex];
+                                return c.continent + ': ' + c.part_pct + '% (' + c.effectifs.toLocaleString('fr-FR') + ' personnes)';
                             }
                         }
                     }
+                },
+                onClick: (evt, elements) => {
+                    const popup = document.getElementById('originesPopup');
+                    if (!elements.length) { popup.style.display = 'none'; return; }
+                    const idx = elements[0].index;
+                    const continent = continents[idx].continent;
+                    const pays = (detailByContinent[continent] || []).sort((a, b) => b.effectifs - a.effectifs);
+                    let html = '<strong>' + continent + ' — détail par pays (2024)</strong><table>';
+                    html += '<tr><th>Pays</th><th>Effectifs</th><th>%</th></tr>';
+                    pays.forEach(p => {
+                        html += '<tr><td>' + p.pays + '</td><td>' + p.effectifs.toLocaleString('fr-FR') + '</td><td>' + p.part_pct + '%</td></tr>';
+                    });
+                    html += '</table>';
+                    popup.innerHTML = html;
+                    popup.style.display = 'block';
+                    popup.style.left = evt.x + 15 + 'px';
+                    popup.style.top = evt.y + 'px';
                 }
             }
         });
 
-        // Graphique 2: Décomposition des revenus (niveau de vie)
+        document.addEventListener('click', function(e) {
+            const popup = document.getElementById('originesPopup');
+            const canvas = document.getElementById('originesChart');
+            if (popup && e.target !== canvas && !popup.contains(e.target)) {
+                popup.style.display = 'none';
+            }
+        });
+      });
+
+    // ===== Graphique 2 : Décomposition des revenus (data/immigration/revenus.json) =====
+    fetch('data/immigration/revenus.json')
+      .then(r => r.json())
+      .then(rev => {
         const revenusCtx = document.getElementById('revenusChart').getContext('2d');
-        const revenusChart = new Chart(revenusCtx, {
+        new Chart(revenusCtx, {
             type: 'bar',
             data: {
-                labels: ['Immigrés', 'Descendants d\'immigrés', 'Ni immigrés ni descendants'],
-                datasets: [
-                    {
-                        label: 'Revenus d\'activité',
-                        data: [15080, 18300, 20110],
-                        backgroundColor: 'rgba(255, 85, 85, 0.7)',
-                        borderColor: '#ff5555',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Allocations chômage',
-                        data: [900, 930, 690],
-                        backgroundColor: 'rgba(255, 170, 0, 0.7)',
-                        borderColor: '#ffaa00',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Pensions/retraites',
-                        data: [3920, 3820, 6920],
-                        backgroundColor: 'rgba(85, 255, 85, 0.7)',
-                        borderColor: '#55ff55',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Revenus patrimoine',
-                        data: [1380, 1650, 2540],
-                        backgroundColor: 'rgba(255, 255, 85, 0.7)',
-                        borderColor: '#ffff55',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Prestations sociales',
-                        data: [2380, 2300, 1200],
-                        backgroundColor: 'rgba(85, 85, 255, 0.7)',
-                        borderColor: '#5555ff',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Impôts directs (négatif)',
-                        data: [-3140, -3840, -4870],
-                        backgroundColor: 'rgba(255, 85, 255, 0.7)',
-                        borderColor: '#ff55ff',
-                        borderWidth: 1
-                    }
-                ]
+                labels: rev.categories,
+                datasets: rev.series.map(s => ({
+                    label: s.label,
+                    data: s.data,
+                    backgroundColor: s.backgroundColor,
+                    borderColor: s.borderColor,
+                    borderWidth: 1
+                }))
             },
             options: {
                 responsive: true,
@@ -882,20 +833,12 @@
                         text: 'Décomposition des revenus (2019) - Niveau de vie = Somme de tous les revenus - Impôts',
                         color: '#ff5555'
                     },
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            color: '#e0e0e0'
-                        }
-                    },
+                    legend: { position: 'top', labels: { color: '#e0e0e0' } },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
                                 let label = context.dataset.label || '';
-                                if (label.includes('(négatif)')) {
-                                    label = label.replace('(négatif)', '');
-                                    return label + ': -' + Math.abs(context.parsed.y) + ' €';
-                                }
+                                if (context.parsed.y < 0) return label + ': -' + Math.abs(context.parsed.y) + ' €';
                                 return label + ': ' + context.parsed.y + ' €';
                             }
                         }
@@ -904,52 +847,36 @@
                 scales: {
                     y: {
                         beginAtZero: false,
-                        ticks: {
-                            color: '#e0e0e0',
-                            callback: function(value) {
-                                return value + ' €';
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
+                        ticks: { color: '#e0e0e0', callback: value => value + ' €' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' },
                         stacked: true
                     },
                     x: {
                         stacked: true,
-                        ticks: {
-                            color: '#e0e0e0'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
+                        ticks: { color: '#e0e0e0' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     }
                 }
             }
         });
+      });
 
-        // Graphique 3: Écarts de niveau de vie
+    // ===== Graphique 3 : Écarts de niveau de vie (data/immigration/ecarts.json) =====
+    fetch('data/immigration/ecarts.json')
+      .then(r => r.json())
+      .then(ec => {
         const ecartsCtx = document.getElementById('ecartsChart').getContext('2d');
-        const ecartsChart = new Chart(ecartsCtx, {
+        new Chart(ecartsCtx, {
             type: 'bar',
             data: {
-                labels: ['Personne seule', 'Famille monoparentale', 'Couple sans enfant', 'Couple 1-2 enfants', 'Couple 3+ enfants', 'Ménage complexe', 'Ensemble'],
-                datasets: [
-                    {
-                        label: 'Écart avant transferts (%)',
-                        data: [-15.4, -36.3, -23.5, -25.6, -50.2, -23.6, -29.6],
-                        backgroundColor: 'rgba(255, 85, 85, 0.7)',
-                        borderColor: '#ff5555',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Écart après transferts (%)',
-                        data: [-11.2, -21.8, -19.5, -20.3, -37.0, -18.4, -22.8],
-                        backgroundColor: 'rgba(85, 255, 85, 0.7)',
-                        borderColor: '#55ff55',
-                        borderWidth: 1
-                    }
-                ]
+                labels: ec.labels,
+                datasets: ec.series.map(s => ({
+                    label: s.label,
+                    data: s.data,
+                    backgroundColor: s.backgroundColor,
+                    borderColor: s.borderColor,
+                    borderWidth: 1
+                }))
             },
             options: {
                 responsive: true,
@@ -959,46 +886,29 @@
                         text: 'Écarts de niveau de vie entre immigrés et non-immigrés (2019)',
                         color: '#ff5555'
                     },
-                    legend: {
-                        labels: {
-                            color: '#e0e0e0'
-                        }
-                    },
+                    legend: { labels: { color: '#e0e0e0' } },
                     tooltip: {
                         callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y + '%';
-                            }
+                            label: context => context.dataset.label + ': ' + context.parsed.y + '%'
                         }
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: false,
-                        ticks: {
-                            color: '#e0e0e0',
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
+                        ticks: { color: '#e0e0e0', callback: value => value + '%' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     },
                     x: {
-                        ticks: {
-                            color: '#e0e0e0',
-                            maxRotation: 45,
-                            minRotation: 45
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        }
+                        ticks: { color: '#e0e0e0', maxRotation: 45, minRotation: 45 },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
                     }
                 }
             }
         });
-            // Fonction pour ouvrir le pop-up Zombis
+      });
+
+    // Fonction pour ouvrir le pop-up Zombis
     function openZombisPopup() {
         document.getElementById("zombisPopup").style.display = "block";
     }
@@ -1017,7 +927,5 @@
     };
     </script>
 
-      </div>
-</div>
 </body>
 </html>
