@@ -147,6 +147,18 @@
   .analyse-box p[contenteditable="true"]{ font-style:normal; color:#1a1a1a; outline:none; }
   .analyse-box p[contenteditable="true"]:focus{ background:#fffbe6; }
 
+  /* ---- lien avec aperçu image au survol ---- */
+  .lien-apercu{ position:relative; display:inline-block; color:var(--rouge); font-weight:bold; text-decoration:underline; cursor:pointer; }
+  .lien-apercu .apercu-popup{
+    display:none; position:absolute; z-index:100; bottom:130%; left:50%; transform:translateX(-50%);
+    background:#fff; border:2px solid var(--rouge); border-radius:6px; padding:8px; box-shadow:0 6px 20px rgba(0,0,0,0.5);
+    width:320px;
+  }
+  .lien-apercu .apercu-popup img{ width:100%; display:block; border-radius:3px; }
+  .lien-apercu .apercu-popup span{ display:block; font-size:0.7em; color:#555; text-align:center; margin-top:4px; font-weight:normal; text-decoration:none; }
+  .lien-apercu:hover .apercu-popup{ display:block; }
+  @media (max-width:600px){ .lien-apercu .apercu-popup{ width:220px; left:0; transform:none; } }
+
   footer.sources{ padding:14px 0 60px; font-size:0.74em; color:#ccc; text-align:center; line-height:1.8; }
   footer.sources a{ color:var(--jaune); text-decoration:none; }
   footer.sources a:hover{ text-decoration:underline; }
@@ -258,7 +270,7 @@
     </div>
 
     <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/series/110309498" target="_blank">Insee, comptes nationaux trimestriels, base 2020 ↗</a> (PIB annuel = somme des 4 trimestres) ; CAC 40 : points de repère historiques bien documentés (records, krachs), pas une cotation quotidienne — l'échelle de droite sert à comparer la tendance, pas à lire une valeur précise.</p>
-    <p class="note alert">Points sur la courbe : <a href="https://fr.wikipedia.org/wiki/Choc_Nixon" target="_blank">1971, choc Nixon ↗</a> · <a href="https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" target="_blank">2008, refinancement illimité des banques par la BCE ↗</a> · <a href="https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" target="_blank">2015, premier programme de rachat de dette de la BCE ↗</a> · <a href="https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" target="_blank">2020, PEPP covid, 1 850 Md€ ↗</a>.</p>
+    <p class="note alert">Points sur la courbe : <a href="https://fr.wikipedia.org/wiki/Accords_de_Bretton_Woods" target="_blank">1971, choc Nixon ↗</a> · <a href="https://www.banque-france.fr/fr/strategie-monetaire/cadre-operationnel/operation-refinancement" target="_blank">2008, refinancement illimité des banques par la BCE ↗</a> · <a href="https://www.ecb.europa.eu/press/pr/date/2015/html/pr150122_1.fr.html" target="_blank">2015, premier programme de rachat de dette de la BCE ↗</a> · <a href="https://www.ecb.europa.eu/ecb-and-you/explainers/tell-me/html/pepp.fr.html" target="_blank">2020, PEPP covid, 1 850 Md€ ↗</a>.</p>
 
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions</span>
@@ -267,7 +279,14 @@
 
     <div class="analyse-box" style="border-left-color:var(--jaune);">
       <span class="tag" style="color:#7a5d00;">💬 Un débat qui existe, à connaître avant de trancher</span>
-      <p>Toute la dette publique n'est pas de même nature. Une partie est détenue par la Banque de France et l'Eurosystème (via les rachats de la BCE), une autre par des acteurs français (banques, assurance-vie), et environ la moitié par des créanciers non-résidents. Certains économistes défendent l'idée qu'une dette détenue par sa propre banque centrale, si elle finance des investissements qui créent de la valeur (hôpitaux, écoles, transition écologique), pourrait être traitée différemment d'une dette ordinaire — voire annulée sans dommage. C'est une position réelle, mais minoritaire chez les économistes, et surtout : les traités européens interdisent aujourd'hui à la BCE de financer directement les États (article 123 du traité de Lisbonne) — la France ne peut pas décider ça seule. Ce qui est en revanche bien documenté : une dette détenue par des créanciers étrangers expose à une perte de marge de manœuvre politique en cas de crise de confiance — la Grèce en 2010-2015 en a payé le prix par des années d'austérité imposée. La nature du créancier n'est donc pas un détail technique : c'est une vraie question politique.</p>
+      <p>Toute la dette publique n'est pas de même nature. Une partie est détenue par la Banque de France et l'Eurosystème (via les rachats de la BCE), une autre par des acteurs français (banques, assurance-vie), et
+        <a href="https://www.aft.gouv.fr/fr/principaux-chiffres-dette#groupe" target="_blank" class="lien-apercu">57,5 % par des créanciers non-résidents
+          <span class="apercu-popup">
+            <img src="https://i.postimg.cc/SKYKxwSf/Dette.png" alt="Répartition des détenteurs de la dette française, AFT, T1 2026">
+            <span>Agence France Trésor, T1 2026 — cliquer pour la source ↗</span>
+          </span>
+        </a>
+        (chiffre officiel le plus récent, 1ᵉʳ trimestre 2026). Certains économistes défendent l'idée qu'une dette détenue par sa propre banque centrale, si elle finance des investissements qui créent de la valeur (hôpitaux, écoles, transition écologique), pourrait être traitée différemment d'une dette ordinaire — voire annulée sans dommage. C'est une position réelle, mais minoritaire chez les économistes, et surtout : les traités européens interdisent aujourd'hui à la BCE de financer directement les États (article 123 du traité de Lisbonne) — la France ne peut pas décider ça seule. Ce qui est en revanche bien documenté : une dette détenue par des créanciers étrangers expose à une perte de marge de manœuvre politique en cas de crise de confiance — la Grèce en 2010-2015 en a payé le prix par des années d'austérité imposée. La nature du créancier n'est donc pas un détail technique : c'est une vraie question politique.</p>
     </div>
 
     <p class="section-dek" style="margin-top:34px; font-style:italic;">Ce PIB, qui grossit chaque année, ne se partage pas tout seul. Les deux graphiques qui suivent montrent comment : d'abord entre salaires et profits, puis ce que les entreprises font de la part qui leur revient — investir dans l'outil de travail, ou la reverser aux actionnaires.</p>
@@ -523,7 +542,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // ---- Compteur Dette/PIB (avec sparkline des 12 derniers trimestres) ----
   const detteQ = DATA.extra.dette_pib_trim;
   const DETTE_BASE = detteQ[detteQ.length-1].md, DETTE_PCT = detteQ[detteQ.length-1].pct;
-  const DETTE_EUR_S = 9.7; // Md€/s, cf. Indicateurs_ref
+  const DETTE_EUR_S = 9700 / 1e9; // 9 700 €/s convertis en Md€/s (0,0000097 Md€/s)
   const DETTE_DEPART = new Date("2026-04-01T00:00:00Z");
   function liveDette(){ return DETTE_BASE + Math.max((Date.now()-DETTE_DEPART.getTime())/1000,0)*DETTE_EUR_S; }
   const elDette = document.getElementById('liveDette');
