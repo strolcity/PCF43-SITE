@@ -29,6 +29,32 @@
         nav .nav-title{font-size:.95em;font-weight:bold;flex:1;min-width:180px;}
         nav a{color:white;text-decoration:none;font-size:.8em;opacity:.85;}
         nav a:hover{opacity:1;}
+
+        /* ===== BANDEAU DE NAVIGATION DU SITE (ronds avec images) ===== */
+        nav.topnav{
+            position:sticky; top:0; z-index:50;
+            background:rgba(0,0,0,0.75);
+            justify-content:center;
+            gap:14px;
+            padding:10px 16px;
+            border-bottom:1px solid rgba(255,255,255,0.15);
+        }
+        nav.topnav .nav-item{
+            width:46px; height:46px; border-radius:50%; overflow:hidden;
+            border:2px solid rgba(255,255,255,0.35);
+            display:flex; align-items:center; justify-content:center;
+            background:rgba(255,255,255,0.08);
+            transition:border-color .15s, transform .15s;
+            flex-shrink:0; opacity:1; padding:0;
+        }
+        nav.topnav .nav-item:hover{ border-color:#ffeb3b; transform:scale(1.12); }
+        nav.topnav .nav-item.active{ border-color:#d32f2f; border-width:3px; }
+        nav.topnav .nav-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+        @media (max-width:520px){
+            nav.topnav{ gap:9px; padding:8px 10px; }
+            nav.topnav .nav-item{ width:38px; height:38px; }
+        }
+
         .container{max-width:1300px;margin:0 auto;padding:20px 14px;}
         .filtres{
             background:rgba(0,0,0,.68);
@@ -125,14 +151,12 @@
 </head>
 
 <body>
+<!-- ============================================================
+     BANDEAU DE NAVIGATION — identique sur toutes les pages du site.
+     Sur chaque page, ajoutez la classe "active" au lien concerné.
+     ============================================================ -->
+<script src="nav.js"></script>
 
-<nav>
-    <span class="nav-title">PCF 43 — Analyse Sécurité</span>
-    <a href="https://explore.data.gouv.fr/fr/datasets/621df2954fa5a3b5a023e23c/#/resources/75753852-aca0-4c53-bfd4-a29513358d2f" target="_blank" class="nav-mi">
-        <img src="https://i.postimg.cc/fL4rYFs8/ministere-interieur.png" alt="SSMSI" style="height:14px;vertical-align:middle;"> Résultats officiels
-    </a>
-    <a href="index.html">← Accueil</a>
-</nav>
 
 <div class="container">
     <div id="msg">⏳ Chargement des données...</div>

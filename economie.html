@@ -27,14 +27,17 @@
     border-bottom:1px solid var(--line);
   }
   nav.topnav .nav-item{
-    width:42px; height:42px; border-radius:50%; overflow:hidden;
+    width:46px; height:46px; border-radius:50%; overflow:hidden;
     border:2px solid rgba(255,255,255,0.35); display:flex; align-items:center; justify-content:center;
-    background:rgba(255,255,255,0.08); transition:border-color .15s, transform .15s;
+    background:rgba(255,255,255,0.08); transition:border-color .15s, transform .15s; flex-shrink:0;
   }
-  nav.topnav .nav-item:hover{ border-color:var(--jaune); transform:scale(1.08); }
+  nav.topnav .nav-item:hover{ border-color:var(--jaune); transform:scale(1.12); }
   nav.topnav .nav-item.active{ border-color:var(--rouge); border-width:3px; }
-  nav.topnav .nav-item img{ width:100%; height:100%; object-fit:cover; }
-  nav.topnav .nav-placeholder{ font-size:1.3em; }
+  nav.topnav .nav-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+  @media (max-width:520px){
+    nav.topnav{ gap:9px; padding:8px 10px; }
+    nav.topnav .nav-item{ width:38px; height:38px; }
+  }
 
   header.top{ text-align:center; padding:34px 20px 8px; }
   header.top .logo{ width:80px; height:80px; border-radius:50%; border:4px solid var(--rouge); background:rgba(0,0,0,0.45); padding:8px; }
@@ -167,29 +170,7 @@
 </head>
 <body>
 
-<nav class="topnav">
-  <a href="index.html" class="nav-item" title="Accueil">
-    <img src="https://i.postimg.cc/tT0MFfbS/pcf43.png" alt="Accueil PCF 43">
-  </a>
-  <a href="analyse.html" class="nav-item" title="Élections">
-    <span class="nav-placeholder">🗳️</span>
-  </a>
-  <a href="securite.html" class="nav-item" title="Sécurité">
-    <span class="nav-placeholder">🛡️</span>
-  </a>
-  <a href="economie.html" class="nav-item active" title="Économie">
-    <span class="nav-placeholder">📊</span>
-  </a>
-  <a href="emploi.html" class="nav-item" title="Emploi">
-    <span class="nav-placeholder">💼</span>
-  </a>
-  <a href="immigration.html" class="nav-item" title="Immigration">
-    <span class="nav-placeholder">🧔</span>
-  </a>
-  <a href="extreme-droite.html" class="nav-item" title="Extrême droite">
-    <span class="nav-placeholder">⚠️</span>
-  </a>
-</nav>
+<script src="nav.js"></script>
 
 <header class="top">
   <img src="https://i.postimg.cc/tT0MFfbS/pcf43.png" alt="PCF 43" class="logo">
@@ -286,7 +267,7 @@
             <span>Agence France Trésor, T1 2026 — cliquer pour la source ↗</span>
           </span>
         </a>
-        (chiffre officiel le plus récent, 1ᵉʳ trimestre 2026). Certains économistes défendent l'idée qu'une dette détenue par sa propre banque centrale, si elle finance des investissements qui créent de la valeur (hôpitaux, écoles, transition écologique), pourrait être traitée différemment d'une dette ordinaire — voire annulée sans dommage. C'est une position réelle, mais minoritaire chez les économistes, et surtout : les traités européens interdisent aujourd'hui à la BCE de financer directement les États (article 123 du traité de Lisbonne) — la France ne peut pas décider ça seule. Ce qui est en revanche bien documenté : une dette détenue par des créanciers étrangers expose à une perte de marge de manœuvre politique en cas de crise de confiance — la Grèce en 2010-2015 en a payé le prix par des années d'austérité imposée. La nature du créancier n'est donc pas un détail technique : c'est une vraie question politique.</p>
+        (chiffre officiel le plus récent, 1ᵉʳ trimestre 2026). Certains économistes défendent l'idée qu'une dette détenue par sa propre banque centrale, si elle finance des investissements qui créent de la valeur (hôpitaux, écoles, transition écologique), pourrait être traitée différemment d'une dette ordinaire — voire annulée sans dommage. C'est une position réelle, mais minoritaire chez les économistes, et surtout : les traités européens interdisent aujourd'hui à la BCE de financer directement les États (article 123 du traité de Lisbonne) — la France ne peut pas décider ça seule. Ce qui est en revanche bien documenté : une dette détenue par des créanciers étrangers expose à une perte de marge de manœuvre politique en cas de crise de confiance — la Grèce en 2010-2015 en a payé le prix par des années d'austérité imposée. La nature du créancier n'est donc pas un détail technique : c'est une vraie question politique. Est il normal que les banquiers privés s'enrichissent sur le dos des états?</p>
     </div>
 
     <p class="section-dek" style="margin-top:34px; font-style:italic;">Ce PIB, qui grossit chaque année, ne se partage pas tout seul. Les deux graphiques qui suivent montrent comment : d'abord entre salaires et profits, puis ce que les entreprises font de la part qui leur revient — investir dans l'outil de travail, ou la reverser aux actionnaires.</p>
@@ -400,7 +381,7 @@
     <p class="note">Sources : <a href="https://www.insee.fr/fr/statistiques/1375188" target="_blank">Smic et indice des prix, Ministère du Travail/Insee ↗</a> ; <a href="https://www.insee.fr/fr/statistiques/serie/010752396" target="_blank">Salaire médian, Insee ↗</a>. Toutes les séries sont en euros courants, non déflatées — c'est justement la comparaison avec l'indice des prix qui permet de juger de l'évolution réelle.</p>
     <div class="analyse-box">
       <span class="tag">✏️ Notre analyse & nos solutions — à compléter</span>
-      <p contenteditable="true">Regardez l'écart entre les deux courbes se resserrer au fil du temps : depuis 1990, le Smic a progressé plus vite (+144 %) que le salaire médian (+100 %). Ce n'est pas une bonne nouvelle déguisée — c'est la preuve chiffrée d'un tassement des salaires vers le bas, qu'on appelle la "smicardisation" : de plus en plus de salariés se retrouvent proches du Smic, pendant que les salaires du milieu de l'échelle stagnent. Ce n'est pas un hasard : on l'a vu dans la section Financement, les exonérations de cotisations patronales s'arrêtent à 1,6 Smic — ce qui décourage justement les employeurs d'augmenter au-delà de ce seuil. Nos propositions : des négociations de branche obligatoires et régulières pour revaloriser les grilles salariales dans leur ensemble, pas seulement le Smic ; et une réforme des exonérations qui n'incite plus, de fait, à plafonner les salaires.</p>
+      <p contenteditable="true">Regardez l'écart entre les deux courbes s'écarte au fil du temps : depuis 1990, le Smic a progressé plus vite (+144 %) que le salaire médian (+100 %). Ce n'est pas une bonne nouvelle déguisée — c'est la preuve chiffrée d'un tassement des salaires vers le bas, qu'on appelle la "smicardisation" : de plus en plus de salariés se retrouvent proches du Smic, pendant que les salaires du milieu de l'échelle stagnent. Ce n'est pas un hasard : on l'a vu dans la section Financement, les exonérations de cotisations patronales s'arrêtent à 1,6 Smic — ce qui décourage justement les employeurs d'augmenter au-delà de ce seuil. Nos propositions : des négociations de branche obligatoires et régulières pour revaloriser les grilles salariales dans leur ensemble, pas seulement le Smic ; et une réforme des exonérations qui n'incite plus, de fait, à plafonner les salaires.</p>
     </div>
 
     
