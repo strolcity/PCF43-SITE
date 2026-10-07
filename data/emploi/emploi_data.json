@@ -1,14 +1,72 @@
 {
   "_meta": {
     "description": "Données officielles pour la page Emploi — chômage, RSA, prime d'activité, AAH, temps partiel, emplois vacants. France et Haute-Loire.",
+    "version": 2,
     "sources": {
       "tauxChomage": "INSEE - séries 001515908 (Haute-Loire) et 001688527 (France), insee.fr",
       "defm": "DARES - Inscrits à France Travail, data.dares.travail-emploi.gouv.fr (stocks et flux, données brutes)",
       "caf": "CAF open data data.caf.fr — RSA, prime d'activité, AAH (régime général, hors MSA)",
-      "tempsPartiel": "DARES - temps partiel (série et raisons)",
+      "tempsPartiel": "DARES - temps partiel (série, raisons, quotité)",
       "emploisVacants": "DARES - emplois vacants"
     },
-    "notes": "Champ CAF = régime général (hors MSA). DEFM = stocks bruts fin de mois. La hausse 2025 des catégories F/G est en partie mécanique (inscription automatique RSA / jeunes, loi plein emploi)."
+    "notes": "Champ CAF = régime général (hors MSA). DEFM = stocks bruts fin de mois ; comparaison départementale = mois de janvier de chaque année. Montants PPA Haute-Loire : estimation = foyers 43 x montant moyen France du groupe (la CAF ne publie pas ce montant au niveau départemental par situation familiale). La hausse 2025 des catégories F/G est en partie mécanique (inscription automatique RSA / jeunes, loi plein emploi)."
+  },
+  "constantes": {
+    "are_coef_partie_variable": {
+      "valeur": 0.404,
+      "unite": "taux",
+      "description": "ARE : part du SJR (40,4 %)"
+    },
+    "are_partie_fixe": {
+      "valeur": 13.19,
+      "unite": "euros/jour",
+      "description": "ARE : partie fixe par jour (2026)"
+    },
+    "are_coef_min": {
+      "valeur": 0.57,
+      "unite": "taux",
+      "description": "ARE : 57 % du SJR (minimum garanti)"
+    },
+    "are_plancher_jour": {
+      "valeur": 31.97,
+      "unite": "euros/jour",
+      "description": "ARE : allocation journalière minimale (2026)"
+    },
+    "are_plafond_coef": {
+      "valeur": 0.75,
+      "unite": "taux",
+      "description": "ARE : allocation <= 75 % du salaire journalier de référence"
+    },
+    "are_jours_min": {
+      "valeur": 130,
+      "unite": "jours",
+      "description": "ARE : jours travaillés exigés sur les 24 derniers mois"
+    },
+    "cotis_chomage_salarie_pct": {
+      "valeur": 0,
+      "unite": "%",
+      "description": "Cotisation chômage des salariés : 0 % depuis 2018"
+    },
+    "cotis_chomage_employeur_pct": {
+      "valeur": 4.05,
+      "unite": "%",
+      "description": "Cotisation chômage payée uniquement par l'employeur"
+    },
+    "rsa_socle": {
+      "valeur": 651.69,
+      "unite": "euros/mois",
+      "description": "RSA socle pour une personne seule (2026)"
+    },
+    "smic_horaire_brut": {
+      "valeur": 11.88,
+      "unite": "euros/h",
+      "description": "SMIC horaire brut (2026) — à ajuster chaque année"
+    },
+    "ppa_exonerations_patronales_md": {
+      "valeur": 80,
+      "unite": "Md€/an",
+      "description": "Exonérations de cotisations patronales (voir page économie)"
+    }
   },
   "tauxChomage": [
     {
@@ -3608,6 +3666,9 @@
       }
     ]
   },
+  "defmNomsDepartements": {},
+  "defmDepartements": {},
+  "defmFranceJanvier": {},
   "defmFluxFranceAnnuel": [
     {
       "annee": "2015",
@@ -4495,89 +4556,39 @@
     },
     "primeActivite": {
       "hauteLoire": {
-        "PA majorÃÂ© - Seul avec 2 enfants ÃÂ  charge": 240,
-        "PA non majorÃÂ© - Couple avec 1 enfant ÃÂ  charge": 695,
-        "PA non majorÃÂ© - Couple avec 3 enfants ou plus ÃÂ  charge": 420,
-        "PA non majorÃÂ© - Inconnu": 46,
-        "PA majorÃÂ© - Seul avec 1 enfant ÃÂ  charge": 281,
-        "PA non majorÃÂ© - Seul sans enfant ÃÂ  charge": 7810,
-        "PA non majorÃÂ© - Seul avec 1 enfant ÃÂ  charge": 1216,
-        "PA non majorÃÂ© - Couple sans enfant ÃÂ  charge": 648,
-        "PA non majorÃÂ© - Couple avec 2 enfants ÃÂ  charge": 899,
-        "PA majorÃÂ© - Seul avec 3 enfants ou plus ÃÂ  charge": 93,
-        "PA non majorÃÂ© - Seul avec 2 enfants ÃÂ  charge": 763,
-        "PA non majorÃÂ© - Seul avec 3 enfants ou plus ÃÂ  charge": 148
+        "Seul avec enfants": {
+          "foyers": null
+        },
+        "Couple avec enfants": {
+          "foyers": null
+        },
+        "Seul sans enfant": {
+          "foyers": null
+        },
+        "Couple sans enfant": {
+          "foyers": null
+        }
       },
       "france": {
-        "PA majorÃÂ© - Inconnu": {
-          "foyers": 24,
-          "personnes": 62,
-          "montantTotal": 8950
+        "Seul avec enfants": {
+          "foyers": null,
+          "personnes": null,
+          "montantTotal": null
         },
-        "PA majorÃÂ© - Seul avec 1 enfant ÃÂ  charge": {
-          "foyers": 92688,
-          "personnes": 188294,
-          "montantTotal": 27565798
+        "Couple avec enfants": {
+          "foyers": null,
+          "personnes": null,
+          "montantTotal": null
         },
-        "PA majorÃÂ© - Seul avec 2 enfants ÃÂ  charge": {
-          "foyers": 69026,
-          "personnes": 207223,
-          "montantTotal": 23805522
+        "Seul sans enfant": {
+          "foyers": null,
+          "personnes": null,
+          "montantTotal": null
         },
-        "PA majorÃÂ© - Seul avec 3 enfants ou plus ÃÂ  charge": {
-          "foyers": 37942,
-          "personnes": 170602,
-          "montantTotal": 11012243
-        },
-        "PA majorÃÂ© - Seul sans enfant ÃÂ  charge": {
-          "foyers": 19193,
-          "personnes": 28737,
-          "montantTotal": 4733428
-        },
-        "PA non majorÃÂ© - Couple avec 1 enfant ÃÂ  charge": {
-          "foyers": 251104,
-          "personnes": 748876,
-          "montantTotal": 57042476
-        },
-        "PA non majorÃÂ© - Couple avec 2 enfants ÃÂ  charge": {
-          "foyers": 280201,
-          "personnes": 1108019,
-          "montantTotal": 68596861
-        },
-        "PA non majorÃÂ© - Couple avec 3 enfants ou plus ÃÂ  charge": {
-          "foyers": 233786,
-          "personnes": 1279905,
-          "montantTotal": 58926210
-        },
-        "PA non majorÃÂ© - Couple sans enfant ÃÂ  charge": {
-          "foyers": 247367,
-          "personnes": 494142,
-          "montantTotal": 46671247
-        },
-        "PA non majorÃÂ© - Inconnu": {
-          "foyers": 5015,
-          "personnes": 9233,
-          "montantTotal": 928791
-        },
-        "PA non majorÃÂ© - Seul avec 1 enfant ÃÂ  charge": {
-          "foyers": 460195,
-          "personnes": 892869,
-          "montantTotal": 109032190
-        },
-        "PA non majorÃÂ© - Seul avec 2 enfants ÃÂ  charge": {
-          "foyers": 245747,
-          "personnes": 717235,
-          "montantTotal": 55030977
-        },
-        "PA non majorÃÂ© - Seul avec 3 enfants ou plus ÃÂ  charge": {
-          "foyers": 69774,
-          "personnes": 293987,
-          "montantTotal": 13135037
-        },
-        "PA non majorÃÂ© - Seul sans enfant ÃÂ  charge": {
-          "foyers": 2572092,
-          "personnes": 2598013,
-          "montantTotal": 351352427
+        "Couple sans enfant": {
+          "foyers": null,
+          "personnes": null,
+          "montantTotal": null
         }
       },
       "parAgeHauteLoire": {
@@ -4692,7 +4703,10 @@
       "Pour d'autres raisons - Pour sÃ¢ÂÂoccuper de ses enfants ou dÃ¢ÂÂun proche": 25.4,
       "Pour d'autres raisons - Pour suivre des ÃÂ©tudes ou une formation": 7.1,
       "Pour d'autres raisons - Pour avoir du temps libre": 16
-    }
+    },
+    "raisonsAnnee": "2025",
+    "quotite": {},
+    "quotiteAnnee": ""
   },
   "emploisVacantsFrance": [
     {
