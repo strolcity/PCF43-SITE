@@ -3,69 +3,580 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCF 43 - Emploi</title>
+    <title>PCF 43 &#x2014; Analyse Emploi</title>
     <link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        *{box-sizing:border-box;margin:0;padding:0;}
+        body{
+            font-family:Arial,sans-serif;
+            background-image:url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
+            background-size:cover;
+            background-position:center;
+            background-attachment:fixed;
+            min-height:100vh;
+            color:white;
         }
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 20px;
+        nav{
+            background:rgba(160,0,0,0.88);
+            padding:5px 20px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            flex-wrap:wrap;
+            backdrop-filter:blur(4px);
         }
-        .logo {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 4px solid #d32f2f;
-            background: rgba(0,0,0,0.45);
-            padding: 10px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
+        nav .nav-title{font-size:.95em;font-weight:bold;flex:1;min-width:180px;}
+        nav a{color:white;text-decoration:none;font-size:.8em;opacity:.85;}
+        nav a:hover{opacity:1;}
+
+        /* ===== BANDEAU DE NAVIGATION DU SITE (ronds avec images) ===== */
+        nav.topnav{
+            position:sticky; top:0; z-index:50;
+            background:rgba(0,0,0,0.75);
+            justify-content:center;
+            gap:14px;
+            padding:10px 16px;
+            border-bottom:1px solid rgba(255,255,255,0.15);
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        nav.topnav .nav-item{
+            width:46px; height:46px; border-radius:50%; overflow:hidden;
+            border:2px solid rgba(255,255,255,0.35);
+            display:flex; align-items:center; justify-content:center;
+            background:rgba(255,255,255,0.08);
+            transition:border-color .15s, transform .15s;
+            flex-shrink:0; opacity:1; padding:0;
         }
-        .construction {
-            font-size: 1.5em;
-            background: rgba(0,0,0,0.7);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
+        nav.topnav .nav-item:hover{ border-color:#ffeb3b; transform:scale(1.12); }
+   
+     nav.topnav .nav-item.active{ border-color:#d32f2f; border-width:3px; }
+        nav.topnav .nav-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+        @media (max-width:520px){
+            nav.topnav{ gap:9px; padding:8px 10px; }
+            nav.topnav .nav-item{ width:38px; height:38px; }
         }
-        a {
-            color: #ffeb3b;
-            text-decoration: none;
-            margin-top: 20px;
+
+        .container{max-width:1300px;margin:0 auto;padding:20px 14px;}
+        .filtres{
+            background:rgba(0,0,0,.68);
+            border-radius:10px;
+            padding:18px 22px;
+            margin-bottom:20px;
+            backdrop-filter:blur(6px);
+            border:1px solid rgba(255,255,255,.13);
         }
-        a:hover {
-            text-decoration: underline;
+        .filtres h2{
+            font-size:1em;color:#ffcccc;letter-spacing:1px;
+            text-transform:uppercase;margin-bottom:14px;
+        }
+        .filtres-row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;}
+        .filtres-col-gauche, .filtres-col-droite{display:flex;flex-direction:column;gap:14px;flex:1;min-width:230px;}
+        .bloc-col{background:rgba(255,255,255,.06);border-radius:8px;padding:10px 14px;flex:1;min-width:230px;}
+        .filtres-col-gauche .bloc-col, .filtres-col-droite .bloc-col{min-width:0;}
+        .bloc-col h3{
+            font-size:.78em;text-transform:uppercase;letter-spacing:1px;color:#ffaaaa;
+            border-bottom:1px solid rgba(255,100,100,.35);padding-bottom:5px;margin-bottom:8px;
+        }
+        .bloc-col label{
+            display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9em;
+            padding:3px 0;transition:color .2s;
+        }
+        .bloc-col label:hover{color:#ffcccc;}
+        .dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0;}
+        input[type=checkbox], input[type=radio]{accent-color:#d32f2f;width:14px;height:14px;flex-shrink:0;}
+        select, button {
+            padding:8px;margin-right:10px;border-radius:5px;border:1px solid #ccc;
+            background:rgba(255,255,255,0.1);color:white;
+        }
+ 
+       select option{color:black;}
+        .categorie-bloc{margin-bottom:14px;}
+        .categorie-bloc:last-child{margin-bottom:0;}
+        .detail-toggle{font-size:.8em !important;opacity:.85;padding-left:4px;}
+        .sous-liste{list-style:none;padding-left:22px;margin:4px 0 8px;}
+        .sous-liste li{
+            display:flex;align-items:center;gap:6px;font-size:.78em;color:#ddd;
+            padding:2px 0;
+        }
+        .graphiques-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
+        .carte{
+            background:rgba(0,0,0,.68);border-radius:10px;padding:16px 18px;
+            backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);position:relative;
+        }
+        .carte h3{font-size:.97em;color:#ffcccc;margin-bottom:12px;padding-right:28px;}
+        .canvas-wrap{position:relative;height:420px;}
+        .btn-info{
+            position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;
+            background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:white;
+            font-size:.85em;font-weight:bold;cursor:pointer;display:flex;align-items:center;
+            justify-content:center;transition:background .2s;z-index:10;
+        }
+        .btn-info:hover{background:rgba(255,255,255,.4);}
+        .overlay{
+            display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;
+            align-items:center;justify-content:center;
+        }
+        .overlay.visible{display:flex;}
+        .popup{
+            background:#1a1a2e;border:1px solid rgba(255,100,100,.4);border-radius:12px;
+            padding:24px 26px;max-width:580px;width:92%;max-height:85vh;overflow-y:auto;
+            position:relative;color:white;
+        }
+        .popup h2{color:#ffcccc;font-size:1.05em;margin-bottom:14px;}
+        .popup p, .popup li{font-size:.88em;line-height:1.6;margin-bottom:8px;color:#e0e0e0;}
+        .popup ul{padding-left:18px;margin-bottom:10px;}
+        .popup str
+ong{color:#ffaaaa;}
+        .popup-close{
+            position:absolute;top:12px;right:14px;background:none;border:none;color:white;
+            font-size:1.3em;cursor:pointer;opacity:.7;
+        }
+        .popup-close:hover{opacity:1;}
+        .analyse{
+            background:rgba(0,0,0,.68);border-radius:10px;padding:18px 22px;margin-top:18px;
+            backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.13);
+        }
+        .analyse h3{font-size:1em;color:#ffcccc;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+        .analyse p{font-size:.92em;line-height:1.7;color:#e8e8e8;margin-bottom:10px;}
+        .canvas-wrap-mini{position:relative;height:130px;margin:8px 0;}
+        .table-ressenti{width:100%;font-size:.76em;border-collapse:collapse;margin-top:6px;}
+        .table-ressenti th, .table-ressenti td{padding:3px 4px;text-align:right;border-bottom:1px solid rgba(255,255,255,.08);}
+        .table-ressenti th:first-child, .table-ressenti td:first-child{text-align:left;}
+        .table-ressenti th{color:#ffaaaa;font-weight:normal;}
+        .carte-ina{cursor:pointer;transition:background .2s;}
+        .carte-ina:hover{background:rgba(255,255,255,.1);}
+        .ina-apercu{width:100%;border-radius:8px;display:block;margin-bottom:8px;}
+        .ina-teaser{font-size:.82em;color:#e0e0e0;line-height:1.5;}
+        @media(max-width:900px){
+            .graphiques-grid{grid-template-columns:1fr;}
         }
     </style>
 </head>
 <body>
-    <img src="https://i.postimg.cc/QtLycPDp/INSEE.png" alt="Extrême-droite" class="logo">
-    <h1>Emploi</h1>
-    <div class="construction">
-        Page en construction
-    </div>
-    <a href="index.html">← Retour à l'accueil</a>
-</body>
 <script src="nav.js"></script>
+
+<div class="container">
+    <div id="msg">&#xe2;&#x8f;&#xb3; Chargement des donn&#xe9;es...</div>
+
+    <!-- ================================================================
+         1. VOIL&#xc0; CE QU'ILS DISENT &#x2014; les slogans bruts, sans commentaire
+         ================================================================ -->
+    <div class="filtres" id="slogans" style="display:none;">
+        <h2>&#xf0;&#x9f;&#x8e;&#xa4; &#xab; Voil&#xe0; ce qu'ils disent &#xbb;</h2>
+        <div class="filtres-row">
+            <div class="bloc-col" style="border-left:3px solid #d32f2f;">
+                <p style="font-size:1.05em;line-height:1.6;">&#xab; Les ch&#xf4;meurs sont des <strong style="color:#ffaaaa;">assist&#xe9;s</strong> qui vivent tr&#xe8;s bien sur le dos des travailleurs. &#xbb;</p>
+            </div>
+            <div class="bloc-col" style="border-left:3px solid #d32f2f;">
+                <p style="font-size:1.05em;line-height:1.6;">&#xab; S'ils sont sans emploi, c'est qu'ils sont <strong style="color:#ffaaaa;">fain&#xe9;ants</strong> : il y a des offres partout, ils refusent les emplois. &#xbb;</p>
+            </div>
+            <div class="bloc-col" style="border-left:3px solid #d32f2f;">
+                <p style="font-size:1.05em;line-height:1.6;">&#xab; Et les &#xe9;trangers, en plus d'&#xea;tre assist&#xe9;s, <strong style="color:#ffaaaa;">volent nos emplois</strong>. &#xbb;</p>
+            </div>
+        </div>
+        <p style="margin-top:12px;font-size:.85em;color:#e0e0e0;">Ces phrases, vous les avez entendues. Maintenant, regardons <strong style="color:#ffcccc;">ce que disent les chiffres officiels</strong> &#x2014; DARES, France Travail, INSEE, CAF &#x2014; avant de trancher.</p>
+    </div>
+
+    <!-- ================================================================
+         2. CLARIFFIONS LES MOTS &#x2014; les cat&#xe9;gories A &#xe0; G expliqu&#xe9;es
+         ================================================================ -->
+    <div class="filtres" id="categories" style="display:none;">
+        <h2>&#xf0;&#x9f;&#x93;&#x96; Clarifions les mots : les &#xab; cat&#xe9;gories &#xbb; de France Travail</h2>
+        <p style="font-size:.9em;line-height:1.6;margin-bottom:12px;color:#e8e8e8;">
+            Quand les m&#xe9;dias parlent du &#xab; nombre de ch&#xf4;meurs &#xbb;, ils ne citent que la <strong>cat&#xe9;gorie A</strong>. Mais les inscrits &#xe0; France Travail
+            sont r&#xe9;partis en <strong>cat&#xe9;gories</strong> selon leur situation r&#xe9;elle. Cliquez pour comprendre ce que chaque cat&#xe9;gorie veut dire <em>concr&#xe8;tement</em> :
+        </p>
+        <div class="filtres-row" id="cat-grid"></div>
+    </div>
+
+    <!-- ================================================================
+         3. GRAPHIQUES
+         ================================================================ -->
+    <div class="filtres" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <h2 style="margin:0;">&#xf0;&#x9f;&#x93;&#x8a; Nos graphiques, nos commentaires</h2>
+        <div>
+            <select id="sel-geo" onchange="majGraphiques()">
+                <option value="france">&#xf0;&#x9f;&#x87;&#xab;&#xf0;&#x9f;&#x87;&#xb7; France enti&#xe8;re</option>
+                <option value="hauteLoire" selected>&#xf0;&#x9f;&#x93;&#x8d; Haute-Loire (43)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="graphiques-grid" id="graphiques" style="display:none;">
+        <div class="carte">
+            <h3 id="titre-defm">Inscrits &#xe0; France Travail par cat&#xe9;gorie &#x2014; Haute-Loire</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-cat').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartDefm"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3>Taux de ch&#xf4;mage (BIT) : France vs Haute-Loire</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-bit').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartTaux"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3>Sorties des listes France Travail : reprise d'emploi... ou pas</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-flux').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartFlux"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3 id="titre-rsa">Le RSA : depuis combien de temps sont-ils inscrits ?</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-rsa').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartRsa"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3 id="titre-ppa">La prime d'activit&#xe9; : la R&#xe9;publique paie les salaires que les patrons ne paient pas</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-ppa').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartPpa"></canvas></div>
+        </div>
+        <div class="carte">
+            <h3>Temps partiel : &#xab; subi &#xbb; bien plus souvent qu'on ne le dit</h3>
+            <button class="btn-info" onclick="document.getElementById('overlay-tp').classList.add('visible')">&#xe2;&#x84;&#xb9;</button>
+            <div class="canvas-wrap"><canvas id="chartTp"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Compteurs -->
+    <div class="filtres" id="compteurs" style="display:none;">
+        <h2>&#xf0;&#x9f;&#x94;&#xa2; Les compteurs qui d&#xe9;rangent</h2>
+        <div class="filtres-row" id="compteurs-grid"></div>
+    </div>
+
+    <!-- ================================================================
+         4. SIMULATEUR &#x2014; &#xab; Refuser un emploi ? ou payer pour travailler ? &#xbb;
+         ================================================================ -->
+    <div class="filtres" id="simulateur" style="display:none;">
+        <h2>&#xf0;&#x9f;&#xa7;&#xae; Jouez avec le r&#xe9;el : &#xab; est-ce qu'il refuse l'emploi, ou est-ce l'emploi qui le paie ? &#xbb;</h2>
+        <p style="font-size:.88em;line-height:1.6;margin-bottom:14px;color:#e8e8e8;">
+            L'offre d'emploi type en milieu rural : un <strong>CDD de quelques heures par mois au SMIC</strong>, &#xe0; 20 km de chez vous, sans transports en commun.
+            R&#xe9;glez les curseurs, et regardez ce qu'il reste <em>r&#xe9;ellement</em> &#xe0; la fin du mois. Le principe &#xab; tout emploi acceptable &#xbb; a des limites
+            math&#xe9;matiques : en dessous d'un certain seuil, <strong style="color:#ffaaaa;">on paie pour travailler</strong>.
+        </p>
+        <div class="filtres-row">
+            <div class="bloc-col">
+                <h3>&#xe2;&#x9a;&#x96;&#xef;&#xb8;&#x8f; L'offre d'emploi</h3>
+                <label>Heures par mois : <strong id="v-heures">20 h</strong></label>
+                <input type="range" id="in-heures" min="4" max="151" value="20" step="1" style="width:100%;" oninput="calcSimu()">
+                <label style="margin-top:10px;">Distance domicile-travail : <strong id="v-km">20 km</strong></label>
+                <input type="range" id="in-km" min="0" max="60" value="20" step="1" style="width:100%;" oninput="calcSimu()">
+                <label style="margin-top:10px;">Consommation de la voiture : <strong id="v-conso">6,5 L/100km</strong></label>
+                <input type="range" id="in-conso" min="4" max="12" value="6.5" step="0.5" style="width:100%;" oninput="calcSimu()">
+                <label style="margin-top:10px;">Prix du carburant : <strong id="v-prix">1,80 &#xe2;&#x82;&#xac;/L</strong></label>
+                <input type="range" id="in-prix" min="1.2" max="2.5" value="1.8" step="0.05" style="width:100%;" oninput="calcSimu()">
+            </div>
+            <div class="bloc-col">
+                <h3>&#xf0;&#x9f;&#x92;&#xb0; Le bilan r&#xe9;el du mois</h3>
+                <table class="table-ressenti" id="table-simu" style="font-size:.85em;"></table>
+                <p id="verdict-simu" style="margin-top:12px;font-size:.95em;line-height:1.6;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         5. NOTRE ANALYSE
+         ================================================================ -->
+    <div class="analyse" id="analyse" style="display:none;">
+        <h3>&#xe2;&#x9c;&#x8f;&#xef;&#xb8;&#x8f; Notre analyse & nos solutions</h3>
+        <p><strong>&#xab; Des assist&#xe9;s &#xbb; ?</strong> Regardez le premier graphique : en Haute-Loire, environ <strong>la moiti&#xe9; des inscrits en recherche d'emploi travaillent d&#xe9;j&#xe0;</strong> (cat&#xe9;gories B et C). Et la prime d'activit&#xe9; est vers&#xe9;e &#xe0; des foyers... qui travaillent. L'&#xc9;tat compl&#xe8;te les salaires que les employeurs ne paient pas : ce n'est pas de l'assistanat envers les ch&#xf4;meurs, c'est une subvention publique &#xe0; l'aubainerie patronale.</p>
+        <p><strong>&#xab; Des fain&#xe9;ants qui refusent les offres &#xbb; ?</strong> Le simulateur ci-dessus montre la r&#xe9;alit&#xe9; rurale : un contrat de quelques heures &#xe0; 20 km, c'est parfois un solde mensuel n&#xe9;gatif. Refuser ce genre d'offre n'est pas de la fain&#xe9;antise, c'est de l'arithm&#xe9;tique. Et quand on regarde les <em>sorties</em> des listes France Travail, les cessations pour &#xab; d&#xe9;faut d'actualisation &#xbb; d&#xe9;passent largement les reprises d'emploi d&#xe9;clar&#xe9;es : une partie de la &#xab; baisse du ch&#xf4;mage &#xbb; est comptable, pas &#xe9;conomique.</p>
+        <p><strong>&#xab; Ils volent nos emplois &#xbb; ?</strong> Pr&#xe8;s d'un demi-million de postes restent vacants en France. Un emploi n'est pas un g&#xe2;teau de taille fixe : celui qui travaille consomme, se loge, paie des cotisations &#x2014; et fait vivre d'autres emplois. L'ennemi, ce n'est pas le travailleur &#xe9;tranger ou le ch&#xf4;meur, c'est celui qui sp&#xe9;cule sur la peur des uns et la mis&#xe8;re des autres.</p>
+        <p><strong>Nos solutions :</strong> un vrai plein emploi (pas un plein de ch&#xf4;mage utilis&#xe9; pour discipliner les salaires) ; des emplois garantis d'utilit&#xe9; sociale sur les territoires ; le contr&#xf4;le public des conditions de recrutement ; l'indexation des minima sur les salaires ; des services publics de proximit&#xe9; (transports, garde d'enfants) qui rendent l'emploi <em>accessible</em> &#x2014; parce qu'aujourd'hui, c'est souvent le lack de services qui fabrique le ch&#xf4;mage rural.</p>
+        <p style="border-top:1px solid rgba(255,100,100,.35);padding-top:10px;margin-top:14px;">
+            <em>La peur, &#xe7;a co&#xfb;te moins cher que des id&#xe9;es, et &#xe7;a marche souvent mieux. Mais les chiffres, eux, ne mentent pas.</em>
+        </p>
+    </div>
+</div>
+
+<!-- ================= POPUPS M&#xc9;THODO ================= -->
+<div class="overlay" id="overlay-cat" onclick="fermerPopup('overlay-cat',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-cat').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : les inscrits &#xe0; France Travail</h2>
+        <p>Stock en fin de mois, donn&#xe9;es brutes (DARES). Les inscrits de cat&#xe9;gories <strong>A, B, C, D, E</strong> sont les &#xab; anciennes &#xbb; cat&#xe9;gories ;
+        <strong>F et G</strong> existent depuis le 1er janvier 2025 (loi &#xab; plein emploi &#xbb;) : les b&#xe9;n&#xe9;ficiaires du RSA suivis par le D&#xe9;partement
+        et les jeunes accompagn&#xe9;s par les missions locales y sont inscrits <strong>automatiquement</strong>.</p>
+        <p><strong>Attention :</strong> une partie de la hausse 2025 est donc <strong>m&#xe9;canique</strong> (inscriptions automatiques), pas une explosion du ch&#xf4;mage.
+        C'est pr&#xe9;cis&#xe9;ment le genre de pi&#xe8;ge que cette page veut vous apprendre &#xe0; rep&#xe9;rer.</p>
+    </div>
+</div>
+<div class="overlay" id="overlay-bit" onclick="fermerPopup('overlay-bit',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-bit').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : le taux de ch&#xf4;mage &#xab; BIT &#xbb;</h2>
+        <p>Le taux de ch&#xf4;mage au sens du Bureau International du Travail (mesur&#xe9; par l'INSEE) ne compte pas les inscrits &#xe0; France Travail :
+        il compte les personnes <em>sans emploi, disponibles, et recherchant activement</em>, qu'elles soient inscrites ou non.</p>
+        <p>Un ch&#xf4;meur d&#xe9;courag&#xe9; qui ne s'inscrit plus <strong>dispara&#xee;t des listes de France Travail mais reste un ch&#xf4;meur au sens BIT</strong> &#x2014;
+        jusqu'&#xe0; ce qu'il d&#xe9;courage aussi l'INSEE. C'est pourquoi les deux mesures ne racontent jamais exactement la m&#xea;me histoire.</p>
+    </div>
+</div>
+<div class="overlay" id="overlay-flux" onclick="fermerPopup('overlay-flux',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-flux').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : les sorties des listes</h2>
+        <p>Chaque mois, des centaines de milliers de personnes <em>sortent</em> des listes de France Travail. Pourquoi ? La &#xab; reprise d'emploi d&#xe9;clar&#xe9;e &#xbb;
+        n'en est qu'une partie. Les autres sorties : d&#xe9;faut d'actualisation (pas coch&#xe9; sa situation &#xe0; temps), radiation administrative,
+        arr&#xea;t de recherche (maladie...), entr&#xe9;e en formation.</p>
+        <p>Quand un politique brandit &#xab; la baisse du nombre d'inscrits &#xbb;, comparez toujours ces deux barres : c'est l&#xe0; que se joue l'arnaque comptable.</p>
+    </div>
+</div>
+<div class="overlay" id="overlay-rsa" onclick="fermerPopup('overlay-rsa',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-rsa').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : le RSA (CAF)</h2>
+        <p>B&#xe9;n&#xe9;ficiaires du RSA, r&#xe9;gime g&#xe9;n&#xe9;ral de la CAF (hors MSA, qui g&#xe8;re les allocataires agricoles &#x2014; la Haute-Loire est concern&#xe9;e :
+        le total r&#xe9;el du d&#xe9;partement est donc un peu plus &#xe9;lev&#xe9;). R&#xe9;partition par anciennet&#xe9; d'inscription &#xe0; France Travail.</p>
+        <p>La lecture cl&#xe9; : si le RSA &#xe9;tait un &#xab; trou noir assistanciel &#xbb;, la majorit&#xe9; y serait install&#xe9;e depuis des ann&#xe9;es.
+        Regardez o&#xf9; est la masse. Et souvenez-vous : un RSA &#xab; socle &#xbb; 2026, pour une personne seule, c'est environ <strong>600 &#xe2;&#x82;&#xac;/mois</strong> &#x2014;
+        difficile d'appeler &#xe7;a &#xab; vivre tr&#xe8;s bien &#xbb;.</p>
+    </div>
+</div>
+<div class="overlay" id="overlay-ppa" onclick="fermerPopup('overlay-ppa',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-ppa').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : la prime d'activit&#xe9; (CAF)</h2>
+        <p>La prime d'activit&#xe9; compl&#xe8;te les revenus d'activit&#xe9; des travailleurs modestes (salari&#xe9;s, ind&#xe9;pendants, apprentis...).
+        <strong>Elle ne va qu'&#xe0; des gens qui travaillent.</strong> Elle est vers&#xe9;e tous les mois par la CAF.</p>
+        <p>Chaque foyer b&#xe9;n&#xe9;ficiaire, c'est un employeur qui &#xe9;conomise sur la note, r&#xe9;gl&#xe9;e par la collectivit&#xe9;. Le nombre de b&#xe9;n&#xe9;ficiaires
+        est donc, litt&#xe9;ralement, <strong>un indicateur de sous-payement des salaires</strong>.</p>
+    </div>
+</div>
+<div class="overlay" id="overlay-tp" onclick="fermerPopup('overlay-tp',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-tp').classList.remove('visible')">&#xe2;&#x9c;&#x95;</button>
+        <h2>M&#xe9;thodo : le temps partiel (DARES)</h2>
+        <p>Enqu&#xea;te emploi. La raison principale du temps partiel : quand la r&#xe9;ponse est &#xab; je n'ai pas trouv&#xe9; d'emploi &#xe0; temps complet &#xbb;,
+        on parle de <strong>temps partiel subi</strong>. Additionnez-le &#xe0; celles et ceux qui r&#xe9;duisent leur temps de travail pour s'occuper
+        d'enfants ou d'un proche (faute de places en cr&#xe8;che, de services de soins...), et le mythe du &#xab; choix de vie &#xbb; s'effondre.</p>
+    </div>
+</div>
+
+<script>
+/* =====================================================================
+   PAGE EMPLOI \u2014 PCF 43
+   Donn\u00e9es : data/emploi/emploi_data.json
+   (g\u00e9nr\u00e9 par scripts/build_emploi.py depuis data/emploi/emploi.xlsx)
+   ===================================================================== */
+
+// ---- Constantes du simulateur (\u00e0 mettre \u00e0 jour chaque ann\u00e9e) ----
+const SMIC_HORAIRE_BRUT = 11.88;   // \u00e2\u0082\u00ac/h \u2014 SMIC 2026 (\u00e0 ajuster)
+const COTIS_NET = 0.78;            // ~22% de cotisations salariales \u00e2\u0086\u0092 net \u00e2\u0089\u0088 78% du brut
+const FRAIS_VOITURE_KM = 0.10;      // \u00e2\u0082\u00ac/km hors carburant (pneus, entretien, assurance...)
+
+// ---- Textes p\u00e9dagogiques des cat\u00e9gories ----
+const CATS_INFO = [
+    { cat:"A", couleur:"#d32f2f", titre:"Cat\u00e9gorie A \u2014 sans emploi", txt:"La seule dont parlent les m\u00e9dias. <strong>Sans aucun emploi</strong> du mois, et tenu de chercher activement. Concr\u00e8tement : Martine, 52 ans, licenci\u00e9e de son usine de Monistier, coche des candidatures chaque semaine \u2014 elle est en A." },
+    { cat:"B", couleur:"#f57c00", titre:"Cat\u00e9gorie B \u2014 activit\u00e9 r\u00e9duite courte", txt:"A travaill\u00e9 <strong>moins de 78 h dans le mois</strong> (environ moins d'un mi-temps) tout en cherchant un vrai emploi. Concr\u00e8tement : Karim encha\u00eene 2 jours d'int\u00e9rim par semaine et cherche un CDI. <strong>Il travaille, et il est compt\u00e9 \u00ab ch\u00f4meur \u00bb.</strong>" },
+    { cat:"C", couleur:"#fbc02d", titre:"Cat\u00e9gorie C \u2014 activit\u00e9 r\u00e9duite longue", txt:"A travaill\u00e9 <strong>plus de 78 h dans le mois</strong>, mais toujours sans emploi stable. Concr\u00e8tement : Sophie, femme de m\u00e9nage, cumule des missions mais aucune n'est un contrat. Elle est <strong>dans les chiffres du ch\u00f4mage</strong>, avec un salaire complet sur une partie du mois." },
+    { cat:"D", couleur:"#388e3c", titre:"Cat\u00e9gorie D \u2014 pas de recherche requise", txt:"Inscrit mais <strong>non tenu de chercher</strong> : stage, formation, maladie. Concr\u00e8tement : Julien, en longue maladie apr\u00e8s un accident du travail. Il figure dans les inscrits, mais on ne peut m\u00eame pas lui reprocher de \u00ab ne pas chercher \u00bb : la loi l'en dispense." },
+    { cat:"E", couleur:"#1976d2", titre:"Cat\u00e9gorie E \u2014 en emploi, non tenu de chercher", txt:"Pas d'obligation de recherche. Concr\u00e8tement : \u00c9lodie a cr\u00e9\u00e9 sa micro-entreprise d'aide \u00e0 domicile en Yssingeaux ; Denis, int\u00e9rimaire, est en mission. <strong>La loi ne demande pas \u00e0 des gens occup\u00e9s de prouver qu'ils cherchent.</strong>" },
+    { cat:"F", couleur:"#7b1fa2", titre:"Cat\u00e9gorie F \u2014 depuis 2025 : RSA", txt:"B\u00e9n\u00e9ficiaires du RSA <strong>inscrits automatiquement</strong> \u00e0 France Travail depuis le 1er janvier 2025 (loi \u00ab plein emploi \u00bb). Ils n'ont pas \u00ab d\u00e9barqu\u00e9 \u00bb : c'est l'administration qui les a ajout\u00e9s aux listes. Toute hausse brute de 2025 contient cet effet m\u00e9canique." },
+    { cat:"G", couleur:"#5d4037", titre:"Cat\u00e9gorie G \u2014 depuis 2025 : jeunes des missions locales", txt:"Jeunes en parcours d'insertion (CEJ, PACEA) <strong>inscrits automatiquement</strong> eux aussi. La fameuse \u00ab explosion du ch\u00f4mage des jeunes \u00bb de 2025 ? En bonne partie, ce sont ces inscriptions administratives nouvelles \u2014 pas des licenciements." }
+];
+
+function fermerPopup(id, e){ if(e.target.id===id) document.getElementById(id).classList.remove('visible'); }
+
+let DATA = null;
+const charts = {};
+
+function fmt(n){ return new Intl.NumberFormat('fr-FR').format(Math.round(n)); }
+function perimKey(p){ const m = p.match(/^(\d{4})-T(\d)$/); return m ? (+m[1])*4 + (+m[2]) : 0; }
+
+// ---------- Chargement ----------
+fetch('data/emploi/emploi_data.json')
+    .then(r => r.json())
+    .then(j => {
+        DATA = j;
+        document.getElementById('msg').style.display = 'none';
+        ['slogans','categories','graphiques','compteurs','simulateur','analyse'].forEach(id=>{
+            document.getElementById(id).style.display = 'block';
+        });
+        afficherCategories();
+        majGraphiques();
+        afficherCompteurs();
+        calcSimu();
+    })
+    .catch(err => {
+        document.getElementById('msg').innerHTML = '\u00e2\u009d\u008c Erreur de chargement : ' + err;
+    });
+
+// ---------- Cat\u00e9gories p\u00e9dagogiques ----------
+function afficherCategories(){
+    const grid = document.getElementById('cat-grid');
+    grid.innerHTML = CATS_INFO.map(c => `
+        <div class="bloc-col" style="border-top:3px solid ${c.couleur};cursor:pointer;"
+             onclick="this.querySelector('.cat-txt').style.display = this.querySelector('.cat-txt').style.display==='block' ? 'none' : 'block';">
+            <h3 style="border-bottom:none;color:${c.couleur};margin-bottom:4px;">${c.titre}</h3>
+            <p class="cat-txt" style="display:none;font-size:.82em;line-height:1.55;color:#e0e0e0;">${c.txt}</p>
+            <p style="font-size:.7em;opacity:.55;">(cliquez pour lire l'exemple concret)</p>
+        </div>`).join('');
+}
+
+// ---------- Graphiques ----------
+const COULEURS = { A:'#d32f2f', B:'#f57c00', C:'#fbc02d', D:'#388e3c', E:'#1976d2', F:'#7b1fa2', G:'#5d4037' };
+
+function majGraphiques(){
+    const geo = document.getElementById('sel-geo').value;
+    const lib = geo === 'france' ? 'France enti\u00e8re' : 'Haute-Loire (43)';
+
+    // --- 1. DEFM cat\u00e9gories (barres empil\u00e9es, donn\u00e9es annuelles pour lisibilit\u00e9) ---
+    const serie = DATA.defmCategories[geo].filter(d => d.A !== null);
+    // une valeur par an (janvier de chaque ann\u00e9e) pour all\u00e9ger le graphique
+    const parAn = {};
+    serie.forEach(d => { const y = d.date.slice(0,4); if(!parAn[y]) parAn[y] = d; });
+    const annees = Object.keys(parAn).sort();
+    const ds = ["A","B","C","D","E","F","G"].map(c => ({
+        label: c, data: annees.map(y => parAn[y][c] || 0),
+        backgroundColor: COULEURS[c], stack:'s', borderWidth:0
+    }));
+    if(charts.defm) charts.defm.destroy();
+    charts.defm = new Chart(document.getElementById('chartDefm'), {
+        type:'bar',
+        data:{ labels: annees, datasets: ds },
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Inscrits en fin de janvier \u2014 '+lib, color:'#eee', font:{size:12}},
+                      tooltip:{ callbacks:{ label:(c)=> c.dataset.label+' : '+fmt(c.raw)+' personnes' } } },
+            scales:{ x:{stacked:true,ticks:{color:'#ccc'}}, y:{stacked:true,ticks:{color:'#ccc',callback:v=>fmt(v)}} }
+        }
+    });
+    document.getElementById('titre-defm').textContent = 'Inscrits \u00e0 France Travail par cat\u00e9gorie \u2014 ' + lib;
+
+    // --- 2. Taux de ch\u00f4mage France vs HL ---
+    const tx = [...DATA.tauxChomage].sort((a,b)=>perimKey(a.periode)-perimKey(b.periode));
+    if(charts.taux) charts.taux.destroy();
+    charts.taux = new Chart(document.getElementById('chartTaux'), {
+        type:'line',
+        data:{ labels: tx.map(t=>t.periode), datasets:[
+            { label:'France', data: tx.map(t=>t.france), borderColor:'#90caf9', backgroundColor:'#90caf9', tension:.3, pointRadius:1.5 },
+            { label:'Haute-Loire', data: tx.map(t=>t.hauteLoire), borderColor:'#ff8a80', backgroundColor:'#ff8a80', tension:.3, pointRadius:1.5 }
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Taux de ch\u00f4mage BIT (%) \u2014 source INSEE', color:'#eee', font:{size:12}}},
+            scales:{ x:{ticks:{color:'#ccc',maxRotation:60,minRotation:45}}, y:{ticks:{color:'#ccc',callback:v=>v+'%'}} } }
+    });
+
+    // --- 3. Flux France : pourquoi sort-on des listes ? ---
+    const flux = DATA.defmFluxFranceAnnuel;
+    if(charts.flux) charts.flux.destroy();
+    charts.flux = new Chart(document.getElementById('chartFlux'), {
+        type:'bar',
+        data:{ labels: flux.map(f=>f.annee), datasets:[
+            { label:"Reprise d'emploi d\u00e9clar\u00e9e", data: flux.map(f=>f.reprisesEmploi), backgroundColor:'#43a047' },
+            { label:"Cessation pour d\u00e9faut d'actualisation", data: flux.map(f=>f.cessationsDefautActualisation), backgroundColor:'#d32f2f' },
+            { label:"Radiation administrative", data: flux.map(f=>f.radiations), backgroundColor:'#f57c00' }
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:"Sorties annuelles des listes, cat\u00e9gories ABC \u2014 France (DARES)", color:'#eee', font:{size:12}},
+                      tooltip:{callbacks:{label:c=>c.dataset.label+' : '+fmt(c.raw)}}},
+            scales:{ x:{ticks:{color:'#ccc'}}, y:{ticks:{color:'#ccc',callback:v=>fmt(v)}} } }
+    });
+
+    // --- 4. RSA par anciennet\u00e9 (geo) ---
+    const rsa = DATA.caf.rsa[geo];
+    const ordre = ["Avant 2010","Entre 2010 et 2011","Entre 2012 et 2013","Entre 2014 et 2015","Entre 2016 et 2017","Entre 2018 et 2019","Entre 2020 et 2021","Entre 2022 et 2023","Entre 2024 et 2025"];
+    const cle = ordre.filter(k => rsa[k] !== undefined);
+    const tot = cle.reduce((s,k)=>s+rsa[k],0);
+    if(charts.rsa) charts.rsa.destroy();
+    charts.rsa = new Chart(document.getElementById('chartRsa'), {
+        type:'bar',
+        data:{ labels: cle.map(k=>k.replace('Entre ','').replace(' et ','\u00e2\u0080\u0093')), datasets:[
+            { label:'Foyers RSA (%)', data: cle.map(k=> Math.round(rsa[k]/tot*1000)/10), backgroundColor:'#ef5350' }
+        ]},
+        options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Anciennet\u00e9 d\'inscription \u2014 '+lib+' (CAF, d\u00e9c. 2025)', color:'#eee', font:{size:12}},
+                      tooltip:{callbacks:{label:c=>c.label+' : '+c.raw+'%'}}},
+            scales:{ x:{ticks:{color:'#ccc',callback:v=>v+'%'}}, y:{ticks:{color:'#ccc'}} } }
+    });
+    document.getElementById('titre-rsa').textContent = 'Le RSA (' + lib + ') : depuis combien de temps sont-ils inscrits ?';
+
+    // --- 5. Prime d'activit\u00e9 par situation familiale (geo) ---
+    const ppa = DATA.caf.primeActivite[geo];
+    const seuls = Object.entries(ppa).filter(([k])=>k.includes('Seul avec') && k.includes('enfant'));
+    const couples = Object.entries(ppa).filter(([k])=>k.startsWith('Couple'));
+    const seulSans = Object.entries(ppa).filter(([k])=>k.includes('Seul sans'));
+    const somme = arr => arr.reduce((s,[,v])=>s+(typeof v==='object'?v.foyers:v),0);
+    const labels = ['Parent seul avec enfants','Couples (avec enfants)','Personnes seules sans enfant'];
+    const vals = [somme(seuls), somme(couples), somme(seulSans)];
+    if(charts.ppa) charts.ppa.destroy();
+    charts.ppa = new Chart(document.getElementById('chartPpa'), {
+        type:'doughnut',
+        data:{ labels, datasets:[{ data: vals, backgroundColor:['#e53935','#1e88e5','#ffb74d'], borderColor:'#111', borderWidth:2 }]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'B\u00e9n\u00e9ficiaires de la prime d\'activit\u00e9 \u2014 '+lib+' (CAF)', color:'#eee', font:{size:12}},
+                      tooltip:{callbacks:{label:c=>c.label+' : '+fmt(c.raw)+' foyers'}}}}
+    });
+    document.getElementById('titre-ppa').textContent = 'Prime d\'activit\u00e9 (' + lib + ') : qui sont ces \u00ab assist\u00e9s \u00bb qui travaillent ?';
+}
+
+// ---------- Compteurs ----------
+function afficherCompteurs(){
+    const hl = DATA.defmCategories.hauteLoire;
+    const dernier = hl[hl.length-1];
+    const ppa43 = DATA.caf.primeActivite.hauteLoire;
+    const totPPA = Object.values(ppa43).reduce((s,v)=>s+v,0);
+    const seulsEnf = Object.entries(ppa43).filter(([k])=>k.includes('Seul avec')&&k.includes('enfant')).reduce((s,[,v])=>s+v,0);
+    const aah = DATA.caf.aah.franceParSexe;
+    const vac = DATA.emploisVacantsFrance[0];
+    const tp = DATA.tempsPartiel.serieFrance[DATA.tempsPartiel.serieFrance.length-1];
+    const subi = DATA.tempsPartiel.raisons["N\u2019a pas trouv\u00e9 d\u2019emploi \u00e0 temps complet"] || DATA.tempsPartiel.raisons["N'a pas trouv\u00e9 d'emploi \u00e0 temps complet"];
+
+    const cartes = [
+        { t:'Inscrits en recherche active en Haute-Loire', v: fmt(dernier.ABC), d:'dont '+Math.round((dernier.B+dernier.C)/(dernier.ABC)*1000)/10+'% qui travaillent d\u00e9j\u00e0 (cat. B et C)', c:'#ef5350' },
+        { t:'Foyers 43 pay\u00e9s par la R\u00e9publique... pour avoir travaill\u00e9', v: fmt(totPPA), d:'b\u00e9n\u00e9ficiaires de la prime d\'activit\u00e9, dont '+fmt(seulsEnf)+' parents seuls', c:'#ffb74d' },
+        { t:'Postes non pourvus en France', v: fmt(vac.emploisVacants), d:'au '+vac.trimestre+' \u2014 on les \u00ab vole \u00bb \u00e0 qui, au fait ?', c:'#90caf9' },
+        { t:'Temps partiel subi', v: (subi!==undefined?subi:'~21')+'%', d:'des salari\u00e9s \u00e0 temps partiel n\'ont pas trouv\u00e9 d\'emploi \u00e0 temps complet', c:'#ce93d8' },
+        { t:'Allocataires AAH', v: fmt(aah.Total), d:'personnes en situation de handicap, France \u2014 des \u00ab fain\u00e9ants \u00bb ?', c:'#a5d6a7' }
+    ];
+    document.getElementById('compteurs-grid').innerHTML = cartes.map(c=>`
+        <div class="bloc-col" style="text-align:center;border-top:3px solid ${c.c};">
+            <h3 style="border-bottom:none;">${c.t}</h3>
+            <p style="font-size:1.6em;font-weight:bold;color:#fff;">${c.v}</p>
+            <p style="font-size:.72em;color:#ddd;line-height:1.4;">${c.d}</p>
+        </div>`).join('');
+}
+
+// ---------- Simulateur ----------
+function calcSimu(){
+    const h   = +document.getElementById('in-heures').value;
+    const km  = +document.getElementById('in-km').value;
+    const conso = +document.getElementById('in-conso').value;
+    const prix = +document.getElementById('in-prix').value;
+
+    document.getElementById('v-heures').textContent = h + ' h';
+    document.getElementById('v-km').textContent = km + ' km';
+    document.getElementById('v-conso').textContent = conso.toLocaleString('fr-FR') + ' L/100km';
+    document.getElementById('v-prix').textContent = prix.toLocaleString('fr-FR', {minimumFractionDigits:2}) + ' \u00e2\u0082\u00ac/L';
+
+    // jours travaill\u00e9s : une journ\u00e9e \u00e2\u0089\u0088 7 h
+    const jours = Math.max(1, Math.ceil(h/7));
+    const brut = h * SMIC_HORAIRE_BRUT;
+    const net = brut * COTIS_NET;
+    // transport : aller-retour par jour travaill\u00e9 + usure v\u00e9hicule
+    const litres = km*2*jours*conso/100;
+    const carburant = litres * prix;
+    const usure = km*2*jours*FRAIS_VOITURE_KM;
+    const solde = net - carburant - usure;
+    const horaireReel = h>0 ? solde/h : 0;
+
+    const t = document.getElementById('table-simu');
+    t.innerHTML = `
+        <tr><td>Salaire brut du mois</td><td>${brut.toFixed(0)} \u00e2\u0082\u00ac</td></tr>
+        <tr><td>Salaire net (\u00e2\u0089\u008822% de cotisations)</td><td><strong>${net.toFixed(0)} \u00e2\u0082\u00ac</strong></td></tr>
+        <tr><td>Jours travaill\u00e9s (\u00e2\u0089\u00887h/jour)</td><td>${jours} jours</td></tr>
+        <tr><td>Carburant (${km*2} km/jour \u00d7 ${jours} jours)</td><td>\u00e2\u0088\u0092 ${carburant.toFixed(0)} \u00e2\u0082\u00ac</td></tr>
+        <tr><td>Usure du v\u00e9hicule (pneus, assurance...)</td><td>\u00e2\u0088\u0092 ${usure.toFixed(0)} \u00e2\u0082\u00ac</td></tr>
+        <tr><td style="border-top:1px solid rgba(255,255,255,.3);">Solde r\u00e9el du mois</td>
+            <td style="border-top:1px solid rgba(255,255,255,.3);"><strong style="color:${solde<0?'#ef5350':'#66bb6a'};">${solde.toFixed(0)} \u00e2\u0082\u00ac</strong></td></tr>
+        <tr><td>Salaire r\u00e9el par heure travaill\u00e9e</td><td>${horaireReel.toFixed(2)} \u00e2\u0082\u00ac/h</td></tr>`;
+
+    const v = document.getElementById('verdict-simu');
+    if(solde < 0){
+        v.innerHTML = `\u00f0\u009f\u009a\u00a8 <strong style="color:#ef5350;">R\u00e9sultat : ${Math.abs(solde).toFixed(0)} \u00e2\u0082\u00ac de perte.</strong> Oui, vous avez bien lu : cette personne <strong>paierait pour aller travailler</strong>. Refuser cette offre n'est pas de la fain\u00e9antise \u2014 c'est ne pas accepter de s'appauvrir. Et sous pr\u00e9texte que \u00ab le ch\u00f4meur a refus\u00e9 une proposition \u00bb, ses allocations peuvent \u00eatre r\u00e9duites ou suspendues. Belle soci\u00e9t\u00e9.`;
+    } else if (horaireReel < 5){
+        v.innerHTML = `\u00e2\u009a\u00a0\u00ef\u00b8\u008f <strong style="color:#ffb74d;">R\u00e9sultat : ${horaireReel.toFixed(2)} \u00e2\u0082\u00ac/h r\u00e9el.</strong> Une fois d\u00e9duits les frais, travailler dans ces conditions rapporte moins que le b\u00e9n\u00e9volat. Et l'\u00ab aide au retour \u00e0 l'emploi \u00bb ne couvrira jamais durablement ce trou : ni la fatigue, ni le v\u00e9hicule qui vieillit deux fois plus vite.`;
+    } else {
+        v.innerHTML = `\u00e2\u009c\u0085 <strong style="color:#66bb6a;">R\u00e9sultat : ${solde.toFixed(0)} \u00e2\u0082\u00ac de solde (${horaireReel.toFixed(2)} \u00e2\u0082\u00ac/h r\u00e9el).</strong> \u00c7a passe \u00e0 peine \u2014 mais essayez encore d'en vivre : loyer, \u00e9lectricit\u00e9, assurance, nourriture... Et souvenez-vous : ce contrat ne dure peut-\u00eatre que 2 mois.`;
+    }
+}
+</script>
+</body>
 </html>
