@@ -204,13 +204,13 @@
             <h3>Sorties des listes France Travail : reprise d'emploi... ou pas</h3>
             <button class="btn-info" onclick="document.getElementById('overlay-flux').classList.add('visible')">&#x2139;</button>
             <div class="canvas-wrap"><canvas id="chartFlux"></canvas></div>
-            <p class="src">Source : <a href="https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_flux_motif/" target="_blank">DARES &#x2014; flux d'entr&#xe9;es et de sorties selon le motif &#x2197;</a></p>
+            <p class="src">Source : <a href="https://www.data.gouv.fr/datasets/demandeurs-demploi-inscrits-a-france-travail-entrees-et-sorties-des-listes-france-et-regions-mensuelles-brutes/" target="_blank">DARES &#x2014; flux d'entr&#xe9;es et de sorties selon le motif &#x2197;</a></p>
         </div>
         <div class="carte">
             <h3 id="titre-rsa">Le RSA : depuis combien de temps sont-ils inscrits ?</h3>
             <button class="btn-info" onclick="document.getElementById('overlay-rsa').classList.add('visible')">&#x2139;</button>
             <div class="canvas-wrap"><canvas id="chartRsa"></canvas></div>
-            <p class="src">Source : <a href="https://data.caf.fr/explore/dataset/rsa_s_dem_2_dep/" target="_blank">CAF &#x2014; b&#xe9;n&#xe9;ficiaires du RSA par d&#xe9;partement &#x2197;</a> &middot; montants : <a href="https://data.caf.fr/explore/dataset/rsa_s_montant_type_dep/" target="_blank">CAF &#x2014; RSA par tranche de montant &#x2197;</a></p>
+            <p class="src">Source : <a href="https://data.caf.fr/explore/dataset/rsa_s_dem_2_dep/" target="_blank">CAF &#x2014; b&#xe9;n&#xe9;ficiaires du RSA par d&#xe9;partement &#x2197;</a> &middot; montants : <a href="https://data.caf.fr/explore/dataset/rsa_s_type_mtt_200_dep/" target="_blank">CAF &#x2014; RSA par tranche de montant &#x2197;</a></p>
         </div>
         <div class="carte">
             <h3 id="titre-ppa">Prime d'activit&#xe9; : qui sont ces &#xab; assist&#xe9;s &#xbb; qui travaillent ?</h3>
@@ -345,7 +345,7 @@
         n'en est qu'une partie. Les autres sorties : d&#xe9;faut d'actualisation (pas coch&#xe9; sa situation &#xe0; temps), radiation administrative,
         arr&#xea;t de recherche (maladie...), entr&#xe9;e en formation.</p>
         <p>Quand un politique brandit &#xab; la baisse du nombre d'inscrits &#xbb;, comparez toujours ces deux barres : c'est l&#xe0; que se joue l'arnaque comptable.</p>
-        <p><a href="https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_flux_motif/" target="_blank">Donn&#xe9;es DARES &#x2197;</a></p>
+        <p><a href="https://www.data.gouv.fr/datasets/demandeurs-demploi-inscrits-a-france-travail-entrees-et-sorties-des-listes-france-et-regions-mensuelles-brutes/" target="_blank">Donn&#xe9;es DARES &#x2197;</a></p>
     </div>
 </div>
 <div class="overlay" id="overlay-rsa" onclick="fermerPopup('overlay-rsa',event)">
@@ -642,12 +642,22 @@ function majGraphiques(){
     // --- 6. Temps partiel : raisons (barres horizontales) ---
     const tp = DATA.tempsPartiel;
     const raisons = tp.raisons || tp.raisons2025 || {};
+    const TP_LABELS = {
+        "S occuper de ses enfants ou d un proche": "S'occuper de ses enfants ou d'un proche",
+        "N a pas trouve d emploi a temps complet (subi)": "N'a pas trouv\u00e9 d'emploi \u00e0 temps complet (subi)",
+        "Pour avoir du temps libre": "Pour avoir du temps libre",
+        "Pour raison de sante ou de handicap": "Pour raison de sant\u00e9 ou de handicap",
+        "Pour suivre des etudes ou une formation": "Pour suivre des \u00e9tudes ou une formation",
+        "Exerce une autre activite professionnelle": "Exerce une autre activit\u00e9 professionnelle",
+        "Revenu d appoint (etudes, retraite...)": "Revenu d'appoint (\u00e9tudes, retraite...)"
+    };
     const entrees = Object.entries(raisons).sort((a,b)=>b[1]-a[1]);
+    const labelDe = k => TP_LABELS[k] || k;
     const anneeR = tp.raisonsAnnee || '2025';
     if(charts.tp) charts.tp.destroy();
     charts.tp = new Chart(document.getElementById('chartTp'), {
         type:'bar',
-        data:{ labels: entrees.map(e=>e[0]), datasets:[
+        data:{ labels: entrees.map(e=>labelDe(e[0])), datasets:[
             { label:'Part des salari\u00e9s \u00e0 temps partiel (%)', data: entrees.map(e=>e[1]),
               backgroundColor: entrees.map(e=> e[0].indexOf('subi')>=0 ? '#d32f2f' : '#5c6bc0'), borderWidth:0 }
         ]},

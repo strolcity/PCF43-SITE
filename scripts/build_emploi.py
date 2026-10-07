@@ -392,8 +392,10 @@ def json_to_xlsx():
         v = pa["hauteLoire"].get(g, {})
         ppa_rows.append(["43", g, v.get("foyers"), None, None])
     new_sheet("caf_ppa", SHEETS["caf_ppa"], ppa_rows)
+    # la clé parAgeHauteLoire est optionnelle (donn\u00e9es par \u00e2ge PPA 43)
+    par_age_ppa = pa.get("parAgeHauteLoire") or {}
     new_sheet("caf_ppa_age_43", SHEETS["caf_ppa_age_43"],
-              [[k, v, None] for k, v in pa["parAgeHauteLoire"].items()])
+              [[k, v, None] for k, v in par_age_ppa.items()])
 
     aah_rows = []
     for k, v in j["caf"]["aah"]["hauteLoire"].items():
