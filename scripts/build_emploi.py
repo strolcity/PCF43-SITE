@@ -17,11 +17,18 @@ NOUVEAUTÉS v2 :
   - feuille temps_partiel_quotite (répartition par quotité travaillée)
   - feuille constantes (ARE, RSA...) pour les calculettes de la page.
 
+NOUVEAUTÉS v3 :
+  - feuille desindustrialisation : emploi industriel France depuis 1980,
+    part de l'industrie dans le PIB, créations d'entreprises longue durée
+    (bloc = emploi_industrie / part_pib / creations_total /
+     creations_societes / creations_micro ; annee ; valeur).
+    -> section « 40 ans de désindustrialisation » de la page.
+
 MODES D'UTILISATION
 -------------------
 1) PREMIÈRE FOIS (génère le xlsx à partir du JSON déjà collecté) :
        python scripts\build_emploi.py init
-   -> crée data\emploi\emploi.xlsx (18 feuilles) à partir de data\emploi\emploi_data.json
+   -> crée data\emploi\emploi.xlsx (20 feuilles) à partir de data\emploi\emploi_data.json
 
 2) MISE À JOUR ANNUELLE (votre routine habituelle) :
    - ouvrir data\emploi\emploi.xlsx,
@@ -79,6 +86,10 @@ SHEETS = {
     "emplois_vacants": ["trimestre", "emploisVacants", "taux"],
     # Cr\u00e9ations d'entreprises (INSEE) : bloc/cle/valeur
     "creations_entreprises": ["bloc", "cle", "valeur"],
+    # D\u00e9sindustrialisation : bloc = emploi_industrie (milliers d'emplois),
+    #   part_pib (% du PIB), creations_total / creations_societes /
+    #   creations_micro (milliers de cr\u00e9ations) ; annee ; valeur
+    "desindustrialisation": ["bloc", "annee", "valeur"],
     # Constantes des calculettes (ARE, RSA...)
     "constantes":     ["cle", "valeur", "unite", "description"],
 }
@@ -284,6 +295,26 @@ def xlsx_to_json():
         if b and c:
             cre.setdefault(b, {})[c] = v
 
+    # --- D\u00e9sindustrialisation : bloc / annee / valeur ---
+    desi = {"emploiIndustrie": [], "partPib": [], "creations": []}
+    crea = {}
+    for r in read_sheet(wb, "desindustrialisation"):
+        b, a = txt(r.get("bloc")), txt(r.get("annee"))
+        if not b or not a:
+            continue
+        v = r.get("valeur")   # None si cellule vide (ex. societes 2024 inconnues)
+        try:
+            annee = int(float(a))
+        except (ValueError, TypeError):
+            continue
+        if b == "emploi_industrie":
+            desi["emploiIndustrie"].append({"annee": annee, "emploi": num(v)})
+        elif b == "part_pib":
+            desi["partPib"].append({"annee": annee, "part": num(v)})
+        elif b.startswith("creations_") and v is not None:
+            crea.setdefault(annee, {})[b[len("creations_"):]] = num(v)
+    desi["creations"] = [dict(crea[k], annee=k) for k in sorted(crea)]
+
     const = {}
     for r in read_sheet(wb, "constantes"):
         k = txt(r.get("cle"))
@@ -314,6 +345,7 @@ def xlsx_to_json():
                          "quotiteAnnee": quotite_annee},
         "emploisVacantsFrance": vac,
         "creationsEntreprises": cre,
+        "desindustrialisation": desi,
     }
 
     with open(JSON_OUT, "w", encoding="utf-8") as f:
@@ -322,6 +354,8 @@ def xlsx_to_json():
     print(f"  taux: {len(tx)} lignes | defm: {len(defm_fr)} FR / {len(defm_43)} HL")
     print(f"  departements: {len(dep_data)} deps | france janvier: {len(fr_janv)} annees")
     print(f"  flux: {len(flux_fr)} annees FR / {len(flux_43)} mois HL | vacants: {len(vac)}")
+    print(f"  desindustrialisation: {len(desi['emploiIndustrie'])} points emploi industrie"
+          f" | creations longue duree: {len(desi['creations'])} annees")
 
 
 # ----------------------------------------------------------------------
@@ -439,6 +473,19 @@ def json_to_xlsx():
         for c, v in paires.items():
             ce_rows.append([b, c, v])
     new_sheet("creations_entreprises", SHEETS["creations_entreprises"], ce_rows)
+
+    # D\u00e9sindustrialisation : une ligne par point de s\u00e9rie
+    desi = j.get("desindustrialisation") or {}
+    desi_rows = []
+    for e in desi.get("emploiIndustrie", []):
+        desi_rows.append(["emploi_industrie", e["annee"], e["emploi"]])
+    for p in desi.get("partPib", []):
+        desi_rows.append(["part_pib", p["annee"], p["part"]])
+    for c in desi.get("creations", []):
+        for cle in ("total", "societes", "micro"):
+            if c.get(cle) is not None:
+                desi_rows.append(["creations_" + cle, c["annee"], c[cle]])
+    new_sheet("desindustrialisation", SHEETS["desindustrialisation"], desi_rows)
 
     new_sheet("constantes", SHEETS["constantes"], CONSTANTES_INIT)
 

@@ -254,6 +254,30 @@
         <p class="src" style="margin-top:10px;">Sources : <a href="https://www.insee.fr/fr/statistiques/8721354" target="_blank">INSEE &#x2014; Les cr&#xe9;ations d'entreprises en 2025 (Insee Premi&#xe8;re n&#xb0; 2092) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8634190" target="_blank">INSEE &#x2014; p&#xe9;rennit&#xe9; &#xe0; 5 ans des entreprises cr&#xe9;&#xe9;es en 2018 (n&#xb0; 2070) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8634000" target="_blank">INSEE &#x2014; micro-entrepreneurs 2018 : moins de 3 sur 10 encore actifs &#xe0; 5 ans (n&#xb0; 2069) &#x2197;</a></p>
     </div>
 
+    <!-- ================================================================
+         3ter. D&#xc9;SINDUSTRIALISATION
+         ================================================================ -->
+    <div class="filtres" id="desindustrialisation" style="display:none;">
+        <h2>40 ans de d&#xe9;sindustrialisation : la richesse productive s'&#xe9;vapore</h2>
+        <p style="font-size:.88em;line-height:1.6;margin-bottom:14px;color:#e8e8e8;">
+            Pendant que les discours se f&#xe9;licitent du &#xab; record d'entrepreneurs &#xbb;, l'industrie &#x2014; celle qui
+            fabrique, exporte et d&#xe9;gage de la richesse r&#xe9;elle &#x2014; a perdu <strong>plus de 2 millions d'emplois
+            en 40 ans</strong>. Et l'explosion des &#xab; cr&#xe9;ations d'entreprises &#xbb; la masque. Mettons les courbes c&#xf4;te &#xe0; c&#xf4;te.
+        </p>
+        <div class="filtres-row">
+            <div class="bloc-col" style="min-width:0;">
+                <h3>1. L'emploi industriel fond : 5,3 &#x2192; 3 millions d'emplois</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartDesind"></canvas></div>
+            </div>
+            <div class="bloc-col" style="min-width:0;">
+                <h3>2. Les cr&#xe9;ations d'entreprises 2000-2025 : une explosion... de quoi au juste ?</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartCreatLong"></canvas></div>
+            </div>
+        </div>
+        <button class="btn-info" style="position:static;display:inline-flex;margin-top:12px;" onclick="document.getElementById('overlay-desind').classList.add('visible')">&#x2139; Notre commentaire</button>
+        <p class="src" style="margin-top:10px;">Sources : <a href="https://www.insee.fr/fr/statistiques/1377172" target="_blank">INSEE &#x2014; Le recul de l'emploi industriel 1980-2007 (&#xc9;conomie &amp; Statistique n&#xb0; 438-440) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/5897374" target="_blank">INSEE Focus 255 &#x2014; l'emploi en 2020 &#x2197;</a> &middot; <a href="https://www.strategie-plan.gouv.fr/point-de-vue/dynamique-entrepreneuriale-2000-2022-y-t-une-specificite-francaise" target="_blank">France Strat&#xe9;gie &#x2014; dynamique entrepreneuriale 2000-2022 &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8345726" target="_blank">INSEE &#x2014; cr&#xe9;ations d'entreprises en 2024 &#x2197;</a> &middot; le PIB : voir notre page <a href="economie.html">&#xc9;conomie</a>.</p>
+    </div>
+
     <!-- Compteurs -->
     <div class="filtres" id="compteurs" style="display:none;">
         <h2>Les compteurs qui d&#xe9;rangent</h2>
@@ -426,6 +450,19 @@
     </div>
 </div>
 
+<div class="overlay" id="overlay-desind" onclick="fermerPopup('overlay-desind',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-desind').classList.remove('visible')">&#x2715;</button>
+        <h2>D&#xe9;sindustrialisation : lire les 40 derni&#xe8;res ann&#xe9;es</h2>
+        <p><strong>Le constat.</strong> L'industrie manufacturi&#xe8;re est pass&#xe9;e d'environ <strong>5,3 millions d'emplois en 1980 &#xe0; un peu plus de 3 millions en 2020</strong> (INSEE, DARES) : <strong>&#x2212;2,2 millions d'emplois, &#x2212;42 %</strong>. Dans le m&#xea;me temps, la part de l'industrie dans le PIB est tomb&#xe9;e d'environ <strong>24 % &#xe0; &#x2248;12,6 %</strong> (DGE), l&#xe0; o&#xf9; l'Allemagne en garde plus de 20 % pour la seule manufacturi&#xe8;re. Chaque emploi industriel perdu, c'est de la richesse productive, exportable, qui s'&#xe9;vapore &#x2014; et avec elle la base de la S&#xe9;curit&#xe9; sociale.</p>
+        <p><strong>O&#xf9; sont pass&#xe9;s ces emplois ?</strong> L'INSEE a d&#xe9;compos&#xe9; le recul 1980-2007 (&#xc9;conomie &amp; Statistique n&#xb0; 438-440) : environ <strong>25 % vient de l'externalisation vers les services</strong> &#x2014; les m&#xea;mes m&#xe9;tiers, pass&#xe9;s du statut d'ouvrier &#xe0; celui d'int&#xe9;rimaire ou de sous-traitant (emplois externalis&#xe9;s : 480 000 en 1980 &#x2192; 860 000 en 2007). Environ <strong>30 % vient de l'&#xe9;volution de la demande et des gains de productivit&#xe9;</strong>. Le reste &#x2014; le plus politique &#x2014; vient des <strong>importations et de la perte de comp&#xe9;titivit&#xe9;</strong> : d&#xe9;sarmement tarifaire, co&#xfb;ts du capital, dividendes pr&#xe9;f&#xe9;r&#xe9;s &#xe0; l'investissement. Ce n'est pas une fatalit&#xe9; : c'est une s&#xe9;rie de d&#xe9;cisions.</p>
+        <p><strong>La sous-traitance, vous aviez raison d'y regarder de pr&#xe8;s.</strong> La France n'est pas &#xab; championne du monde &#xbb; sur un score officiel, mais l'externalisation massive est document&#xe9;e chiffre par chiffre : une part croissante des &#xab; emplois de services &#xbb; n'est que l'ancien emploi industriel, d&#xe9;grad&#xe9; en prestation pr&#xe9;caire &#x2014; nettoyage, logistique, maintenance, int&#xe9;rim &#x2014; par des donneurs d'ordre qui r&#xe9;duisent leurs co&#xfb;ts en d&#xe9;pla&#xe7;ant le risque sur les salari&#xe9;s des sous-traitants.</p>
+        <p><strong>Et le &#xab; record d'entrepreneurs &#xbb; dans tout &#xe0; ?</strong> Les cr&#xe9;ations sont pass&#xe9;es de <strong>238 000 en 2000 &#xe0; plus de 1,1 million depuis 2022</strong> (France Strat&#xe9;gie, INSEE). Mais les <strong>soci&#xe9;t&#xe9;s &#x2014; les structures qui embauchent vraiment &#x2014; ne sont pass&#xe9;es que de 90 000 &#xe0; &#x2248;300 000</strong> : le reste, c'est l'explosion des micro-entrepreneurs (65 % des cr&#xe9;ations en 2025). Quand une usine ferme, les statistiques affichent parfois... une hausse des &#xab; cr&#xe9;ations d'entreprises &#xbb; : des salari&#xe9;s licenci&#xe9;s s'immatriculent pour quelques missions. Des ch&#xf4;meurs invisibilis&#xe9;s, compt&#xe9;s comme &#xab; entrepreneurs &#xbb;.</p>
+        <p><strong>Notre lecture :</strong> le PIB et l'emploi sont d&#xe9;j&#xe0; sur notre page <a href="economie.html">&#xc9;conomie</a>. L'industrie cr&#xe9;e de la richesse r&#xe9;elle et entra&#xee;ne les emplois de services autour d'elle (La Fabrique de l'industrie). La d&#xe9;fendre &#x2014; comme les PME de plus de 50 salari&#xe9;s qui paient plein pot leurs cotisations et font vivre un territoire &#x2014; ce n'est pas de la nostalgie : c'est refuser qu'un pays vive en vendant des services &#xe0; lui-m&#xea;me pendant que sa base productive part &#xe0; l'&#xe9;tranger.</p>
+        <p><a href="https://www.insee.fr/fr/statistiques/1377172" target="_blank">INSEE n&#xb0; 438-440 &#x2197;</a> &#x2014; <a href="https://www.insee.fr/fr/statistiques/5897374" target="_blank">Insee Focus 255 &#x2197;</a> &#x2014; <a href="https://www.strategie-plan.gouv.fr/point-de-vue/dynamique-entrepreneuriale-2000-2022-y-t-une-specificite-francaise" target="_blank">France Strat&#xe9;gie &#x2197;</a> &#x2014; <a href="https://www.la-fabrique.fr/fr/publication/comment-lindustrie-cree-de-lemploi-aujourdhui-2/" target="_blank">La Fabrique de l'industrie &#x2197;</a></p>
+    </div>
+</div>
+
 <div class="overlay" id="overlay-are" onclick="fermerPopup('overlay-are',event)">
     <div class="popup">
         <button class="popup-close" onclick="document.getElementById('overlay-are').classList.remove('visible')">&#x2715;</button>
@@ -497,7 +534,7 @@ fetch('data/emploi/emploi_data.json')
     .then(j => {
         DATA = j;
         document.getElementById('msg').style.display = 'none';
-        ['slogans','categories','graphiques','creations','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
+        ['slogans','categories','graphiques','creations','desindustrialisation','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
             document.getElementById(id).style.display = 'block';
         });
         afficherCategories();
@@ -505,6 +542,7 @@ fetch('data/emploi/emploi_data.json')
         majDefm();
         majGraphiques();
         afficherCreations();
+        afficherDesind();
         afficherCompteurs();
         calcSimu();
         calcAre();
@@ -767,6 +805,54 @@ function afficherCreations(){
                       legend:{display:false},
                       tooltip:{callbacks:{label:c=>c.raw+' % encore actives'}}},
             scales:{ x:{min:0, max:100, ticks:{color:'#ccc',callback:v=>v+'%'}}, y:{ticks:{color:'#ccc',font:{size:10}}} } }
+    });
+}
+
+// ---------- D\u00e9sindustrialisation ----------
+function afficherDesind(){
+    const d = DATA.desindustrialisation;
+    if(!d){ document.getElementById('desindustrialisation').style.display = 'none'; return; }
+    const emp = d.emploiIndustrie || [];
+    const pib = d.partPib || [];
+    const cre = d.creations || [];
+    if(!emp.length || !cre.length){ document.getElementById('desindustrialisation').style.display = 'none'; return; }
+
+    // 1. Emploi industriel 1980-2020 + part PIB (2e axe)
+    const pibDe = a => { const p = pib.find(q=>q.annee===a); return p ? p.part : null; };
+    if(charts.desind) charts.desind.destroy();
+    charts.desind = new Chart(document.getElementById('chartDesind'), {
+        type:'line',
+        data:{ labels: emp.map(e=>e.annee),
+            datasets:[
+                { label:'Emploi industriel (milliers)', data: emp.map(e=>e.emploi),
+                  borderColor:'#d32f2f', backgroundColor:'rgba(211,47,47,.15)', fill:true,
+                  tension:.25, pointRadius:4 },
+                { label:'Part industrie dans le PIB (%)', data: emp.map(e=>pibDe(e.annee)),
+                  borderColor:'#1e88e5', backgroundColor:'#1e88e5', borderDash:[6,4],
+                  yAxisID:'y1', spanGaps:false, pointRadius:6, showLine:true }
+            ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'France : 5,3 millions d\\'emplois industriels en 1980, 3 millions en 2020 (INSEE/DARES)', color:'#eee', font:{size:11}},
+                      tooltip:{ mode:'index', intersect:false } },
+            scales:{ y:{ticks:{color:'#ccc'}, title:{display:true,text:'milliers d\\'emplois',color:'#ccc'}},
+                     y1:{position:'right', min:0, max:30, ticks:{color:'#8ecae6', callback:v=>v+'%'}, grid:{drawOnChartArea:false}} } }
+    });
+
+    // 2. Cr\u00e9ations d'entreprises longue dur\u00e9e : total vs soci\u00e9t\u00e9s
+    if(charts.creatLong) charts.creatLong.destroy();
+    charts.creatLong = new Chart(document.getElementById('chartCreatLong'), {
+        type:'bar',
+        data:{ labels: cre.map(c=>c.annee),
+            datasets:[
+                { label:'Toutes cr\u00e9ations (milliers)', data: cre.map(c=>c.total),
+                  backgroundColor:'#d32f2f' },
+                { label:'dont soci\u00e9t\u00e9s (celles qui embauchent)', data: cre.map(c=>c.societes||null),
+                  backgroundColor:'#1e88e5' }
+            ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Cr\u00e9ations annuelles : x4,9 en 25 ans \u2014 mais les soci\u00e9t\u00e9s ne font que x3,3', color:'#eee', font:{size:11}},
+                      tooltip:{ mode:'index', intersect:false } },
+            scales:{ y:{ticks:{color:'#ccc'}, title:{display:true,text:'milliers de cr\u00e9ations',color:'#ccc'}} } }
     });
 }
 
