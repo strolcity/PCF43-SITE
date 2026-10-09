@@ -28,7 +28,7 @@ MODES D'UTILISATION
 -------------------
 1) PREMIÈRE FOIS (génère le xlsx à partir du JSON déjà collecté) :
        python scripts\build_emploi.py init
-   -> crée data\emploi\emploi.xlsx (20 feuilles) à partir de data\emploi\emploi_data.json
+   -> crée data\emploi\emploi.xlsx (22 feuilles) à partir de data\emploi\emploi_data.json
 
 2) MISE À JOUR ANNUELLE (votre routine habituelle) :
    - ouvrir data\emploi\emploi.xlsx,
@@ -90,6 +90,9 @@ SHEETS = {
     #   part_pib (% du PIB), creations_total / creations_societes /
     #   creations_micro (milliers de cr\u00e9ations) ; annee ; valeur
     "desindustrialisation": ["bloc", "annee", "valeur"],
+    # Secteurs d'emploi en Haute-Loire (Insee Analyses ARA 67) : bloc/cle/valeur
+    # blocs = meta, spheres, parts, industrie
+    "hl_secteurs": ["bloc", "cle", "valeur"],
     # Constantes des calculettes (ARE, RSA...)
     "constantes":     ["cle", "valeur", "unite", "description"],
 }
@@ -315,6 +318,16 @@ def xlsx_to_json():
             crea.setdefault(annee, {})[b[len("creations_"):]] = num(v)
     desi["creations"] = [dict(crea[k], annee=k) for k in sorted(crea)]
 
+    # --- Secteurs Haute-Loire (Insee Analyses ARA 67) : bloc / cle / valeur ---
+    hlsect = {}
+    for r in read_sheet(wb, "hl_secteurs"):
+        b, c, v = txt(r.get("bloc")), txt(r.get("cle")), r.get("valeur")
+        if b and c:
+            if isinstance(v, str):
+                hlsect.setdefault(b, {})[c] = v
+            else:
+                hlsect.setdefault(b, {})[c] = num(v)
+
     const = {}
     for r in read_sheet(wb, "constantes"):
         k = txt(r.get("cle"))
@@ -346,6 +359,7 @@ def xlsx_to_json():
         "emploisVacantsFrance": vac,
         "creationsEntreprises": cre,
         "desindustrialisation": desi,
+        "hauteLoireSecteurs": hlsect,
     }
 
     with open(JSON_OUT, "w", encoding="utf-8") as f:
@@ -486,6 +500,14 @@ def json_to_xlsx():
             if c.get(cle) is not None:
                 desi_rows.append(["creations_" + cle, c["annee"], c[cle]])
     new_sheet("desindustrialisation", SHEETS["desindustrialisation"], desi_rows)
+
+    # Secteurs Haute-Loire
+    hls = j.get("hauteLoireSecteurs") or {}
+    hls_rows = []
+    for b, paires in hls.items():
+        for c, v in paires.items():
+            hls_rows.append([b, c, v])
+    new_sheet("hl_secteurs", SHEETS["hl_secteurs"], hls_rows)
 
     new_sheet("constantes", SHEETS["constantes"], CONSTANTES_INIT)
 

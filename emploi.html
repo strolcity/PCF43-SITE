@@ -278,6 +278,30 @@
         <p class="src" style="margin-top:10px;">Sources : <a href="https://www.insee.fr/fr/statistiques/1377172" target="_blank">INSEE &#x2014; Le recul de l'emploi industriel 1980-2007 (&#xc9;conomie &amp; Statistique n&#xb0; 438-440) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/5897374" target="_blank">INSEE Focus 255 &#x2014; l'emploi en 2020 &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/7559103" target="_blank">INSEE Premi&#xe8;re n&#xb0; 2084 &#x2014; les entreprises industrielles en 2023 &#x2197;</a> &middot; <a href="https://www.strategie-plan.gouv.fr/point-de-vue/dynamique-entrepreneuriale-2000-2022-y-t-une-specificite-francaise" target="_blank">France Strat&#xe9;gie &#x2014; dynamique entrepreneuriale 2000-2022 &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8345726" target="_blank">INSEE &#x2014; cr&#xe9;ations d'entreprises en 2024 &#x2197;</a> &middot; le PIB : voir notre page <a href="economie.html">&#xc9;conomie</a>.</p>
     </div>
 
+    <!-- ================================================================
+         3quater. QUI FAIT TOURNER LA HAUTE-LOIRE ?
+         ================================================================ -->
+    <div class="filtres" id="hl-secteurs" style="display:none;">
+        <h2>Qui fait tourner la Haute-Loire ? L'&#xe9;cole, l'h&#xf4;pital, l'usine, la ferme</h2>
+        <p style="font-size:.88em;line-height:1.6;margin-bottom:14px;color:#e8e8e8;">
+            Ici, pas de finance ni de si&#xe8;ge social : la richesse du 43, c'est d'abord <strong>celles et ceux qui produisent et
+            qui soignent, qui enseignent, qui cultivent</strong>. Regardez la bascule de ces 40 derni&#xe8;res ann&#xe9;es &#x2014;
+            et ce qui menace ce tissu aujourd'hui.
+        </p>
+        <div class="filtres-row">
+            <div class="bloc-col" style="min-width:0;">
+                <h3>1. La bascule : sph&#xe8;re productive vs emplois de proximit&#xe9; (1975 &#x2192; 2015)</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartHlSpheres"></canvas></div>
+            </div>
+            <div class="bloc-col" style="min-width:0;">
+                <h3>2. Le 43 contre la moyenne : ce qui nous distingue</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartHlParts"></canvas></div>
+            </div>
+        </div>
+        <button class="btn-info" style="position:static;display:inline-flex;margin-top:12px;" onclick="document.getElementById('overlay-hlsect').classList.add('visible')">&#x2139; Notre commentaire</button>
+        <p class="src" style="margin-top:10px;">Source : <a href="https://www.insee.fr/fr/statistiques/3635722" target="_blank">INSEE &#x2014; Insee Analyses Auvergne-Rh&#xf4;ne-Alpes n&#xb0; 67 &#x2014; Haute-Loire : une lente transformation du tissu industriel (donn&#xe9;es 2015) &#x2197;</a></p>
+    </div>
+
     <!-- Compteurs -->
     <div class="filtres" id="compteurs" style="display:none;">
         <h2>Les compteurs qui d&#xe9;rangent</h2>
@@ -463,6 +487,19 @@
     </div>
 </div>
 
+<div class="overlay" id="overlay-hlsect" onclick="fermerPopup('overlay-hlsect',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-hlsect').classList.remove('visible')">&#x2715;</button>
+        <h2>Qui fait tourner la Haute-Loire ? Lire les chiffres du 43</h2>
+        <p><strong>La bascule en un graphique.</strong> En 1975, <strong>59 % des emplois du 43 &#xe9;taient productifs</strong> (usines, ateliers, exploitations agricoles). En 2015, ils ne sont plus que <strong>36 %</strong>, tandis que les emplois de proximit&#xe9; (sant&#xe9;, &#xe9;ducation, administration, commerce, services &#xe0; la personne) sont pass&#xe9;s de 33 % &#xe0; <strong>59 %</strong> (INSEE ARA 67). Ce n'est pas la fin du travail : c'est un <strong>d&#xe9;placement massif de la richesse produite vers les soins et les services</strong> &#x2014; cr&#xe9;ateurs de bien-&#xea;tre r&#xe9;el, mais d&#xe9;pendants de l'argent public.</p>
+        <p><strong>Le 43 reste un d&#xe9;partement qui produit.</strong> L'industrie emploie <strong>pr&#xe8;s d'une personne sur cinq</strong> &#x2014; deux fois plus qu'en moyenne France. L'usine Michelin de Blavozy est le <strong>premier employeur priv&#xe9; du d&#xe9;partement</strong>, et la plasturgie du plateau de Sainte-Sigol&#xe8;ne &#x2014; une soixantaine de PME-ETI (Groupe Barbier en t&#xea;te), n&#xe9;e de la reconversion du textile dans les ann&#xe9;es 1950 &#x2014; repr&#xe9;sente &#xe0; elle seule <strong>le quart des effectifs industriels</strong> (3 800 postes). Ces entreprises-l&#xe0; paient plein pot cotisations et salaires : chaque coup qui les frappe saigne tout le territoire.</p>
+        <p><strong>Les &#xab fonctionnaires inutiles &#xbb; ? Regardez de plus pr&#xe8;s.</strong> Sant&#xe9; et action sociale : <strong>16,9 % des emplois</strong>, 2 points de plus qu'en moyenne r&#xe9;gionale. Administration publique : <strong>12,4 % des emplois</strong> du Velay. L'agriculture : <strong>5,3 % des actifs sont agriculteurs</strong>, trois fois plus qu'en France. Les cadres n'y sont que 9 % contre 16,5 % en r&#xe9;gion : ici, on <em>produit</em> et on <em>soigne</em>, on ne g&#xe8;re pas des dossiers dans une tour. Quand on coupe l'h&#xf4;pital, l'&#xe9;cole ou la poste, on ne supprime pas de la &#xab; graisse &#xbb; : on coupe l'oxyg&#xe8;ne d'un d&#xe9;partement rural o&#xf9; ces emplois sont la premi&#xe8;re richesse.</p>
+        <p><strong>Et la pr&#xe9;carit&#xe9; derri&#xe8;re ?</strong> <strong>39 % des femmes salari&#xe9;es du 43 sont &#xe0; temps partiel</strong>, 7 points de plus qu'en r&#xe9;gion ; la zone de Brioude a perdu <strong>un cinqui&#xe8;me de ses effectifs industriels en 10 ans</strong> (2005-2015) et l'int&#xe9;rim y p&#xe8;se 3,2 % de l'emploi salari&#xe9;. Le temps partiel impos&#xe9, l'&#xe9;loignement des services (10 % de la population &#xe0; plus de 30 minutes des urgences et des lyc&#xe9;es) : voil&#xe0; le vrai visage de l'&#xab; eau qui dort &#xbb;.</p>
+        <p><strong>Notre lecture :</strong> le d&#xe9;partement n'a pas besoin de &#xab; lib&#xe9;rer l'initiative &#xbb; &#x2014; il a besoin qu'on arr&#xea;te de payer les dividendes avec ses usines, ses h&#xf4;pitaux et ses &#xe9;coles. D&#xe9;fendre l'industrie du 43, c'est aussi d&#xe9;fendre ce qui la fait vivre : la formation professionnelle, les services publics de proximit&#xe9;, la CAF qui irrigue chaque commune rurale. La richesse du 43 est l&#xe0;, pas dans les salles de march&#xe9;s.</p>
+        <p><a href="https://www.insee.fr/fr/statistiques/3635722" target="_blank">Insee Analyses ARA n&#xb0; 67 &#x2197;</a></p>
+    </div>
+</div>
+
 <div class="overlay" id="overlay-are" onclick="fermerPopup('overlay-are',event)">
     <div class="popup">
         <button class="popup-close" onclick="document.getElementById('overlay-are').classList.remove('visible')">&#x2715;</button>
@@ -534,7 +571,7 @@ fetch('data/emploi/emploi_data.json')
     .then(j => {
         DATA = j;
         document.getElementById('msg').style.display = 'none';
-        ['slogans','categories','graphiques','creations','desindustrialisation','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
+        ['slogans','categories','graphiques','creations','desindustrialisation','hl-secteurs','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
             document.getElementById(id).style.display = 'block';
         });
         afficherCategories();
@@ -543,6 +580,7 @@ fetch('data/emploi/emploi_data.json')
         majGraphiques();
         afficherCreations();
         afficherDesind();
+        afficherHlSecteurs();
         afficherCompteurs();
         calcSimu();
         calcAre();
@@ -856,6 +894,47 @@ function afficherDesind(){
             plugins:{ title:{display:true,text:'Cr\u00e9ations annuelles : x4,9 en 25 ans \u2014 mais les soci\u00e9t\u00e9s ne font que x3,3', color:'#eee', font:{size:11}},
                       tooltip:{ mode:'index', intersect:false } },
             scales:{ y:{ticks:{color:'#ccc'}, title:{display:true,text:'milliers de cr\u00e9ations',color:'#ccc'}} } }
+    });
+}
+
+// ---------- Secteurs d'emploi Haute-Loire (Insee Analyses ARA 67) ----------
+function afficherHlSecteurs(){
+    const h = DATA.hauteLoireSecteurs;
+    if(!h || !h.spheres){ document.getElementById('hl-secteurs').style.display = 'none'; return; }
+    const sp = h.spheres, pa = h.parts;
+
+    // 1. Bascule sph\u00e8re productive / pr\u00e9sentielle 1975 -> 2015
+    if(charts.hlSpheres) charts.hlSpheres.destroy();
+    charts.hlSpheres = new Chart(document.getElementById('chartHlSpheres'), {
+        type:'bar',
+        data:{ labels:['1975','2015'],
+            datasets:[
+                { label:'Sph\\u00e8re productive (usines, agriculture)', data:[sp.productive1975, sp.productive2015],
+                  backgroundColor:'#d32f2f' },
+                { label:'Emplois de proximit\\u00e9 (sant\\u00e9, \\u00e9ducation, services)', data:[sp.presentielle1975, sp.presentielle2015],
+                  backgroundColor:'#1e88e5' }
+            ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Haute-Loire : part des emplois par sph\\u00e8re (%), INSEE', color:'#eee', font:{size:11}},
+                      tooltip:{callbacks:{label:c=>c.dataset.label+' : '+c.raw+' %'}} },
+            scales:{ y:{min:0, max:70, ticks:{color:'#ccc',callback:v=>v+'%'}} } }
+    });
+
+    // 2. Le 43 vs France / r\u00e9gion : sp\u00e9cificit\u00e9s
+    if(charts.hlParts) charts.hlParts.destroy();
+    charts.hlParts = new Chart(document.getElementById('chartHlParts'), {
+        type:'bar',
+        data:{ labels:['Emploi industriel','Sant\\u00e9-action sociale','Agriculteurs','Cadres','Femmes \\u00e0 temps partiel'],
+            datasets:[
+                { label:'Haute-Loire', data:[pa.industrie, pa.santeActionSociale, pa.agriculteurs, pa.cadres, pa.tempsPartielFemmes],
+                  backgroundColor:'#d32f2f' },
+                { label:'France / r\\u00e9gion', data:[pa.industrieFrance, pa.santeActionSocialeAra, pa.agriculteursFrance, pa.cadresAra, pa.tempsPartielFemmesAra],
+                  backgroundColor:'#90caf9' }
+            ]},
+        options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Part des emplois (%) \\u2014 le 43 face \\u00e0 la moyenne (INSEE, 2015)', color:'#eee', font:{size:11}},
+                      tooltip:{callbacks:{label:c=>c.dataset.label+' : '+c.raw+' %'}} },
+            scales:{ x:{min:0, max:45, ticks:{color:'#ccc',callback:v=>v+'%'}}, y:{ticks:{color:'#ccc',font:{size:10}}} } }
     });
 }
 
