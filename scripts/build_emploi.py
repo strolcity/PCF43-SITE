@@ -28,7 +28,7 @@ MODES D'UTILISATION
 -------------------
 1) PREMIÈRE FOIS (génère le xlsx à partir du JSON déjà collecté) :
        python scripts\build_emploi.py init
-   -> crée data\emploi\emploi.xlsx (22 feuilles) à partir de data\emploi\emploi_data.json
+   -> crée data\emploi\emploi.xlsx (23 feuilles) à partir de data\emploi\emploi_data.json
 
 2) MISE À JOUR ANNUELLE (votre routine habituelle) :
    - ouvrir data\emploi\emploi.xlsx,
@@ -93,6 +93,10 @@ SHEETS = {
     # Secteurs d'emploi en Haute-Loire (Insee Analyses ARA 67) : bloc/cle/valeur
     # blocs = meta, spheres, parts, industrie
     "hl_secteurs": ["bloc", "cle", "valeur"],
+    # S\u00e9rie annuelle emploi salari\u00e9 43 par secteur (INSEE idbanque) :
+    # une ligne par ann\u00e9e ; cellules vides autoris\u00e9es (ex. agriculture avant 2010)
+    "hl_secteurs_serie": ["annee", "industrie", "construction", "agriculture",
+                          "tertiaireMarchand", "tertiaireNonMarchand", "ensemble"],
     # Constantes des calculettes (ARE, RSA...)
     "constantes":     ["cle", "valeur", "unite", "description"],
 }
@@ -328,6 +332,23 @@ def xlsx_to_json():
             else:
                 hlsect.setdefault(b, {})[c] = num(v)
 
+    # --- S\u00e9rie annuelle emploi 43 par secteur : une ligne par ann\u00e9e ---
+    se_cols = ["annee", "industrie", "construction", "agriculture",
+               "tertiaireMarchand", "tertiaireNonMarchand", "ensemble"]
+    se_rows = []
+    for r in read_sheet(wb, "hl_secteurs_serie"):
+        a = txt(r.get("annee"))
+        if not a:
+            continue
+        try:
+            annee = int(float(a))
+        except (ValueError, TypeError):
+            continue
+        se_rows.append({c: (annee if c == "annee" else num(r.get(c))) for c in se_cols})
+    se_rows.sort(key=lambda x: x["annee"])
+    serie = {c: [row[c] for row in se_rows] for c in se_cols}
+    hlsect["serieEmploi"] = serie
+
     const = {}
     for r in read_sheet(wb, "constantes"):
         k = txt(r.get("cle"))
@@ -508,6 +529,16 @@ def json_to_xlsx():
         for c, v in paires.items():
             hls_rows.append([b, c, v])
     new_sheet("hl_secteurs", SHEETS["hl_secteurs"], hls_rows)
+
+    # S\u00e9rie annuelle emploi 43 par secteur
+    se = (j.get("hauteLoireSecteurs") or {}).get("serieEmploi") or {}
+    se_rows = []
+    n = len(se.get("annees", []))
+    for i in range(n):
+        se_rows.append([se["annees"][i], se["industrie"][i], se["construction"][i],
+                        se["agriculture"][i], se["tertiaireMarchand"][i],
+                        se["tertiaireNonMarchand"][i], se["ensemble"][i]])
+    new_sheet("hl_secteurs_serie", SHEETS["hl_secteurs_serie"], se_rows)
 
     new_sheet("constantes", SHEETS["constantes"], CONSTANTES_INIT)
 
