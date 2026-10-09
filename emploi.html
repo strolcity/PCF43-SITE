@@ -173,9 +173,10 @@
          ================================================================ -->
     <div class="filtres">
         <h2>Nos graphiques, nos commentaires</h2>
-        <p style="font-size:.85em;color:#ddd;">
-            Le premier graphique a son propre menu : s&#xe9;lectionnez la France enti&#xe8;re, la Haute-Loire, ou votre d&#xe9;partement.
-            Les autres graphiques RSA / prime d'activit&#xe9; se lisent ci-dessous :
+        <p style="font-size:.85em;line-height:1.6;color:#ddd;">
+            <strong style="color:#ffcccc;">Cliquez sur le bouton &#x2139; de chaque graphique</strong> : c'est l&#xe0; que se trouvent nos commentaires et notre analyse &#x2014; ce que les chiffres disent vraiment, et comment on vous les cache.
+            Le premier graphique a son propre menu : France enti&#xe8;re, Haute-Loire, ou votre d&#xe9;partement.
+            Les graphiques RSA / prime d'activit&#xe9; se lisent ici :
             <select id="sel-geo" onchange="majGraphiques()">
                 <option value="france">France enti&#xe8;re</option>
                 <option value="hauteLoire" selected>Haute-Loire (43)</option>
@@ -192,6 +193,9 @@
             </div>
             <div class="canvas-wrap"><canvas id="chartDefm"></canvas></div>
             <div class="info-defm" id="info-defm"></div>
+            <h3 style="margin-top:14px;font-size:.85em;color:#ffcccc;text-transform:none;letter-spacing:0;">La m&#xea;me histoire, en % : qui sont vraiment les inscrits ?</h3>
+            <p style="font-size:.78em;color:#ddd;line-height:1.5;margin:4px 0 8px;">Si le nombre total d'inscrits change peu, sa <strong>composition</strong>, elle, bascule : moins de gens sans aucun emploi, de plus en plus de gens qui travaillent... tout en restant inscrits.</p>
+            <div style="position:relative;height:240px;"><canvas id="chartDefmParts"></canvas></div>
             <p class="src">Source : <a href="https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_stock_regions_brut_mens/" target="_blank">DARES &#x2014; inscrits &#xe0; France Travail par d&#xe9;partement (donn&#xe9;es brutes, fin janvier de chaque ann&#xe9;e) &#x2197;</a></p>
         </div>
         <div class="carte">
@@ -321,6 +325,7 @@
         <strong>automatiquement</strong>.</p>
         <p><strong>Attention :</strong> une partie de la hausse 2025 est donc <strong>m&#xe9;canique</strong> (inscriptions automatiques), pas une explosion du ch&#xf4;mage.
         C'est pr&#xe9;cis&#xe9;ment le genre de pi&#xe8;ge que cette page veut vous apprendre &#xe0; rep&#xe9;rer.</p>
+        <p><strong>Lire le 2e graphique :</strong> quand le total des inscrits bouge peu mais que la courbe violette (B+C) monte pendant que la rouge (A) descend, cela signifie que l'emploi distribu&#xe9; est de plus en plus <strong>partiel et pr&#xe9;caire</strong> : contrats courts, int&#xe9;rim, quelques heures par semaine. Ces personnes travaillent, souvent pour un salaire qui ne permet pas d'en vivre &#x2014; parfois compl&#xe9;t&#xe9; par la prime d'activit&#xe9; (qui va, rappelons-le, &#xe0; des gens qui travaillent). La baisse de la cat&#xe9;gorie A brandie par les m&#xe9;dias peut donc recouvrir une <strong>fabrique de travailleurs pauvres</strong>, pas un retour du plein emploi. &#xc0; mettre en regard avec le graphique temps partiel et la calculette 1.</p>
         <p><a href="https://www.service-public.fr/particuliers/vosdroits/F13240" target="_blank">D&#xe9;finitions officielles des cat&#xe9;gories &#x2197;</a> &#x2014;
         <a href="https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_defm_stock_regions_brut_mens/" target="_blank">donn&#xe9;es DARES par d&#xe9;partement &#x2197;</a></p>
     </div>
@@ -532,14 +537,40 @@ function majDefm(){
     });
     document.getElementById('titre-defm').textContent = 'Inscrits \u00e0 France Travail par cat\u00e9gorie \u2014 ' + lib;
 
+    // graphique des parts (%) : A, B, C, B+C dans les inscrits ABC
+    const pct = (v, tot) => tot ? Math.round(v / tot * 1000) / 10 : 0;
+    if(charts.defmParts) charts.defmParts.destroy();
+    charts.defmParts = new Chart(document.getElementById('chartDefmParts'), {
+        type:'line',
+        data:{ labels: annees, datasets:[
+            { label:'Cat. A (sans emploi)', data: rows.map(r=>pct(r.A, r.ABC)), borderColor:'#d32f2f', backgroundColor:'#d32f2f', tension:.3, pointRadius:2 },
+            { label:'B + C (travaillent d\u00e9j\u00e0)', data: rows.map(r=>pct(r.B + r.C, r.ABC)), borderColor:'#7b1fa2', backgroundColor:'#7b1fa2', borderWidth:3, tension:.3, pointRadius:2 },
+            { label:'Cat. B (< 78 h/mois)', data: rows.map(r=>pct(r.B, r.ABC)), borderColor:'#f57c00', backgroundColor:'#f57c00', borderDash:[5,4], tension:.3, pointRadius:1.5 },
+            { label:'Cat. C (\u2265 78 h/mois)', data: rows.map(r=>pct(r.C, r.ABC)), borderColor:'#fbc02d', backgroundColor:'#fbc02d', borderDash:[5,4], tension:.3, pointRadius:1.5 }
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Part de chaque cat\u00e9gorie dans les inscrits ABC (%) \u2014 '+lib, color:'#eee', font:{size:11}},
+                      tooltip:{callbacks:{label:c=>c.dataset.label+' : '+c.raw+'%'}}},
+            scales:{ x:{ticks:{color:'#ccc'}}, y:{min:0, max:100, ticks:{color:'#ccc',callback:v=>v+'%'}} } }
+    });
+
     // ligne dynamique : part des inscrits qui travaillent d\u00e9j\u00e0 (B+C parmi ABC)
     const d = rows[rows.length-1];
+    const d0 = rows[0];
     if(d && d.ABC){
-        const part = Math.round((d.B + d.C) / d.ABC * 1000) / 10;
+        const part = pct(d.B + d.C, d.ABC);
+        let evol = '';
+        if(d0 && d0.annee !== d.annee && d0.ABC){
+            const part0 = pct(d0.B + d0.C, d0.ABC);
+            const partA0 = pct(d0.A, d0.ABC);
+            const partA = pct(d.A, d.ABC);
+            evol = ' Depuis <strong>'+d0.annee+'</strong>, la cat\u00e9gorie A est pass\u00e9e de <strong>'+partA0+'%</strong> \u00e0 <strong>'+partA+'%</strong> '
+                 + 'des inscrits, pendant que B+C montaient de <strong>'+part0+'%</strong> \u00e0 <strong>'+part+'%</strong>.';
+        }
         document.getElementById('info-defm').innerHTML =
             'En <strong>'+d.annee+'</strong> \u2014 '+lib+' : <strong>'+part+' %</strong> des inscrits en recherche d\'emploi ('
             + fmt(d.ABC) + ' personnes) <strong>travaillent d\u00e9j\u00e0</strong> (cat\u00e9gories B et C). '
-            + 'Cat\u00e9gorie A seule (sans aucun emploi) : ' + fmt(d.A) + ' personnes.';
+            + 'Cat\u00e9gorie A seule (sans aucun emploi) : ' + fmt(d.A) + ' personnes.' + evol;
     }
 }
 
