@@ -819,17 +819,20 @@ function afficherDesind(){
 
     // 1. Emploi industriel 1980-2020 + part PIB (2e axe)
     const pibDe = a => { const p = pib.find(q=>q.annee===a); return p ? p.part : null; };
+    const empDe = a => { const e = emp.find(q=>q.annee===a); return e ? e.emploi : null; };
+    // ann\u00e9es fusionn\u00e9es des deux s\u00e9ries (emploi + part PIB), tri\u00e9es
+    const toutesAnnees = [...new Set([...emp.map(e=>e.annee), ...pib.map(p=>p.annee)])].sort((a,b)=>a-b);
     if(charts.desind) charts.desind.destroy();
     charts.desind = new Chart(document.getElementById('chartDesind'), {
         type:'line',
-        data:{ labels: emp.map(e=>e.annee),
+        data:{ labels: toutesAnnees,
             datasets:[
-                { label:'Emploi industriel (milliers)', data: emp.map(e=>e.emploi),
+                { label:'Emploi industriel (milliers)', data: toutesAnnees.map(a=>empDe(a)),
                   borderColor:'#d32f2f', backgroundColor:'rgba(211,47,47,.15)', fill:true,
-                  tension:.25, pointRadius:4 },
-                { label:'Part industrie dans le PIB (%)', data: emp.map(e=>pibDe(e.annee)),
+                  tension:.25, pointRadius:4, spanGaps:true },
+                { label:'Part industrie dans le PIB (%)', data: toutesAnnees.map(a=>pibDe(a)),
                   borderColor:'#1e88e5', backgroundColor:'#1e88e5', borderDash:[6,4],
-                  yAxisID:'y1', spanGaps:false, pointRadius:6, showLine:true }
+                  yAxisID:'y1', spanGaps:true, pointRadius:6, showLine:true }
             ]},
         options:{ responsive:true, maintainAspectRatio:false,
             plugins:{ title:{display:true,text:'France : 5,3 millions d\'emplois industriels en 1980, 3 millions en 2020 (INSEE/DARES)', color:'#eee', font:{size:11}},
