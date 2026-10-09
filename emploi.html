@@ -231,6 +231,29 @@
         </div>
     </div>
 
+    <!-- ================================================================
+         3bis. CR&#xc9;ATIONS D'ENTREPRISES
+         ================================================================ -->
+    <div class="filtres" id="creations" style="display:none;">
+        <h2>&#xab; On cr&#xe9;e des entreprises comme jamais &#xbb; : lesquelles, et combien de temps vivent-elles ?</h2>
+        <p style="font-size:.88em;line-height:1.6;margin-bottom:14px;color:#e8e8e8;">
+            Les cr&#xe9;ations d'entreprises sont brandies comme la preuve d'un &#xe9;lan entrepreneurial. Regardez <strong>ce qui se cache dans le chiffre</strong> :
+            deux tiers de ces &#xab; entreprises &#xbb; sont des micro-entrepreneurs, et moins de quatre sur dix survivent &#xe0; cinq ans.
+        </p>
+        <div class="filtres-row">
+            <div class="bloc-col" style="min-width:0;">
+                <h3>1. Qui cr&#xe9;e quoi ?</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartCreat"></canvas></div>
+            </div>
+            <div class="bloc-col" style="min-width:0;">
+                <h3>2. Combien de temps &#xe7;a vit ?</h3>
+                <div style="position:relative;height:300px;"><canvas id="chartPerennite"></canvas></div>
+            </div>
+        </div>
+        <button class="btn-info" style="position:static;display:inline-flex;margin-top:12px;" onclick="document.getElementById('overlay-creat').classList.add('visible')">&#x2139; Notre commentaire</button>
+        <p class="src" style="margin-top:10px;">Sources : <a href="https://www.insee.fr/fr/statistiques/8721354" target="_blank">INSEE &#x2014; Les cr&#xe9;ations d'entreprises en 2025 (Insee Premi&#xe8;re n&#xb0; 2092) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8634190" target="_blank">INSEE &#x2014; p&#xe9;rennit&#xe9; &#xe0; 5 ans des entreprises cr&#xe9;&#xe9;es en 2018 (n&#xb0; 2070) &#x2197;</a> &middot; <a href="https://www.insee.fr/fr/statistiques/8634000" target="_blank">INSEE &#x2014; micro-entrepreneurs 2018 : moins de 3 sur 10 encore actifs &#xe0; 5 ans (n&#xb0; 2069) &#x2197;</a></p>
+    </div>
+
     <!-- Compteurs -->
     <div class="filtres" id="compteurs" style="display:none;">
         <h2>Les compteurs qui d&#xe9;rangent</h2>
@@ -391,6 +414,18 @@
         <p><a href="https://data.dares.travail-emploi.gouv.fr/explore/dataset/dares_tempspartiel_detail_annuelles/" target="_blank">Donn&#xe9;es DARES &#x2197;</a></p>
     </div>
 </div>
+<div class="overlay" id="overlay-creat" onclick="fermerPopup('overlay-creat',event)">
+    <div class="popup">
+        <button class="popup-close" onclick="document.getElementById('overlay-creat').classList.remove('visible')">&#x2715;</button>
+        <h2>Cr&#xe9;ations d'entreprises : lire derri&#xe8;re le chiffre</h2>
+        <p><strong>Le record de cr&#xe9;ations est bien r&#xe9;el</strong> (1,17 million en 2025), mais il est port&#xe9; &#xe0; 65 % par les <strong>micro-entrepreneurs</strong> &#x2014; contre 53 % en 2018. Le chiffre brandi par les m&#xe9;dias m&#xe9;lange donc des choses tr&#xe8;s diff&#xe9;rentes : une PME industrielle qui embauche, et une personne immatricul&#xe9;e pour quelques missions de livraison.</p>
+        <p><strong>Et la moiti&#xe9; ne d&#xe9;marre m&#xea;me pas.</strong> Sur 100 micro-entrepreneurs immatricul&#xe9;s en 2018, seuls 39 % de ceux qui ont r&#xe9;ellement d&#xe9;marr&#xe9; &#xe9;taient encore actifs cinq ans apr&#xe8;s &#x2014; et en comptant ceux qui n'ont jamais factur&#233; le moindre euro, le taux tombe &#xe0; <strong>28 %</strong>. Comparez aux soci&#xe9;t&#xe9;s : 71 %. C'est un statut de <strong>survie &#xe9;conomique individuelle</strong>, pas un moteur d'emplois.</p>
+        <p><strong>Cotisations : proportionnelles, jamais minimales.</strong> Le micro-entrepreneur paie un forfait sur son chiffre d'affaires (12,3 % &#xe0; 25,6 % selon l'activit&#xe9;) &#x2014; chiffre d'affaires nul, cotisations nulles, aucune cotisation minimale (contrairement aux ind&#xe9;pendants classiques). Et il ne cotise <strong>jamais &#xe0; l'assurance ch&#xf4;mage</strong> : en cas de cessation, pas d'ARE de son activit&#xe9; ind&#xe9;pendante &#x2014; au mieux le reliquat de droits acquis quand il &#xe9;tait salari&#xe9;, sinon le RSA. Quant &#xe0; l'ACRE, elle exon&#xe8;re de moiti&#xe9; les cotisations la premi&#xe8;re ann&#xe9;e : l'&#xc9;tat subventionne l'exp&#xe9;rimentation de statuts pr&#xe9;caires.</p>
+        <p><strong>Notre lecture :</strong> pousser vers la micro-entreprise, c'est individualiser le risque du ch&#xf4;mage. La personne devient &#xab; entrepreneure &#xbb;, ne figure plus dans les statistiques du ch&#xf4;mage, ne co&#xfb;te presque rien &#xe0; la S&#xe9;curit&#xe9; sociale &#x2014; et retombe sur le RSA quand &#xe7;a s'arr&#xea;te. Pendant ce temps, les entreprises qui cr&#xe9;ent de vrais emplois salari&#xe9;s, paient des salaires complets, cotisent &#xe0; l'assurance ch&#xf4;mage et font vivre un territoire, ne b&#xe9;n&#xe9;ficient pas de ces facilit&#xe9;s. Le d&#xe9;bat n'est pas entreprendre oui/non : c'est <strong>quel emploi</strong> la collectivit&#xe9; veut fabriquer.</p>
+        <p><a href="https://www.insee.fr/fr/statistiques/8721354" target="_blank">Insee Premi&#xe8;re n&#xb0; 2092 &#x2197;</a> &#x2014; <a href="https://www.insee.fr/fr/statistiques/8634190" target="_blank">n&#xb0; 2070 &#x2197;</a> &#x2014; <a href="https://www.insee.fr/fr/statistiques/8634000" target="_blank">n&#xb0; 2069 &#x2197;</a> &#x2014; <a href="https://www.economie.gouv.fr/entreprises/gerer-sa-micro-entreprise/micro-entreprises-quel-est-le-montant-de-vos-cotisations-sociales" target="_blank">Cotisations micro-entreprise (economie.gouv.fr) &#x2197;</a></p>
+    </div>
+</div>
+
 <div class="overlay" id="overlay-are" onclick="fermerPopup('overlay-are',event)">
     <div class="popup">
         <button class="popup-close" onclick="document.getElementById('overlay-are').classList.remove('visible')">&#x2715;</button>
@@ -462,13 +497,14 @@ fetch('data/emploi/emploi_data.json')
     .then(j => {
         DATA = j;
         document.getElementById('msg').style.display = 'none';
-        ['slogans','categories','graphiques','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
+        ['slogans','categories','graphiques','creations','compteurs','simulateur','simulateur-are','analyse'].forEach(id=>{
             document.getElementById(id).style.display = 'block';
         });
         afficherCategories();
         remplirDepartements();
         majDefm();
         majGraphiques();
+        afficherCreations();
         afficherCompteurs();
         calcSimu();
         calcAre();
@@ -696,6 +732,41 @@ function majGraphiques(){
             plugins:{ title:{display:true,text:'Pourquoi travaille-t-on \u00e0 temps partiel ? \u2014 France, enqu\u00eate emploi '+anneeR+' (DARES)', color:'#eee', font:{size:12}},
                       tooltip:{callbacks:{label:c=>c.label+' : '+c.raw+'%'}}},
             scales:{ x:{ticks:{color:'#ccc',callback:v=>v+'%'}}, y:{ticks:{color:'#ccc',font:{size:10}}} } }
+    });
+}
+
+// ---------- Cr\u00e9ations d'entreprises (INSEE) ----------
+function afficherCreations(){
+    const ce = DATA.creationsEntreprises;
+    if(!ce){ document.getElementById('creations').style.display = 'none'; return; }
+
+    // 1. R\u00e9partition des cr\u00e9ations 2025 + part micro 2018 vs 2025
+    const r = ce.repartition2025;
+    if(charts.creat) charts.creat.destroy();
+    charts.creat = new Chart(document.getElementById('chartCreat'), {
+        type:'doughnut',
+        data:{ labels:['Micro-entrepreneurs','Soci\u00e9t\u00e9s','Entreprises individuelles classiques'],
+            datasets:[{ data:[r.microEntrepreneurs, r.societes, r.entreprisesIndividuellesClassiques],
+                backgroundColor:['#d32f2f','#1e88e5','#ffb74d'], borderColor:'#111', borderWidth:2 }]},
+        options:{ responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'Les cr\u00e9ations d\'entreprises 2025 : 1,17 million, mais...', color:'#eee', font:{size:11}},
+                      tooltip:{callbacks:{label:c=>c.label+' : '+fmt(c.raw)+' ('+Math.round(c.raw/(r.microEntrepreneurs+r.societes+r.entreprisesIndividuellesClassiques)*100)+'%)'}}}}
+    });
+
+    // 2. P\u00e9rennit\u00e9 \u00e0 5 ans selon le statut
+    const p = ce.perennite5ans;
+    if(charts.perennite) charts.perennite.destroy();
+    charts.perennite = new Chart(document.getElementById('chartPerennite'), {
+        type:'bar',
+        data:{ labels:['Soci\u00e9t\u00e9s','Entreprises individuelles classiques','Micro-entrepreneurs (ayant d\u00e9marr\u00e9)','Micro-entrepreneurs (toutes immatriculations)'],
+            datasets:[{ label:'Encore actives 5 ans apr\u00e8s (%)',
+                data:[p.societes, p.entreprisesIndividuellesClassiques, p.microAyantDemarre, p.microToutesImmatriculations],
+                backgroundColor:['#1e88e5','#ffb74d','#d32f2f','#7b1fa2'], borderWidth:0 }]},
+        options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
+            plugins:{ title:{display:true,text:'P\u00e9rennit\u00e9 \u00e0 5 ans \u2014 g\u00e9n\u00e9ration 2018 (INSEE)', color:'#eee', font:{size:11}},
+                      legend:{display:false},
+                      tooltip:{callbacks:{label:c=>c.raw+' % encore actives'}}},
+            scales:{ x:{min:0, max:100, ticks:{color:'#ccc',callback:v=>v+'%'}}, y:{ticks:{color:'#ccc',font:{size:10}}} } }
     });
 }
 

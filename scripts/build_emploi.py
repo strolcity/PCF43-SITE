@@ -77,6 +77,8 @@ SHEETS = {
     "temps_partiel_raisons": ["annee", "raison", "part"],
     "temps_partiel_quotite": ["annee", "quotite", "part"],
     "emplois_vacants": ["trimestre", "emploisVacants", "taux"],
+    # Cr\u00e9ations d'entreprises (INSEE) : bloc/cle/valeur
+    "creations_entreprises": ["bloc", "cle", "valeur"],
     # Constantes des calculettes (ARE, RSA...)
     "constantes":     ["cle", "valeur", "unite", "description"],
 }
@@ -275,6 +277,13 @@ def xlsx_to_json():
             "taux": num(r.get("taux"))}
            for r in read_sheet(wb, "emplois_vacants")]
 
+    # --- Cr\u00e9ations d'entreprises (INSEE) : bloc / cle / valeur ---
+    cre = {}
+    for r in read_sheet(wb, "creations_entreprises"):
+        b, c, v = txt(r.get("bloc")), txt(r.get("cle")), num(r.get("valeur"))
+        if b and c:
+            cre.setdefault(b, {})[c] = v
+
     const = {}
     for r in read_sheet(wb, "constantes"):
         k = txt(r.get("cle"))
@@ -304,6 +313,7 @@ def xlsx_to_json():
                          "raisonsAnnee": raisons_annee, "quotite": quotite,
                          "quotiteAnnee": quotite_annee},
         "emploisVacantsFrance": vac,
+        "creationsEntreprises": cre,
     }
 
     with open(JSON_OUT, "w", encoding="utf-8") as f:
@@ -422,6 +432,13 @@ def json_to_xlsx():
     new_sheet("emplois_vacants", SHEETS["emplois_vacants"],
               [[v["trimestre"], v["emploisVacants"], v["taux"]]
                for v in j["emploisVacantsFrance"]])
+
+    ce_rows = []
+    ce = j.get("creationsEntreprises") or {}
+    for b, paires in ce.items():
+        for c, v in paires.items():
+            ce_rows.append([b, c, v])
+    new_sheet("creations_entreprises", SHEETS["creations_entreprises"], ce_rows)
 
     new_sheet("constantes", SHEETS["constantes"], CONSTANTES_INIT)
 
