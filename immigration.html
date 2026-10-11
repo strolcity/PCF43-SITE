@@ -308,6 +308,36 @@
             transform: scale(1.05);
         }
 
+        /* Dessin Cro-Magnon dans l'encadré manipulation */
+        .cromagnon-container {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            vertical-align: top;
+            max-width: 280px;
+        }
+        .cromagnon-title {
+            color: #ff5555;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .cromagnon-img {
+            max-width: 280px;
+            width: 100%;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .cromagnon-img:hover {
+            transform: scale(1.05);
+        }
+        .cromagnon-click-hint {
+            font-size: 0.85em;
+            color: #ffaa00;
+            text-align: center;
+            margin-top: 5px;
+        }
+
         .zombis-popup {
             display: none;
             position: fixed;
@@ -618,6 +648,23 @@
                 >
             </div>
 
+            <!-- Bouton campagne, entre les deux images -->
+            <div style="display:inline-block; vertical-align:top; margin:20px 15px; max-width:170px;">
+                <a href="https://www.fabienroussel2027.fr/" target="_blank" style="display:inline-block;background:#d32f2f;color:white;padding:12px 20px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:1.1em;line-height:1.4;">VIVRE, MIEUX, ENSEMBLE, EN PAIX →</a>
+            </div>
+
+            <!-- Dessin Cro-Magnon avec pop-up -->
+            <div class="cromagnon-container">
+                <p class="cromagnon-title">🧬 La grande arnaque du droit du sol, droit du sang</p>
+                <img
+                    class="cromagnon-img"
+                    src="https://i.postimg.cc/dQx2mrWf/cro-magnion.png"
+                    alt="Dessin : des Cro-Magnon se partagent une tarte « 99,9 % ADN commun »"
+                    onclick="openCromagnonPopup()"
+                >
+                <p class="cromagnon-click-hint">👆 Cliquez sur le dessin pour l'explication</p>
+            </div>
+
             <!-- Pop-up pour Zombis -->
             <div id="zombisPopup" class="zombis-popup">
                 <span class="zombis-popup-close" onclick="closeZombisPopup()">&times;</span>
@@ -659,11 +706,59 @@
                     <p><em>Punchline : « Mérite-t-on d’avoir un visage différent ? Si oui, alors ce n’est plus une méritocratie, c’est un concours de hasard. »</em></p>
                 </div>
             </div>
+
+            <!-- Pop-up Cro-Magnon : la grande arnaque du droit du sol / droit du sang -->
+            <div id="cromagnonPopup" class="zombis-popup">
+                <span class="zombis-popup-close" onclick="closeCromagnonPopup()">&times;</span>
+                <div class="zombis-popup-content">
+                    <p><strong>🧬 La grande arnaque du droit du sol, droit du sang</strong></p>
+                    <p>
+                        Nos adversaires proposent de supprimer le <strong>droit du sol</strong> (la
+                        nationalité pour les enfants nés en France de parents étrangers) pour ne
+                        garder que le <strong>droit du sang</strong> (la nationalité par la parenté).
+                        Autrement dit : ta vie, ta langue, ton école, ton travail ici ne compteraient
+                        pas — seul compterait le sang de tes parents.
+                    </p>
+                    <p>
+                        Mais la science a un problème avec cette idée : <strong>tous les êtres
+                        humains partagent 99,9 % de leur ADN</strong>. Un Français, une Chinoise, un
+                        Sénégalais : 99,9 % d'ADN commun. Et les 0,1 % restants ? Ils portent la
+                        couleur des yeux, du visage… et c'est tout. « Race » au sens biologique
+                        n'existe pas : il n'y a qu'une seule espèce humaine.
+                    </p>
+                    <p>
+                        <strong>L'explication du dessin :</strong> nos ancêtres Cro-Magnon — les
+                        premiers <em>Homo sapiens</em> d'Europe — se partagent une tarte :
+                        <strong>99,9 % d'ADN commun</strong> à tous les humains. Chacun a sa part,
+                        chacun sourit. Mais l'un d'eux, à la loupe, examine la miette de
+                        <strong>0,1 %</strong>. C'est exactement ce que fait le racisme : il oublie
+                        les 99,9 % que nous avons en commun — même espèce, même planète, même
+                        humanité — pour tout miser sur la virgule. <strong>Le racisme : oublier les
+                        99,9 % pour se disputer sur une virgule.</strong>
+                    </p>
+                    <p>
+                        Et il y a plus embarrassant encore pour les thèses de l'« enracinement » :
+                        <strong>tous les humains viennent d'Afrique</strong>. Les Cro-Magnon eux-mêmes
+                        étaient des migrants africains arrivés en Europe il y a environ 45 000 ans.
+                        L'Europe a été peuplée par l'immigration dès la préhistoire : le droit du
+                        sang pur n'existe pas, nous sommes TOUS des descendants d'immigrés.
+                        <strong>Des origines africaines, une humanité sans frontières.</strong>
+                    </p>
+                    <p>
+                        Finalement, la vraie question n'est pas « d'où vient ton sang ? » mais
+                        <strong>« comment vit-on ensemble ? »</strong> — c'est tout l'objet de la
+                        <a href="https://www.unesco.org/fr/days/living-together-peace" target="_blank">Journée internationale de vivre ensemble en paix (UNESCO)</a>.
+                    </p>
+                    <p style="text-align:center; margin-top:15px;">
+                        <a href="https://www.fabienroussel2027.fr/" target="_blank" style="display:inline-block;background:#d32f2f;color:white;padding:12px 28px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:1.1em;">VIVRE, MIEUX, ENSEMBLE, EN PAIX →</a>
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- Exemple Wauquiez -->
         <div class="text-box">
-            <p><strong>Prenons l'exemple de notre député :</strong></p>
+            <p><strong>Prenons l'exemple de notre animal (la bête du Gévaudan, faites attention, vous allez vous faire croquer) :</strong></p>
             <p>
                 <strong>Discours d'octobre 2017 sur droitesociale.fr :</strong>
                 <a href="https://www.droitesociale.fr/Laurent-Wauquiez-ds16" target="_blank">Lien vers le discours</a>
@@ -713,7 +808,7 @@
                 En réponse, leur argumentaire est la suppression des flux migratoires et la réduction des droits des étrangers, sans chercher à déterminer ce qui permettrait à un État « fort » d'intégrer les populations qu'il accueille sur son sol.
             </p>
             <p>
-                Dans ce contexte, les discours les plus extrémistes rencontrent l'approbation d'une partie de la population. <strong>vous êtes en train de vous faire manipuler</strong> (voir lobotomiser avec CNews).
+                Dans ce contexte, les discours les plus extrémistes rencontrent l'approbation d'une partie de la population. <strong>MAIS VOUS ÊTES MANIPULÉS</strong> (attention à la lobotomisation avec CNews).
             </p>
             <p>
                 <a href="https://data.ina.fr/s/3JdpRs" target="_blank" style="display:inline-block;background:#d32f2f;color:white;padding:9px 22px;border-radius:6px;text-decoration:none;font-size:.9em;">Essayer l'outil data.ina.fr →</a>
@@ -982,6 +1077,15 @@
         });
       });
 
+    // Fonction pour ouvrir/fermer le pop-up Cro-Magnon
+    function openCromagnonPopup() {
+        document.getElementById("cromagnonPopup").style.display = "block";
+    }
+
+    function closeCromagnonPopup() {
+        document.getElementById("cromagnonPopup").style.display = "none";
+    }
+
     // Fonction pour ouvrir le pop-up Zombis
     function openZombisPopup() {
         document.getElementById("zombisPopup").style.display = "block";
@@ -992,11 +1096,15 @@
         document.getElementById("zombisPopup").style.display = "none";
     }
 
-    // Fermer le pop-up si on clique en dehors
+    // Fermer les pop-ups si on clique en dehors
     window.onclick = function(event) {
         const popup = document.getElementById("zombisPopup");
         if (event.target === popup) {
             popup.style.display = "none";
+        }
+        const popupCroma = document.getElementById("cromagnonPopup");
+        if (event.target === popupCroma) {
+            popupCroma.style.display = "none";
         }
     };
     </script>
