@@ -123,6 +123,8 @@ function affichage(nom){
     .replace(/\s+/g,' ')
     .trim();
 }
+// Indicateurs à exclure des totaux (sous-séries déjà incluses dans un indicateur parent)
+const EXCLUS_TOTAUX = n => /\(\s*AFD\s*\)|\(\s*hors AFD\s*\)/i.test(n);
 const COULEURS = { Violences:'#c0392b', Vols:'#e67e22', Autres:'#7f8c8d' };
 
 let FR = null, DEP = null, RS = null;
@@ -149,7 +151,7 @@ let chartTaux = null, chartCat = null, chartRes = null;
 
 function construire(){
   // --- sélecteur d'indicateur
-  const noms = Object.keys(FR.indicateurs).sort((a,b)=>affichage(a).localeCompare(affichage(b),'fr'));
+  const noms = Object.keys(FR.indicateurs).filter(n=>!EXCLUS_TOTAUX(n)).sort((a,b)=>affichage(a).localeCompare(affichage(b),'fr'));
   const sel = document.getElementById('selInd');
   noms.forEach(n=>{
     const o = document.createElement('option'); o.value = n; o.textContent = affichage(n);
@@ -192,6 +194,7 @@ function dessinerCategories(){
   const cats = {};
   const anneesSet = new Set();
   for (const [nom, s] of Object.entries(FR.indicateurs)){
+    if (EXCLUS_TOTAUX(nom)) continue; // sous-séries stupéfiants déjà incluses dans l'indicateur parent
     const c = categorie(nom);
     if (!cats[c]) cats[c] = {};
     s.annees.forEach((a,i)=>{ cats[c][a] = (cats[c][a]||0) + (s.nombre[i]||0); anneesSet.add(a); });
@@ -216,7 +219,10 @@ function dessinerRessenti(){
   const annees = pd.annees;
   // faits France : on prend le total toutes catégories si possible, sinon somme
   const totaux = {};
-  for (const s of Object.values(FR.indicateurs)) s.annees.forEach((a,i)=>{ totaux[a]=(totaux[a]||0)+(s.nombre[i]||0); });
+  for (const [nom, s] of Object.entries(FR.indicateurs)){
+    if (EXCLUS_TOTAUX(nom)) continue; // pas de double comptage stupéfiants
+    s.annees.forEach((a,i)=>{ totaux[a]=(totaux[a]||0)+(s.nombre[i]||0); });
+  }
   const serieFaits = annees.map(a => totaux[a] ?? null);
   const pop = FR.indicateurs[Object.keys(FR.indicateurs)[0]];
   const serieTaux = annees.map((a,i)=> serieFaits[i]!=null && pop.population[pop.annees.indexOf(a)] ? Math.round(serieFaits[i]/pop.population[pop.annees.indexOf(a)]*100000) : null);
