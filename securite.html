@@ -29,6 +29,8 @@
   details summary { cursor:pointer; font-weight:600; color:#8b1a1a; margin:8px 0; }
   .chargement { text-align:center; padding:40px; font-size:1.1rem; color:#888; }
   .err { color:#b00; }
+  .hausse { color:#b01212; font-weight:700; }
+  .baisse { color:#27ae60; font-weight:700; }
 </style>
 </head>
 <body>
@@ -47,6 +49,19 @@ département, publiés par le SSMSI (Ministère de l'Intérieur). Trois honnête
   <li>Les efforts de procédure varient : plus on enregistre (meilleure réponse aux plaintes), plus ça « augmente » — ce n'est pas un progrès de la délinquance, c'est un progrès du service.</li>
   <li>Les changements de méthode comptent (voir la note sur les enquêtes de ressenti plus bas).</li>
 </ul>
+</div>
+
+<h2>🧱 Par catégorie : où sont les faits ?</h2>
+<div class="encadre">
+  <p>Volume total des faits enregistrés en France, empilé par grande catégorie, avec la courbe du <b>total général</b> — et la variation par rapport à l'année précédente dans le tableau ci-dessous.</p>
+  <div class="chartbox"><canvas id="graphCategories"></canvas></div>
+  <details style="margin-top:10px">
+    <summary>📊 Total des faits par année et variation vs année précédente</summary>
+    <table id="tableCategories" style="margin-top:8px"></table>
+  </details>
+  <p class="petit">Catégories : <b>Violences</b> (homicides, tentatives, violences physiques et sexuelles),
+  <b>Vols</b> (cambriolages, vols avec/sans violence, de véhicules…), <b>Autres</b> (dégradations, escroqueries, stupéfiants).
+  Le total additionne des unités de compte différentes (victimes, infractions, mis en cause) : il mesure l'activité enregistrée, pas le nombre de crimes.</p>
 </div>
 
 <h2>🔍 Comparez : votre département face à un autre, ou à la France</h2>
@@ -69,14 +84,6 @@ département, publiés par le SSMSI (Ministère de l'Intérieur). Trois honnête
   </div>
   <div class="chartbox"><canvas id="graphTaux"></canvas></div>
   <p class="petit" id="noteTaux"></p>
-</div>
-
-<h2>🧱 Par catégorie : où sont les faits ?</h2>
-<div class="encadre">
-  <p>Volume total des faits enregistrés en France, empilé par grande catégorie, année par année.</p>
-  <div class="chartbox"><canvas id="graphCategories"></canvas></div>
-  <p class="petit">Catégories : <b>Violences</b> (homicides, tentatives, violences physiques et sexuelles),
-  <b>Vols</b> (cambriolages, vols avec/sans violence, de véhicules…), <b>Autres</b> (dégradations, escroqueries, stupéfiants).</p>
 </div>
 
 <h2>🧭 Ressenti vs réalité</h2>
@@ -217,14 +224,17 @@ async function dessinerTaux(){
   const taux = document.getElementById('chkTaux').checked;
   const affFrance = document.getElementById('chkFrance').checked;
 
-  // charger les départements sélectionnés (au besoin)
+  // charger les départements sélectionnés (au besoin), un par un : un fichier manquant ne bloque jamais le graphe
   const codes = [];
+  const indisponibles = [];
   for (let i=1;i<=nbDeps;i++){
     const c = document.getElementById('selDep'+i).value;
     if (!codes.includes(c)) codes.push(c);
   }
-  try { await Promise.all(codes.map(c=>chargerDep(c))); }
-  catch(e){ document.getElementById('noteTaux').textContent = '⚠️ ' + e.message; return; }
+  for (const c of codes){
+    try { await chargerDep(c); }
+    catch(e){ if (!indisponibles.includes(c)) indisponibles.push(c); }
+  }
 
   // années communes (on prend celles de la France)
   const annees = f.annees;
@@ -234,7 +244,7 @@ async function dessinerTaux(){
       borderColor:COUL_FRANCE, backgroundColor:COUL_FRANCE, borderWidth:2, borderDash:[8,4], tension:.25, pointRadius:3 });
   }
   codes.forEach((c,i)=>{
-    const d = CACHE_DEP[c].indicateurs[nom];
+    const d = CACHE_DEP[c] ? CACHE_DEP[c].indicateurs[nom] : null;
     const serie = annees.map(a => {
       const idx = d ? d.annees.indexOf(a) : -1;
       if (idx < 0) return null;
@@ -255,6 +265,7 @@ async function dessinerTaux(){
     }
   });
   document.getElementById('noteTaux').textContent =
+    (indisponibles.length ? '⚠️ Données indisponibles pour : ' + indisponibles.map(c=>DEPS[c]+' ('+c+')').join(', ') + '. ' : '') +
     (f.unite_de_compte ? 'Unité de compte : ' + f.unite_de_compte + '. ' : '') +
     (taux ? 'Attention : le taux permet de comparer des départements de tailles différentes.' :
             'Attention : en volume brut, les grands départements mécaniquement plus hauts — préférez le taux pour comparer.') +
@@ -274,6 +285,12 @@ function dessinerCategories(){
   const datasets = ['Violences','Vols','Autres'].filter(c=>cats[c]).map(c=>({
     label:c, data:annees.map(a=>cats[c][a]||0), backgroundColor:COULEURS[c]
   }));
+  // courbe du total (non empilée)
+  const totauxCat = annees.map(a => datasets.reduce((s,d)=>s+d.data[annees.indexOf(a)],0));
+  datasets.push({
+    type:'line', label:'Total', data: totauxCat,
+    borderColor:'#222', backgroundColor:'#222', borderWidth:3, pointRadius:4, stack:'total', order:0
+  });
   chartCat = new Chart(document.getElementById('graphCategories'), {
     type:'bar',
     data:{ labels:annees, datasets },
@@ -283,6 +300,16 @@ function dessinerCategories(){
       plugins:{ legend:{ position:'bottom' } }
     }
   });
+  // tableau total + % vs N-1
+  let th = '<tr><th>Année</th><th>Total faits enregistrés</th><th>Variation vs année précédente</th><th>Variation depuis 2016</th></tr>';
+  th += '<tr><td>2016</td><td>' + fmt(totauxCat[0]) + '</td><td>—</td><td>—</td></tr>';
+  for (let i=1;i<annees.length;i++){
+    const vN1 = totauxCat[i-1] ? (totauxCat[i]-totauxCat[i-1])/totauxCat[i-1]*100 : null;
+    const v16  = totauxCat[0] ? (totauxCat[i]-totauxCat[0])/totauxCat[0]*100 : null;
+    const cell = v => v==null ? '—' : (v>0?'<span class="hausse">+'+v.toFixed(1)+' %</span>':'<span class="baisse">'+v.toFixed(1)+' %</span>');
+    th += '<tr><td>'+annees[i]+'</td><td>'+fmt(totauxCat[i])+'</td><td>'+cell(vN1)+'</td><td>'+cell(v16)+'</td></tr>';
+  }
+  document.getElementById('tableCategories').innerHTML = th;
 }
 
 function dessinerRessenti(){
