@@ -260,8 +260,27 @@ async function dessinerTaux(){
     data:{ labels:annees, datasets },
     options:{
       maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
       scales:{ y:{ title:{display:true, text: taux ? 'Faits enregistrés pour 100 000 habitants' : 'Faits enregistrés (volume)'} } },
-      plugins:{ legend:{ position:'bottom' } }
+      plugins:{
+        legend:{ position:'bottom' },
+        tooltip:{
+          callbacks:{
+            label: ctx => {
+              let t = ' ' + ctx.dataset.label + ' : ' + (ctx.parsed.y==null?'—':ctx.parsed.y.toLocaleString('fr'));
+              const i = ctx.dataIndex;
+              if (i > 0 && ctx.dataset.data[i-1] != null && ctx.dataset.data[i] != null){
+                const avant = ctx.dataset.data[i-1];
+                if (avant > 0){
+                  const v = (ctx.dataset.data[i]-avant)/avant*100;
+                  t += v > 0 ? ' (+' + v.toFixed(1) + ' % vs ' + ctx.label + '-1)' : ' (' + v.toFixed(1) + ' % vs ' + ctx.label + '-1)';
+                }
+              }
+              return t;
+            }
+          }
+        }
+      }
     }
   });
   document.getElementById('noteTaux').textContent =
@@ -296,8 +315,28 @@ function dessinerCategories(){
     data:{ labels:annees, datasets },
     options:{
       maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
       scales:{ x:{ stacked:true }, y:{ stacked:true, title:{display:true,text:'Faits enregistrés (volume)'} } },
-      plugins:{ legend:{ position:'bottom' } }
+      plugins:{
+        legend:{ position:'bottom' },
+        tooltip:{
+          callbacks:{
+            label: ctx => {
+              if (ctx.dataset.label === 'Total'){
+                let t = ' Total : ' + (ctx.parsed.y==null?'—':Math.round(ctx.parsed.y).toLocaleString('fr'));
+                const i = ctx.dataIndex;
+                const avant = ctx.dataset.data[i-1];
+                if (i > 0 && avant > 0){
+                  const v = (ctx.dataset.data[i]-avant)/avant*100;
+                  t += v > 0 ? ' (+' + v.toFixed(1) + ' % vs ' + (ctx.label-1) + ')' : ' (' + v.toFixed(1) + ' % vs ' + (ctx.label-1) + ')';
+                }
+                return t;
+              }
+              return ' ' + ctx.dataset.label + ' : ' + (ctx.parsed.y==null?'—':Math.round(ctx.parsed.y).toLocaleString('fr'));
+            }
+          }
+        }
+      }
     }
   });
   // tableau total + % vs N-1
