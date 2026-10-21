@@ -1,135 +1,209 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sécurité : la peur n'est pas dans la rue — PCF 43</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<title>PCF 43 - Sécurité : la peur n'est pas dans la rue, elle est dans le poste</title>
+<link rel="icon" type="image/png" href="https://i.postimg.cc/tT0MFfbS/pcf43.png">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-  :root { font-family: system-ui, 'Segoe UI', sans-serif; color:#222; }
-  body { background:#fff; max-width: 1000px; margin: 0 auto; padding: 18px; line-height:1.55; }
-  h1 { color:#8b1a1a; font-size:1.7rem; margin-bottom:6px; }
-  h2 { color:#8b1a1a; font-size:1.25rem; margin-top:2rem; border-bottom:2px solid #8b1a1a; padding-bottom:4px; }
-  h3 { font-size:1.05rem; margin-top:1.3rem; color:#333; }
-  .encadre { background:#f7f5f2; border:1px solid #e0dcd5; border-radius:10px; padding:16px 20px; margin:14px 0; }
-  .bon { background:#eafaf1; border-left:5px solid #27ae60; }
-  .chiffre { font-size:1.9rem; font-weight:800; color:#8b1a1a; }
-  table { border-collapse:collapse; width:100%; font-size:.92rem; background:#fff; }
-  th, td { border:1px solid #ddd; padding:6px 10px; text-align:right; }
-  th:first-child, td:first-child { text-align:left; }
-  th { background:#f3ece3; }
-  select, button, input[type=checkbox] { font-size:1rem; }
-  select { padding:6px 8px; border-radius:8px; border:1px solid #bbb; background:#fff; max-width:340px; }
-  button { padding:6px 12px; border-radius:8px; border:1px solid #8b1a1a; background:#8b1a1a; color:#fff; cursor:pointer; }
-  button.secondaire { background:#fff; color:#8b1a1a; }
-  .chartbox { position:relative; height:430px; background:#fff; border-radius:8px; padding:8px; }
-  .petit { font-size:.82rem; color:#666; }
-  .ligne-ctl { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:6px 0 10px; }
-  .pastille { display:inline-block; padding:1px 8px; border-radius:12px; color:#fff; font-size:.85rem; }
-  details summary { cursor:pointer; font-weight:600; color:#8b1a1a; margin:8px 0; }
-  .chargement { text-align:center; padding:40px; font-size:1.1rem; color:#888; }
-  .err { color:#b00; }
-  .hausse { color:#b01212; font-weight:700; }
-  .baisse { color:#27ae60; font-weight:700; }
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  line-height: 1.6;
+  background-image: url("https://i.postimg.cc/k4rpWZCs/mezenc.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  margin-bottom: 30px;
+}
+h1, h2, h3 { color: #ff5555; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+h1 { font-size: 2.2em; text-align: center; margin-bottom: 20px; animation: glow 2s infinite alternate; }
+@keyframes glow {
+  from { text-shadow: 1px 1px 3px rgba(255,85,85,0.5); }
+  to   { text-shadow: 1px 1px 10px rgba(255,85,85,1); }
+}
+h2 { font-size: 1.8em; border-bottom: 2px solid #ff5555; padding-bottom: 10px; margin-top: 30px; }
+.text-box {
+  background-color: rgba(255, 170, 0, 0.1);
+  border-left: 4px solid #ffaa00;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+  font-style: italic;
+}
+.text-box p { margin: 10px 0; }
+.chart-container { position: relative; height: 450px; margin: 20px 0; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; background-color: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
+th { background-color: rgba(255,85,85,0.3); color: #fff; font-weight: bold; }
+td { text-align: right; }
+td:first-child, th:first-child { text-align: left; }
+tr:nth-child(even) { background-color: rgba(255,255,255,0.05); }
+tr:hover { background-color: rgba(255,170,0,0.1); }
+select, button, input[type=checkbox] { font-size: 1rem; color: #e0e0e0; }
+select { padding: 6px 8px; border-radius: 5px; border: 1px solid #ff5555; background-color: rgba(0,0,0,0.6); max-width: 340px; }
+button { padding: 6px 12px; border-radius: 5px; border: 1px solid #ff5555; background-color: transparent; color: #ff5555; cursor: pointer; }
+button:hover { background-color: rgba(255,85,85,0.2); }
+.ligne-ctl { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 6px 0 12px; }
+.petit { font-size: 0.88em; color: #b8b8b8; font-style: normal; }
+details summary { cursor: pointer; font-weight: bold; color: #ff5555; margin: 8px 0; }
+.chargement { text-align: center; padding: 40px; font-size: 1.1em; color: #ffaa00; }
+.err { color: #ff7b7b; }
+.hausse { color: #ff8a8a; font-weight: bold; }
+.baisse { color: #7bd7a0; font-weight: bold; }
+.slogan {
+  font-size: 1.3em; font-style: italic; color: #ffaa00; text-align: center;
+  margin: 20px 0; padding: 10px; background-color: rgba(255,170,0,0.1);
+  border-radius: 5px; animation: pulse 2s infinite;
+}
+@keyframes pulse { 0% {opacity:0.8;} 50% {opacity:1;} 100% {opacity:0.8;} }
+a { color: #ff5555; text-decoration: none; }
+a:hover { text-decoration: underline; }
+footer { text-align: center; margin-top: 40px; padding: 20px; background-color: rgba(0,0,0,0.7); border-radius: 5px; }
+.bouton-campagne { display:inline-block; background:#d32f2f; color:white; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:bold; font-size:1.1em; }
+@media (max-width: 768px) { .chart-container { height: 320px; } table { font-size: 0.9em; } }
 </style>
 </head>
 <body>
-
+<div class="container">
 <h1>🔐 Sécurité : la peur n'est pas dans la rue, elle est dans le poste</h1>
 <p class="chargement" id="chargement">⏳ Chargement des données…</p>
 
 <div id="contenu" style="display:none">
 
-<div class="encadre">
-<p><b>Ce que disent les faits enregistrés</b> — pas le « taux réel » : on ne compte pas les crimes réels
-(personne ne les connaît), mais <b>les faits enregistrés par la police et la gendarmerie</b>, département par
+<div class="text-box">
+<p><strong>Ce que disent les faits enregistrés</strong> — pas le « taux réel » : on ne compte pas les crimes réels
+(personne ne les connaît), mais <strong>les faits enregistrés par la police et la gendarmerie</strong>, département par
 département, publiés par le SSMSI (Ministère de l'Intérieur). Trois honnêtetés à garder en tête :</p>
-<ul>
-  <li>Un fait enregistré n'est ni une condamnation ni une victime : c'est une procédure. Une plainte peut en contenir plusieurs.</li>
-  <li>Les efforts de procédure varient : plus on enregistre (meilleure réponse aux plaintes), plus ça « augmente » — ce n'est pas un progrès de la délinquance, c'est un progrès du service.</li>
-  <li>Les changements de méthode comptent (voir la note sur les enquêtes de ressenti plus bas).</li>
-</ul>
+<p>
+— Un fait enregistré n'est ni une condamnation ni une victime : c'est une procédure. Une plainte peut en contenir plusieurs.<br>
+— Les efforts de procédure varient : plus on enregistre (meilleure réponse aux plaintes), plus ça « augmente » — ce n'est pas un progrès de la délinquance, c'est un progrès du service.<br>
+— Les changements de méthode comptent (voir la note sur les enquêtes de ressenti plus bas).
+</p>
 </div>
 
 <h2>🧱 Par catégorie : où sont les faits ?</h2>
-<div class="encadre">
-  <p>Volume total des faits enregistrés en France, empilé par grande catégorie, avec la courbe du <b>total général</b> — et la variation par rapport à l'année précédente dans le tableau ci-dessous.</p>
-  <div class="chartbox"><canvas id="graphCategories"></canvas></div>
-  <details style="margin-top:10px">
-    <summary>📊 Total des faits par année et variation vs année précédente</summary>
-    <table id="tableCategories" style="margin-top:8px"></table>
-  </details>
-  <p class="petit">Catégories : <b>Violences</b> (homicides, tentatives, violences physiques et sexuelles),
-  <b>Vols</b> (cambriolages, vols avec/sans violence, de véhicules…), <b>Autres</b> (dégradations, escroqueries, stupéfiants).
-  Le total additionne des unités de compte différentes (victimes, infractions, mis en cause) : il mesure l'activité enregistrée, pas le nombre de crimes.</p>
+<div class="text-box" style="font-style:normal">
+<p>Volume total des faits enregistrés en France, empilé par grande catégorie, avec la courbe du <strong>total général</strong> — et la variation par rapport à l'année précédente dans le tableau repliable.</p>
 </div>
+<div class="chart-container">
+<canvas id="graphCategories"></canvas>
+</div>
+<details>
+<summary>📊 Total des faits par année et variation vs année précédente</summary>
+<table id="tableCategories"></table>
+</details>
+<p class="petit">Catégories : <b>Violences</b> (homicides, tentatives, violences physiques et sexuelles),
+<b>Vols</b> (cambriolages, vols avec/sans violence, de véhicules…), <b>Autres</b> (dégradations, escroqueries, stupéfiants).
+Le total additionne des unités de compte différentes (victimes, infractions, mis en cause) : il mesure l'activité enregistrée, pas le nombre de crimes.</p>
 
 <h2>🔍 Comparez : votre département face à un autre, ou à la France</h2>
-<div class="encadre">
-  <div class="ligne-ctl">
-    <label for="selInd"><b>Indicateur :</b></label>
-    <select id="selInd"></select>
-  </div>
-  <div class="ligne-ctl">
-    <label for="selDep1"><b>Département :</b></label>
-    <select id="selDep1"></select>
-    <button id="btnAdd" class="secondaire">+ Ajouter un département</button>
-    <select id="selDep2" style="display:none"></select>
-    <select id="selDep3" style="display:none"></select>
-  </div>
-  <div class="ligne-ctl">
-    <label><input type="checkbox" id="chkFrance" checked> Afficher la France entière</label>
-    <label style="margin-left:16px"><input type="checkbox" id="chkTaux" checked> Taux pour 100 000 hab.</label>
-    <label style="margin-left:16px;color:#666">(décoché = volume brut des faits)</label>
-  </div>
-  <div class="chartbox"><canvas id="graphTaux"></canvas></div>
-  <p class="petit" id="noteTaux"></p>
+<div class="text-box" style="font-style:normal">
+<p>Choisissez un indicateur, votre département, ajoutez-en un autre, affichez ou masquez la France — <strong>regardez les chiffres de chez vous, pas ceux du journal télévisé.</strong></p>
+</div>
+<div class="ligne-ctl">
+<label for="selInd"><strong>Indicateur :</strong></label>
+<select id="selInd"></select>
+</div>
+<div class="ligne-ctl">
+<label for="selDep1"><strong>Département :</strong></label>
+<select id="selDep1"></select>
+<button id="btnAdd">+ Ajouter un département</button>
+<select id="selDep2" style="display:none"></select>
+<select id="selDep3" style="display:none"></select>
+</div>
+<div class="ligne-ctl">
+<label><input type="checkbox" id="chkFrance" checked> Afficher la France entière</label>
+<label style="margin-left:16px"><input type="checkbox" id="chkTaux" checked> Taux pour 100 000 hab.</label>
+</div>
+<div class="chart-container"><canvas id="graphTaux"></canvas></div>
+<p class="petit" id="noteTaux"></p>
+
+<div class="text-box">
+<p><strong>« Ce sont toujours les mêmes, les voyous… les immigrés, forcément. »</strong> Vraiment ?</p>
+<p>
+En 2019, <strong>82 % des personnes mises en cause</strong> par la police et la gendarmerie se sont déclarées <strong>françaises</strong>, et 18 % étrangères —
+chiffres officiels de l'<a href="https://www.insee.fr/fr/statistiques/5763585?sommaire=5763633#figure3_radio3" target="_blank">Insee</a>.
+Amalgame démonté : la délinquance n'a pas de nationalité, et la France qui trompe, vole et agresse est d'abord… française.
+Quand l'extrême droite vous parle d'« immigration délinquante », elle vous vend un problème qui n'existe pas pour éviter de parler de ceux qui existent : précarité, déscolarisation, manque de moyens de la justice et de la police de proximité.
+</p>
 </div>
 
 <h2>🧭 Ressenti vs réalité</h2>
-<div class="encadre">
-  <div class="chartbox"><canvas id="graphRessenti"></canvas></div>
-</div>
-<div class="encadre bon">
-  <h3>🎯 L'arme secrète du débat : le ressenti est… stable</h3>
-  <p>On nous vend l'insécurité comme une vague déferlante. Or les enquêtes de victimation disent l'inverse :
-  entre 2016 et 2019, la part des personnes qui se sentent insécurisées <b>chez elles</b>, <b>dans leur quartier</b>
-  ou qui <b>renoncent à sortir</b> est restée quasi stable. C'est la <b>peur médiatisée</b> qui monte, pas la peur vécue.</p>
-  <p>La préoccupation « délinquance » a bondi à partir de 2020 (7 % → 25 %) pendant que les faits enregistrés,
-  eux, suivaient leur vie. La peur n'est pas dans la rue : <b>elle est dans le poste.</b></p>
-</div>
-<div>
-<details>
-  <summary>📋 Le détail chiffre par chiffre (repliable)</summary>
-  <table id="tableRessenti"></table>
-  <p class="petit" id="noteVRS"></p>
-</details>
+<div class="chart-container"><canvas id="graphRessenti"></canvas></div>
+
+<div class="text-box">
+<p><strong>Attardons-nous sur ce graphique — c'est lui le scandale.</strong></p>
+<p>
+Entre 2016 et 2019, la part des personnes qui se sentent insécurisées <strong>chez elles</strong>, <strong>dans leur quartier</strong>
+ou qui <strong>renoncent à sortir</strong> est restée <strong>quasi stable</strong> : la peur vécue ne bouge pas.
+Puis à partir de 2020, la préoccupation « délinquance » bondit de 7 % à 25 %… pendant que les faits enregistrés, eux, suivent leur vie.
+</p>
+<p>
+<strong>Sommes-nous sous influence, pour que cela devienne une préoccupation aussi importante — à comparer aux faits enregistrés, n'est-ce pas complètement disproportionné ?</strong>
+La réponse est dans le décryptage des mots et des images qui nous entourent :
+<a href="https://data.ina.fr/cles-lecture/mots" target="_blank">les « clés de lecture » de l'INA</a> montrent comment un mot, répété en boucle, fabrique une peur.
+La peur n'est pas dans la rue : <strong>elle est dans le poste.</strong>
+</p>
 </div>
 
+<details>
+<summary>📋 Le détail chiffre par chiffre (repliable)</summary>
+<table id="tableRessenti"></table>
+<p class="petit" id="noteVRS"></p>
+</details>
+
 <h2>🧾 Sources et méthode</h2>
-<div class="encadre">
-  <ul class="petit">
-    <li><b>Faits enregistrés</b> : SSMSI (Service statistique ministériel de la sécurité intérieure),
-    « Bases statistiques départementale de la délinquance enregistrée », data.gouv.fr. Taux pour 100 000 habitants
-    calculés avec les populations Insee (millésimes indiqués dans les fichiers).</li>
-    <li><b>Ressenti</b> : enquêtes « Cadre de vie et sécurité » (CVS, ~25 000 répondants) jusqu'en 2019, puis
-    « Victimisation et ressenti d'insécurité » (VRS, ~200 000 répondants) à partir de 2020 — d'où une rupture de
-    série possible en 2020 : ne comparez pas 2019 et 2020 au dixième près.</li>
-    <li>Les chiffres France sont la somme des départements (Corse = 2A + 2B, outre-mer inclus quand disponible).</li>
-  </ul>
+<div class="text-box" style="font-style:normal">
+<p class="petit">
+— <b>Faits enregistrés</b> : SSMSI (Service statistique ministériel de la sécurité intérieure),
+« Bases statistiques départementale de la délinquance enregistrée », <a href="https://www.data.gouv.fr" target="_blank">data.gouv.fr</a>. Taux pour 100 000 habitants
+calculés avec les populations Insee (millésimes indiqués dans les fichiers).<br>
+— <b>Ressenti</b> : enquêtes « Cadre de vie et sécurité » (CVS, ~25 000 répondants) jusqu'en 2019, puis
+« Victimisation et ressenti d'insécurité » (VRS, ~200 000 répondants) à partir de 2020 — d'où une rupture de
+série possible en 2020 : ne comparez pas 2019 et 2020 au dixième près.<br>
+— <b>Mis en cause</b> : <a href="https://www.insee.fr/fr/statistiques/5763585?sommaire=5763633#figure3_radio3" target="_blank">Insee, Infractions et mises en cause selon la nationalité</a>.<br>
+— Les chiffres France sont la somme des départements (Corse = 2A + 2B, outre-mer inclus quand disponible).
+</p>
+</div>
+
+<div class="slogan">
+"La sécurité n'est pas une obsession, c'est un droit : le droit de vivre tranquille — et pour ça, il faut des moyens, pas des slogans."
+</div>
+<div class="slogan">
+"Quand une chaîne d'info en continu a besoin d'insécurité pour exister, l'insécurité sera toujours devant votre porte — même dans le calme absolu."
 </div>
 
 </div><!-- /contenu -->
+</div><!-- /container -->
+
+<footer>
+<p>PCF 43 - <a href="index.html">Retour à l'accueil</a></p>
+</footer>
 
 <script>
 const NORM = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/_/g,' ').replace(/\s+/g,' ').trim();
 const fmt = n => n==null ? '—' : Math.round(n).toLocaleString('fr');
 
-// Départements (code -> nom)
 const DEPS = {"01":"Ain","02":"Aisne","03":"Allier","04":"Alpes-de-Haute-Provence","05":"Hautes-Alpes","06":"Alpes-Maritimes","07":"Ardèche","08":"Ardennes","09":"Ariège","10":"Aube","11":"Aude","12":"Aveyron","13":"Bouches-du-Rhône","14":"Calvados","15":"Cantal","16":"Charente","17":"Charente-Maritime","18":"Cher","19":"Corrèze","21":"Côte-d'Or","22":"Côtes-d'Armor","23":"Creuse","24":"Dordogne","25":"Doubs","26":"Drôme","27":"Eure","28":"Eure-et-Loir","29":"Finistère","2A":"Corse-du-Sud","2B":"Haute-Corse","30":"Gard","31":"Haute-Garonne","32":"Gers","33":"Gironde","34":"Hérault","35":"Ille-et-Vilaine","36":"Indre","37":"Indre-et-Loire","38":"Isère","39":"Jura","40":"Landes","41":"Loir-et-Cher","42":"Loire","43":"Haute-Loire","44":"Loire-Atlantique","45":"Loiret","46":"Lot","47":"Lot-et-Garonne","48":"Lozère","49":"Maine-et-Loire","50":"Manche","51":"Marne","52":"Haute-Marne","53":"Mayenne","54":"Meurthe-et-Moselle","55":"Meuse","56":"Morbihan","57":"Moselle","58":"Nièvre","59":"Nord","60":"Oise","61":"Orne","62":"Pas-de-Calais","63":"Puy-de-Dôme","64":"Pyrénées-Atlantiques","65":"Hautes-Pyrénées","66":"Pyrénées-Orientales","67":"Bas-Rhin","68":"Haut-Rhin","69":"Rhône","70":"Haute-Saône","71":"Saône-et-Loire","72":"Sarthe","73":"Savoie","74":"Haute-Savoie","75":"Paris","76":"Seine-Maritime","77":"Seine-et-Marne","78":"Yvelines","79":"Deux-Sèvres","80":"Somme","81":"Tarn","82":"Tarn-et-Garonne","83":"Var","84":"Vaucluse","85":"Vendée","86":"Vienne","87":"Haute-Vienne","88":"Vosges","89":"Yonne","90":"Territoire de Belfort","91":"Essonne","92":"Hauts-de-Seine","93":"Seine-Saint-Denis","94":"Val-de-Marne","95":"Val-d'Oise","971":"Guadeloupe","972":"Martinique","973":"Guyane","974":"La Réunion","976":"Mayotte"};
-const COULEURS_DEP = ['#b01212', '#2980b9', '#27ae60']; // départements 1, 2, 3
-const COUL_FRANCE = '#e67e22';
-const COULEURS = { Violences:'#c0392b', Vols:'#e67e22', Autres:'#7f8c8d' };
+const COULEURS_DEP = ['#ff4444', '#55aaff', '#55dd77'];
+const COUL_FRANCE = '#ffaa00';
+const COULEURS = { Violences:'#ff5555', Vols:'#ffaa00', Autres:'#888888' };
+// réglages Chart.js pour fond sombre
+Chart.defaults.color = '#e0e0e0';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.1)';
 
 function categorie(nom){
   const n = NORM(nom);
@@ -137,18 +211,14 @@ function categorie(nom){
   if (/vol |vols|cambriol|voleur/.test(n)) return 'Vols';
   return 'Autres';
 }
-function affichage(nom){
-  return nom.replace(/[_]/g,' ').replace(/\s+/g,' ').trim();
-}
-// Sous-séries stupéfiants déjà incluses dans l'indicateur parent : exclues partout
+function affichage(nom){ return nom.replace(/[_]/g,' ').replace(/\s+/g,' ').trim(); }
 const EXCLUS_TOTAUX = n => /\(\s*AFD\s*\)|\(\s*hors AFD\s*\)/i.test(n);
 
 let FR = null, RS = null;
-const CACHE_DEP = {}; // code -> json
+const CACHE_DEP = {};
 
 async function chargerDep(code){
   if (CACHE_DEP[code]) return CACHE_DEP[code];
-  // le générateur nomme les fichiers sans le zéro initial (1.json, pas 01.json) : on essaie les deux noms, l'un après l'autre
   const essais = /^0\d$/.test(code) ? [code.replace(/^0/,''), code] : [code];
   let dernier = null;
   for (let i = 0; i < essais.length; i++){
@@ -171,7 +241,7 @@ async function charger(){
       fetch('data/securite/ressenti.json').then(r=>{ if(!r.ok) throw new Error('ressenti.json'); return r.json(); })
     ]);
     FR = r1; RS = r3;
-    await chargerDep('43'); // défaut : Haute-Loire
+    await chargerDep('43');
     document.getElementById('chargement').style.display='none';
     document.getElementById('contenu').style.display='';
     construire();
@@ -186,7 +256,6 @@ let chartTaux = null, chartCat = null, chartRes = null;
 let nbDeps = 1;
 
 function construire(){
-  // --- sélecteur d'indicateur
   const noms = Object.keys(FR.indicateurs).filter(n=>!EXCLUS_TOTAUX(n)).sort((a,b)=>affichage(a).localeCompare(affichage(b),'fr'));
   const selInd = document.getElementById('selInd');
   noms.forEach(n=>{
@@ -196,7 +265,6 @@ function construire(){
   });
   selInd.addEventListener('change', () => dessinerTaux());
 
-  // --- sélecteurs de départements (3 max)
   [['selDep1','43'],['selDep2',null],['selDep3',null]].forEach(([id,def])=>{
     const sel = document.getElementById(id);
     Object.keys(DEPS).sort((a,b)=>{
@@ -216,8 +284,7 @@ function construire(){
     const sel = document.getElementById('selDep' + nbDeps);
     sel.style.display = '';
     if (nbDeps === 3) document.getElementById('btnAdd').style.display = 'none';
-    try { await chargerDep(sel.value); dessinerTaux(); }
-    catch(e){ alert('Fichier data/securite/dep/' + sel.value + '.json introuvable.'); }
+    dessinerTaux();
   });
   document.getElementById('chkFrance').addEventListener('change', ()=>dessinerTaux());
   document.getElementById('chkTaux').addEventListener('change', ()=>dessinerTaux());
@@ -233,7 +300,6 @@ async function dessinerTaux(){
   const taux = document.getElementById('chkTaux').checked;
   const affFrance = document.getElementById('chkFrance').checked;
 
-  // charger les départements sélectionnés (au besoin), un par un : un fichier manquant ne bloque jamais le graphe
   const codes = [];
   const indisponibles = [];
   for (let i=1;i<=nbDeps;i++){
@@ -245,7 +311,6 @@ async function dessinerTaux(){
     catch(e){ if (!indisponibles.includes(c)) indisponibles.push(c); }
   }
 
-  // années communes (on prend celles de la France)
   const annees = f.annees;
   const datasets = [];
   if (affFrance){
@@ -271,10 +336,10 @@ async function dessinerTaux(){
       maintainAspectRatio:false,
       interaction:{ mode:'index', intersect:false },
       scales:{ y: taux
-          ? { title:{display:true, text:'Faits enregistrés pour 100 000 habitants'} }
-          : { type:'logarithmic', title:{display:true, text:'Faits enregistrés (volume) — échelle logarithmique'} } },
+          ? { title:{display:true, text:'Faits enregistrés pour 100 000 habitants', color:'#e0e0e0'} }
+          : { type:'logarithmic', title:{display:true, text:'Faits enregistrés (volume) — échelle logarithmique', color:'#e0e0e0'} } },
       plugins:{
-        legend:{ position:'bottom' },
+        legend:{ position:'bottom', labels:{ color:'#e0e0e0' } },
         tooltip:{
           callbacks:{
             label: ctx => {
@@ -297,7 +362,7 @@ async function dessinerTaux(){
   document.getElementById('noteTaux').textContent =
     (indisponibles.length ? '⚠️ Données indisponibles pour : ' + indisponibles.map(c=>DEPS[c]+' ('+c+')').join(', ') + '. ' : '') +
     (f.unite_de_compte ? 'Unité de compte : ' + f.unite_de_compte + '. ' : '') +
-    (taux ? 'Attention : le taux permet de comparer des départements de tailles différentes.' :
+    (taux ? 'Le taux permet de comparer des départements de tailles différentes.' :
             'Échelle logarithmique : chaque palier multiplie par 10 — la France (~200 000 faits) et un département (~500) restent lisibles côte à côte.') +
     ' Source : SSMSI / data.gouv.fr.';
 }
@@ -315,11 +380,10 @@ function dessinerCategories(){
   const datasets = ['Violences','Vols','Autres'].filter(c=>cats[c]).map(c=>({
     label:c, data:annees.map(a=>cats[c][a]||0), backgroundColor:COULEURS[c]
   }));
-  // courbe du total (non empilée)
   const totauxCat = annees.map(a => datasets.reduce((s,d)=>s+d.data[annees.indexOf(a)],0));
   datasets.push({
     type:'line', label:'Total', data: totauxCat,
-    borderColor:'#222', backgroundColor:'#222', borderWidth:3, pointRadius:4, stack:'total', order:0
+    borderColor:'#ffffff', backgroundColor:'#ffffff', borderWidth:3, pointRadius:4, stack:'total', order:0
   });
   chartCat = new Chart(document.getElementById('graphCategories'), {
     type:'bar',
@@ -327,9 +391,9 @@ function dessinerCategories(){
     options:{
       maintainAspectRatio:false,
       interaction:{ mode:'index', intersect:false },
-      scales:{ x:{ stacked:true }, y:{ stacked:true, title:{display:true,text:'Faits enregistrés (volume)'} } },
+      scales:{ x:{ stacked:true, ticks:{color:'#e0e0e0'} }, y:{ stacked:true, title:{display:true,text:'Faits enregistrés (volume)', color:'#e0e0e0'} } },
       plugins:{
-        legend:{ position:'bottom' },
+        legend:{ position:'bottom', labels:{ color:'#e0e0e0' } },
         tooltip:{
           callbacks:{
             label: ctx => {
@@ -350,7 +414,6 @@ function dessinerCategories(){
       }
     }
   });
-  // tableau total + % vs N-1
   let th = '<tr><th>Année</th><th>Total faits enregistrés</th><th>Variation vs année précédente</th><th>Variation depuis 2016</th></tr>';
   th += '<tr><td>2016</td><td>' + fmt(totauxCat[0]) + '</td><td>—</td><td>—</td></tr>';
   for (let i=1;i<annees.length;i++){
@@ -376,17 +439,18 @@ function dessinerRessenti(){
 
   chartRes = new Chart(document.getElementById('graphRessenti'), {
     data:{ labels:annees, datasets:[
-      { type:'line', label:'Préoccupation délinquance (% des répondants)', data:pd.valeurs, borderColor:'#b01212', backgroundColor:'#b01212', borderWidth:3, tension:.25, yAxisID:'y' },
-      { type:'line', label:'Préoccupation terrorisme (%)', data:pt.valeurs, borderColor:'#2980b9', backgroundColor:'#2980b9', borderWidth:2, borderDash:[6,4], tension:.25, yAxisID:'y', spanGaps:true },
-      { type:'line', label:'Faits enregistrés /100 000 hab.', data:serieTaux, borderColor:'#27ae60', backgroundColor:'#27ae60', borderWidth:2, tension:.25, yAxisID:'y1' }
+      { type:'line', label:'Préoccupation délinquance (% des répondants)', data:pd.valeurs, borderColor:'#ff5555', backgroundColor:'#ff5555', borderWidth:3, tension:.25, yAxisID:'y' },
+      { type:'line', label:'Préoccupation terrorisme (%)', data:pt.valeurs, borderColor:'#55aaff', backgroundColor:'#55aaff', borderWidth:2, borderDash:[6,4], tension:.25, yAxisID:'y', spanGaps:true },
+      { type:'line', label:'Faits enregistrés /100 000 hab.', data:serieTaux, borderColor:'#55dd77', backgroundColor:'#55dd77', borderWidth:2, tension:.25, yAxisID:'y1' }
     ]},
     options:{
       maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
       scales:{
-        y:{ position:'left', title:{display:true,text:'Préoccupation (%)'}, suggestedMin:0, suggestedMax:35 },
-        y1:{ position:'right', title:{display:true,text:'/100 000 hab.'}, grid:{drawOnChartArea:false} }
+        y:{ position:'left', title:{display:true,text:'Préoccupation (%)', color:'#e0e0e0'}, suggestedMin:0, suggestedMax:35, ticks:{color:'#e0e0e0'} },
+        y1:{ position:'right', title:{display:true,text:'/100 000 hab.', color:'#e0e0e0'}, grid:{drawOnChartArea:false}, ticks:{color:'#e0e0e0'} }
       },
-      plugins:{ legend:{ position:'bottom' } }
+      plugins:{ legend:{ position:'bottom', labels:{ color:'#e0e0e0' } } }
     }
   });
 
@@ -405,5 +469,6 @@ function dessinerRessenti(){
 
 charger();
 </script>
+<script src="nav.js"></script>
 </body>
 </html>
