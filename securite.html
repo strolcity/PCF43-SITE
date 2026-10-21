@@ -148,10 +148,11 @@ const CACHE_DEP = {}; // code -> json
 
 async function chargerDep(code){
   if (CACHE_DEP[code]) return CACHE_DEP[code];
-  // le générateur nomme les fichiers sans le zéro initial (1.json, pas 01.json) : on essaie les deux
-  const essais = [/^0\d$/.test(code) ? [code.replace(/^0/,''), code] : [code]];
+  // le générateur nomme les fichiers sans le zéro initial (1.json, pas 01.json) : on essaie les deux noms, l'un après l'autre
+  const essais = /^0\d$/.test(code) ? [code.replace(/^0/,''), code] : [code];
   let dernier = null;
-  for (const f of essais){
+  for (let i = 0; i < essais.length; i++){
+    const f = String(essais[i]);
     try {
       const r = await fetch('data/securite/dep/' + f + '.json');
       if (!r.ok){ dernier = f; continue; }
