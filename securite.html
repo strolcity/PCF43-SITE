@@ -131,6 +131,34 @@ Le total additionne des unités de compte différentes (victimes, infractions, m
 <div class="chart-container"><canvas id="graphTaux"></canvas></div>
 <p class="petit" id="noteTaux"></p>
 
+<h2>🧮 La calculette : les vraies hausses, les vraies baisses</h2>
+<div class="text-box" style="font-style:normal">
+<p>Calculé automatiquement à partir des données officielles (taux pour 100 000 hab., première et dernière année disponibles).
+<strong>Regardez bien où sont les vraies évolutions — et demandez-vous si les moyens suivent.</strong></p>
+</div>
+<div class="chart-container" style="height:400px"><canvas id="graphCalculette"></canvas></div>
+<details>
+<summary>📊 Le détail : les 5 plus fortes hausses et les 5 plus fortes baisses</summary>
+<table id="tableCalculette"></table>
+</details>
+
+<div class="text-box">
+<p><strong>🏠 La violence n'est pas dans la rue. Elle est d'abord dans le foyer.</strong></p>
+<p>
+En 2016, les violences physiques hors cadre familial dépassaient encore les violences intrafamiliales.
+Depuis, l'ordre s'est inversé : aujourd'hui, <strong>on enregistre davantage de violences au domicile que dans la rue</strong> —
+et c'est plutôt une bonne nouvelle : cela signifie que les plaintes que l'on n'osait pas porter se déposent enfin.
+Mais regardez aussi les <strong>escroqueries</strong> : elles ont explosé — la délinquance a déménagé,
+elle est passée <strong>dans votre ordinateur et votre téléphone</strong>.
+</p>
+<p>
+<strong>Et les moyens ?</strong> Combien de « cyber-gendarmes » embauchés pour une délinquance qui a quitté la rue,
+combien de CRS pour des dégradations qui baissent, pendant que les mesures d'éloignement et la protection de l'enfance
+— les seuls outils qui protègent vraiment les victimes de violences intrafamiliales — attendent des moyens
+de magistrats et de travailleurs sociaux ? <strong>Le vrai sujet de la sécurité, c'est le choix des moyens.</strong>
+</p>
+</div>
+
 <div class="text-box">
 <p><strong>« Ce sont toujours les mêmes, les voyous… les immigrés, forcément. »</strong> Vraiment ?</p>
 <p>
@@ -141,11 +169,11 @@ Quand l'extrême droite vous parle d'« immigration délinquante », elle vous v
 </p>
 </div>
 
-<h2>🧭 Ressenti vs réalité</h2>
+<h2>🧭 Ressenti vs réalité — c'est lui, le scandale</h2>
 <div class="chart-container"><canvas id="graphRessenti"></canvas></div>
 
 <div class="text-box">
-<p><strong>Attardons-nous sur ce graphique — c'est lui le scandale.</strong></p>
+<p><strong>Attardons-nous sur ce graphique — c'est lui, le scandale.</strong></p>
 <p>
 Entre 2016 et 2019, la part des personnes qui se sentent insécurisées <strong>chez elles</strong>, <strong>dans leur quartier</strong>
 ou qui <strong>renoncent à sortir</strong> est restée <strong>quasi stable</strong> : la peur vécue ne bouge pas.
@@ -252,7 +280,7 @@ async function charger(){
   }
 }
 
-let chartTaux = null, chartCat = null, chartRes = null;
+let chartTaux = null, chartCat = null, chartCalc = null, chartRes = null;
 let nbDeps = 1;
 
 function construire(){
@@ -291,7 +319,60 @@ function construire(){
 
   dessinerTaux();
   dessinerCategories();
+  dessinerCalculette();
   dessinerRessenti();
+}
+
+function dessinerCalculette(){
+  // évolution du taux pour chaque indicateur (première -> dernière année)
+  const evos = [];
+  for (const [nom, s] of Object.entries(FR.indicateurs)){
+    if (EXCLUS_TOTAUX(nom)) continue;
+    const i0 = 0, i1 = s.annees.length - 1;
+    if (s.taux_100k[i0] == null || s.taux_100k[i1] == null || s.taux_100k[i0] <= 0) continue;
+    const evoTaux = (s.taux_100k[i1] - s.taux_100k[i0]) / s.taux_100k[i0] * 100;
+    const evoVol = s.nombre[i0] > 0 ? (s.nombre[i1] - s.nombre[i0]) / s.nombre[i0] * 100 : null;
+    evos.push({ nom, de: s.annees[i0], a: s.annees[i1], taux0: s.taux_100k[i0], taux1: s.taux_100k[i1], evoTaux, evoVol });
+  }
+  evos.sort((a,b) => b.evoTaux - a.evoTaux);
+  const hausses = evos.slice(0, 5);
+  const baisses = evos.slice(-5).reverse();
+
+  // graphique : barres horizontales, hausses en rouge, baisses en vert
+  const items = [...hausses, ...baisses];
+  chartCalc = new Chart(document.getElementById('graphCalculette'), {
+    type:'bar',
+    data:{
+      labels: items.map(e => e.nom + ' (' + e.de + '→' + e.a + ')'),
+      datasets:[{
+        data: items.map(e => Math.round(e.evoTaux*10)/10),
+        backgroundColor: items.map(e => e.evoTaux >= 0 ? 'rgba(255,85,85,0.75)' : 'rgba(85,221,119,0.75)'),
+        borderColor: items.map(e => e.evoTaux >= 0 ? '#ff5555' : '#55dd77'),
+        borderWidth: 1
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      maintainAspectRatio:false,
+      scales:{ x:{ title:{display:true, text:'Évolution du taux pour 100 000 hab. (%)', color:'#e0e0e0'}, ticks:{color:'#e0e0e0'} },
+               y:{ ticks:{color:'#e0e0e0'} } },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{ callbacks:{ label: ctx => {
+          const e = items[ctx.dataIndex];
+          return ' ' + ctx.parsed.x + ' % (volume : ' + (e.evoVol==null?'—':(e.evoVol>0?'+':'')+Math.round(e.evoVol) + ' %)');
+        }}}
+      }
+    }
+  });
+
+  const cell = v => (v==null?'—':(v>0?'<span class="hausse">+'+v.toFixed(1)+' %</span>':'<span class="baisse">'+v.toFixed(1)+' %</span>'));
+  let html = '<tr><th>Indicateur</th><th>Taux ' + evos[0].de + '</th><th>Taux ' + evos[0].a + '</th><th>Évolution taux</th><th>Évolution volume</th></tr>';
+  html += '<tr><th colspan="5">🔺 Les 5 plus fortes hausses</th></tr>';
+  hausses.forEach(e=>{ html += '<tr><td>'+e.nom+'</td><td>'+e.taux0.toLocaleString('fr')+'</td><td>'+e.taux1.toLocaleString('fr')+'</td><td>'+cell(e.evoTaux)+'</td><td>'+cell(e.evoVol)+'</td></tr>'; });
+  html += '<tr><th colspan="5">🔻 Les 5 plus fortes baisses</th></tr>';
+  baisses.forEach(e=>{ html += '<tr><td>'+e.nom+'</td><td>'+e.taux0.toLocaleString('fr')+'</td><td>'+e.taux1.toLocaleString('fr')+'</td><td>'+cell(e.evoTaux)+'</td><td>'+cell(e.evoVol)+'</td></tr>'; });
+  document.getElementById('tableCalculette').innerHTML = html;
 }
 
 async function dessinerTaux(){
