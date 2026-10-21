@@ -270,7 +270,9 @@ async function dessinerTaux(){
     options:{
       maintainAspectRatio:false,
       interaction:{ mode:'index', intersect:false },
-      scales:{ y:{ title:{display:true, text: taux ? 'Faits enregistrés pour 100 000 habitants' : 'Faits enregistrés (volume)'} } },
+      scales:{ y: taux
+          ? { title:{display:true, text:'Faits enregistrés pour 100 000 habitants'} }
+          : { type:'logarithmic', title:{display:true, text:'Faits enregistrés (volume) — échelle logarithmique'} } },
       plugins:{
         legend:{ position:'bottom' },
         tooltip:{
@@ -296,7 +298,7 @@ async function dessinerTaux(){
     (indisponibles.length ? '⚠️ Données indisponibles pour : ' + indisponibles.map(c=>DEPS[c]+' ('+c+')').join(', ') + '. ' : '') +
     (f.unite_de_compte ? 'Unité de compte : ' + f.unite_de_compte + '. ' : '') +
     (taux ? 'Attention : le taux permet de comparer des départements de tailles différentes.' :
-            'Attention : en volume brut, les grands départements mécaniquement plus hauts — préférez le taux pour comparer.') +
+            'Échelle logarithmique : chaque palier multiplie par 10 — la France (~200 000 faits) et un département (~500) restent lisibles côte à côte.') +
     ' Source : SSMSI / data.gouv.fr.';
 }
 
