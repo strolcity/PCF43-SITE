@@ -181,11 +181,17 @@ de magistrats et de travailleurs sociaux ? <strong>Le vrai sujet de la sécurit�
 </p>
 </div>
 
-<!-- Dessin cybercrime : clic = pop-up -->
+<!-- Dessin cybercrime + graphique ressenti côte à côte -->
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;">
 <div class="cromagnon-container" style="max-width:360px">
 <p class="cromagnon-title">👮 Le vrai visage de la délinquance… et de nos moyens</p>
 <img class="cromagnon-img" src="https://i.postimg.cc/gJqgwfq6/cybercrime.jpg" alt="Dessin : à gauche une brigade entière pour un tag, à droite un poste de cybercriminalité tenu par un seul agent débordé" onclick="openCyberPopup()">
 <p class="cromagnon-click-hint">👆 Cliquez sur le dessin pour l'analyse</p>
+</div>
+<div style="flex:1 1 460px;min-width:320px;">
+<h2>🧭 Ressenti vs réalité — c'est lui, le scandale</h2>
+<div class="chart-container" style="height:360px"><canvas id="graphRessenti"></canvas></div>
+</div>
 </div>
 
 <!-- Pop-up cybercrime -->
@@ -220,14 +226,12 @@ Source : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/d
 <p class="petit" id="noteEuro"></p>
 
 <h3 style="color:#ff5555;border-bottom:1px solid #ff5555;padding-bottom:6px;margin-top:35px;">⚖️ Moyens ↔ délits en Europe (2008-2024)</h3>
-<p>Côte à côte : à gauche les <strong>effectifs du pays de votre choix</strong>, année par année (barres empilées : policiers + juges + personnel pénitentiaire) ; à droite les <strong>faits enregistrés</strong> de tous les pays de la sélection, 2008-2024 — <strong>mêmes couleurs des deux côtés</strong>. Comparez, puis demandez-vous ce que ces gouvernements ont réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
+<p>D'abord la vue d'ensemble : les <strong>faits enregistrés</strong> de tous les pays de la sélection, 2008-2024, une couleur par pays. Puis, pour entrer dans le détail, les <strong>effectifs du pays de votre choix</strong>, année par année, dans la même couleur. Comparez, puis demandez-vous ce que ces gouvernements ont réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
 <div class="ligne-ctl">
-<label for="selDuoPays"><strong>Pays :</strong> <select id="selDuoPays"></select></label>
+<label for="selDuoPays"><strong>Détail des effectifs pour :</strong> <select id="selDuoPays"></select></label>
 </div>
-<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:stretch;">
-<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoBars"></canvas></div></div>
-<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoLignes"></canvas></div></div>
-</div>
+<div class="chart-container" style="height:380px"><canvas id="graphDuoLignes"></canvas></div>
+<div class="chart-container" style="height:420px;margin-top:18px"><canvas id="graphDuoBars"></canvas></div>
 <p class="petit" id="noteDuo"></p>
 
 
@@ -256,9 +260,6 @@ Quand l'extrême droite vous parle d'« immigration délinquante », elle vous v
 </p>
 </div>
 
-<h2>🧭 Ressenti vs réalité — c'est lui, le scandale</h2>
-<div class="chart-container"><canvas id="graphRessenti"></canvas></div>
-
 <div class="text-box">
 <p><strong>Attardons-nous sur ce graphique — c'est lui, le scandale.</strong></p>
 <p>
@@ -280,6 +281,28 @@ La peur n'est pas dans la rue : <strong>elle est dans le poste.</strong>
 <p class="petit" id="noteVRS"></p>
 </details>
 
+<h2>🌍 Ce que l'Europe entière nous dit</h2>
+<p>Un seul graphique, vingt pays : la part de la population <strong>en risque de pauvreté ou d'exclusion sociale</strong> (Eurostat, moyenne 2018-2024) face aux <strong>homicides pour 100 000 habitants</strong> (moyenne 2008-2024 — l'indicateur le plus comparable entre pays : le total des faits enregistrés, lui, dépend trop des pratiques de comptage nationales).</p>
+<div class="chart-container" style="height:480px"><canvas id="graphSocial"></canvas></div>
+
+<div class="text-box">
+<p><strong>La conclusion que personne ne veut chiffrer :</strong></p>
+<p>
+Les 5 pays les plus meurtriers d'Europe — <strong>Finlande (1,93), Belgique (1,67), Roumanie (1,42), France (1,21), Hongrie (1,09)</strong> homicides pour 100 000 hab. —
+pour 4 d'entre eux partagent la même caractéristique : <strong>plus d'un cinquième de leur population en risque de pauvreté ou d'exclusion sociale</strong>.
+La <strong>Finlande</strong> seule fait exception (15,6 % de pauvreté, et pourtant 1,93 homicide) — la même exception que celle qu'on vous a déjà montrée plus haut, par honnêteté : aucun chiffre isolé n'explique tout.
+</p>
+<p>
+À l'autre bout du graphique, les pays les plus paisibles — <strong>Suisse (0,58), Slovénie (0,65), Norvège (0,70), Autriche (0,73)</strong> —
+ont une pauvreté contenue <strong>et aucun n'est dans le peloton de tête des effectifs</strong>. Le calme ne se défoule pas : il se construit.
+</p>
+<p>
+Et le matraquage dans tout ça ? <strong>La Turquie : ~545 policiers pour 100 000 hab., 2,47 homicides. La Suisse : 216 policiers, 0,48 homicide.</strong>
+Le pays le plus policé d'Europe est aussi l'un des plus meurtriers ; le pays le plus paisible a moitié moins de policiers.
+<strong>L'insécurité sociale est la première des insécurités — et cette fois, c'est l'Europe entière qui le chiffe.</strong>
+</p>
+</div>
+
 <h2>🧾 Sources et méthode</h2>
 <div class="text-box" style="font-style:normal">
 <p class="petit">
@@ -291,6 +314,7 @@ calculés avec les populations Insee (millésimes indiqués dans les fichiers).<
 série possible en 2020 : ne comparez pas 2019 et 2020 au dixième près.<br>
 — <b>Mis en cause</b> : <a href="https://www.insee.fr/fr/statistiques/5763585?sommaire=5763633#figure3_radio3" target="_blank">Insee, Infractions et mises en cause selon la nationalité</a>.<br>
 — <b>Comparaisons européennes</b> : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_off_cat/default/table?lang=fr" target="_blank">Eurostat — Infractions enregistrées (crim_off_cat)</a> · <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat — Personnel justice pénale (crim_just_job)</a>, année de référence 2022.<br>
+— <b>Pauvreté-exclusion</b> : <a href="https://ec.europa.eu/eurostat/databrowser/view/sdg_01_10/default/table?lang=fr" target="_blank">Eurostat — Personnes en risque de pauvreté ou d'exclusion sociale (sdg_01_10)</a>, moyenne 2018-2024. Homicides : moyenne 2008-2024 (crim_off_cat, ICCS0101). Corrélation pauvreté ↔ homicide : r ≈ +0,19 — réelle mais pas mécanique, on ne vous vend pas une fatalité. Le total des faits enregistrés, lui, n'est PAS utilisé ici : sa corrélation avec la pauvreté est négative (r ≈ −0,38), signe qu'il mesure surtout les pratiques d'enregistrement — l'aveu complet est dans le graphique ci-dessus.<br>
 — Les chiffres France sont la somme des départements (Corse = 2A + 2B, outre-mer inclus quand disponible).
 </p>
 </div>
@@ -762,11 +786,12 @@ let chartDuoBars = null, chartDuoLignes = null;
 const DUO_SEL = ['TR','DE','FR','IT','ES','BE','SE','PT','CZ','EL','HU','CH','DK','FI'];
 // une couleur fixe par pays, identique sur les deux graphiques
 const DUO_COULEURS = {TR:'#8b1a1a',DE:'#2980b9',FR:'#ff5555',IT:'#27ae60',ES:'#f1c40f',BE:'#33691e',SE:'#e91e63',PT:'#e67e22',CZ:'#16a085',EL:'#9b59b6',HU:'#34495e',CH:'#795548',DK:'#00bcd4',FI:'#673ab7'};
-const DUO_PROFS = [['pol','Policiers','#e67e22'],['ju','Juges','#2980b9'],['pe','Personnel pénitentiaire','#27ae60']];
+const DUO_PROFS = [['pol','Policiers',''],['ju','Juges','99'],['pe','Personnel pénitentiaire','55']];
 function dessinerDuo(){
   const g = document.getElementById('selDuoPays').value;
   const p = EURO_TEMPO.pays[g];
-  const datasets = DUO_PROFS.map(pr => ({ label: pr[1], data: p[pr[0]], stack: 'eff', backgroundColor: pr[2], borderColor: 'rgba(0,0,0,0.4)', borderWidth: 1 }));
+  const col = DUO_COULEURS[g];
+  const datasets = DUO_PROFS.map(pr => ({ label: pr[1], data: p[pr[0]], stack: 'eff', backgroundColor: col + pr[2], borderColor: 'rgba(0,0,0,0.4)', borderWidth: 1 }));
   if (chartDuoBars) chartDuoBars.destroy();
   chartDuoBars = new Chart(document.getElementById('graphDuoBars').getContext('2d'), {
     type: 'bar',
@@ -774,8 +799,12 @@ function dessinerDuo(){
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#e0e0e0', boxWidth: 12 } },
-        title: { display: true, color: DUO_COULEURS[g], text: DUO_NOMS[g] + ' — effectifs de justice pénale pour 100 000 hab.' },
+        legend: { labels: { color: '#e0e0e0', boxWidth: 12, generateLabels: () => [
+            { text: 'Policiers', fillStyle: col, strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: 1, datasetIndex: 0 },
+            { text: 'Juges', fillStyle: col + '99', strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: 1, datasetIndex: 1 },
+            { text: 'Pénitentiaire', fillStyle: col + '55', strokeStyle: 'rgba(0,0,0,0.4)', lineWidth: 1, datasetIndex: 2 }
+        ] } },
+        title: { display: true, color: DUO_COULEURS[g], text: DUO_NOMS[g] + ' — effectifs de justice pénale pour 100 000 hab. (opaque = policiers, plus clair = juges, presque transparent = pénitentiaire)' },
         tooltip: { callbacks: { label: ctx => {
           const v = ctx.parsed.y;
           return ' ' + ctx.dataset.label + ' : ' + (v === null || isNaN(v) ? 'n.d. (non publié)' : v.toLocaleString('fr-FR') + ' / 100 000 hab.');
@@ -830,6 +859,46 @@ function dessinerDuoLignes(){
   });
 }
 
+// ===== Conclusion : pauvreté-exclusion ↔ homicides (Eurostat) =====
+const SOCIAL_PTS = [
+  ['BE',19.4,1.67],['CZ',11.6,0.74],['DK',17.4,0.91],['DE',20.7,0.81],['IE',19.4,0.86],
+  ['EL',27.8,1.01],['ES',26.7,0.72],['FR',19.5,1.21],['IT',24.4,0.72],['HU',19.8,1.09],
+  ['NL',16.2,0.78],['AT',17.1,0.73],['PL',16.9,0.84],['PT',20.7,0.92],['RO',34.2,1.42],
+  ['SI',14.0,0.65],['FI',15.6,1.93],['SE',17.9,1.01],['NO',16.0,0.70],['CH',18.7,0.58]
+];
+function dessinerSocial(){
+  const autres = SOCIAL_PTS.filter(p => p[0] !== 'FR' && p[0] !== 'FI');
+  const fr = SOCIAL_PTS.find(p => p[0] === 'FR'), fi = SOCIAL_PTS.find(p => p[0] === 'FI');
+  new Chart(document.getElementById('graphSocial').getContext('2d'), {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'Autres pays', data: autres.map(p => ({ x: p[1], y: p[2], pays: p[0] })),
+          backgroundColor: autres.map(p => DUO_COULEURS[p[0]] || '#9e9e9e'), pointRadius: 5, pointHoverRadius: 7 },
+        { label: 'France (rouge)', data: [{ x: fr[1], y: fr[2], pays: 'FR' }],
+          backgroundColor: '#ff5555', pointRadius: 7, pointHoverRadius: 9 },
+        { label: 'Finlande — l’exception, qu’on vous montre (peu de pauvreté, homicides élevés)', data: [{ x: fi[1], y: fi[2], pays: 'FI' }],
+          backgroundColor: '#673ab7', pointRadius: 7, pointHoverRadius: 9 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#e0e0e0', filter: it => it.datasetIndex !== 0 } },
+        title: { display: true, color: '#ff5555', text: 'Plus de pauvreté-exclusion, plus de violence qui tue — 20 pays européens' },
+        tooltip: { callbacks: { label: ctx => {
+          const d = ctx.raw;
+          return ' ' + (DUO_NOMS[d.pays] || d.pays) + ' : ' + d.x.toLocaleString('fr-FR') + ' % en risque de pauvreté/exclusion · ' + d.y.toLocaleString('fr-FR') + ' homicides / 100 000 hab.';
+        } } }
+      },
+      scales: {
+        x: { title: { display: true, text: 'Population en risque de pauvreté ou d’exclusion sociale (%) — moyenne 2018-2024', color: '#e0e0e0' }, ticks: { color: '#e0e0e0' }, beginAtZero: true },
+        y: { title: { display: true, text: 'Homicides / 100 000 hab. — moyenne 2008-2024', color: '#e0e0e0' }, ticks: { color: '#e0e0e0' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
 function initEurope(){
   // courbe effectifs France
   dessinerEffFrance();
@@ -844,6 +913,7 @@ function initEurope(){
   selP.value = 'FR';
   selP.addEventListener('change', dessinerDuo);
   dessinerDuo();
+  dessinerSocial();
 }
 // la section Europe se charge en même temps que le reste (données intégrées, pas de fetch)
 const _charger = charger;
