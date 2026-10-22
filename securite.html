@@ -74,6 +74,21 @@ a:hover { text-decoration: underline; }
 footer { text-align: center; margin-top: 40px; padding: 20px; background-color: rgba(0,0,0,0.7); border-radius: 5px; }
 .bouton-campagne { display:inline-block; background:#d32f2f; color:white; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:bold; font-size:1.1em; }
 @media (max-width: 768px) { .chart-container { height: 320px; } table { font-size: 0.9em; } }
+/* Dessins cliquables et pop-ups (style immigration) */
+.cromagnon-container { display: inline-block; margin: 10px; cursor: pointer; vertical-align: top; max-width: 360px; }
+.cromagnon-title { color: #ff5555; font-weight: bold; text-align: center; margin-bottom: 8px; }
+.cromagnon-img { max-width: 360px; width: 100%; border-radius: 8px; transition: transform 0.2s; }
+.cromagnon-img:hover { transform: scale(1.03); }
+.cromagnon-click-hint { font-size: 0.85em; color: #ffaa00; text-align: center; margin-top: 5px; }
+.zombis-popup {
+  display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.92); color: #e0e0e0; padding: 20px; border-radius: 10px;
+  max-width: 640px; width: 90%; z-index: 1000; box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  overflow-y: auto; max-height: 82vh;
+}
+.zombis-popup-content { font-family: 'Arial', sans-serif; line-height: 1.6; text-align: justify; }
+.zombis-popup-content p { margin: 10px 0; font-style: italic; }
+.zombis-popup-close { color: #ff5555; font-size: 24px; font-weight: bold; cursor: pointer; text-align: right; display: block; }
 </style>
 </head>
 <body>
@@ -162,6 +177,26 @@ combien de CRS pour des dégradations qui baissent, pendant que les mesures d'é
 — les seuls outils qui protègent vraiment les victimes de violences intrafamiliales — attendent des moyens
 de magistrats et de travailleurs sociaux ? <strong>Le vrai sujet de la sécurité, c'est le choix des moyens.</strong>
 </p>
+</div>
+
+<!-- Dessin cybercrime : clic = pop-up -->
+<div class="cromagnon-container" style="max-width:360px">
+<p class="cromagnon-title">👮 Le vrai visage de la délinquance… et de nos moyens</p>
+<img class="cromagnon-img" src="https://i.postimg.cc/gJqgwfq6/cybercrime.jpg" alt="Dessin : à gauche une brigade entière pour un tag, à droite un poste de cybercriminalité tenu par un seul agent débordé" onclick="openCyberPopup()">
+<p class="cromagnon-click-hint">👆 Cliquez sur le dessin pour l'analyse</p>
+</div>
+
+<!-- Pop-up cybercrime -->
+<div id="cyberPopup" class="zombis-popup">
+<span class="zombis-popup-close" onclick="closeCyberPopup()">&times;</span>
+<div class="zombis-popup-content">
+<p><strong>👮 Ce dessin résume tout : la délinquance a changé d'adresse. Nos moyens, non.</strong></p>
+<p><em>À gauche : une brigade entière pour un tag. À droite : un seul agent submergé pour des milliers d'escroqueries. « Euh, quelqu'un pour m'aider ? »</em></p>
+<p><strong>Les faits :</strong> les escroqueries et fraudes ont bondi de +74 % depuis 2016 — c'est la plus forte hausse de toutes les infractions enregistrées. Pendant ce temps, les vols et dégradations « de rue » baissent. La délinquance est passée dans votre téléphone, votre boîte mail, vos paiements.</p>
+<p><strong>La question à poser :</strong> quand un maire annonce des caméras et un plateau télé réclame des CRS, qui s'occupe du retraité qui vient de se faire vider son compte par un faux conseiller bancaire ? Combien d'enquêteurs spécialisés pour des dizaines de milliers de victimes ?</p>
+<p><strong>Notre proposition :</strong> des moyens là où sont les faits — unités cyber dans chaque territoire, formation des gardiens de la paix à l'accueil des victimes d'arnaque en ligne, justice capable de juger vite les réseaux qui opèrent depuis l'étranger. La sécurité, c'est de l'ingénierie, pas du folklore.</p>
+<p><strong>La délinquance moderne ne se matraque pas : elle se comprend, se prévient et se juge.</strong></p>
+</div>
 </div>
 
 <div class="text-box">
@@ -554,6 +589,13 @@ function dessinerRessenti(){
 }
 
 charger();
+
+// Pop-up cybercrime
+function openCyberPopup(){ document.getElementById("cyberPopup").style.display = "block"; }
+function closeCyberPopup(){ document.getElementById("cyberPopup").style.display = "none"; }
+window.onclick = function(event){
+  if (event.target === document.getElementById("cyberPopup")) { closeCyberPopup(); }
+};
 </script>
 <script src="nav.js"></script>
 </body>
