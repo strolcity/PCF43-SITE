@@ -207,49 +207,6 @@ de magistrats et de travailleurs sociaux ? <strong>Le vrai sujet de la sécurit�
 </div>
 </div>
 
-<h2>🌍 Et en Europe ? Les moyens ne font pas la sécurité</h2>
-<div class="text-box" style="font-style:normal">
-<p>La France n'est pas seule. Eurostat, l'office statistique de l'UE, publie pour chaque pays les <strong>faits enregistrés</strong> et les <strong>effectifs de la chaîne pénale</strong> (policiers, juges, personnel pénitentiaire). Deux regards, même méthode officielle que le reste de cette page :</p>
-<p><strong>1. Nos moyens depuis 2008</strong> — la courbe monte, monte… (annotations : 2015 plans post-attentats ; 2023 loi LOPM, +8 500 postes annoncés).</p>
-<p><strong>2. La calculette européenne</strong> — choisissez un indicateur (ou le total, ou même… le nombre de policiers) et comparez ~20 pays. <strong>Regardez la Turquie. Regardez la Suisse.</strong></p>
-</div>
-
-<div class="chart-container" style="height:400px"><canvas id="graphEfFrance"></canvas></div>
-<p class="petit">Effectifs pour 100 000 habitants, France, 2008-2024. Série avec ruptures de méthode (2013, 2019 : les chiffres Eurostat sont retraités, d'où des sauts) — la tendance de fond reste vraie : tout augmente.
-Source : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat, Personnel dans le système de justice pénale (crim_just_job)</a>.</p>
-
-<div class="ligne-ctl">
-<label for="selEuro"><strong>Indicateur (2022) :</strong></label>
-<select id="selEuro"></select>
-</div>
-<div class="chart-container" style="height:480px"><canvas id="graphEuro"></canvas></div>
-<p class="petit" id="noteEuro"></p>
-
-<h3 style="color:#ff5555;border-bottom:1px solid #ff5555;padding-bottom:6px;margin-top:35px;">⚖️ Moyens ↔ délits en Europe (2008-2024)</h3>
-<p>D'abord la vue d'ensemble : les <strong>faits enregistrés</strong> de tous les pays de la sélection, 2008-2024, une couleur par pays. Puis, pour entrer dans le détail, les <strong>effectifs du pays de votre choix</strong>, année par année, dans la même couleur. Comparez, puis demandez-vous ce que ces gouvernements ont réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
-<div class="ligne-ctl">
-<label for="selDuoPays"><strong>Détail des effectifs pour :</strong> <select id="selDuoPays"></select></label>
-</div>
-<div class="chart-container" style="height:380px"><canvas id="graphDuoLignes"></canvas></div>
-<div class="chart-container" style="height:420px;margin-top:18px"><canvas id="graphDuoBars"></canvas></div>
-<p class="petit" id="noteDuo"></p>
-
-
-<div class="text-box">
-<p><strong>⚓ Ce que montrent ces comparaisons — en toute honnêteté :</strong></p>
-<p>
-— <strong>La Turquie</strong> : le plus de policiers d'Europe (~545 pour 100 000 hab.) et le plus d'homicides (2,47). Un gouvernement muselé, des villes sur-policiées, et la violence qui continue. <strong>Le matraquage ne fait pas la sécurité.</strong><br>
-— <strong>La Suisse</strong> : moitié moins de policiers que la Turquie, et le taux d'homicide le plus bas d'Europe (0,48).<br>
-— <strong>La Finlande</strong>, pour être honnête : peu de policiers (137) et pourtant des homicides élevés (1,5) — l'exception qui prouve qu'aucun chiffre isolé n'explique tout, et qu'on ne vous cache rien.<br>
-— <strong>La Grèce et l'Italie</strong> : leurs effectifs gonflés comptent garde-côtes et gardes-frontières — pays de frontière, moyens de frontière. Chaque pays a sa spécificité : c'est pourquoi on compare, mais sans caricaturer.<br>
-— <strong>La France</strong> : dans le peloton de tête des moyens européens (361 policiers/100k, 11 juges/100k, 61 pénitentiaires/100k). Le « il n'y a pas assez de policiers » est un ressenti — pas un fait européen.
-</p>
-<p>
-<strong>Alors qu'est-ce qui distingue les pays calmes ?</strong> Ce n'est pas le nombre de matraques. Ce sont les protections : logement, emploi, santé, école, égalité. Les pays qui sécurisent les existences enregistrent moins de faits.
-<strong>L'insécurité sociale est la première des insécurités.</strong> Voilà la réponse politique : la sécurité, ça se construit — ça ne se défile pas.
-</p>
-</div>
-
 <div class="text-box">
 <p><strong>« Ce sont toujours les mêmes, les voyous… les immigrés, forcément. »</strong> Vraiment ?</p>
 <p>
@@ -281,6 +238,50 @@ La peur n'est pas dans la rue : <strong>elle est dans le poste.</strong>
 <p class="petit" id="noteVRS"></p>
 </details>
 
+<div class="ligne-ctl">
+<label for="selEuro"><strong>Indicateur (2022) :</strong></label>
+<select id="selEuro"></select>
+</div>
+<div class="chart-container" style="height:480px"><canvas id="graphEuro"></canvas></div>
+<p class="petit" id="noteEuro"></p>
+
+<h2>🌍 Et en Europe ? Les moyens ne font pas la sécurité</h2>
+<div class="text-box" style="font-style:normal">
+<p>La France n'est pas seule. Eurostat, l'office statistique de l'UE, publie pour chaque pays les <strong>faits enregistrés</strong> et les <strong>effectifs de la chaîne pénale</strong> (policiers, juges, personnel pénitentiaire). Deux regards, même méthode officielle que le reste de cette page :</p>
+<p><strong>1. Nos moyens depuis 2008</strong> — la courbe monte, monte… (annotations : 2015 plans post-attentats ; 2023 loi LOPM, +8 500 postes annoncés).</p>
+</div>
+
+<div class="chart-container" style="height:400px"><canvas id="graphEfFrance"></canvas></div>
+<p class="petit">Effectifs pour 100 000 habitants, France, 2008-2024. Série avec ruptures de méthode (2013, 2019 : les chiffres Eurostat sont retraités, d'où des sauts) — la tendance de fond reste vraie : tout augmente.
+Source : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat, Personnel dans le système de justice pénale (crim_just_job)</a>.</p>
+
+<h3 style="color:#ff5555;border-bottom:1px solid #ff5555;padding-bottom:6px;margin-top:35px;">⚖️ Moyens ↔ délits en Europe (2008-2024)</h3>
+<p>La vue d'ensemble et le détail, côte à côte : à gauche les <strong>faits enregistrés</strong> de tous les pays de la sélection, 2008-2024 ; à droite les <strong>effectifs du pays de votre choix</strong>, année par année, dans la même couleur. Comparez, puis demandez-vous ce que ces gouvernements ont réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
+<div class="ligne-ctl">
+<label for="selDuoPays"><strong>Détail des effectifs pour :</strong> <select id="selDuoPays"></select></label>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:stretch;">
+<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoLignes"></canvas></div></div>
+<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoBars"></canvas></div></div>
+</div>
+<p class="petit" id="noteDuo"></p>
+
+
+<div class="text-box">
+<p><strong>⚓ Ce que montrent ces comparaisons — en toute honnêteté :</strong></p>
+<p>
+— <strong>La Turquie</strong> : le plus de policiers d'Europe (~545 pour 100 000 hab.) et le plus d'homicides (2,47). Un gouvernement muselé, des villes sur-policiées, et la violence qui continue. <strong>Le matraquage ne fait pas la sécurité.</strong><br>
+— <strong>La Suisse</strong> : moitié moins de policiers que la Turquie, et le taux d'homicide le plus bas d'Europe (0,48).<br>
+— <strong>La Finlande</strong>, pour être honnête : peu de policiers (137) et pourtant des homicides élevés (1,5) — l'exception qui prouve qu'aucun chiffre isolé n'explique tout, et qu'on ne vous cache rien.<br>
+— <strong>La Grèce et l'Italie</strong> : leurs effectifs gonflés comptent garde-côtes et gardes-frontières — pays de frontière, moyens de frontière. Chaque pays a sa spécificité : c'est pourquoi on compare, mais sans caricaturer.<br>
+— <strong>La France</strong> : dans le peloton de tête des moyens européens (361 policiers/100k, 11 juges/100k, 61 pénitentiaires/100k). Le « il n'y a pas assez de policiers » est un ressenti — pas un fait européen.
+</p>
+<p>
+<strong>Alors qu'est-ce qui distingue les pays calmes ?</strong> Ce n'est pas le nombre de matraques. Ce sont les protections : logement, emploi, santé, école, égalité. Les pays qui sécurisent les existences enregistrent moins de faits.
+<strong>L'insécurité sociale est la première des insécurités.</strong> Voilà la réponse politique : la sécurité, ça se construit — ça ne se défile pas.
+</p>
+</div>
+
 <h2>🌍 Ce que l'Europe entière nous dit</h2>
 <p>Un seul graphique, vingt pays : la part de la population <strong>en risque de pauvreté ou d'exclusion sociale</strong> (Eurostat, moyenne 2018-2024) face aux <strong>homicides pour 100 000 habitants</strong> (moyenne 2008-2024 — l'indicateur le plus comparable entre pays : le total des faits enregistrés, lui, dépend trop des pratiques de comptage nationales).</p>
 <div class="chart-container" style="height:480px"><canvas id="graphSocial"></canvas></div>
@@ -303,6 +304,16 @@ Le pays le plus policé d'Europe est aussi l'un des plus meurtriers ; le pays le
 </p>
 </div>
 
+<div class="slogan">
+"La sécurité n'est pas une obsession, c'est un droit : le droit de vivre tranquille — et pour ça, il faut des moyens, pas des slogans."
+</div>
+<div class="slogan">
+"Quand une chaîne d'info en continu a besoin d'insécurité pour exister, l'insécurité sera toujours devant votre porte — même dans le calme absolu."
+</div>
+<div class="slogan">
+"L'insécurité n'est pas une histoire de race ou de nationalité : c'est une question sociale, et de choix politiques."
+</div>
+
 <h2>🧾 Sources et méthode</h2>
 <div class="text-box" style="font-style:normal">
 <p class="petit">
@@ -317,13 +328,6 @@ série possible en 2020 : ne comparez pas 2019 et 2020 au dixième près.<br>
 — <b>Pauvreté-exclusion</b> : <a href="https://ec.europa.eu/eurostat/databrowser/view/sdg_01_10/default/table?lang=fr" target="_blank">Eurostat — Personnes en risque de pauvreté ou d'exclusion sociale (sdg_01_10)</a>, moyenne 2018-2024. Homicides : moyenne 2008-2024 (crim_off_cat, ICCS0101). Corrélation pauvreté ↔ homicide : r ≈ +0,19 — réelle mais pas mécanique, on ne vous vend pas une fatalité. Le total des faits enregistrés, lui, n'est PAS utilisé ici : sa corrélation avec la pauvreté est négative (r ≈ −0,38), signe qu'il mesure surtout les pratiques d'enregistrement — l'aveu complet est dans le graphique ci-dessus.<br>
 — Les chiffres France sont la somme des départements (Corse = 2A + 2B, outre-mer inclus quand disponible).
 </p>
-</div>
-
-<div class="slogan">
-"La sécurité n'est pas une obsession, c'est un droit : le droit de vivre tranquille — et pour ça, il faut des moyens, pas des slogans."
-</div>
-<div class="slogan">
-"Quand une chaîne d'info en continu a besoin d'insécurité pour exister, l'insécurité sera toujours devant votre porte — même dans le calme absolu."
 </div>
 
 </div><!-- /contenu -->
