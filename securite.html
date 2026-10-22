@@ -127,7 +127,8 @@ c'est toujours autant de vols de trop.</strong> Ce que l'on cherche ici, c'est o
 </details>
 <p class="petit">Catégories : <b>Violences</b> (homicides, tentatives, violences physiques et sexuelles),
 <b>Vols</b> (cambriolages, vols avec/sans violence, de véhicules…), <b>Autres</b> (dégradations, escroqueries, stupéfiants).
-Le total additionne des unités de compte différentes (victimes, infractions, mis en cause) : il mesure l'activité enregistrée, pas le nombre de crimes.</p>
+Le total additionne des unités de compte différentes (victimes, infractions, mis en cause) : il mesure l'activité enregistrée, pas le nombre de crimes.
+Source : <a href="https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales" target="_blank">SSMSI / data.gouv.fr</a>.</p>
 
 <h2>🔍 Comparez : votre département face à un autre, ou à la France</h2>
 <div class="text-box" style="font-style:normal">
@@ -154,7 +155,8 @@ Le total additionne des unités de compte différentes (victimes, infractions, m
 <h2>🧮 La calculette : les vraies hausses, les vraies baisses</h2>
 <div class="text-box" style="font-style:normal">
 <p>Calculé automatiquement à partir des données officielles (taux pour 100 000 hab., première et dernière année disponibles).
-<strong>Regardez bien où sont les vraies évolutions — et demandez-vous si les moyens suivent.</strong></p>
+<strong>Regardez bien où sont les vraies évolutions — et demandez-vous si les moyens suivent.</strong>
+Source : <a href="https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales" target="_blank">SSMSI / data.gouv.fr</a>.</p>
 </div>
 <div class="chart-container" style="height:400px"><canvas id="graphCalculette"></canvas></div>
 <details>
@@ -197,6 +199,39 @@ de magistrats et de travailleurs sociaux ? <strong>Le vrai sujet de la sécurit�
 <p><strong>Notre proposition :</strong> des moyens là où sont les faits — unités cyber dans chaque territoire, formation des gardiens de la paix à l'accueil des victimes d'arnaque en ligne, justice capable de juger vite les réseaux qui opèrent depuis l'étranger. La sécurité, c'est de l'ingénierie, pas du folklore.</p>
 <p><strong>La délinquance moderne ne se matraque pas : elle se comprend, se prévient et se juge.</strong></p>
 </div>
+</div>
+
+<h2>🌍 Et en Europe ? Les moyens ne font pas la sécurité</h2>
+<div class="text-box" style="font-style:normal">
+<p>La France n'est pas seule. Eurostat, l'office statistique de l'UE, publie pour chaque pays les <strong>faits enregistrés</strong> et les <strong>effectifs de la chaîne pénale</strong> (policiers, juges, personnel pénitentiaire). Deux regards, même méthode officielle que le reste de cette page :</p>
+<p><strong>1. Nos moyens depuis 2008</strong> — la courbe monte, monte… (annotations : 2015 plans post-attentats ; 2023 loi LOPM, +8 500 postes annoncés).</p>
+<p><strong>2. La calculette européenne</strong> — choisissez un indicateur (ou le total, ou même… le nombre de policiers) et comparez ~20 pays. <strong>Regardez la Turquie. Regardez la Suisse.</strong></p>
+</div>
+
+<div class="chart-container" style="height:400px"><canvas id="graphEfFrance"></canvas></div>
+<p class="petit">Effectifs pour 100 000 habitants, France, 2008-2024. Série avec ruptures de méthode (2013, 2019 : les chiffres Eurostat sont retraités, d'où des sauts) — la tendance de fond reste vraie : tout augmente.
+Source : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat, Personnel dans le système de justice pénale (crim_just_job)</a>.</p>
+
+<div class="ligne-ctl">
+<label for="selEuro"><strong>Indicateur (2022) :</strong></label>
+<select id="selEuro"></select>
+</div>
+<div class="chart-container" style="height:480px"><canvas id="graphEuro"></canvas></div>
+<p class="petit" id="noteEuro"></p>
+
+<div class="text-box">
+<p><strong>⚓ Ce que montrent ces comparaisons — en toute honnêteté :</strong></p>
+<p>
+— <strong>La Turquie</strong> : le plus de policiers d'Europe (~545 pour 100 000 hab.) et le plus d'homicides (2,47). Un gouvernement muselé, des villes sur-policiées, et la violence qui continue. <strong>Le matraquage ne fait pas la sécurité.</strong><br>
+— <strong>La Suisse</strong> : moitié moins de policiers que la Turquie, et le taux d'homicide le plus bas d'Europe (0,48).<br>
+— <strong>La Finlande</strong>, pour être honnête : peu de policiers (137) et pourtant des homicides élevés (1,5) — l'exception qui prouve qu'aucun chiffre isolé n'explique tout, et qu'on ne vous cache rien.<br>
+— <strong>La Grèce et l'Italie</strong> : leurs effectifs gonflés comptent garde-côtes et gardes-frontières — pays de frontière, moyens de frontière. Chaque pays a sa spécificité : c'est pourquoi on compare, mais sans caricaturer.<br>
+— <strong>La France</strong> : dans le peloton de tête des moyens européens (361 policiers/100k, 11 juges/100k, 61 pénitentiaires/100k). Le « il n'y a pas assez de policiers » est un ressenti — pas un fait européen.
+</p>
+<p>
+<strong>Alors qu'est-ce qui distingue les pays calmes ?</strong> Ce n'est pas le nombre de matraques. Ce sont les protections : logement, emploi, santé, école, égalité. Les pays qui sécurisent les existences enregistrent moins de faits.
+<strong>L'insécurité sociale est la première des insécurités.</strong> Voilà la réponse politique : la sécurité, ça se construit — ça ne se défile pas.
+</p>
 </div>
 
 <div class="text-box">
@@ -243,6 +278,7 @@ calculés avec les populations Insee (millésimes indiqués dans les fichiers).<
 « Victimisation et ressenti d'insécurité » (VRS, ~200 000 répondants) à partir de 2020 — d'où une rupture de
 série possible en 2020 : ne comparez pas 2019 et 2020 au dixième près.<br>
 — <b>Mis en cause</b> : <a href="https://www.insee.fr/fr/statistiques/5763585?sommaire=5763633#figure3_radio3" target="_blank">Insee, Infractions et mises en cause selon la nationalité</a>.<br>
+— <b>Comparaisons européennes</b> : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_off_cat/default/table?lang=fr" target="_blank">Eurostat — Infractions enregistrées (crim_off_cat)</a> · <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat — Personnel justice pénale (crim_just_job)</a>, année de référence 2022.<br>
 — Les chiffres France sont la somme des départements (Corse = 2A + 2B, outre-mer inclus quand disponible).
 </p>
 </div>
@@ -480,12 +516,12 @@ async function dessinerTaux(){
       }
     }
   });
-  document.getElementById('noteTaux').textContent =
+  document.getElementById('noteTaux').innerHTML =
     (indisponibles.length ? '⚠️ Données indisponibles pour : ' + indisponibles.map(c=>DEPS[c]+' ('+c+')').join(', ') + '. ' : '') +
     (f.unite_de_compte ? 'Unité de compte : ' + f.unite_de_compte + '. ' : '') +
     (taux ? 'Le taux permet de comparer des départements de tailles différentes.' :
             'Échelle logarithmique : chaque palier multiplie par 10 — la France (~200 000 faits) et un département (~500) restent lisibles côte à côte.') +
-    ' Source : SSMSI / data.gouv.fr.';
+    ' Source : <a href="https://www.data.gouv.fr/datasets/bases-statistiques-communale-departementale-et-regionale-de-la-delinquance-enregistree-par-la-police-et-la-gendarmerie-nationales" target="_blank">SSMSI / data.gouv.fr</a>.';
 }
 
 function dessinerCategories(){
@@ -588,6 +624,137 @@ function dessinerRessenti(){
   document.getElementById('noteVRS').textContent = RS.meta.note;
 }
 
+charger();
+
+// ==================== SECTION EUROPE (Eurostat) ====================
+// Données extraites de l'API Eurostat (crim_just_job, crim_off_cat), avril 2026. Année de référence : 2022.
+const EURO_EFF = {
+  annees: [2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],
+  police: [303.31,297.09,290.49,284.06,284.15,366.6,316.9,322.7,320.48,322.22,322.18,357.02,358.97,359.99,361.25,null,null],
+  juges: [9.2,9.22,9.17,9.02,8.97,8.85,8.6,8.6,null,10.58,10.86,11.06,11.19,11.43,11.28,11.52,11.15],
+  penit: [40.81,40.13,null,null,null,42.81,42.51,42,null,null,56.89,59.03,60.65,60.17,60.79,60.88,61.17]
+};
+const EURO_PAYS = {
+  "Turquie":       { police:545.07, homicide:2.47, tentative:null, agressions:null, viols:null, volsqual:18.51, cambriol:144.31, vols:285.89, volsveh:null, stupef:null, fraudes:null, juges:15.28, penit:83.79 },
+  "Grèce":         { police:533.99, homicide:0.76, tentative:1.6, agressions:12.74, viols:3.18, volsqual:27.08, cambriol:135.99, vols:680.03, volsveh:175.82, stupef:114.96, fraudes:98.32, juges:25.79, penit:40.66 },
+  "Portugal":      { police:452.78, homicide:0.72, tentative:null, agressions:7.16, viols:5.01, volsqual:85.08, cambriol:163.65, vols:708.7, volsveh:78.21, stupef:62.39, fraudes:431.49, juges:16.6, penit:50.39 },
+  "Espagne":       { police:379.84, homicide:0.69, tentative:2.56, agressions:54.6, viols:6.03, volsqual:133.65, cambriol:313.52, vols:433.24, volsveh:50.69, stupef:40.18, fraudes:982.52, juges:6.14, penit:60.41 },
+  "Hongrie":       { police:378.12, homicide:0.88, tentative:1.02, agressions:null, viols:6.06, volsqual:5.5, cambriol:null, vols:501.76, volsveh:null, stupef:76.56, fraudes:215.13, juges:28.02, penit:91.71 },
+  "Tchéquie":      { police:381.09, homicide:0.75, tentative:0.6, agressions:39.66, viols:16.29, volsqual:13.52, cambriol:320.92, vols:330.65, volsveh:32.98, stupef:39.94, fraudes:153.09, juges:7.07, penit:103.05 },
+  "Autriche":      { police:356.03, homicide:0.72, tentative:1.49, agressions:48.16, viols:22.89, volsqual:28.24, cambriol:552.32, vols:1081.86, volsveh:34.79, stupef:392.39, fraudes:784.38, juges:4.32, penit:49.99 },
+  "France":        { police:361.25, homicide:1.21, tentative:5.28, agressions:577.31, viols:55.98, volsqual:100.19, cambriol:436.44, vols:1957.23, volsveh:193.89, stupef:488.82, fraudes:443.27, juges:11.28, penit:60.79 },
+  "Belgique":      { police:338.29, homicide:1.62, tentative:10.54, agressions:577.88, viols:41.82, volsqual:115.63, cambriol:448.78, vols:1722.78, volsveh:92.95, stupef:499.89, fraudes:1027.71, juges:null, penit:null },
+  "Irlande":       { police:342.51, homicide:0.81, tentative:0.25, agressions:118.12, viols:21.57, volsqual:27.3, cambriol:178.09, vols:1208.39, volsveh:79.53, stupef:323.21, fraudes:200.9, juges:3.43, penit:64.58 },
+  "Slovénie":      { police:347.81, homicide:0.62, tentative:1.28, agressions:5.36, viols:10.35, volsqual:10.2, cambriol:266.04, vols:1022.93, volsveh:14.28, stupef:65.54, fraudes:173.64, juges:41.71, penit:42.66 },
+  "Allemagne":     { police:311.06, homicide:0.74, tentative:2.07, agressions:173.8, viols:15.09, volsqual:45.89, cambriol:313.09, vols:1254.11, volsveh:null, stupef:409.28, fraudes:966.5, juges:26.44, penit:45.12 },
+  "Pays-Bas":      { police:291.19, homicide:0.81, tentative:null, agressions:28.03, viols:16.51, volsqual:33.94, cambriol:212.81, vols:1323.97, volsveh:152.15, stupef:66.8, fraudes:null, juges:14.99, penit:69.47 },
+  "Pologne":       { police:273.74, homicide:0.69, tentative:0.63, agressions:13.63, viols:1.57, volsqual:12.83, cambriol:186.58, vols:321.08, volsveh:24.23, stupef:186.18, fraudes:463.54, juges:8.22, penit:37.74 },
+  "Roumanie":      { police:262.61, homicide:0.93, tentative:1.57, agressions:1.19, viols:11.78, volsqual:16.12, cambriol:133.64, vols:311.37, volsveh:27.51, stupef:48.54, fraudes:64.43, juges:33.02, penit:61.21 },
+  "Suisse":        { police:216.39, homicide:0.48, tentative:2.23, agressions:8.73, viols:9.92, volsqual:22.21, cambriol:408.89, vols:1590.27, volsveh:216.94, stupef:632.86, fraudes:301.16, juges:null, penit:53.43 },
+  "Suède":         { police:210.3, homicide:1.11, tentative:9.72, agressions:44.4, viols:86.38, volsqual:62.02, cambriol:663.27, vols:2858.48, volsveh:416.81, stupef:1108.6, fraudes:2379.66, juges:8.79, penit:72.41 },
+  "Danemark":      { police:193.48, homicide:1.0, tentative:2.38, agressions:36.74, viols:48.2, volsqual:23.94, cambriol:537.83, vols:2496.21, volsveh:20.35, stupef:532.38, fraudes:973.59, juges:11.34, penit:46.72 },
+  "Norvège":       { police:null, homicide:0.55, tentative:1.42, agressions:35.61, viols:41.55, volsqual:16.66, cambriol:null, vols:1830.54, volsveh:74.06, stupef:275.64, fraudes:424.83, juges:null, penit:null },
+  "Italie":        { police:null, homicide:0.55, tentative:1.72, agressions:1.46, viols:null, volsqual:44.35, cambriol:null, vols:1429.92, volsveh:213.05, stupef:49.39, fraudes:694.9, juges:8.19, penit:66.1 },
+  "Finlande":      { police:137.49, homicide:1.5, tentative:6.29, agressions:31.24, viols:33.47, volsqual:42.1, cambriol:105.93, vols:2265.38, volsveh:100.18, stupef:455.55, fraudes:1018.95, juges:18.49, penit:38.08 }
+};
+const EURO_IND = [
+  { k:'police',   lib:'👮 Policiers (effectifs)',                      total:false },
+  { k:'homicide', lib:'Homicides intentionnels',                        total:true },
+  { k:'tentative',lib:'Tentatives d\'homicide',                         total:true },
+  { k:'viols',    lib:'Viols',                                          total:true },
+  { k:'volsqual', lib:'Vols qualifiés (avec violence)',                 total:true },
+  { k:'cambriol', lib:'Cambriolages',                                   total:true },
+  { k:'vols',     lib:'Vols',                                           total:true },
+  { k:'volsveh',  lib:'Vols de véhicules',                              total:true },
+  { k:'stupef',   lib:'Stupéfiants',                                     total:true },
+  { k:'fraudes',  lib:'Fraudes (escroqueries)',                         total:true },
+  { k:'juges',    lib:'⚖️ Juges et magistrats (effectifs)',            total:false },
+  { k:'penit',    lib:'🔒 Personnel pénitentiaire (effectifs)',         total:false },
+  { k:'TOTAL',    lib:'Σ Total des faits enregistrés (indicateurs comparables)', total:false },
+  // NB : agressions graves volontairement EXCLUES du total : définitions d'enregistrement trop différentes entre pays
+  { k:'agressions', lib:'Agressions graves (⚠️ définitions très inégales entre pays)', total:false }
+];
+let chartEf = null, chartEuro = null;
+
+function dessinerEffFrance(){
+  const e = EURO_EFF;
+  chartEf = new Chart(document.getElementById('graphEfFrance'), {
+    type:'line',
+    data:{ labels:e.annees, datasets:[
+      { label:'Policiers', data:e.police, borderColor:'#ffaa00', backgroundColor:'#ffaa00', borderWidth:3, tension:.25, spanGaps:true },
+      { label:'Juges et magistrats', data:e.juges.map(v=>v==null?null:v*10), borderColor:'#55aaff', backgroundColor:'#55aaff', borderWidth:2, tension:.25, spanGaps:true,
+        tooltip:{ callbacks:{ label: ctx => ' Juges : ' + (EURO_EFF.juges[ctx.dataIndex]==null?'n.d.':EURO_EFF.juges[ctx.dataIndex]) } } },
+      { label:'Pénitentiaire', data:e.penit, borderColor:'#55dd77', backgroundColor:'#55dd77', borderWidth:2, tension:.25, spanGaps:true }
+    ]},
+    options:{
+      maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      scales:{ y:{ title:{display:true,text:'Pour 100 000 habitants', color:'#e0e0e0'}, ticks:{color:'#e0e0e0'} }, x:{ ticks:{color:'#e0e0e0'} } },
+      plugins:{
+        legend:{ position:'bottom', labels:{ color:'#e0e0e0' } },
+        title:{ display:true, text:'Les moyens de la chaîne pénale en France (2008-2024) — juges ×10 pour la lisibilité', color:'#ff5555' }
+      }
+    }
+  });
+}
+
+function dessinerEuro(){
+  const k = document.getElementById('selEuro').value;
+  const lignes = Object.entries(EURO_PAYS).map(([pays, v]) => {
+    let val;
+    if (k === 'TOTAL'){
+      val = EURO_IND.filter(i=>i.total).reduce((s,i)=>{ const x = v[i.k]; return (x==null) ? s : s+x; }, 0);
+      const nb = EURO_IND.filter(i=>i.total && v[i.k]!=null).length;
+      if (nb < 5) val = null; // pays trop incomplet : pas de total trompeur
+    } else {
+      val = v[k];
+    }
+    return { pays, val };
+  }).filter(l => l.val != null).sort((a,b) => b.val - a.val);
+
+  if (chartEuro) chartEuro.destroy();
+  chartEuro = new Chart(document.getElementById('graphEuro'), {
+    type:'bar',
+    data:{
+      labels: lignes.map(l=>l.pays),
+      datasets:[{
+        data: lignes.map(l=>Math.round(l.val*100)/100),
+        backgroundColor: lignes.map(l => l.pays==='France' ? '#ff5555' : (l.pays==='Turquie' ? '#d32f2f' : 'rgba(255,170,0,0.55)')),
+        borderColor: lignes.map(l => l.pays==='France' ? '#ff5555' : (l.pays==='Turquie' ? '#d32f2f' : '#ffaa00')),
+        borderWidth: 1
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      maintainAspectRatio:false,
+      scales:{ x:{ title:{display:true, text:k==='police'||k==='juges'||k==='penit' ? 'Pour 100 000 habitants' : 'Faits enregistrés pour 100 000 habitants', color:'#e0e0e0'}, ticks:{color:'#e0e0e0'} },
+               y:{ ticks:{color:'#e0e0e0'} } },
+      plugins:{
+        legend:{ display:false },
+        title:{ display:true, text:(EURO_IND.find(i=>i.k===k)||{}).lib + ' — 2022', color:'#ff5555' },
+        tooltip:{ callbacks:{ label: ctx => ' ' + ctx.parsed.x.toLocaleString('fr') + (k==='TOTAL' ? ' (somme des indicateurs disponibles)' : '') } }
+      }
+    }
+  });
+  document.getElementById('noteEuro').innerHTML =
+    'En rouge : la France. En rouge sombre : la Turquie. "n.d." = non disponible chez Eurostat pour ce pays. ' +
+    (k==='TOTAL' ? '⚠️ Le total exclut les agressions graves (définitions d\'enregistrement trop inégales entre pays) et ne somme que les indicateurs disponibles — un pays avec des trous est écarté plutôt que minimisé. Comparez des ordres de grandeur, pas des dixièmes. ' : '') +
+    'Sources : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_off_cat/default/table?lang=fr" target="_blank">Eurostat — Infractions enregistrées (crim_off_cat)</a> · <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat — Personnel justice pénale (crim_just_job)</a>.';
+}
+
+function initEurope(){
+  // courbe effectifs France
+  dessinerEffFrance();
+  // sélecteur calculette européenne
+  const sel = document.getElementById('selEuro');
+  EURO_IND.forEach(i=>{ const o = document.createElement('option'); o.value = i.k; o.textContent = i.lib; sel.appendChild(o); });
+  sel.value = 'police';
+  sel.addEventListener('change', dessinerEuro);
+  dessinerEuro();
+}
+// la section Europe se charge en même temps que le reste (données intégrées, pas de fetch)
+const _charger = charger;
+charger = async function(){ await _charger(); initEurope(); };
 charger();
 
 // Pop-up cybercrime
