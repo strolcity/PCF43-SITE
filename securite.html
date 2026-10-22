@@ -220,18 +220,14 @@ Source : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/d
 <p class="petit" id="noteEuro"></p>
 
 <h3 style="color:#ff5555;border-bottom:1px solid #ff5555;padding-bottom:6px;margin-top:35px;">⚖️ Moyens ↔ délits en Europe (2008-2024)</h3>
-<p>Deux graphiques qui se répondent : en haut, l'<strong>effectif de votre choix pour l'année de votre choix</strong>, tous pays triés ; en dessous, <strong>l'évolution des faits enregistrés de tous les pays depuis 2008</strong>. <strong>Cliquez sur une barre</strong> pour éclairer en orange la courbe de ce pays — puis demandez-vous ce que ce gouvernement a réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
-<div class="ligne-ctl" style="flex-wrap:wrap;gap:8px 30px;">
-<label for="selDuoEff"><strong>Effectif :</strong>
-<select id="selDuoEff">
-<option value="pol">Policiers</option>
-<option value="ju">Juges</option>
-<option value="pe">Personnel pénitentiaire</option>
-</select></label>
-<label for="selDuoAnnee"><strong>Année :</strong> <select id="selDuoAnnee"></select></label>
+<p>Côte à côte : à gauche les <strong>effectifs du pays de votre choix</strong>, année par année (barres empilées : policiers + juges + personnel pénitentiaire) ; à droite les <strong>faits enregistrés</strong> de tous les pays de la sélection, 2008-2024 — <strong>mêmes couleurs des deux côtés</strong>. Comparez, puis demandez-vous ce que ces gouvernements ont réellement fait (ou défait) : prisons, justice, politiques sociales…</p>
+<div class="ligne-ctl">
+<label for="selDuoPays"><strong>Pays :</strong> <select id="selDuoPays"></select></label>
 </div>
-<div class="chart-container" style="height:520px"><canvas id="graphDuoBars"></canvas></div>
-<div class="chart-container" style="height:380px;margin-top:18px"><canvas id="graphDuoLignes"></canvas></div>
+<div style="display:flex;flex-wrap:wrap;gap:18px;align-items:stretch;">
+<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoBars"></canvas></div></div>
+<div style="flex:1 1 460px;min-width:340px;"><div class="chart-container" style="height:430px"><canvas id="graphDuoLignes"></canvas></div></div>
+</div>
 <p class="petit" id="noteDuo"></p>
 
 
@@ -762,58 +758,51 @@ function dessinerEuro(){
 const EURO_TEMPO = {"annees":[2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024],"pays":{"BE":{"pol":[361.69,371.29,368.31,344.03,345.6,345.22,338.68,336.06,333.23,335.21,362.94,335.6,336.99,335.72,338.29,346.54,342.77],"ju":[null,null,22.69,22.2,22.1,21.73,22.23,21.85,null,14.24,13.9,13.8,13.39,null,null,13.26,13.37],"pe":[75.81,76.79,75.01,76.32,75.12,77.14,null,77.65,null,null,null,null,null,null,null,null,null],"de":[3789,3825,3528,3682,3596,3391,3595,3873,4096,3994,3989,4128,3373,3460,3962,4050,3880]},"CZ":{"pol":[413.28,418.63,394.03,372.25,365.17,368.52,374.64,373.69,378.46,380.7,377.38,378.31,375.1,384.19,381.09,363.02,369.14],"ju":[29.43,29.05,29.28,29.07,29.08,7.38,7.25,7.25,7.14,7.21,7.17,7.14,7.07,7.2,7.07,6.87,6.72],"pe":[101.07,102.65,99.86,100.82,104.36,100.87,101.53,103.51,103.14,104.46,106.79,null,105.84,104.84,103.05,100.42,95.74],"de":[2334,2598,2437,2371,2219,2386,1939,1505,1198,1088,977,985,809,757,909,868,826]},"DK":{"pol":[196.14,196.77,200.26,195.45,193.48,191.84,188.25,186.1,186.15,188.27,191.14,192.44,194.07,195.27,193.48,192.53,194.25],"ju":[14.19,15.3,15.85,14.69,14.89,14.08,13.81,13.55,13.4,13.2,12.35,10.4,10.91,11.08,11.34,11.29,11.88],"pe":[225.58,268.5,299.38,300.63,295.33,88.35,65.93,60.07,57.52,54.92,51.82,49.55,48,47.84,46.72,46.25,47.64],"de":[7623,7871,7492,7405,7002,6767,6271,5621,6194,6008,5471,5230,4646,4011,4636,4777,4739]},"DE":{"pol":[301.17,299.69,297.82,303.16,303.73,304.35,302.89,301.69,297.31,298.88,295.68,297.6,301.27,306.83,311.06,316.98,320.38],"ju":[24.45,null,24.95,null,25.37,null,25.14,null,25.24,null,25.77,null,26.38,null,26.44,null,26.3],"pe":[45.22,44.74,45,44.63,45.1,45.27,44.96,44.15,43.77,43.97,43.98,44.26,44.68,45.14,45.12,null,null],"de":[3444,2534,2424,2571,2562,2604,2672,2717,3697,3473,3260,3163,2998,2787,3007,3241,3043]},"IE":{"pol":[323.28,321.74,316.02,303.97,292.93,285.18,277.91,null,null,null,345.6,359.71,362.82,352.03,342.51,334.69,331.34],"ju":[null,null,3.23,3.04,3.14,3.22,3.5,3.48,null,null,3.31,3.41,3.36,3.4,3.43,3.66,3.64],"pe":[73.6,71.33,68.25,72.41,74.91,74.75,73.39,71.46,null,null,64.55,65.76,69.57,65.06,64.58,67.91,65.62],"de":[3199,3153,3032,2983,2897,2846,2849,2587,2252,2346,2285,2341,1854,1827,2040,1948,2158]},"EL":{"pol":[354.5,507.74,481.12,496.41,493.01,485.67,477.77,485.18,489.75,493.96,494.97,507.52,524.74,516.99,533.99,543.72,559.19],"ju":[33.31,33.58,33.02,32.79,34.33,35.49,36.51,37.95,40.06,40.2,40.49,40.59,29.02,28.28,25.79,26.06,26.06],"pe":[38.44,null,null,null,null,null,41.23,41.42,41.37,41.3,42.22,40.19,40.08,39.71,40.66,43.88,42.97],"de":[1179,1304,1480,1956,1513,1342,1230,1317,1372,1566,1340,1385,1027,1036,1238,1214,1169]},"ES":{"pol":[361.32,373.56,384.01,388.09,383.01,376.47,371.54,365.6,361.43,360.2,362.5,367.36,369.9,375.73,379.84,378.04,378.97],"ju":[9.72,9.81,10.09,10.48,10.76,11.17,11.51,11.55,11.56,6.38,6.45,6.24,6.07,6.15,6.14,6.16,6.18],"pe":[51.26,53.42,65.65,65.7,53.91,63.68,62.9,51.44,51.18,51.48,55.74,60.26,60.01,58.73,60.41,62.11,62.3],"de":[1093,946,1157,1108,1177,1128,1032,1111,1418,1443,1577,1659,1487,1562,1963,2130,2044]},"FR":{"pol":[303.31,297.09,290.49,284.06,284.15,366.6,316.9,322.7,320.48,322.22,322.18,357.02,358.97,359.99,361.25,null,null],"ju":[9.2,9.22,9.17,9.02,8.97,8.85,8.6,8.6,null,10.58,10.86,11.06,11.19,11.43,11.28,11.52,11.15],"pe":[40.81,40.13,null,null,null,42.81,42.51,42,null,null,56.89,59.03,60.65,60.17,60.79,60.88,61.17],"de":[2511,3174,2837,2825,2849,3191,3205,3116,3835,3507,3448,3485,3155,3307,3682,3770,3774]},"IT":{"pol":[383.74,497.61,466.73,469.07,465.95,463.29,null,449.61,452.73,null,null,413.59,398.9,null,null,null,null],"ju":[null,null,11.24,null,10.69,11.36,11.42,10.68,10.5,10.74,10.97,11.26,17.36,8.13,8.19,7.97,7.86],"pe":[78.63,77.6,76.36,75.09,75.83,74.69,72.26,71.27,67.77,66.91,66.14,67.43,66.76,65.77,66.1,65.66,64.89],"de":[2649,2462,2068,2244,2292,2657,2579,2407,2542,2444,2390,2308,1882,2204,2434,2599,2623]},"HU":{"pol":[335.65,333.47,344.35,365.55,366.76,367.69,373.45,377.87,391.77,406.36,403.17,386.19,384.45,382.06,378.12,377.29,375.84],"ju":[28.11,29.1,29.14,28.93,28.02,28.56,28.74,28.82,null,29.21,29.99,29.94,28.96,28.21,28.02,28.04,28.03],"pe":[72.51,71.16,73.87,73.59,75.33,72.85,73.54,73.7,76.34,81.32,78.46,80.77,92.44,92.43,91.71,100.44,104.14],"de":[1864,1786,2206,2186,2230,1775,1521,1534,1488,1161,968,835,754,678,807,907,1149]},"NL":{"pol":[216.17,300.85,300.12,303.72,308.13,307.5,305.67,298.85,298.88,294.56,293.28,291.64,290.84,295.5,291.19,286,290.75],"ju":[null,14.67,15.1,14.7,14.36,14.17,14.02,13.95,13.73,14.64,14.49,14.4,14.72,14.93,14.99,14.94,15.08],"pe":[null,66.87,65.06,68.37,66.47,null,null,null,null,57.11,59.65,62.31,65.98,71.03,69.47,70.11,71.95],"de":[6395,6363,3510,3574,3521,3486,3168,2914,2980,2243,2017,2003,1749,1507,1807,1836,1779]},"AT":{"pol":[320.45,319.41,329.73,329.71,330.24,328.72,327.95,325.65,332.35,333.79,342.77,352.1,358.36,359.76,356.03,351.41,357.84],"ju":[27.97,28.09,28.11,28.14,28.19,28.27,4.58,4.58,4.54,4.48,4.4,4.45,4.43,4.39,4.32,4.35,4.32],"pe":[47.36,46.6,46.94,46.81,46.28,45.77,46.4,48.87,48.12,46.17,47.67,48.23,48.06,48.73,49.99,49.28,50.03],"de":[3550,3539,3020,2885,2899,3391,3268,3112,3524,3283,3004,3066,2646,2389,2899,3243,3266]},"PL":{"pol":[264.04,259.48,256.52,256.09,253.05,256.85,260.04,260.2,263.35,260.11,259.92,260.24,257.91,271.18,273.74,263.1,265.54],"ju":[23.77,25.99,26.11,26.07,26.11,26.08,26.22,26.22,26.07,25.32,24.54,24.31,7.91,8.12,8.22,8.14,8.01],"pe":[77.31,79.69,79.98,79.98,80.06,80.16,45.26,44.53,44.55,43.53,43.28,42.65,39.74,37.76,37.74,39.33,40.27],"de":[1146,1182,1195,1253,1235,1160,977,846,1055,1027,960,1052,1041,1177,1197,1176,1105]},"PT":{"pol":[457.5,474.13,448.38,453.37,445.15,437.1,443.1,451.59,451.47,449.25,450.52,442.08,442.78,434.28,452.78,440.18,437.53],"ju":[16.22,16.81,16.81,16.53,17.1,17.32,17.13,17.22,17.07,17.18,16.94,16.87,16.84,16.69,16.6,16.49,16.12],"pe":[55.03,50.63,51,49.7,50.55,49.78,48,47.75,48.07,52.44,52.6,52.02,51.16,63.14,50.39,48.14,47.83],"de":[2189,2067,1812,1845,1761,1619,1536,1553,1605,1585,1572,1567,1392,1368,1535,1604,1523]},"RO":{"pol":[243.94,249.88,242.97,231.82,264.39,267.86,265.23,263.21,241.98,242.53,256.09,257.05,256.97,247.95,262.61,266.57,269.6],"ju":[20.07,19.1,19.01,19.64,20.91,22.31,22.25,22.67,21.68,22.8,23.36,36.52,36.15,34.55,33.02,32.69,35.31],"pe":[52.49,53.68,50.63,50.93,53.38,53.91,55.56,57.76,55.77,58.81,59.57,58.39,55.12,59.25,61.21,61.19,64.55],"de":[303,350,343,340,427,436,1160,769,658,752,806,654,608,634,616,679,585]},"SI":{"pol":[386.96,385.86,379.88,372.21,358.6,350.3,391.74,345.49,346.82,347.07,343.08,342.4,345.54,349.79,347.81,334.58,321.1],"ju":[53.08,52.94,50.03,49.56,47.82,47.11,45.61,44.16,43.55,43.03,43.06,42.67,42.37,41.82,41.71,40.67,40.16],"pe":[33.53,33.95,35.61,36.29,35.03,34.49,33.96,34.22,37.45,41.73,41.75,41.76,41.46,41.87,42.66,42.51,41.24],"de":[2325,2341,2220,2299,2480,2588,2254,1744,1897,1739,1618,1968,1841,1354,1565,1780,1939]},"FI":{"pol":[153.74,154.85,151.4,151.08,147.69,141.52,140.63,140.56,137.21,132.04,132.72,133.51,136.97,136.8,137.49,139.45,139.37],"ju":[17.38,17.65,18.07,18.03,18.03,18.17,18.12,18.11,19.46,18.99,19.61,19.7,20.14,18.61,18.49,18.96,19.38],"pe":[52.47,51.46,50.21,48.85,48.06,44.89,44.06,42.69,37.87,37.85,37.86,37.42,37.41,38.53,38.08,38.28,37.14],"de":[3708,3764,3675,3743,3380,3315,3316,3232,3914,3654,3631,3846,4295,3963,4029,4239,4309]},"SE":{"pol":[199.51,206.82,217.24,216.64,209.75,208.36,201.83,204.19,203.28,197.51,198.02,199.63,202.78,206.04,210.3,218.41,225.97],"ju":[12.61,12.37,12.18,12.66,12.36,8.21,8.45,8.39,8.32,8.55,8.57,8.29,8.32,8.64,8.79,8.91,9.04],"pe":[83.85,74.66,74.8,74.8,null,62.4,62.34,61.31,61.8,60.75,59.78,59,65.99,68.39,72.41,84.38,92.64],"de":[7295,7130,6813,6930,6737,6676,6467,6440,8288,8474,8509,8326,8317,7739,7586,7832,7573]},"NO":{"pol":[158.43,159.34,158.17,158.1,159.27,163.29,168.42,null,null,null,null,null,null,null,null,null,null],"ju":[15.68,15.4,15.46,15.24,15.04,14.43,14.45,null,16.33,15.97,15.98,15.78,null,null,null,null,null],"pe":[64.51,65.65,70.36,69.59,68.45,87.28,90,null,90.56,90.66,90.58,88.59,null,null,null,null,null],"de":[4726,4935,4747,4473,4574,4335,3948,3188,3255,2945,2908,2842,2584,2264,2665,2954,3111]},"CH":{"pol":[215,221.48,221.02,219.35,221.63,221.62,218.9,220.33,219.28,218.46,217.03,220.04,219.87,223.72,216.39,213.5,212.74],"ju":[16.18,14.14,14.67,null,15.98,null,null,null,15.02,null,14.43,null,15.14,null,null,null,null],"pe":[44.78,null,null,null,47.92,null,49.29,50.67,50.07,52.05,52.99,52.28,52.34,51.99,53.43,55.04,56.5],"de":[3017,4504,4328,4717,4951,4648,4042,3709,3619,3402,3234,3225,2977,2882,3185,3704,3826]},"TR":{"pol":[null,514.75,511.95,502.62,505.77,null,null,464.13,462.02,489.68,583.22,530.53,528,540.78,545.07,566.19,578.48],"ju":[null,8.67,8.59,8.39,8.53,9.86,8.92,8.48,8.68,11.16,13.6,14.21,15,15.4,15.28,15.99,16.66],"pe":[null,36.34,39.58,46.99,54.28,57.25,59.29,58.95,60.74,66.79,67.87,73.65,78.58,79.38,83.79,82.86,89.68],"de":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}}};
 const DUO_NOMS = {BE:'Belgique',CZ:'Tchéquie',DK:'Danemark',DE:'Allemagne',IE:'Irlande',EL:'Grèce',ES:'Espagne',FR:'France',IT:'Italie',HU:'Hongrie',NL:'Pays-Bas',AT:'Autriche',PL:'Pologne',PT:'Portugal',RO:'Roumanie',SI:'Slovénie',FI:'Finlande',SE:'Suède',NO:'Norvège',CH:'Suisse',TR:'Turquie'};
 let chartDuoBars = null, chartDuoLignes = null;
-let duoPaysFocus = null; // pays cliqué sur une barre → courbe mise en avant
-const DUO_EFF_LIB = { pol:'Policiers', ju:'Juges', pe:'Personnel pénitentiaire' };
+// moulinette : population comparable + top effectifs + top faits + France
+const DUO_SEL = ['TR','DE','FR','IT','ES','BE','SE','PT','CZ','EL','HU','CH','DK','FI'];
+// une couleur fixe par pays, identique sur les deux graphiques
+const DUO_COULEURS = {TR:'#8b1a1a',DE:'#2980b9',FR:'#ff5555',IT:'#27ae60',ES:'#f1c40f',BE:'#33691e',SE:'#e91e63',PT:'#e67e22',CZ:'#16a085',EL:'#9b59b6',HU:'#34495e',CH:'#795548',DK:'#00bcd4',FI:'#673ab7'};
+const DUO_PROFS = [['pol','Policiers','#e67e22'],['ju','Juges','#2980b9'],['pe','Personnel pénitentiaire','#27ae60']];
 function dessinerDuo(){
-  const eff = document.getElementById('selDuoEff').value;
-  const an = parseInt(document.getElementById('selDuoAnnee').value, 10);
-  const ti = EURO_TEMPO.annees.indexOf(an);
-  const data = Object.keys(EURO_TEMPO.pays)
-    .map(g => ({ g, v: EURO_TEMPO.pays[g][eff][ti] }))
-    .sort((a,b) => (b.v === null || b.v === undefined ? -1 : b.v) - (a.v === null || a.v === undefined ? -1 : a.v));
+  const g = document.getElementById('selDuoPays').value;
+  const p = EURO_TEMPO.pays[g];
+  const datasets = DUO_PROFS.map(pr => ({ label: pr[1], data: p[pr[0]], stack: 'eff', backgroundColor: pr[2], borderColor: 'rgba(0,0,0,0.4)', borderWidth: 1 }));
   if (chartDuoBars) chartDuoBars.destroy();
   chartDuoBars = new Chart(document.getElementById('graphDuoBars').getContext('2d'), {
     type: 'bar',
-    data: {
-      labels: data.map(d => DUO_NOMS[d.g]),
-      datasets: [{ label: DUO_EFF_LIB[eff], data: data.map(d => d.v === undefined ? null : d.v),
-        backgroundColor: data.map(d => d.g === 'FR' ? '#ff5555' : d.g === 'TR' ? '#8b1a1a' : (duoPaysFocus === d.g ? '#ffaa00' : '#e67e22')),
-        borderColor: 'rgba(0,0,0,0.4)', borderWidth: 1 }]
-    },
+    data: { labels: EURO_TEMPO.annees, datasets },
     options: {
-      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-      onClick: (evt, els) => { if (!els.length) return; const g = data[els[0].index].g; duoPaysFocus = (duoPaysFocus === g ? null : g); dessinerDuo(); },
+      responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
-        title: { display: true, color: '#ff5555', text: DUO_EFF_LIB[eff] + ' pour 100 000 hab. — ' + an + (duoPaysFocus ? ' (orange : ' + DUO_NOMS[duoPaysFocus] + ')' : '') },
+        legend: { labels: { color: '#e0e0e0', boxWidth: 12 } },
+        title: { display: true, color: DUO_COULEURS[g], text: DUO_NOMS[g] + ' — effectifs de justice pénale pour 100 000 hab.' },
         tooltip: { callbacks: { label: ctx => {
-          const v = ctx.parsed.x;
-          return ' ' + (v === null || isNaN(v) ? 'n.d. — non publié chez Eurostat' : v.toLocaleString('fr-FR') + ' / 100 000 hab.');
+          const v = ctx.parsed.y;
+          return ' ' + ctx.dataset.label + ' : ' + (v === null || isNaN(v) ? 'n.d. (non publié)' : v.toLocaleString('fr-FR') + ' / 100 000 hab.');
         } } }
       },
       scales: {
-        x: { title: { display: true, text: 'Pour 100 000 habitants', color: '#e0e0e0' }, ticks: { color: '#e0e0e0' }, beginAtZero: true },
-        y: { ticks: { color: '#e0e0e0' } }
+        x: { stacked: true, title: { display: true, text: 'Année', color: '#e0e0e0' }, ticks: { color: '#e0e0e0' } },
+        y: { stacked: true, title: { display: true, text: 'Effectifs / 100 000 hab.', color: '#e0e0e0' }, ticks: { color: '#e0e0e0' } }
       }
     }
   });
   dessinerDuoLignes();
   document.getElementById('noteDuo').innerHTML =
-    'Graphique du haut : l’effectif choisi pour l’année choisie, tous pays triés (rouge = France, rouge sombre = Turquie, orange = autres ; <strong>cliquez sur une barre</strong> pour éclairer ce pays, re-cliquez pour libérer). ' +
-    'Graphique du bas : total des faits enregistrés (9 indicateurs Eurostat, agressions exclues), 2008-2024 — tous les pays en fines courbes, France en rouge, pays cliqué en orange. Le survol d’une année trie tous les pays. ' +
-    'Exemples à creuser honnêtement : le <strong>Danemark</strong> en baisse constante de ses faits depuis 2008 (qu’a fait son gouvernement ?) ; la <strong>Suède</strong> qui grimpe à partir de 2015-2016 (même période où ses effectifs augmentent, eux) ; la <strong>Roumanie</strong> dont le total bondit en 2014 avec un changement d’enregistrement. ' +
-    '⚠️ La Turquie publie ses effectifs mais pas ses faits (pas de courbe) ; les policiers français ne sont pas publiés chez Eurostat pour 2023-2024 (« n.d. ») ; certaines séries d’effectifs ont des ruptures de méthode (Tchéquie 2013, Danemark 2013, France 2013/2019) — des sauts de comptage, pas des réformes. ' +
+    '<strong>La sélection</strong> : les pays comparables en population (Allemagne, Italie, Espagne, Turquie), les plus dotés en effectifs (Grèce, Portugal, Tchéquie, Hongrie), les plus touchés par les faits enregistrés (Suède, Danemark, Belgique, Finlande, Suisse) — et la France, toujours. ' +
+    'À gauche : les effectifs du pays choisi, année par année, en barres empilées (policiers + juges + personnel pénitentiaire pour 100 000 hab.). À droite : les faits enregistrés de tous ces pays, 2008-2024 — mêmes couleurs, le pays choisi est en gras, et le survol d’une année affiche aussi l’évolution par rapport à l’année précédente. ' +
+    'Exemples à creuser : le <strong>Danemark</strong> en baisse constante de ses faits depuis 2008 pendant que ses effectifs de police restent stables ; la <strong>Suède</strong> qui grimpe dès 2015-2016 alors que ses effectifs augmentent, eux. ' +
+    '⚠️ La Turquie publie ses effectifs mais pas ses faits (pas de courbe) ; les policiers français ne sont pas publiés chez Eurostat pour 2023-2024 (barres incomplètes) ; certaines séries d’effectifs ont des ruptures de méthode (Tchéquie 2013, Danemark 2013, France 2013/2019) — des sauts de comptage, pas des réformes. ' +
     'Aucun pays ne doit sa tranquillité au nombre de matraques. Sources : <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_just_job/default/table?lang=fr" target="_blank">Eurostat — Personnel justice pénale (crim_just_job)</a> · <a href="https://ec.europa.eu/eurostat/databrowser/view/crim_off_cat/default/table?lang=fr" target="_blank">Eurostat — Infractions enregistrées (crim_off_cat)</a>.';
 }
 function dessinerDuoLignes(){
-  const pays = Object.keys(EURO_TEMPO.pays).filter(g => g !== 'TR'); // pas de faits publiés
-  const datasets = pays.map(g => {
-    const focus = duoPaysFocus === g, fr = g === 'FR';
-    return { label: DUO_NOMS[g], data: EURO_TEMPO.pays[g].de,
-      borderColor: focus ? '#ffaa00' : fr ? '#ff5555' : 'rgba(160,160,160,0.35)',
-      borderWidth: focus ? 3.5 : (fr ? 2.5 : 1.2),
-      pointRadius: focus ? 3 : (fr ? 2 : 0), tension: 0.35, spanGaps: true };
-  });
+  const sel = document.getElementById('selDuoPays').value;
+  const datasets = DUO_SEL.map(g => ({
+    label: DUO_NOMS[g], data: EURO_TEMPO.pays[g].de,
+    borderColor: DUO_COULEURS[g],
+    borderWidth: g === sel ? 3.5 : (g === 'FR' && sel !== 'FR' ? 2.5 : 1.5),
+    pointRadius: g === sel ? 3 : 0, tension: 0.35, spanGaps: true
+  }));
   if (chartDuoLignes) chartDuoLignes.destroy();
   chartDuoLignes = new Chart(document.getElementById('graphDuoLignes').getContext('2d'), {
     type: 'line',
@@ -822,11 +811,15 @@ function dessinerDuoLignes(){
       responsive: true, maintainAspectRatio: false,
       interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { display: false },
-        title: { display: true, color: '#ff5555', text: 'Faits enregistrés pour 100 000 hab. — tous pays, 2008-2024' },
-        tooltip: { itemSort: (a,b) => b.parsed.y - a.parsed.y, callbacks: { label: ctx => {
+        legend: { position: 'bottom', labels: { color: '#e0e0e0', boxWidth: 12, font: { size: 10 } } },
+        title: { display: true, color: '#ff5555', text: 'Faits enregistrés pour 100 000 hab. — sélection de pays, 2008-2024' },
+        tooltip: { itemSort: (a,b) => (b.parsed.y || 0) - (a.parsed.y || 0), callbacks: { label: ctx => {
           const v = ctx.parsed.y;
-          return v === null || isNaN(v) ? null : ' ' + ctx.dataset.label + ' : ' + v.toLocaleString('fr-FR');
+          if (v === null || isNaN(v)) return ' ' + ctx.dataset.label + ' : non publié';
+          const arr = ctx.dataset.data, prev = arr[ctx.dataIndex - 1];
+          let s = ' ' + ctx.dataset.label + ' : ' + v.toLocaleString('fr-FR');
+          if (prev !== null && prev !== undefined && !isNaN(prev)) s += ' (' + (v >= prev ? '+' : '') + (v - prev).toLocaleString('fr-FR') + ' vs ' + EURO_TEMPO.annees[ctx.dataIndex - 1] + ')';
+          return s;
         } } }
       },
       scales: {
@@ -846,11 +839,10 @@ function initEurope(){
   sel.value = 'police';
   sel.addEventListener('change', dessinerEuro);
   dessinerEuro();
-  const selAn = document.getElementById('selDuoAnnee');
-  EURO_TEMPO.annees.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; selAn.appendChild(o); });
-  selAn.value = '2024';
-  document.getElementById('selDuoEff').addEventListener('change', dessinerDuo);
-  selAn.addEventListener('change', dessinerDuo);
+  const selP = document.getElementById('selDuoPays');
+  DUO_SEL.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = DUO_NOMS[g]; selP.appendChild(o); });
+  selP.value = 'FR';
+  selP.addEventListener('change', dessinerDuo);
   dessinerDuo();
 }
 // la section Europe se charge en même temps que le reste (données intégrées, pas de fetch)
